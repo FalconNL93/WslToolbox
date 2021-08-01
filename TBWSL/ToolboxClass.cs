@@ -11,6 +11,7 @@ namespace WslToolbox
             Update = "wsl --update",
             Status = "wsl --status",
             List = "wsl --list --verbose",
+            ListAvailable = "wsl --list --online",
             SetDefault = "wsl --set-default",
             TerminateDistribution = "wsl --terminate",
             StartDistribution = "wsl --distribution",
@@ -47,6 +48,13 @@ namespace WslToolbox
             CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.List);
 
             return DistributionClass.FromOutput(distributionListOutput.Output);
+        }
+
+        public static List<DistributionClass> ListAvailableDistributions()
+        {
+            CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.ListAvailable);
+
+            return DistributionClass.FromAvailableOutput(distributionListOutput.Output);
         }
     }
 }

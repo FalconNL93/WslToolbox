@@ -35,5 +35,36 @@ namespace WslToolbox
 
             return distros;
         }
+
+        public static List<DistributionClass> FromAvailableOutput(string output)
+        {
+            List<DistributionClass> distros = new();
+
+            using (StringReader reader = new(output))
+            {
+                var headerLine = reader.ReadLine();
+                string line;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line == "" || line.StartsWith("NAME") || line.StartsWith("Install"))
+                    {
+                        continue;
+                    }
+
+                    var tabbed = line.Split("\t");
+                    DistributionClass distro = new();
+
+                    distro.IsDefault = false;
+                    distro.Name = tabbed[0];
+                    distro.State = "Stopped";
+                    distro.Version = 2;
+
+                    distros.Add(distro);
+                }
+            }
+
+            return distros;
+        }
     }
 }

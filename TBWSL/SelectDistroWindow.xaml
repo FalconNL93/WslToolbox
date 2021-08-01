@@ -1,0 +1,16 @@
+﻿<Window x:Class="WslToolbox.SelectDistroWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WslToolbox"
+        mc:Ignorable="d"
+        Title="SelectDistroWindow" Height="143" Width="225" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="Select distribution to install" HorizontalAlignment="Left" Height="26" Margin="10,10,0,0" VerticalAlignment="Top" Width="165"/>
+        <ComboBox x:Name="AvailableDistros" HorizontalAlignment="Left" Height="24" Margin="10,36,0,0" VerticalAlignment="Top" Width="192" IsReadOnly="True" />
+        <Button Content="Install" HorizontalAlignment="Left" Height="24" Margin="120,65,0,0" VerticalAlignment="Top" Width="82"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Height="24" Margin="10,65,0,0" VerticalAlignment="Top" Width="82"/>
+
+    </Grid>
+</Window>

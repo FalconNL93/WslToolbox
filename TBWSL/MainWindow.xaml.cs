@@ -167,5 +167,12 @@ namespace WslToolbox
         {
             await ToolboxClass.StartWsl();
         }
+
+        private void DistroInstall_Click(object sender, RoutedEventArgs e)
+        {
+            SelectDistroWindow selectDistroWindow = new();
+
+            selectDistroWindow.ShowDialog();
+        }
     }
 }
