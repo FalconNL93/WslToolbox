@@ -51,7 +51,7 @@ namespace WslToolbox
                 DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
             }
 
-            DistroDetails.ItemsSource = DistroList;
+            DistroDetails.ItemsSource = DistroList.FindAll(x => x.isInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
         }
 

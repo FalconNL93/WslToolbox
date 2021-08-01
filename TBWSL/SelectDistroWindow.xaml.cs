@@ -22,8 +22,8 @@ namespace WslToolbox
         public SelectDistroWindow()
         {
             InitializeComponent();
-            List<DistributionClass> DistroList = ToolboxClass.ListAvailableDistributions();
-            AvailableDistros.ItemsSource = DistroList;
+            List<DistributionClass> DistroList = ToolboxClass.ListDistributions();
+            AvailableDistros.ItemsSource = DistroList.FindAll(x => !x.isInstalled);
             AvailableDistros.DisplayMemberPath = "Name";
         }
     }

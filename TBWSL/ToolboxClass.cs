@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WslToolbox
@@ -46,15 +47,14 @@ namespace WslToolbox
         public static List<DistributionClass> ListDistributions()
         {
             CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.List);
+            CommandClass distributionAvailableListOutput = CommandClass.ExecuteCommand(WslCommands.ListAvailable);
 
-            return DistributionClass.FromOutput(distributionListOutput.Output);
-        }
+            List<DistributionClass> distributionList = DistributionClass.FromOutput(distributionListOutput.Output);
+            List<DistributionClass> distributionListAvailable = DistributionClass.FromAvailableOutput(distributionAvailableListOutput.Output);
 
-        public static List<DistributionClass> ListAvailableDistributions()
-        {
-            CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.ListAvailable);
+            distributionList.AddRange(distributionListAvailable.Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
 
-            return DistributionClass.FromAvailableOutput(distributionListOutput.Output);
+            return distributionList;
         }
     }
 }

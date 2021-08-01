@@ -9,6 +9,7 @@ namespace WslToolbox
         public string Name { get; set; }
         public string State { get; set; }
         public int Version { get; set; }
+        public bool isInstalled { get; set;  }
 
         public static List<DistributionClass> FromOutput(string output)
         {
@@ -28,6 +29,7 @@ namespace WslToolbox
                     distro.Name = tabbed[1];
                     distro.State = tabbed[2];
                     distro.Version = int.Parse(tabbed[3]);
+                    distro.isInstalled = true;
 
                     distros.Add(distro);
                 }
@@ -57,8 +59,9 @@ namespace WslToolbox
 
                     distro.IsDefault = false;
                     distro.Name = tabbed[0];
-                    distro.State = "Stopped";
+                    distro.State = "Available";
                     distro.Version = 2;
+                    distro.isInstalled = false;
 
                     distros.Add(distro);
                 }
