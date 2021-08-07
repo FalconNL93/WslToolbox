@@ -5,6 +5,8 @@ namespace WslToolbox
 {
     internal class DistributionClass
     {
+        public const string StateRunning = "Running";
+        public const string StateStopped = "Stopped";
         public bool IsDefault { get; set; }
         public string Name { get; set; }
         public string State { get; set; }

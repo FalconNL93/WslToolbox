@@ -44,7 +44,7 @@ namespace WslToolbox
                 shellCommand = $"-Command wsl --install -d {distribution.Name}";
             }
 
-            if(distribution.State != "Running" && distribution.isInstalled)
+            if(distribution.State != DistributionClass.StateRunning && distribution.isInstalled)
             {
                 return;
             }

@@ -126,13 +126,13 @@ namespace WslToolbox
                 return;
             }
             
-            DistroStart.IsEnabled = SelectedDistro.State != "Running";
-            DistroStop.IsEnabled = SelectedDistro.State == "Running";
+            DistroStart.IsEnabled = SelectedDistro.State != DistributionClass.StateRunning;
+            DistroStop.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
             DistroRestart.IsEnabled = true;
             DistroConvert.IsEnabled = SelectedDistro.Version != 2;
             DistroUninstall.IsEnabled = true;
             DistroSetDefault.IsEnabled = !SelectedDistro.IsDefault;
-            DistroShell.IsEnabled = SelectedDistro.State == "Running";
+            DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
         }
 
         private void HideDockerDistro_Checked(object sender, RoutedEventArgs e)

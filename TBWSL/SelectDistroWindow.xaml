@@ -11,6 +11,5 @@
         <ComboBox x:Name="AvailableDistros" HorizontalAlignment="Left" Height="24" Margin="10,36,0,0" VerticalAlignment="Top" Width="192" IsReadOnly="True" />
         <Button Content="Install" HorizontalAlignment="Left" Height="24" Margin="120,65,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Height="24" Margin="10,65,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click_1"/>
-
     </Grid>
 </Window>
