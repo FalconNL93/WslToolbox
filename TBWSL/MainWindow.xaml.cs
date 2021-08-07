@@ -99,9 +99,9 @@ namespace WslToolbox
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult uninstallMessagebox = MessageBox.Show(
-                "Are you sure you want to uninstall?", "Uninstall?",
+                $"Are you sure you want to uninstall {SelectedDistro.Name}? This will also destroy all data within the distribution.", "Uninstall?",
                 MessageBoxButton.YesNo, 
-                MessageBoxImage.Information);
+                MessageBoxImage.Warning);
 
             if (uninstallMessagebox == MessageBoxResult.Yes)
             {
