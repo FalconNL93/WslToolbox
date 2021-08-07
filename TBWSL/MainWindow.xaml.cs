@@ -27,6 +27,7 @@ namespace WslToolbox
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
+            StatusBlock.Text = String.Empty;
         }
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
@@ -148,9 +149,11 @@ namespace WslToolbox
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
+            SetStatus("Checking for WSL Updates...");
             CommandClass command = await ToolboxClass.UpdateWsl();
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "WSL Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+            SetStatus(String.Empty);
         }
 
         private void DistroShell_Click(object sender, RoutedEventArgs e)
@@ -172,7 +175,13 @@ namespace WslToolbox
         {
             SelectDistroWindow selectDistroWindow = new();
 
-            selectDistroWindow.ShowDialog();
+            bool? distroSelected = selectDistroWindow.ShowDialog();
+
+            if((bool)distroSelected)
+            {
+                DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
+                ToolboxClass.ShellDistribution(selectedDistro);
+            }
         }
     }
 }

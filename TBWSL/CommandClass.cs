@@ -37,14 +37,21 @@ namespace WslToolbox
 
         public static void StartShell(DistributionClass distribution)
         {
-            if(distribution.State != "Running")
+            string shellCommand = $"-Command wsl -d {distribution.Name}";
+
+            if(!distribution.isInstalled)
+            {
+                shellCommand = $"-Command wsl --install -d {distribution.Name}";
+            }
+
+            if(distribution.State != "Running" && distribution.isInstalled)
             {
                 return;
             }
 
             Process p = new();
             p.StartInfo.FileName = "pwsh.exe";
-            p.StartInfo.Arguments = $"-Command wsl -d {distribution.Name}";
+            p.StartInfo.Arguments = shellCommand;
             p.Start();
         }
 
