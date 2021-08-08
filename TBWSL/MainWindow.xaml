@@ -54,11 +54,11 @@
         <Button x:Name="RefreshWsl" Content="Refresh" HorizontalAlignment="Center" Height="25" Margin="0,161,0,0" VerticalAlignment="Top" Width="106" Click="RefreshWsl_Click" />
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="1" HorizontalAlignment="Left" Margin="219,10,0,0" VerticalAlignment="Top" Width="271" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="1" />
-        <Button x:Name="DistroUninstall" Content="Uninstall" HorizontalAlignment="Left" Height="25" Margin="10,252,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroUninstall_Click"/>
-        <Button x:Name="DistroInstall" Content="Install" HorizontalAlignment="Left" Height="25" Margin="10,222,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroInstall_Click"/>
-        <Button x:Name="DistroConvert" Content="Convert" HorizontalAlignment="Left" Height="25" Margin="10,161,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1"/>
+        <Button x:Name="DistroUninstall" Content="Uninstall" HorizontalAlignment="Left" Height="25" Margin="10,252,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroUninstall_Click" />
+        <Button x:Name="DistroInstall" Content="Install" HorizontalAlignment="Left" Height="25" Margin="10,222,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroInstall_Click" />
+        <Button x:Name="DistroConvert" Content="Convert" HorizontalAlignment="Left" Height="25" Margin="10,161,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" />
         <CheckBox x:Name="HideDockerDistro" Content="Hide Docker distro" HorizontalAlignment="Left" Height="19" Margin="10,342,0,0" VerticalAlignment="Top" Width="144" Checked="HideDockerDistro_Checked" Unchecked="HideDockerDistro_Unchecked" Grid.Column="1" />
         <Button x:Name="DistroShell" Content="Start shell" HorizontalAlignment="Left" Height="25" Margin="10,131,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroShell_Click" />
-        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="182" Margin="0,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock"/>
+        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="182" Margin="0,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
     </Grid>
 </Window>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Threading.Tasks;
 
 namespace WslToolbox
 {
@@ -102,7 +101,7 @@ namespace WslToolbox
         {
             MessageBoxResult uninstallMessagebox = MessageBox.Show(
                 $"Are you sure you want to uninstall {SelectedDistro.Name}? This will also destroy all data within the distribution.", "Uninstall?",
-                MessageBoxButton.YesNo, 
+                MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
             if (uninstallMessagebox == MessageBoxResult.Yes)
@@ -127,7 +126,7 @@ namespace WslToolbox
 
                 return;
             }
-            
+
             DistroStart.IsEnabled = SelectedDistro.State != DistributionClass.StateRunning;
             DistroStop.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
             DistroRestart.IsEnabled = true;
@@ -179,7 +178,7 @@ namespace WslToolbox
 
             bool? distroSelected = selectDistroWindow.ShowDialog();
 
-            if((bool)distroSelected)
+            if ((bool)distroSelected)
             {
                 DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
                 ToolboxClass.ShellDistribution(selectedDistro);

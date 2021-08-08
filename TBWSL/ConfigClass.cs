@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
-
-namespace WslToolbox
+﻿namespace WslToolbox
 {
-    class ConfigClass
+    internal class ConfigClass
     {
         public bool HideDockerDistributions { get; set; }
     }

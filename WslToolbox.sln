@@ -1,20 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31521.260
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox", "TBWSL\WslToolbox.csproj", "{9F9E429B-51BC-44BB-934A-735ECB9534F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.Build.0 = Debug|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|x64.ActiveCfg = Debug|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|x64.Build.0 = Debug|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.ActiveCfg = Release|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.Build.0 = Release|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|x64.ActiveCfg = Release|x64
+		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

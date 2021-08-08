@@ -11,7 +11,7 @@ namespace WslToolbox
         public string Name { get; set; }
         public string State { get; set; }
         public int Version { get; set; }
-        public bool isInstalled { get; set;  }
+        public bool isInstalled { get; set; }
 
         public static List<DistributionClass> FromOutput(string output)
         {

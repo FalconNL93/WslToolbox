@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace WslToolbox
 {
@@ -39,12 +38,12 @@ namespace WslToolbox
         {
             string shellCommand = $"-Command wsl -d {distribution.Name}";
 
-            if(!distribution.isInstalled)
+            if (!distribution.isInstalled)
             {
                 shellCommand = $"-Command wsl --install -d {distribution.Name}";
             }
 
-            if(distribution.State != DistributionClass.StateRunning && distribution.isInstalled)
+            if (distribution.State != DistributionClass.StateRunning && distribution.isInstalled)
             {
                 return;
             }

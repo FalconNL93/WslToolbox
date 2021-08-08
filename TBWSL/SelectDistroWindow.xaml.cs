@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WslToolbox
 {
@@ -29,7 +18,7 @@ namespace WslToolbox
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(AvailableDistros.SelectedItem != null)
+            if (AvailableDistros.SelectedItem != null)
             {
                 DialogResult = true;
             }
