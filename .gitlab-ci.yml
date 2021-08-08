@@ -1,0 +1,24 @@
+image : mcr.microsoft.com/dotnet/sdk:5.0
+
+stages:
+  - build
+  - test
+  - release
+
+build:
+  stage: build
+  script:
+    - dotnet build
+
+test:
+  stage: test
+  script:
+    - dotnet test
+
+release:
+  stage: release
+  artifacts:
+    paths:
+      - TBWSL/Release/Win64
+  script:
+    - dotnet publish -p:PublishProfile=Win64
