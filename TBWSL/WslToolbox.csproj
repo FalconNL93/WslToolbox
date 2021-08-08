@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Product>WSL Toolbox</Product>
     <StartupObject>WslToolbox.App</StartupObject>
@@ -12,6 +12,7 @@
     <Version>1.0</Version>
     <Authors>WSL Toolbox</Authors>
     <Company>WSL Toolbox</Company>
+    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
