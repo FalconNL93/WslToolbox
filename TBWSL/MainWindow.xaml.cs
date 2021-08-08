@@ -44,6 +44,7 @@ namespace WslToolbox
 
         private void PopulateWsl()
         {
+            SetStatus("Populating...");
             List<DistributionClass> DistroList = ToolboxClass.ListDistributions();
 
             if (HideDockerDistributions)
@@ -54,6 +55,7 @@ namespace WslToolbox
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.isInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
+            SetStatus(String.Empty);
         }
 
         private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -182,6 +184,12 @@ namespace WslToolbox
                 DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
                 ToolboxClass.ShellDistribution(selectedDistro);
             }
+        }
+
+        private async void RestartWsl_Click(object sender, RoutedEventArgs e)
+        {
+            await ToolboxClass.StopWsl();
+            await ToolboxClass.StartWsl();
         }
     }
 }

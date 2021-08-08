@@ -4,8 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Product>Toolbox for WSL</Product>
+    <Product>WSL Toolbox</Product>
     <StartupObject>WslToolbox.App</StartupObject>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

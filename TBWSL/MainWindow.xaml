@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WslToolbox"
         mc:Ignorable="d"
-        Title="MainWindow" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
+        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />
@@ -14,10 +14,8 @@
 
         <Button x:Name="StartWsl" Content="Start" HorizontalAlignment="Center" Height="25" Margin="0,41,0,0" VerticalAlignment="Top" Width="106" />
         <Button x:Name="StopWsl" Content="Stop" HorizontalAlignment="Center" Height="25" Margin="0,71,0,0" VerticalAlignment="Top" Width="106" Click="StopWsl_Click" />
-        <Button x:Name="RestartWsl" Content="Restart" HorizontalAlignment="Center" Height="25" Margin="0,101,0,0" VerticalAlignment="Top" Width="106" />
+        <Button x:Name="RestartWsl" Content="Restart" HorizontalAlignment="Center" Height="25" Margin="0,101,0,0" VerticalAlignment="Top" Width="106" Click="RestartWsl_Click" />
         <Button x:Name="UpdateWsl" Content="Update" HorizontalAlignment="Center" Height="25" Margin="0,131,0,0" VerticalAlignment="Top" Width="106" Click="UpdateWsl_Click" />
-        <Button x:Name="StatusWsl" Content="Status" HorizontalAlignment="Center" Height="25" Margin="0,161,0,0" VerticalAlignment="Top" Width="106" Click="StatusWsl_Click" />
-        <Button x:Name="ToolboxLog" Content="Log" HorizontalAlignment="Center" Height="25" Margin="0,222,0,0" VerticalAlignment="Top" Width="106" Click="ToolboxLog_Click" />
         <Label Content="WSL Service" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" />
         <Label Content="Distribution" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" Grid.Column="1" />
         <Button x:Name="DistroStart" Content="Start" HorizontalAlignment="Left" Height="25" Margin="10,41,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroStart_Click" />
@@ -43,9 +41,17 @@
                     <GridViewColumn Header="WSL Version" DisplayMemberBinding="{Binding Version}" />
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Start" Click="DistroStart_Click" IsEnabled="{Binding ElementName=DistroStart, Path=IsEnabled}"></MenuItem>
+                    <MenuItem Header="Stop" Click="DistroStop_Click" IsEnabled="{Binding ElementName=DistroStop, Path=IsEnabled}"></MenuItem>
+                    <MenuItem Header="Restart" Click="DistroRestart_Click" IsEnabled="{Binding ElementName=DistroRestart, Path=IsEnabled}"></MenuItem>
+                    <MenuItem Header="Set default" Click="DistroSetDefault_Click" IsEnabled="{Binding ElementName=DistroSetDefault, Path=IsEnabled}"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
         <Button x:Name="DistroSetDefault" Content="Set default" HorizontalAlignment="Left" Height="25" Margin="10,192,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroSetDefault_Click" />
-        <Button x:Name="RefreshWsl" Content="Refresh" HorizontalAlignment="Center" Height="25" Margin="0,192,0,0" VerticalAlignment="Top" Width="106" Click="RefreshWsl_Click" />
+        <Button x:Name="RefreshWsl" Content="Refresh" HorizontalAlignment="Center" Height="25" Margin="0,161,0,0" VerticalAlignment="Top" Width="106" Click="RefreshWsl_Click" />
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="1" HorizontalAlignment="Left" Margin="219,10,0,0" VerticalAlignment="Top" Width="271" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="1" />
         <Button x:Name="DistroUninstall" Content="Uninstall" HorizontalAlignment="Left" Height="25" Margin="10,252,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroUninstall_Click"/>
@@ -53,6 +59,6 @@
         <Button x:Name="DistroConvert" Content="Convert" HorizontalAlignment="Left" Height="25" Margin="10,161,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1"/>
         <CheckBox x:Name="HideDockerDistro" Content="Hide Docker distro" HorizontalAlignment="Left" Height="19" Margin="10,342,0,0" VerticalAlignment="Top" Width="144" Checked="HideDockerDistro_Checked" Unchecked="HideDockerDistro_Unchecked" Grid.Column="1" />
         <Button x:Name="DistroShell" Content="Start shell" HorizontalAlignment="Left" Height="25" Margin="10,131,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroShell_Click" />
-        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="109" Margin="0,264,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock"/>
+        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="182" Margin="0,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock"/>
     </Grid>
 </Window>
