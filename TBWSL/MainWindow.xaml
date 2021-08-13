@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WslToolbox"
         mc:Ignorable="d"
-        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow">
+        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/toolbox.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />

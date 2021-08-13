@@ -190,5 +190,12 @@ namespace WslToolbox
             await ToolboxClass.StopWsl();
             await ToolboxClass.StartWsl();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Current.Shutdown();
+        }
     }
 }

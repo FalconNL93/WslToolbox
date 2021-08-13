@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Product>WSL Toolbox</Product>
     <StartupObject>WslToolbox.App</StartupObject>
@@ -13,6 +13,7 @@
     <Authors>WSL Toolbox</Authors>
     <Company>WSL Toolbox</Company>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
+    <ApplicationIcon>toolbox.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -30,5 +31,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="toolbox.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="toolbox.png" />
+  </ItemGroup>
 
 </Project>
