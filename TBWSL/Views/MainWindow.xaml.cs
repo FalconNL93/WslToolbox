@@ -55,29 +55,29 @@ namespace WslToolbox.Views
 
         private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass command = await ToolboxClass.SetDefaultDistribution(SelectedDistro);
+            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro);
 
             PopulateWsl();
         }
 
         private async void DistroStop_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass command = await ToolboxClass.TerminateDistribution(SelectedDistro);
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro);
 
             PopulateWsl();
         }
 
         private async void DistroRestart_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass commandTerminate = await ToolboxClass.TerminateDistribution(SelectedDistro);
-            CommandClass commandStart = await ToolboxClass.StartDistribution(SelectedDistro);
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro);
+            _ = await ToolboxClass.StartDistribution(SelectedDistro);
 
             PopulateWsl();
         }
 
         private async void DistroStart_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass command = await ToolboxClass.StartDistribution(SelectedDistro);
+            _ = await ToolboxClass.StartDistribution(SelectedDistro);
 
             PopulateWsl();
         }
@@ -96,7 +96,7 @@ namespace WslToolbox.Views
 
             if (uninstallMessagebox == MessageBoxResult.Yes)
             {
-                CommandClass command = await ToolboxClass.UnregisterDistribution(SelectedDistro);
+                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro);
 
                 PopulateWsl();
             }
