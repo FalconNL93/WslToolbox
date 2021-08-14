@@ -16,7 +16,8 @@ namespace WslToolbox
             SetDefault = "wsl --set-default",
             TerminateDistribution = "wsl --terminate",
             StartDistribution = "wsl --distribution",
-            UnregisterDistribution = "wsl --unregister"
+            UnregisterDistribution = "wsl --unregister",
+            ConvertDistribution = "wsl --set-version"
         ;
     }
 
@@ -39,6 +40,8 @@ namespace WslToolbox
         public static async Task<CommandClass> StartDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.StartDistribution} {distribution.Name} --exec exit"));
 
         public static void ShellDistribution(DistributionClass distribution) => CommandClass.StartShell(distribution);
+
+        public static async Task<CommandClass> ConvertDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ConvertDistribution} {distribution.Name} 2"));
 
         public static DistributionClass DefaultDistribution() => ListDistributions().Find(distro => distro.IsDefault);
 

@@ -26,7 +26,7 @@ namespace WslToolbox
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
-            StatusBlock.Text = String.Empty;
+            SetStatus(String.Empty);
         }
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
@@ -196,6 +196,15 @@ namespace WslToolbox
             base.OnClosed(e);
 
             Application.Current.Shutdown();
+        }
+
+        private async void DistroConvert_Click(object sender, RoutedEventArgs e)
+        {
+            SetStatus($"Converting {SelectedDistro.Name} to WSL2...");
+            CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro);
+            string output = Regex.Replace(command.Output, "\t", " ");
+            MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
+            SetStatus(String.Empty);
         }
     }
 }

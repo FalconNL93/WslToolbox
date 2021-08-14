@@ -10,8 +10,8 @@
     <Platforms>AnyCPU;x64</Platforms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Version>1.0</Version>
-    <Authors>WSL Toolbox</Authors>
-    <Company>WSL Toolbox</Company>
+    <Authors>FalconNL93</Authors>
+    <Company>FalconNL93</Company>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
     <ApplicationIcon>toolbox.ico</ApplicationIcon>
   </PropertyGroup>
@@ -34,6 +34,13 @@
 
   <ItemGroup>
     <None Remove="toolbox.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
