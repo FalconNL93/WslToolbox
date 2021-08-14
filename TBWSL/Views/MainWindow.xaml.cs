@@ -2,22 +2,17 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
+using WslToolbox.Classes;
 
-namespace WslToolbox
+namespace WslToolbox.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ToolboxLogWindow LogWindow = new();
         private DistributionClass SelectedDistro { get; set; }
         private bool HideDockerDistributions { get; set; } = false;
-
-        private void AddOutput(string output)
-        {
-            LogWindow.LogBox.Text = LogWindow.LogBox.Text + output + Environment.NewLine;
-        }
 
         private void SetStatus(string status) => StatusBlock.Text = status;
 
@@ -36,11 +31,6 @@ namespace WslToolbox
             PopulateWsl();
         }
 
-        private void ToolboxLog_Click(object sender, RoutedEventArgs e)
-        {
-            LogWindow.Show();
-        }
-
         private void PopulateWsl()
         {
             SetStatus("Populating...");
@@ -52,7 +42,7 @@ namespace WslToolbox
                 DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
             }
 
-            DistroDetails.ItemsSource = DistroList.FindAll(x => x.isInstalled);
+            DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
             SetStatus(String.Empty);
         }

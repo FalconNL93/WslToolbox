@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace WslToolbox
+namespace WslToolbox.Classes
 {
     internal class CommandClass
     {
@@ -38,12 +38,12 @@ namespace WslToolbox
         {
             string shellCommand = $"-Command wsl -d {distribution.Name}";
 
-            if (!distribution.isInstalled)
+            if (!distribution.IsInstalled)
             {
                 shellCommand = $"-Command wsl --install -d {distribution.Name}";
             }
 
-            if (distribution.State != DistributionClass.StateRunning && distribution.isInstalled)
+            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled)
             {
                 return;
             }

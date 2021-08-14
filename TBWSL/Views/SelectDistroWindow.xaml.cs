@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using WslToolbox.Classes;
 
-namespace WslToolbox
+namespace WslToolbox.Views
 {
     /// <summary>
     /// Interaction logic for SelectDistroWindow.xaml
@@ -12,7 +13,7 @@ namespace WslToolbox
         {
             InitializeComponent();
             List<DistributionClass> DistroList = ToolboxClass.ListDistributions();
-            AvailableDistros.ItemsSource = DistroList.FindAll(x => !x.isInstalled);
+            AvailableDistros.ItemsSource = DistroList.FindAll(x => !x.IsInstalled);
             AvailableDistros.DisplayMemberPath = "Name";
         }
 

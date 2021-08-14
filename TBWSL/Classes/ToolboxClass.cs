@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WslToolbox
+namespace WslToolbox.Classes
 {
     internal static class WslCommands
     {

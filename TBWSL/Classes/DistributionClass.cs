@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace WslToolbox
+namespace WslToolbox.Classes
 {
     internal class DistributionClass
     {
@@ -11,7 +11,7 @@ namespace WslToolbox
         public string Name { get; set; }
         public string State { get; set; }
         public int Version { get; set; }
-        public bool isInstalled { get; set; }
+        public bool IsInstalled { get; set; }
 
         public static List<DistributionClass> FromOutput(string output)
         {
@@ -31,7 +31,7 @@ namespace WslToolbox
                     distro.Name = tabbed[1];
                     distro.State = tabbed[2];
                     distro.Version = int.Parse(tabbed[3]);
-                    distro.isInstalled = true;
+                    distro.IsInstalled = true;
 
                     distros.Add(distro);
                 }
@@ -51,7 +51,7 @@ namespace WslToolbox
 
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (line == "" || line.StartsWith("NAME") || line.StartsWith("Install"))
+                    if (line?.Length == 0 || line.StartsWith("NAME") || line.StartsWith("Install"))
                     {
                         continue;
                     }
@@ -63,7 +63,7 @@ namespace WslToolbox
                     distro.Name = tabbed[0];
                     distro.State = "Available";
                     distro.Version = 2;
-                    distro.isInstalled = false;
+                    distro.IsInstalled = false;
 
                     distros.Add(distro);
                 }

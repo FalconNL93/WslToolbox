@@ -1,4 +1,4 @@
-﻿namespace WslToolbox
+﻿namespace WslToolbox.Classes
 {
     internal class ConfigClass
     {

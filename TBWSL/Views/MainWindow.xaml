@@ -1,11 +1,11 @@
-﻿<Window x:Class="WslToolbox.MainWindow"
+﻿<Window x:Class="WslToolbox.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WslToolbox"
         mc:Ignorable="d"
-        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/toolbox.png">
+        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />

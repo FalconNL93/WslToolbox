@@ -13,7 +13,7 @@
     <Authors>FalconNL93</Authors>
     <Company>FalconNL93</Company>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
-    <ApplicationIcon>toolbox.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Images\toolbox.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="toolbox.png" />
+    <Resource Include="Resources\Images\toolbox.png" />
   </ItemGroup>
 
 </Project>
