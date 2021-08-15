@@ -9,7 +9,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="63*" />
-            <ColumnDefinition Width="187*"/>
+            <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
         <Label Content="WSL Service" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" />
         <Label Content="Distribution" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" Grid.Column="1" />
@@ -32,14 +32,6 @@
                     <GridViewColumn Header="WSL Version" DisplayMemberBinding="{Binding Version}" />
                 </GridView>
             </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Start" Click="DistroStart_Click" IsEnabled="{Binding ElementName=DistroStart, Path=IsEnabled}"></MenuItem>
-                    <MenuItem Header="Stop" Click="DistroStop_Click" IsEnabled="{Binding ElementName=DistroStop, Path=IsEnabled}"></MenuItem>
-                    <MenuItem Header="Restart" Click="DistroRestart_Click" IsEnabled="{Binding ElementName=DistroRestart, Path=IsEnabled}"></MenuItem>
-                    <MenuItem Header="Set default" Click="DistroSetDefault_Click" IsEnabled="{Binding ElementName=DistroSetDefault, Path=IsEnabled}"></MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
         </ListView>
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="298" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
@@ -57,7 +49,7 @@
             <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click" />
             <Button x:Name="UpdateWsl" Content="Update" Click="UpdateWsl_Click" />
             <Button x:Name="RefreshWsl" Content="Refresh" Click="RefreshWsl_Click" />
-            <Button x:Name="ToolboxSettings" Content="Settings" Click="ToolboxSettings_Click"/>
+            <Button x:Name="ToolboxSettings" Content="Settings" Click="ToolboxSettings_Click" />
         </StackPanel>
         <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="335" Margin="10,41,0,0" VerticalAlignment="Top" Width="106">
             <StackPanel.Resources>

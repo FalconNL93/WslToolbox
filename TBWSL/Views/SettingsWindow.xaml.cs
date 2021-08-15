@@ -8,14 +8,14 @@ namespace WslToolbox.Views
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private DefaultConfiguration configuration;
+        private DefaultConfiguration Configuration;
 
         public SettingsWindow(DefaultConfiguration configuration)
         {
-            InitializeComponent();
-            this.configuration = configuration;
+            Configuration = configuration;
+            DataContext = configuration;
 
-            HideDockerDistributions.IsChecked = configuration.HideDockerDistributions;
+            InitializeComponent();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -25,7 +25,6 @@ namespace WslToolbox.Views
 
         private void SaveConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            configuration.HideDockerDistributions = (bool)HideDockerDistributions.IsChecked;
             Close();
         }
     }

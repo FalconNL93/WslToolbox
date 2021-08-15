@@ -13,9 +13,9 @@ namespace WslToolbox.Views
     public partial class MainWindow : Window
     {
         private DistributionClass SelectedDistro { get; set; }
-        private bool HideDockerDistributions { get; set; } = false;
 
         private void SetStatus(string status) => StatusBlock.Text = status;
+
         private ConfigurationHandler Config = new();
 
         public MainWindow()
@@ -38,7 +38,7 @@ namespace WslToolbox.Views
             SetStatus("Populating...");
             List<DistributionClass> DistroList = ToolboxClass.ListDistributions();
 
-            if (HideDockerDistributions)
+            if (Config.Configuration.HideDockerDistributions)
             {
                 DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
                 DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
@@ -193,6 +193,7 @@ namespace WslToolbox.Views
             settingsWindow.ShowDialog();
 
             Config.Save();
+            PopulateWsl();
         }
     }
 }

@@ -14,7 +14,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <CheckBox x:Name="HideDockerDistributions" Content="Show Docker distribution" ToolTip="Show docker distributions in the list of Distributions" />
+                <CheckBox x:Name="HideDockerDistributions" Content="Show Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
             </StackPanel>
         </GroupBox>
         <Button x:Name="SaveConfiguration" Content="Save" HorizontalAlignment="Left" Margin="242,115,0,0" VerticalAlignment="Top" Width="88" Height="27" Click="SaveConfiguration_Click" />
