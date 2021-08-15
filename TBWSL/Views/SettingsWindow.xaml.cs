@@ -25,6 +25,7 @@ namespace WslToolbox.Views
 
         private void SaveConfiguration_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = true;
             Close();
         }
     }

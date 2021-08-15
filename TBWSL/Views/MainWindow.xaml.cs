@@ -192,8 +192,11 @@ namespace WslToolbox.Views
             SettingsWindow settingsWindow = new(Config.Configuration);
             settingsWindow.ShowDialog();
 
-            Config.Save();
-            PopulateWsl();
+            if ((bool)settingsWindow.DialogResult)
+            {
+                Config.Save();
+                PopulateWsl();
+            }
         }
     }
 }
