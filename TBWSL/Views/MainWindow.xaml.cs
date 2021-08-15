@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using WslToolbox.Classes;
+using WslToolbox.Handlers;
 
 namespace WslToolbox.Views
 {
@@ -15,6 +16,7 @@ namespace WslToolbox.Views
         private bool HideDockerDistributions { get; set; } = false;
 
         private void SetStatus(string status) => StatusBlock.Text = status;
+        private ConfigurationHandler Config = new();
 
         public MainWindow()
         {
@@ -185,10 +187,12 @@ namespace WslToolbox.Views
             SetStatus(String.Empty);
         }
 
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new();
+            SettingsWindow settingsWindow = new(Config.Configuration);
             settingsWindow.ShowDialog();
+
+            Config.Save();
         }
     }
 }

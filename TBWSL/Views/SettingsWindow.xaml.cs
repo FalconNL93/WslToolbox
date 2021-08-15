@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WslToolbox.Configurations;
 
 namespace WslToolbox.Views
 {
@@ -7,9 +8,25 @@ namespace WslToolbox.Views
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        public SettingsWindow()
+        private DefaultConfiguration configuration;
+
+        public SettingsWindow(DefaultConfiguration configuration)
         {
             InitializeComponent();
+            this.configuration = configuration;
+
+            HideDockerDistributions.IsChecked = configuration.HideDockerDistributions;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void SaveConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            configuration.HideDockerDistributions = (bool)HideDockerDistributions.IsChecked;
+            Close();
         }
     }
 }

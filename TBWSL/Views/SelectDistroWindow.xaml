@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WslToolbox"
-        mc:Ignorable="d" Height="144" Width="224" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png">
-    <Grid>
+        mc:Ignorable="d" Height="137" Width="231" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight">
+    <Grid Margin="0,0,10,10">
         <Label Content="Select distribution to install" HorizontalAlignment="Left" Height="26" Margin="10,10,0,0" VerticalAlignment="Top" Width="165" />
         <ComboBox x:Name="AvailableDistros" HorizontalAlignment="Left" Height="24" Margin="10,36,0,0" VerticalAlignment="Top" Width="192" IsReadOnly="True" />
         <Button Content="Install" HorizontalAlignment="Left" Height="24" Margin="120,65,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click" />

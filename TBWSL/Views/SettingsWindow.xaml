@@ -4,20 +4,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Settings" Height="275" Width="354" Icon="/Resources/Images/toolbox.ico" ResizeMode="NoResize">
-    <Grid>
-        <GroupBox Header=" General " HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="326">
-            <StackPanel Height="175" VerticalAlignment="Center" Margin="4,4,4,4">
+        Title="Settings" Height="173" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
+    <Grid Margin="4,0,10,10">
+        <GroupBox Header=" General " HorizontalAlignment="Center" Height="93" Margin="0,10,0,0" VerticalAlignment="Top" Width="326">
+            <StackPanel Height="Auto" Margin="4,4,4,4">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="Margin" Value="4,10,4,0" />
                     </Style>
                 </StackPanel.Resources>
 
-                <CheckBox Content="Show Docker distribution" />
+                <CheckBox x:Name="HideDockerDistributions" Content="Show Docker distribution" ToolTip="Show docker distributions in the list of Distributions" />
             </StackPanel>
         </GroupBox>
-        <Button x:Name="SaveConfiguration" Content="Save" HorizontalAlignment="Left" Margin="248,215,0,0" VerticalAlignment="Top" Width="88" Height="27" />
-        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="88" Height="27" />
+        <Button x:Name="SaveConfiguration" Content="Save" HorizontalAlignment="Left" Margin="242,115,0,0" VerticalAlignment="Top" Width="88" Height="27" Click="SaveConfiguration_Click" />
+        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="88" Height="27" Click="CancelButton_Click" />
     </Grid>
 </Window>
