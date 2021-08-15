@@ -126,18 +126,6 @@ namespace WslToolbox.Views
             DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
         }
 
-        private void HideDockerDistro_Checked(object sender, RoutedEventArgs e)
-        {
-            HideDockerDistributions = HideDockerDistro.IsChecked ?? false;
-            PopulateWsl();
-        }
-
-        private void HideDockerDistro_Unchecked(object sender, RoutedEventArgs e)
-        {
-            HideDockerDistributions = HideDockerDistro.IsChecked ?? false;
-            PopulateWsl();
-        }
-
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             SetStatus("Checking for WSL Updates...");
@@ -195,6 +183,12 @@ namespace WslToolbox.Views
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
             SetStatus(String.Empty);
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new();
+            settingsWindow.ShowDialog();
         }
     }
 }

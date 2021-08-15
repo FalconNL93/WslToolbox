@@ -1,9 +1,8 @@
 ﻿<Window x:Class="WslToolbox.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WslToolbox"
         mc:Ignorable="d"
         Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png">
     <Grid>
@@ -11,18 +10,9 @@
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="250*" />
         </Grid.ColumnDefinitions>
-
-        <Button x:Name="StartWsl" Content="Start" HorizontalAlignment="Center" Height="25" Margin="0,41,0,0" VerticalAlignment="Top" Width="106" />
-        <Button x:Name="StopWsl" Content="Stop" HorizontalAlignment="Center" Height="25" Margin="0,71,0,0" VerticalAlignment="Top" Width="106" Click="StopWsl_Click" />
-        <Button x:Name="RestartWsl" Content="Restart" HorizontalAlignment="Center" Height="25" Margin="0,101,0,0" VerticalAlignment="Top" Width="106" Click="RestartWsl_Click" />
-        <Button x:Name="UpdateWsl" Content="Update" HorizontalAlignment="Center" Height="25" Margin="0,131,0,0" VerticalAlignment="Top" Width="106" Click="UpdateWsl_Click" />
         <Label Content="WSL Service" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" />
         <Label Content="Distribution" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="83" Grid.Column="1" />
-        <Button x:Name="DistroStart" Content="Start" HorizontalAlignment="Left" Height="25" Margin="10,41,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroStart_Click" />
-        <Button x:Name="DistroStop" Content="Stop" HorizontalAlignment="Left" Height="25" Margin="10,71,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroStop_Click" />
-        <Button x:Name="DistroRestart" Content="Restart" HorizontalAlignment="Left" Height="25" Margin="10,101,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroRestart_Click" />
-
-        <ListView Margin="159,41,10,10" x:Name="DistroDetails" Grid.Column="1" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click">
+        <ListView Margin="132,41,10,10" x:Name="DistroDetails" Grid.Column="1" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -50,15 +40,36 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <Button x:Name="DistroSetDefault" Content="Set default" HorizontalAlignment="Left" Height="25" Margin="10,192,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroSetDefault_Click" />
-        <Button x:Name="RefreshWsl" Content="Refresh" HorizontalAlignment="Center" Height="25" Margin="0,161,0,0" VerticalAlignment="Top" Width="106" Click="RefreshWsl_Click" />
-        <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="1" HorizontalAlignment="Left" Margin="219,10,0,0" VerticalAlignment="Top" Width="271" />
-        <Label Content="Default:" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="1" />
-        <Button x:Name="DistroUninstall" Content="Uninstall" HorizontalAlignment="Left" Height="25" Margin="10,252,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroUninstall_Click" />
-        <Button x:Name="DistroInstall" Content="Install" HorizontalAlignment="Left" Height="25" Margin="10,222,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroInstall_Click" />
-        <Button x:Name="DistroConvert" Content="Convert" HorizontalAlignment="Left" Height="25" Margin="10,161,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroConvert_Click" />
-        <CheckBox x:Name="HideDockerDistro" Content="Hide Docker distro" HorizontalAlignment="Left" Height="19" Margin="10,342,0,0" VerticalAlignment="Top" Width="144" Checked="HideDockerDistro_Checked" Unchecked="HideDockerDistro_Unchecked" Grid.Column="1" />
-        <Button x:Name="DistroShell" Content="Start shell" HorizontalAlignment="Left" Height="25" Margin="10,131,0,0" VerticalAlignment="Top" Width="144" Grid.Column="1" Click="DistroShell_Click" />
-        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="182" Margin="0,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
+        <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="1" HorizontalAlignment="Left" Margin="192,10,0,0" VerticalAlignment="Top" Width="298" />
+        <Label Content="Default:" HorizontalAlignment="Left" Margin="132,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="1" />
+        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="173" Margin="0,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
+        <StackPanel HorizontalAlignment="Center" Height="162" Margin="0,41,0,0" VerticalAlignment="Top" Width="106">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,5,0,0" />
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="StartWsl" Content="Start" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="106" Click="StartWsl_Click" />
+            <Button x:Name="StopWsl" Content="Stop" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="106" Click="StopWsl_Click" />
+            <Button x:Name="RestartWsl" Content="Restart" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="106" Click="RestartWsl_Click" />
+            <Button x:Name="UpdateWsl" Content="Update" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="106" Click="UpdateWsl_Click" />
+            <Button x:Name="RefreshWsl" Content="Refresh" HorizontalAlignment="Center" Height="25" VerticalAlignment="Top" Width="106" Click="RefreshWsl_Click" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="335" Margin="10,41,0,0" VerticalAlignment="Top" Width="106">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,5,0,0" />
+                    <Setter Property="Width" Value="106" />
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="DistroStart" Content="Start" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroStart_Click" />
+            <Button x:Name="DistroStop" Content="Stop" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroStop_Click" />
+            <Button x:Name="DistroRestart" Content="Restart" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroRestart_Click" />
+            <Button x:Name="DistroSetDefault" Content="Set default" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroSetDefault_Click" />
+            <Button x:Name="DistroUninstall" Content="Uninstall" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroUninstall_Click" />
+            <Button x:Name="DistroInstall" Content="Install" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroInstall_Click" />
+            <Button x:Name="DistroConvert" Content="Convert" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroConvert_Click" />
+            <Button x:Name="DistroShell" Content="Start shell" HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Click="DistroShell_Click" />
+        </StackPanel>
     </Grid>
 </Window>
