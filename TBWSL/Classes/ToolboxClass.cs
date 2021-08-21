@@ -17,7 +17,9 @@ namespace WslToolbox.Classes
             TerminateDistribution = "wsl --terminate",
             StartDistribution = "wsl --distribution",
             UnregisterDistribution = "wsl --unregister",
-            ConvertDistribution = "wsl --set-version"
+            ConvertDistribution = "wsl --set-version",
+            ExportDistribution = "wsl --export",
+            ImportDistribution = "wsl --import"
         ;
     }
 
@@ -46,6 +48,16 @@ namespace WslToolbox.Classes
         public static DistributionClass DefaultDistribution() => ListDistributions().Find(distro => distro.IsDefault);
 
         public static DistributionClass ByName(string name) => ListDistributions().Find(distro => distro.Name == name);
+
+        public static async Task<CommandClass> ExportDistribution(DistributionClass distribution, string file)
+        {
+            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ExportDistribution} {distribution.Name} {file}"));
+        }
+
+        public static async Task<CommandClass> ImportDistribution(DistributionClass distribution, string name, string path, string file)
+        {
+            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ImportDistribution} {name} {path} {file}"));
+        }
 
         public static List<DistributionClass> ListDistributions()
         {

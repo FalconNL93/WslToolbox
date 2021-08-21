@@ -8,8 +8,11 @@ namespace WslToolbox.Handlers
     {
         private readonly string FileName;
         public DefaultConfiguration Configuration { get; set; }
+
         public void Save() => File.WriteAllText(FileName, JsonSerializer.Serialize(Configuration));
+
         public void Read() => Configuration = JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(FileName));
+
         public ConfigurationHandler()
         {
             FileName = "settings.json";

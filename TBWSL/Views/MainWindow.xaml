@@ -35,7 +35,7 @@
         </ListView>
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="298" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
-        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="119" Margin="0,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
+        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="140" Margin="0,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
         <StackPanel HorizontalAlignment="Center" Height="204" Margin="0,41,0,0" VerticalAlignment="Top" Width="106">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
@@ -67,6 +67,8 @@
             <Button x:Name="DistroInstall" Content="Install" Click="DistroInstall_Click" />
             <Button x:Name="DistroConvert" Content="Convert" Click="DistroConvert_Click" />
             <Button x:Name="DistroShell" Content="Start shell" Click="DistroShell_Click" />
+            <Button x:Name="DistroExport" Content="Export" Click="DistroExport_Click" />
+            <Button x:Name="DistroImport" Content="Import" Click="DistroImport_Click" />
         </StackPanel>
     </Grid>
 </Window>

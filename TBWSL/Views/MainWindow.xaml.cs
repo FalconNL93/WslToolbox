@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -115,6 +116,7 @@ namespace WslToolbox.Views
                 DistroRestart.IsEnabled = false;
                 DistroUninstall.IsEnabled = false;
                 DistroShell.IsEnabled = false;
+                DistroExport.IsEnabled = false;
 
                 return;
             }
@@ -126,6 +128,7 @@ namespace WslToolbox.Views
             DistroUninstall.IsEnabled = true;
             DistroSetDefault.IsEnabled = !SelectedDistro.IsDefault;
             DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
+            DistroExport.IsEnabled = true;
         }
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
@@ -196,6 +199,78 @@ namespace WslToolbox.Views
             {
                 Config.Save();
                 PopulateWsl();
+            }
+        }
+
+        private async void DistroImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog saveExportDialog = new()
+            {
+                Title = "Export",
+                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
+                AddExtension = true,
+                DefaultExt = "tar",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            if (!(bool)saveExportDialog.ShowDialog())
+            {
+                return;
+            }
+
+            string fileName = saveExportDialog.FileName;
+
+            ImportDistroWindow importDistroWindow = new();
+            importDistroWindow.ShowDialog();
+
+
+            return;
+            try
+            {
+                SetStatus($"Importing {fileName} as testdist...");
+                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, "testdist", "C:\\Users\\pvand\\Downloads", fileName);
+                SetStatus($"testdis imported.");
+                PopulateWsl();
+            }
+            catch (Exception ex)
+            {
+                SetStatus($"Import failed.");
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+        private async void DistroExport_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveExportDialog = new()
+            {
+                Title = "Export",
+                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
+                AddExtension = true,
+                OverwritePrompt = true,
+                DefaultExt = "tar",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            if (!(bool)saveExportDialog.ShowDialog())
+            {
+                return;
+            }
+
+            string fileName = saveExportDialog.FileName;
+
+            try
+            {
+                SetStatus($"Exporting {SelectedDistro.Name} to {fileName}...");
+                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName);
+                SetStatus($"{SelectedDistro.Name} exported.");
+            }
+            catch (Exception ex)
+            {
+                SetStatus($"{SelectedDistro.Name} export failed.");
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
