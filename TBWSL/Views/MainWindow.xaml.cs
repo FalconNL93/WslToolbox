@@ -221,16 +221,20 @@ namespace WslToolbox.Views
 
             string fileName = saveExportDialog.FileName;
 
-            ImportDistroWindow importDistroWindow = new();
+            ImportDistroWindow importDistroWindow = new(fileName);
             importDistroWindow.ShowDialog();
 
+            if(!(bool)importDistroWindow.DialogResult)
+            {
+                return;
+            }
 
-            return;
             try
             {
-                SetStatus($"Importing {fileName} as testdist...");
-                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, "testdist", "C:\\Users\\pvand\\Downloads", fileName);
-                SetStatus($"testdis imported.");
+                SetStatus($"Importing {fileName} as {importDistroWindow.DistroName}...");
+                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName);
+                SetStatus($"{importDistroWindow.DistroName} imported.");
+
                 PopulateWsl();
             }
             catch (Exception ex)
