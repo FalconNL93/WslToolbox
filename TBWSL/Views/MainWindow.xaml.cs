@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -17,12 +18,24 @@ namespace WslToolbox.Views
 
         private ConfigurationHandler Config = new();
         private OutputWindow OutputWindow = new();
+        private readonly SystemTrayClass SystemTray = new();
 
         public MainWindow()
         {
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
+            HandleConfiguration();
+        }
+
+        private void HandleConfiguration()
+        {
+            SystemTray.Dispose();
+
+            if (Config.Configuration.EnableSystemTray)
+            {
+                SystemTray.Show();
+            }
         }
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
@@ -39,8 +52,8 @@ namespace WslToolbox.Views
 
             if (Config.Configuration.HideDockerDistributions)
             {
-                DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
-                DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
+                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
+                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
             }
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
@@ -194,6 +207,7 @@ namespace WslToolbox.Views
             {
                 Config.Save();
                 PopulateWsl();
+                HandleConfiguration();
             }
         }
 

@@ -4,17 +4,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Settings" Height="166" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
+        Title="Settings" Height="181" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
     <Grid Margin="4,0,10,10">
         <GroupBox Header=" General " HorizontalAlignment="Center" Margin="0,10,0,44" Width="326">
             <StackPanel Height="Auto" Margin="4,4,4,4">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type CheckBox}">
-                        <Setter Property="Margin" Value="4,10,4,0" />
+                        <Setter Property="Margin" Value="4,3,4,0" />
                     </Style>
                 </StackPanel.Resources>
 
                 <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
+                <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
+                <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" IsEnabled="false" Margin="25,3,4,0"/>
             </StackPanel>
         </GroupBox>
         <Button x:Name="SaveConfiguration" Content="Save" Margin="242,0,10,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" />

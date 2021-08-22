@@ -3,5 +3,6 @@
     public class DefaultConfiguration
     {
         public bool HideDockerDistributions { get; set; }
+        public bool EnableSystemTray { get; set; }
     }
 }
