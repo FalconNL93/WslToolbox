@@ -9,6 +9,6 @@
         <ComboBox x:Name="AvailableDistros" Margin="10,32,10,0" IsReadOnly="True" Height="24" VerticalAlignment="Top" />
         <Button Content="Install" Margin="0,63,10,0" Click="Button_Click" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" />
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,63,0,0" Width="82" Click="Button_Click_1" Height="24" VerticalAlignment="Top" />
-        <TextBlock x:Name="NoticeBlock" Margin="10,92,10,10" Text="Notice" TextWrapping="Wrap"/>
+        <TextBlock x:Name="NoticeBlock" Margin="10,92,10,10" Text="Notice" TextWrapping="Wrap" />
     </Grid>
 </Window>

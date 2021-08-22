@@ -16,7 +16,7 @@
 
                 <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
                 <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
-                <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" IsEnabled="false" Margin="25,3,4,0"/>
+                <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" IsEnabled="false" Margin="25,3,4,0" />
             </StackPanel>
         </GroupBox>
         <Button x:Name="SaveConfiguration" Content="Save" Margin="242,0,10,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" />
