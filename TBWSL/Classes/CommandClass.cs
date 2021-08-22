@@ -58,6 +58,7 @@ namespace WslToolbox.Classes
         {
             var formattedOutput = string.Empty;
             output = Regex.Replace(output, "\n", string.Empty);
+            output = Regex.Replace(output, "\t", " ");
 
             using (var reader = new StringReader(output))
             {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using System.IO;
 
 namespace WslToolbox.Views
 {
@@ -31,7 +31,7 @@ namespace WslToolbox.Views
                 RestoreDirectory = true
             };
 
-            if(!(bool)openLocation.ShowDialog())
+            if (!(bool)openLocation.ShowDialog())
             {
                 return;
             }

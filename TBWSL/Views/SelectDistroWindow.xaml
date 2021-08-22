@@ -3,11 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Height="148" Width="241" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight">
-    <Grid Margin="10,10,10,10">
-        <Label Content="Select distribution to install" HorizontalAlignment="Left" Height="26" Margin="10,10,0,0" VerticalAlignment="Top" Width="165" />
-        <ComboBox x:Name="AvailableDistros" HorizontalAlignment="Left" Height="24" Margin="10,36,0,0" VerticalAlignment="Top" Width="192" IsReadOnly="True" />
-        <Button Content="Install" HorizontalAlignment="Left" Height="24" Margin="120,65,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click" />
-        <Button Content="Cancel" HorizontalAlignment="Left" Height="24" Margin="10,65,0,0" VerticalAlignment="Top" Width="82" Click="Button_Click_1" />
+        mc:Ignorable="d" Height="192" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="Height">
+    <Grid Margin="10,10,10,12">
+        <Label Content="Select distribution to install" Margin="10,6,10,0" FontWeight="Bold" Height="26" VerticalAlignment="Top" />
+        <ComboBox x:Name="AvailableDistros" Margin="10,32,10,0" IsReadOnly="True" Height="24" VerticalAlignment="Top" />
+        <Button Content="Install" Margin="0,63,10,0" Click="Button_Click" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" />
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,63,0,0" Width="82" Click="Button_Click_1" Height="24" VerticalAlignment="Top" />
+        <TextBlock x:Name="NoticeBlock" Margin="10,92,10,10" Text="Notice" TextWrapping="Wrap"/>
     </Grid>
 </Window>

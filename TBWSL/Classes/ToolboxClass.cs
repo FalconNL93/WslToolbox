@@ -45,9 +45,12 @@ namespace WslToolbox.Classes
 
         public static async Task<CommandClass> ConvertDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ConvertDistribution} {distribution.Name} 2"));
 
-        public static DistributionClass DefaultDistribution() => ListDistributions().Find(distro => distro.IsDefault);
+        public static DistributionClass DefaultDistribution() => ListDistributions().Result.Find(distro => distro.IsDefault);
 
-        public static DistributionClass ByName(string name) => ListDistributions().Find(distro => distro.Name == name);
+        public static DistributionClass ByName(string name)
+        {
+            return ListDistributions().Result.Find(distro => distro.Name == name);
+        }
 
         public static async Task<CommandClass> ExportDistribution(DistributionClass distribution, string file)
         {
@@ -59,7 +62,7 @@ namespace WslToolbox.Classes
             return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ImportDistribution} {name} {path} {file}"));
         }
 
-        public static List<DistributionClass> ListDistributions()
+        public static async Task<List<DistributionClass>> ListDistributions()
         {
             CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.List);
             CommandClass distributionAvailableListOutput = CommandClass.ExecuteCommand(WslCommands.ListAvailable);
@@ -69,7 +72,7 @@ namespace WslToolbox.Classes
 
             distributionList.AddRange(distributionListAvailable.Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
 
-            return distributionList;
+            return await Task.FromResult(distributionList);
         }
     }
 }

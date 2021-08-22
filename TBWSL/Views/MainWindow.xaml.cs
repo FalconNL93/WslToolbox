@@ -15,16 +15,14 @@ namespace WslToolbox.Views
     {
         private DistributionClass SelectedDistro { get; set; }
 
-        private void SetStatus(string status) => StatusBlock.Text = status;
-
         private ConfigurationHandler Config = new();
+        private OutputWindow OutputWindow = new();
 
         public MainWindow()
         {
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
-            SetStatus(String.Empty);
         }
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
@@ -34,10 +32,10 @@ namespace WslToolbox.Views
             PopulateWsl();
         }
 
-        private void PopulateWsl()
+        private async void PopulateWsl()
         {
-            SetStatus("Populating...");
-            List<DistributionClass> DistroList = ToolboxClass.ListDistributions();
+            OutputWindow.WriteOutput("Populating...");
+            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions();
 
             if (Config.Configuration.HideDockerDistributions)
             {
@@ -47,7 +45,6 @@ namespace WslToolbox.Views
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
-            SetStatus(String.Empty);
         }
 
         private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -133,11 +130,10 @@ namespace WslToolbox.Views
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
-            SetStatus("Checking for WSL Updates...");
+            OutputWindow.WriteOutput("Checking for WSL Updates...");
             CommandClass command = await ToolboxClass.UpdateWsl();
             string output = Regex.Replace(command.Output, "\t", " ");
-            MessageBox.Show(output, "WSL Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-            SetStatus(String.Empty);
+            OutputWindow.WriteOutput(output);
         }
 
         private void DistroShell_Click(object sender, RoutedEventArgs e)
@@ -183,11 +179,10 @@ namespace WslToolbox.Views
 
         private async void DistroConvert_Click(object sender, RoutedEventArgs e)
         {
-            SetStatus($"Converting {SelectedDistro.Name} to WSL2...");
+            OutputWindow.WriteOutput($"Converting {SelectedDistro.Name} to WSL2...");
             CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro);
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
-            SetStatus(String.Empty);
         }
 
         private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
@@ -224,25 +219,24 @@ namespace WslToolbox.Views
             ImportDistroWindow importDistroWindow = new(fileName);
             importDistroWindow.ShowDialog();
 
-            if(!(bool)importDistroWindow.DialogResult)
+            if (!(bool)importDistroWindow.DialogResult)
             {
                 return;
             }
 
             try
             {
-                SetStatus($"Importing {fileName} as {importDistroWindow.DistroName}...");
+                OutputWindow.WriteOutput($"Importing {fileName} as {importDistroWindow.DistroName}...");
                 CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName);
-                SetStatus($"{importDistroWindow.DistroName} imported.");
+                OutputWindow.WriteOutput($"{importDistroWindow.DistroName} imported.");
 
                 PopulateWsl();
             }
             catch (Exception ex)
             {
-                SetStatus($"Import failed.");
+                OutputWindow.WriteOutput($"Import failed.");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
         private async void DistroExport_Click(object sender, RoutedEventArgs e)
@@ -267,15 +261,20 @@ namespace WslToolbox.Views
 
             try
             {
-                SetStatus($"Exporting {SelectedDistro.Name} to {fileName}...");
+                OutputWindow.WriteOutput($"Exporting {SelectedDistro.Name} to {fileName}...");
                 CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName);
-                SetStatus($"{SelectedDistro.Name} exported.");
+                OutputWindow.WriteOutput($"{SelectedDistro.Name} exported.");
             }
             catch (Exception ex)
             {
-                SetStatus($"{SelectedDistro.Name} export failed.");
+                OutputWindow.WriteOutput($"{SelectedDistro.Name} export failed.");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void ToolboxOutput_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Show();
         }
     }
 }

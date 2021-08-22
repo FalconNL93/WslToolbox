@@ -4,9 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Settings" Height="173" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
+        Title="Settings" Height="166" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
     <Grid Margin="4,0,10,10">
-        <GroupBox Header=" General " HorizontalAlignment="Center" Height="93" Margin="0,10,0,0" VerticalAlignment="Top" Width="326">
+        <GroupBox Header=" General " HorizontalAlignment="Center" Margin="0,10,0,44" Width="326">
             <StackPanel Height="Auto" Margin="4,4,4,4">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type CheckBox}">
@@ -17,7 +17,7 @@
                 <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
             </StackPanel>
         </GroupBox>
-        <Button x:Name="SaveConfiguration" Content="Save" HorizontalAlignment="Left" Margin="242,115,0,0" VerticalAlignment="Top" Width="88" Height="27" Click="SaveConfiguration_Click" />
-        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="88" Height="27" Click="CancelButton_Click" />
+        <Button x:Name="SaveConfiguration" Content="Save" Margin="242,0,10,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" />
+        <Button x:Name="CancelButton" Content="Cancel" Margin="10,0,242,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" />
     </Grid>
 </Window>

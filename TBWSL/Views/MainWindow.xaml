@@ -35,13 +35,15 @@
         </ListView>
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="298" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
-        <TextBlock x:Name="StatusBlock" HorizontalAlignment="Center" Height="140" Margin="0,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="106" Text="StatusBlock" />
-        <StackPanel HorizontalAlignment="Center" Height="204" Margin="0,41,0,0" VerticalAlignment="Top" Width="106">
+        <StackPanel HorizontalAlignment="Center" Margin="0,41,0,129" Width="106">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                     <Setter Property="Width" Value="106" />
                     <Setter Property="Height" Value="25" />
+                </Style>
+                <Style TargetType="{x:Type Separator}">
+                    <Setter Property="Margin" Value="0,5,0,0" />
                 </Style>
             </StackPanel.Resources>
             <Button x:Name="StartWsl" Content="Start" Click="StartWsl_Click" />
@@ -50,6 +52,7 @@
             <Button x:Name="UpdateWsl" Content="Update" Click="UpdateWsl_Click" />
             <Button x:Name="RefreshWsl" Content="Refresh" Click="RefreshWsl_Click" />
             <Button x:Name="ToolboxSettings" Content="Settings" Click="ToolboxSettings_Click" />
+            <Button x:Name="ToolboxOutput" Content="Output" Click="ToolboxOutput_Click" />
         </StackPanel>
         <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="335" Margin="10,41,0,0" VerticalAlignment="Top" Width="106">
             <StackPanel.Resources>
@@ -58,17 +61,21 @@
                     <Setter Property="Width" Value="106" />
                     <Setter Property="Height" Value="25" />
                 </Style>
+                <Style TargetType="{x:Type Separator}">
+                    <Setter Property="Margin" Value="0,5,0,0" />
+                </Style>
             </StackPanel.Resources>
             <Button x:Name="DistroStart" Content="Start" Click="DistroStart_Click" />
             <Button x:Name="DistroStop" Content="Stop" Click="DistroStop_Click" />
             <Button x:Name="DistroRestart" Content="Restart" Click="DistroRestart_Click" />
             <Button x:Name="DistroSetDefault" Content="Set default" Click="DistroSetDefault_Click" />
-            <Button x:Name="DistroUninstall" Content="Uninstall" Click="DistroUninstall_Click" />
-            <Button x:Name="DistroInstall" Content="Install" Click="DistroInstall_Click" />
             <Button x:Name="DistroConvert" Content="Convert" Click="DistroConvert_Click" />
             <Button x:Name="DistroShell" Content="Start shell" Click="DistroShell_Click" />
+            <Separator />
+            <Button x:Name="DistroInstall" Content="Install" Click="DistroInstall_Click" />
             <Button x:Name="DistroExport" Content="Export" Click="DistroExport_Click" />
             <Button x:Name="DistroImport" Content="Import" Click="DistroImport_Click" />
+            <Button x:Name="DistroUninstall" Content="Delete" Click="DistroUninstall_Click" />
         </StackPanel>
     </Grid>
 </Window>
