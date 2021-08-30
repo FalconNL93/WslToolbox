@@ -13,21 +13,9 @@ namespace WslToolbox.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DistributionClass SelectedDistro { get; set; }
-
-        private ConfigurationHandler Config = new();
-        private OutputWindow OutputWindow = new();
+        private readonly ConfigurationHandler Config = new();
+        private readonly OutputWindow OutputWindow = new();
         private readonly SystemTrayClass SystemTray = new();
-
-        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(SelectedDistro);
-
-        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl();
-
-        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl();
-
-        private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
-
-        private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
 
         public MainWindow()
         {
@@ -37,142 +25,7 @@ namespace WslToolbox.Views
             HandleConfiguration();
         }
 
-        private void HandleConfiguration()
-        {
-            SystemTray.Dispose();
-
-            if (Config.Configuration.EnableSystemTray)
-            {
-                SystemTray.Show();
-            }
-        }
-
-        private async void StatusWsl_Click(object sender, RoutedEventArgs e)
-        {
-            CommandClass command = await ToolboxClass.StatusWsl();
-
-            PopulateWsl();
-        }
-
-        private async void PopulateWsl()
-        {
-            OutputWindow.WriteOutput("Populating...");
-            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions();
-
-            if (Config.Configuration.HideDockerDistributions)
-            {
-                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
-                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
-            }
-
-            OutputWindow.WriteOutput($"Populated {DistroList.Count} distributions.");
-            DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
-            DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
-        }
-
-        private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            SelectedDistro = DistroDetails.SelectedItem is DistributionClass ? (DistributionClass)DistroDetails.SelectedItem : null;
-            PopulateSelectedDistro();
-        }
-
-        private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro);
-
-            PopulateWsl();
-        }
-
-        private async void DistroStop_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro);
-
-            PopulateWsl();
-        }
-
-        private async void DistroRestart_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro);
-            _ = await ToolboxClass.StartDistribution(SelectedDistro);
-
-            PopulateWsl();
-        }
-
-        private async void DistroStart_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.StartDistribution(SelectedDistro);
-
-            PopulateWsl();
-        }
-
-        private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult uninstallMessagebox = MessageBox.Show(
-                $"Are you sure you want to uninstall {SelectedDistro.Name}? This will also destroy all data within the distribution.", "Uninstall?",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (uninstallMessagebox == MessageBoxResult.Yes)
-            {
-                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro);
-
-                PopulateWsl();
-            }
-        }
-
-        private void PopulateSelectedDistro()
-        {
-            if (SelectedDistro == null)
-            {
-                DistroSetDefault.IsEnabled = false;
-                DistroStart.IsEnabled = false;
-                DistroStop.IsEnabled = false;
-                DistroConvert.IsEnabled = false;
-                DistroRestart.IsEnabled = false;
-                DistroUninstall.IsEnabled = false;
-                DistroShell.IsEnabled = false;
-                DistroExport.IsEnabled = false;
-
-                return;
-            }
-
-            DistroStart.IsEnabled = SelectedDistro.State != DistributionClass.StateRunning;
-            DistroStop.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
-            DistroRestart.IsEnabled = true;
-            DistroConvert.IsEnabled = SelectedDistro.Version != 2;
-            DistroUninstall.IsEnabled = true;
-            DistroSetDefault.IsEnabled = !SelectedDistro.IsDefault;
-            DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
-            DistroExport.IsEnabled = true;
-        }
-
-        private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
-        {
-            OutputWindow.Show();
-            OutputWindow.WriteOutput("Checking for WSL Updates...");
-            CommandClass command = await ToolboxClass.UpdateWsl();
-            string output = Regex.Replace(command.Output, "\t", " ");
-            OutputWindow.WriteOutput(output);
-        }
-
-        private void DistroInstall_Click(object sender, RoutedEventArgs e)
-        {
-            SelectDistroWindow selectDistroWindow = new();
-
-            bool? distroSelected = selectDistroWindow.ShowDialog();
-
-            if ((bool)distroSelected)
-            {
-                DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
-                ToolboxClass.ShellDistribution(selectedDistro);
-            }
-        }
-
-        private async void RestartWsl_Click(object sender, RoutedEventArgs e)
-        {
-            await ToolboxClass.StopWsl();
-            await ToolboxClass.StartWsl();
-        }
+        private DistributionClass SelectedDistro { get; set; }
 
         protected override void OnClosed(EventArgs e)
         {
@@ -189,16 +42,42 @@ namespace WslToolbox.Views
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
+        private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            SettingsWindow settingsWindow = new(Config.Configuration);
-            settingsWindow.ShowDialog();
+            SelectedDistro = DistroDetails.SelectedItem is DistributionClass ? (DistributionClass)DistroDetails.SelectedItem : null;
+            PopulateSelectedDistro();
+        }
 
-            if ((bool)settingsWindow.DialogResult)
+        private async void DistroExport_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveExportDialog = new()
             {
-                Config.Save();
-                PopulateWsl();
-                HandleConfiguration();
+                Title = "Export",
+                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
+                AddExtension = true,
+                OverwritePrompt = true,
+                DefaultExt = "tar",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            if (!(bool)saveExportDialog.ShowDialog())
+            {
+                return;
+            }
+
+            string fileName = saveExportDialog.FileName;
+
+            try
+            {
+                OutputWindow.WriteOutput($"Exporting {SelectedDistro.Name} to {fileName}...");
+                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName);
+                OutputWindow.WriteOutput($"{SelectedDistro.Name} exported.");
+            }
+            catch (Exception ex)
+            {
+                OutputWindow.WriteOutput($"{SelectedDistro.Name} export failed.");
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -244,37 +123,158 @@ namespace WslToolbox.Views
             }
         }
 
-        private async void DistroExport_Click(object sender, RoutedEventArgs e)
+        private void DistroInstall_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveExportDialog = new()
-            {
-                Title = "Export",
-                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
-                AddExtension = true,
-                OverwritePrompt = true,
-                DefaultExt = "tar",
-                FilterIndex = 1,
-                RestoreDirectory = true
-            };
+            SelectDistroWindow selectDistroWindow = new();
 
-            if (!(bool)saveExportDialog.ShowDialog())
+            bool? distroSelected = selectDistroWindow.ShowDialog();
+
+            if ((bool)distroSelected)
             {
+                DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
+                ToolboxClass.ShellDistribution(selectedDistro);
+            }
+        }
+
+        private async void DistroRestart_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(false);
+            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(false);
+
+            PopulateWsl();
+        }
+
+        private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro);
+
+            PopulateWsl();
+        }
+
+        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(SelectedDistro);
+
+        private async void DistroStart_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(false);
+
+            PopulateWsl();
+        }
+
+        private async void DistroStop_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro);
+
+            PopulateWsl();
+        }
+
+        private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult uninstallMessagebox = MessageBox.Show(
+                $"Are you sure you want to uninstall {SelectedDistro.Name}? This will also destroy all data within the distribution.", "Uninstall?",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (uninstallMessagebox == MessageBoxResult.Yes)
+            {
+                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro).ConfigureAwait(false);
+
+                PopulateWsl();
+            }
+        }
+
+        private void HandleConfiguration()
+        {
+            SystemTray.Dispose();
+
+            if (Config.Configuration.EnableSystemTray)
+            {
+                SystemTray.Show();
+            }
+        }
+
+        private void PopulateSelectedDistro()
+        {
+            if (SelectedDistro == null)
+            {
+                DistroSetDefault.IsEnabled = false;
+                DistroStart.IsEnabled = false;
+                DistroStop.IsEnabled = false;
+                DistroConvert.IsEnabled = false;
+                DistroRestart.IsEnabled = false;
+                DistroUninstall.IsEnabled = false;
+                DistroShell.IsEnabled = false;
+                DistroExport.IsEnabled = false;
+
                 return;
             }
 
-            string fileName = saveExportDialog.FileName;
+            DistroStart.IsEnabled = SelectedDistro.State != DistributionClass.StateRunning;
+            DistroStop.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
+            DistroRestart.IsEnabled = true;
+            DistroConvert.IsEnabled = SelectedDistro.Version != 2;
+            DistroUninstall.IsEnabled = true;
+            DistroSetDefault.IsEnabled = !SelectedDistro.IsDefault;
+            DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
+            DistroExport.IsEnabled = true;
+        }
 
-            try
+        private async void PopulateWsl()
+        {
+            OutputWindow.WriteOutput("Populating...");
+            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions();
+
+            if (Config.Configuration.HideDockerDistributions)
             {
-                OutputWindow.WriteOutput($"Exporting {SelectedDistro.Name} to {fileName}...");
-                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName);
-                OutputWindow.WriteOutput($"{SelectedDistro.Name} exported.");
+                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
+                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
             }
-            catch (Exception ex)
+
+            OutputWindow.WriteOutput($"Populated {DistroList.Count} distributions.");
+            DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
+            DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
+        }
+
+        private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
+
+        private async void RestartWsl_Click(object sender, RoutedEventArgs e)
+        {
+            await ToolboxClass.StopWsl();
+            await ToolboxClass.StartWsl();
+        }
+
+        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl();
+
+        private async void StatusWsl_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await ToolboxClass.StatusWsl().ConfigureAwait(false);
+
+            PopulateWsl();
+        }
+
+        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl();
+
+        private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
+
+        private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new(Config.Configuration);
+            settingsWindow.ShowDialog();
+
+            if ((bool)settingsWindow.DialogResult)
             {
-                OutputWindow.WriteOutput($"{SelectedDistro.Name} export failed.");
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Config.Save();
+                PopulateWsl();
+                HandleConfiguration();
             }
+        }
+
+        private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow.Show();
+            OutputWindow.WriteOutput("Checking for WSL Updates...");
+            CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(false);
+            string output = Regex.Replace(command.Output, "\t", " ");
+            OutputWindow.WriteOutput(output);
         }
     }
 }

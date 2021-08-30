@@ -14,15 +14,6 @@ namespace WslToolbox.Views
             InitializeComponent();
         }
 
-        public void WriteOutput(string OutputContent, bool NewLine = true)
-        {
-            OutputBlock.Text = OutputBlock.Text
-                + OutputContent
-                + (NewLine
-                    ? Environment.NewLine
-                    : String.Empty);
-        }
-
         public new void Show()
         {
             base.Show();
@@ -30,8 +21,15 @@ namespace WslToolbox.Views
             WindowState = WindowState.Normal;
         }
 
-        private void SaveLog_Click(object sender, RoutedEventArgs e)
+        public void WriteOutput(string OutputContent, bool NewLine = true)
         {
+            string dateTime = DateTime.Now.ToString("yyy-MM-dd HH:mm:ss");
+            OutputBlock.Text = OutputBlock.Text
+                + $"[{dateTime}] "
+                + OutputContent
+                + (NewLine
+                    ? Environment.NewLine
+                    : string.Empty);
         }
 
         private void ClearLog_Click(object sender, RoutedEventArgs e)
@@ -39,9 +37,9 @@ namespace WslToolbox.Views
             OutputBlock.Text = string.Empty;
         }
 
-        private void SaveLog_Click_1(object sender, RoutedEventArgs e)
+        private void SaveLog_Click(object sender, RoutedEventArgs e)
         {
-            string dateTime = DateTime.Now.ToString("yyy-MM-d");
+            string dateTime = DateTime.Now.ToString("yyy-MM-dd");
 
             try
             {
@@ -53,7 +51,7 @@ namespace WslToolbox.Views
 
                 File.AppendAllText(
                     $"logs/output-{dateTime}.txt",
-                    $"[{dateTime} {DateTime.Now:HH:mm:ss}]{Environment.NewLine}{OutputBlock.Text}{Environment.NewLine}"
+                    OutputBlock.Text + Environment.NewLine
                 );
             }
             catch (Exception ex)

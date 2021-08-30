@@ -1,9 +1,8 @@
 ﻿<Window x:Class="WslToolbox.Views.OutputWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WslToolbox.Views"
         mc:Ignorable="d"
         Title="Output" Height="315" Width="502" SizeToContent="Manual" ResizeMode="CanResize">
     <Grid Margin="5,10,5,10">
@@ -15,7 +14,7 @@
                     <Setter Property="MinWidth" Value="80" />
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="SaveLog" Content="Save" Click="SaveLog_Click_1" />
+            <Button x:Name="SaveLog" Content="Save" Click="SaveLog_Click" />
             <Button x:Name="ClearLog" Content="Clear" Click="ClearLog_Click" />
         </StackPanel>
     </Grid>
