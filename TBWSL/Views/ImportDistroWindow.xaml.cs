@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,6 +11,8 @@ namespace WslToolbox.Views
     /// </summary>
     public partial class ImportDistroWindow : Window
     {
+        private static readonly Regex Regex = new Regex("^[a-zA-Z0-9]*$");
+
         public string DistroSelectedDirectory { get; set; }
         public string DistroName { get; set; }
 
@@ -44,8 +47,22 @@ namespace WslToolbox.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateDistroName(ImportDistroName.Text))
+            {
+                _ = MessageBox.Show("Only alphanumeric characters are allowed, minimum characters are 3.", "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Directory.Exists(ImportDistroLocation.Text) || ImportDistroLocation.Text == "Double click here to browse...")
+            {
+                _ = MessageBox.Show("Installation location does not exist or is not selected.", "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             DialogResult = true;
             Close();
         }
+
+        private static bool ValidateDistroName(string DistroName) => Regex.IsMatch(DistroName) && DistroName.Length >= 3;
     }
 }

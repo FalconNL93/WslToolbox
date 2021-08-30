@@ -25,7 +25,7 @@
             <Label Content="Distribution name:" FontWeight="Bold" />
             <TextBox x:Name="ImportDistroName" Height="21" Text="" TextWrapping="Wrap" />
             <Label Content="Installation folder:" FontWeight="Bold" />
-            <TextBox x:Name="ImportDistroLocation" Height="21" Text="Double click to browse..." TextWrapping="Wrap" IsReadOnly="True" MouseDoubleClick="ImportDistroLocation_MouseDoubleClick" />
+            <TextBox x:Name="ImportDistroLocation" Height="21" Text="Double click here to browse..." TextWrapping="Wrap" IsReadOnly="True" MouseDoubleClick="ImportDistroLocation_MouseDoubleClick" />
             <Button Content="Import" Click="Button_Click" />
         </StackPanel>
     </Grid>

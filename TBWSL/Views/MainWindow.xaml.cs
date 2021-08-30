@@ -19,6 +19,16 @@ namespace WslToolbox.Views
         private OutputWindow OutputWindow = new();
         private readonly SystemTrayClass SystemTray = new();
 
+        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(SelectedDistro);
+
+        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl();
+
+        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl();
+
+        private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
+
+        private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -55,6 +65,7 @@ namespace WslToolbox.Views
                 _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
             }
 
+            OutputWindow.WriteOutput($"Populated {DistroList.Count} distributions.");
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
         }
@@ -91,11 +102,6 @@ namespace WslToolbox.Views
         {
             _ = await ToolboxClass.StartDistribution(SelectedDistro);
 
-            PopulateWsl();
-        }
-
-        private void RefreshWsl_Click(object sender, RoutedEventArgs e)
-        {
             PopulateWsl();
         }
 
@@ -142,25 +148,11 @@ namespace WslToolbox.Views
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
+            OutputWindow.Show();
             OutputWindow.WriteOutput("Checking for WSL Updates...");
             CommandClass command = await ToolboxClass.UpdateWsl();
             string output = Regex.Replace(command.Output, "\t", " ");
             OutputWindow.WriteOutput(output);
-        }
-
-        private void DistroShell_Click(object sender, RoutedEventArgs e)
-        {
-            ToolboxClass.ShellDistribution(SelectedDistro);
-        }
-
-        private async void StopWsl_Click(object sender, RoutedEventArgs e)
-        {
-            await ToolboxClass.StopWsl();
-        }
-
-        private async void StartWsl_Click(object sender, RoutedEventArgs e)
-        {
-            await ToolboxClass.StartWsl();
         }
 
         private void DistroInstall_Click(object sender, RoutedEventArgs e)
@@ -283,11 +275,6 @@ namespace WslToolbox.Views
                 OutputWindow.WriteOutput($"{SelectedDistro.Name} export failed.");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private void ToolboxOutput_Click(object sender, RoutedEventArgs e)
-        {
-            OutputWindow.Show();
         }
     }
 }

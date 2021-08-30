@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WslToolbox.Views"
         mc:Ignorable="d"
-        Title="Output" Height="370" Width="688" SizeToContent="Manual" ResizeMode="CanResize">
-    <Grid Margin="5,5,5,5">
-        <TextBox x:Name="OutputBlock" TextWrapping="Wrap" Margin="10,10,10,10" IsReadOnly="True" />
+        Title="Output" Height="315" Width="502" SizeToContent="Manual" ResizeMode="CanResize">
+    <Grid Margin="5,10,5,10">
+        <TextBox x:Name="OutputBlock" TextWrapping="Wrap" Margin="10,10,10,45" IsReadOnly="True" />
+        <StackPanel Margin="10,10,10,10" Orientation="Horizontal" FlowDirection="RightToLeft" Height="25" VerticalAlignment="Bottom">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,0,5,0" />
+                    <Setter Property="MinWidth" Value="80" />
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="SaveLog" Content="Save" Click="SaveLog_Click_1" />
+            <Button x:Name="ClearLog" Content="Clear" Click="ClearLog_Click" />
+        </StackPanel>
     </Grid>
 </Window>

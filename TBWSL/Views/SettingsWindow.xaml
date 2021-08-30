@@ -4,9 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Settings" Height="181" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
-    <Grid Margin="4,0,10,10">
-        <GroupBox Header=" General " HorizontalAlignment="Center" Margin="0,10,0,44" Width="326">
+        Title="Settings" Height="272" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Height" Icon="/Resources/Images/toolbox.png">
+    <Grid Margin="10,0,10,10">
+        <GroupBox Header=" General " Margin="4,10,4,44">
             <StackPanel Height="Auto" Margin="4,4,4,4">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type CheckBox}">
@@ -16,10 +16,11 @@
 
                 <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
                 <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
-                <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" IsEnabled="false" Margin="25,3,4,0" />
+                <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" Margin="25,3,3,0" IsEnabled="false" />
+                <CheckBox x:Name="DebugLogging" Content="Debug logging" ToolTip="Debug logging" IsChecked="{Binding DebugLogging}" IsEnabled="false" />
             </StackPanel>
         </GroupBox>
-        <Button x:Name="SaveConfiguration" Content="Save" Margin="242,0,10,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" />
-        <Button x:Name="CancelButton" Content="Cancel" Margin="10,0,242,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" />
+        <Button x:Name="SaveConfiguration" Content="Save" Margin="0,0,4,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
+        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
     </Grid>
 </Window>
