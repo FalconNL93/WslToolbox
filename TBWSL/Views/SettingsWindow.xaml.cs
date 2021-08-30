@@ -8,7 +8,7 @@ namespace WslToolbox.Views
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private DefaultConfiguration Configuration;
+        private readonly DefaultConfiguration Configuration;
 
         public SettingsWindow(DefaultConfiguration configuration)
         {

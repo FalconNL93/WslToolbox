@@ -9,7 +9,10 @@ namespace WslToolbox.Classes
     {
         public TaskbarIcon Tray { get; set; }
 
-        public void Dispose() => Tray?.Dispose();
+        public void Dispose()
+        {
+            Tray?.Dispose();
+        }
 
         public void Show()
         {

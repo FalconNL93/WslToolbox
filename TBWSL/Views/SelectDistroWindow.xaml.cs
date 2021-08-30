@@ -24,7 +24,7 @@ namespace WslToolbox.Views
 
         private static List<DistributionClass> FetchDistributions()
         {
-            Task<List<DistributionClass>> distroList = Task.Run(async () => await ToolboxClass.ListDistributions());
+            Task<List<DistributionClass>> distroList = Task.Run(async () => await ToolboxClass.ListDistributions().ConfigureAwait(false));
 
             return distroList.Result;
         }
