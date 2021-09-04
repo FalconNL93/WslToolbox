@@ -7,8 +7,8 @@
     <Grid Margin="10,10,10,12">
         <GroupBox Header=" Select distribution " Margin="0,0,0,10">
             <Grid>
-                <ComboBox x:Name="AvailableDistros" Margin="10,10,10,0" IsReadOnly="True" Height="24" VerticalAlignment="Top" />
-                <Button Content="Install" Margin="0,39,10,0" Click="Button_Click" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" />
+                <ComboBox x:Name="AvailableDistros" Margin="10,10,10,0" IsReadOnly="True" Height="24" VerticalAlignment="Top" SelectionChanged="AvailableDistros_SelectionChanged"/>
+                <Button x:Name="InstallDistro" Content="Install" Margin="0,39,10,0" Click="InstallDistro_Click" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" IsEnabled="False" />
                 <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,39,0,0" Width="82" Click="Button_Click_1" Height="24" VerticalAlignment="Top" />
                 <TextBlock x:Name="NoticeBlock" Margin="10,68,10,10" Text="Notice" TextWrapping="Wrap" />
             </Grid>

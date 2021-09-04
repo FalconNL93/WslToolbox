@@ -11,7 +11,7 @@
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
-        <ListView Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click">
+        <ListView Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single">
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment" Value="Left" />

@@ -190,6 +190,11 @@ namespace WslToolbox.Views
             {
                 SystemTray.Show();
             }
+
+            if (Config.Configuration.OutputOnStartup)
+            {
+                OutputWindow.Show();
+            }
         }
 
         private void PopulateSelectedDistro()

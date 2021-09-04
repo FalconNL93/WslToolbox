@@ -13,6 +13,7 @@ namespace WslToolbox.Views
         public SelectDistroWindow()
         {
             InitializeComponent();
+            InstallDistro.IsEnabled = false;
             NoticeBlock.Text = "Due to current restrictions in WSL CLI, installing an existing distro is not possible. You can export an existing distro and import it back with a different name.";
             AvailableDistros.IsEnabled = false;
 
@@ -29,7 +30,12 @@ namespace WslToolbox.Views
             return distroList.Result;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void InstallDistro_Click(object sender, RoutedEventArgs e)
         {
             if (AvailableDistros.SelectedItem != null)
             {
@@ -39,9 +45,9 @@ namespace WslToolbox.Views
             Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void AvailableDistros_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Close();
+            InstallDistro.IsEnabled = true;
         }
     }
 }

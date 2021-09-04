@@ -18,6 +18,7 @@
                 <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
                 <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Minimize to tray" Margin="25,3,3,0" IsEnabled="false" />
                 <CheckBox x:Name="DebugLogging" Content="Debug logging" ToolTip="Debug logging" IsChecked="{Binding DebugLogging}" IsEnabled="false" />
+                <CheckBox x:Name="OutputOnStartup" Content="Show output on startup" ToolTip="Show output on startup" IsChecked="{Binding OutputOnStartup}" />
             </StackPanel>
         </GroupBox>
         <Button x:Name="SaveConfiguration" Content="Save" Margin="0,0,4,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
