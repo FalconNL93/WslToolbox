@@ -64,5 +64,10 @@ namespace WslToolbox.Views
 
             DistroName = ImportDistroName.Text;
         }
+
+        private void ImportDistroName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            ImportDistroButton.IsEnabled = ImportDistroName.Text.Length >= 1;
+        }
     }
 }
