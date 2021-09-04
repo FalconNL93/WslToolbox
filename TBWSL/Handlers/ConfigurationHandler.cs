@@ -12,7 +12,11 @@ namespace WslToolbox.Handlers
         {
             FileName = "settings.json";
             Configuration = new();
-            Read();
+
+            if (File.Exists(FileName))
+            {
+                Read();
+            }
         }
 
         public DefaultConfiguration Configuration { get; set; }
