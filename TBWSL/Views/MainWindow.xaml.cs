@@ -37,7 +37,7 @@ namespace WslToolbox.Views
         private async void DistroConvert_Click(object sender, RoutedEventArgs e)
         {
             OutputWindow.WriteOutput($"Converting {SelectedDistro.Name} to WSL2...");
-            CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro).ConfigureAwait(false);
+            CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro).ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -71,7 +71,7 @@ namespace WslToolbox.Views
             try
             {
                 OutputWindow.WriteOutput($"Exporting {SelectedDistro.Name} to {fileName}...");
-                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName).ConfigureAwait(false);
+                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName).ConfigureAwait(true);
                 OutputWindow.WriteOutput($"{SelectedDistro.Name} exported.");
             }
             catch (Exception ex)
@@ -111,7 +111,7 @@ namespace WslToolbox.Views
             try
             {
                 OutputWindow.WriteOutput($"Importing {fileName} as {importDistroWindow.DistroName}...");
-                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(false);
+                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
                 OutputWindow.WriteOutput($"{importDistroWindow.DistroName} imported.");
 
                 PopulateWsl();
@@ -138,15 +138,15 @@ namespace WslToolbox.Views
 
         private async void DistroRestart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(false);
-            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(false);
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(true);
+            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro).ConfigureAwait(false);
+            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro).ConfigureAwait(true);
 
             PopulateWsl();
         }
@@ -155,14 +155,14 @@ namespace WslToolbox.Views
 
         private async void DistroStart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(false);
+            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroStop_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(false);
+            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(true);
 
             PopulateWsl();
         }
@@ -176,7 +176,7 @@ namespace WslToolbox.Views
 
             if (uninstallMessagebox == MessageBoxResult.Yes)
             {
-                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro).ConfigureAwait(false);
+                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro).ConfigureAwait(true);
 
                 PopulateWsl();
             }
@@ -221,7 +221,7 @@ namespace WslToolbox.Views
         private async void PopulateWsl()
         {
             OutputWindow.WriteOutput("Populating...");
-            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions().ConfigureAwait(false);
+            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions().ConfigureAwait(true);
 
             if (Config.Configuration.HideDockerDistributions)
             {
@@ -238,20 +238,20 @@ namespace WslToolbox.Views
 
         private async void RestartWsl_Click(object sender, RoutedEventArgs e)
         {
-            await ToolboxClass.StopWsl().ConfigureAwait(false);
-            await ToolboxClass.StartWsl().ConfigureAwait(false);
+            await ToolboxClass.StopWsl().ConfigureAwait(true);
+            await ToolboxClass.StartWsl().ConfigureAwait(true);
         }
 
-        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl().ConfigureAwait(false);
+        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl().ConfigureAwait(true);
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.StatusWsl().ConfigureAwait(false);
+            _ = await ToolboxClass.StatusWsl().ConfigureAwait(true);
 
             PopulateWsl();
         }
 
-        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl().ConfigureAwait(false);
+        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl().ConfigureAwait(true);
 
         private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
 
@@ -272,7 +272,7 @@ namespace WslToolbox.Views
         {
             OutputWindow.Show();
             OutputWindow.WriteOutput("Checking for WSL Updates...");
-            CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(false);
+            CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
             OutputWindow.WriteOutput(output);
         }

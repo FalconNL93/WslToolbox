@@ -11,18 +11,18 @@ namespace WslToolbox.Classes
             return ListDistributions().Result.Find(distro => distro.Name == name);
         }
 
-        public static async Task<CommandClass> ConvertDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ConvertDistribution} {distribution.Name} 2")).ConfigureAwait(false);
+        public static async Task<CommandClass> ConvertDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ConvertDistribution} {distribution.Name} 2")).ConfigureAwait(true);
 
         public static DistributionClass DefaultDistribution() => ListDistributions().Result.Find(distro => distro.IsDefault);
 
         public static async Task<CommandClass> ExportDistribution(DistributionClass distribution, string file)
         {
-            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ExportDistribution} {distribution.Name} {file}")).ConfigureAwait(false);
+            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ExportDistribution} {distribution.Name} {file}")).ConfigureAwait(true);
         }
 
         public static async Task<CommandClass> ImportDistribution(DistributionClass distribution, string name, string path, string file)
         {
-            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ImportDistribution} {name} {path} {file}")).ConfigureAwait(false);
+            return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ImportDistribution} {name} {path} {file}")).ConfigureAwait(true);
         }
 
         public static async Task<List<DistributionClass>> ListDistributions()
@@ -35,26 +35,26 @@ namespace WslToolbox.Classes
 
             distributionList.AddRange(distributionListAvailable.Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
 
-            return await Task.FromResult(distributionList).ConfigureAwait(false);
+            return await Task.FromResult(distributionList).ConfigureAwait(true);
         }
 
-        public static async Task<CommandClass> SetDefaultDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.SetDefault} {distribution.Name}")).ConfigureAwait(false);
+        public static async Task<CommandClass> SetDefaultDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.SetDefault} {distribution.Name}")).ConfigureAwait(true);
 
         public static void ShellDistribution(DistributionClass distribution) => CommandClass.StartShell(distribution);
 
-        public static async Task<CommandClass> StartDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.StartDistribution} {distribution.Name} --exec exit")).ConfigureAwait(false);
+        public static async Task<CommandClass> StartDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.StartDistribution} {distribution.Name} --exec exit")).ConfigureAwait(true);
 
-        public static async Task<CommandClass> StartWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Start)).ConfigureAwait(false);
+        public static async Task<CommandClass> StartWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Start)).ConfigureAwait(true);
 
-        public static async Task<CommandClass> StatusWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Status)).ConfigureAwait(false);
+        public static async Task<CommandClass> StatusWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Status)).ConfigureAwait(true);
 
-        public static async Task<CommandClass> StopWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Stop)).ConfigureAwait(false);
+        public static async Task<CommandClass> StopWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Stop)).ConfigureAwait(true);
 
-        public static async Task<CommandClass> TerminateDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.TerminateDistribution} {distribution.Name}")).ConfigureAwait(false);
+        public static async Task<CommandClass> TerminateDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.TerminateDistribution} {distribution.Name}")).ConfigureAwait(true);
 
-        public static async Task<CommandClass> UnregisterDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.UnregisterDistribution} {distribution.Name}")).ConfigureAwait(false);
+        public static async Task<CommandClass> UnregisterDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.UnregisterDistribution} {distribution.Name}")).ConfigureAwait(true);
 
-        public static async Task<CommandClass> UpdateWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Update)).ConfigureAwait(false);
+        public static async Task<CommandClass> UpdateWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Update)).ConfigureAwait(true);
     }
 
     internal static class WslCommands
