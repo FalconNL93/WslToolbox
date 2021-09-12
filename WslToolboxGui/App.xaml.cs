@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WslToolbox
+namespace WslToolboxGui
 {
     /// <summary>
     /// Interaction logic for App.xaml

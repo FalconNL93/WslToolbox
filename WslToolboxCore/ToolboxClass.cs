@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WslToolbox.Classes
+namespace WslToolboxCore
 {
-    internal static class ToolboxClass
+    public static class ToolboxClass
     {
         public static DistributionClass ByName(string name)
         {

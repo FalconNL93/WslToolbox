@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace WslToolbox.Classes
+namespace WslToolboxCore
 {
-    internal class DistributionClass
+    public class DistributionClass
     {
         public const string StateRunning = "Running";
         public const string StateStopped = "Stopped";

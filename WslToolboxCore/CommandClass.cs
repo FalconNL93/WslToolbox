@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace WslToolbox.Classes
+namespace WslToolboxCore
 {
-    internal class CommandClass
+    public class CommandClass
     {
         public string Command { get; set; }
         public int ExitCode { get; set; }

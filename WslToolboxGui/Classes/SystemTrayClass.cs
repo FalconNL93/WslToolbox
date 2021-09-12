@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Reflection;
 
-namespace WslToolbox.Classes
+namespace WslToolboxGui.Classes
 {
     public class SystemTrayClass : IDisposable
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows;
 
-namespace WslToolbox.Views
+namespace WslToolboxGui.Views
 {
     /// <summary>
     /// Interaction logic for OutputWindow.xaml

@@ -5,7 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Product>WSL Toolbox</Product>
-    <StartupObject>WslToolbox.App</StartupObject>
+    <StartupObject>WslToolboxGui.App</StartupObject>
     <DebugType>none</DebugType>
     <Platforms>AnyCPU;x64</Platforms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,6 +44,10 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WslToolboxCore\WslToolboxCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

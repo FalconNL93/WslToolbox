@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using WslToolbox.Classes;
+using WslToolboxGui.Classes;
+using WslToolboxCore;
 
-namespace WslToolbox.Views
+namespace WslToolboxGui.Views
 {
     /// <summary>
     /// Interaction logic for SelectDistroWindow.xaml

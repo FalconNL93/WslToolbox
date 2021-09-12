@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Text.Json;
-using WslToolbox.Configurations;
+using WslToolboxGui.Configurations;
 
-namespace WslToolbox.Handlers
+namespace WslToolboxGui.Handlers
 {
     internal class ConfigurationHandler
     {
