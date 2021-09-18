@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        mc:Ignorable="d" Height="171" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="Height">
+        mc:Ignorable="d" Height="171" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="Height" Background="{StaticResource MahApps.Brushes.ThemeBackground}">
     <Grid Margin="10,10,10,12">
         <GroupBox Header=" Select distribution " Margin="0,0,0,10">
             <Grid>

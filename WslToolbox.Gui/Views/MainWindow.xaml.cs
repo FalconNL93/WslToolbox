@@ -7,6 +7,8 @@ using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Core;
 using MahApps.Metro.Controls;
+using ControlzEx.Theming;
+using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Views
 {
@@ -24,7 +26,7 @@ namespace WslToolbox.Gui.Views
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
-            HandleConfiguration();
+            HandleConfiguration();            
         }
 
         private DistributionClass SelectedDistro { get; set; }
@@ -196,6 +198,19 @@ namespace WslToolbox.Gui.Views
             if (Config.Configuration.OutputOnStartup)
             {
                 OutputWindow.Show();
+            }
+
+            if (Config.Configuration.Style == ThemeConfiguration.Styles.Auto)
+            {
+                ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
+                ThemeManager.Current.SyncTheme();
+            } else
+            {
+                _ = ThemeManager.Current.ChangeTheme(this,
+                    Config.Configuration.Style == ThemeConfiguration.Styles.Light
+                    ? ThemeConfiguration.Light
+                    : ThemeConfiguration.Dark
+                );
             }
         }
 
