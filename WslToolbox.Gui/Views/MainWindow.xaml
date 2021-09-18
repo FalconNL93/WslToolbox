@@ -6,7 +6,8 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False">
+        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False"
+        Background="{StaticResource MahApps.Brushes.ThemeBackground}">
     <Grid Margin="10,0,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />
@@ -15,20 +16,16 @@
         </Grid.ColumnDefinitions>
         <ListView Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single">
             <ListView.Resources>
-                <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource MahApps.Styles.GridViewColumnHeader}">
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                </Style>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MahApps.Styles.ListViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
-            </ListView.ItemContainerStyle>
+                
+            </ListView.Resources>
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="auto" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="State" Width="auto" DisplayMemberBinding="{Binding State}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" />
                     <GridViewColumn Header="WSL Version" DisplayMemberBinding="{Binding Version}" />
                 </GridView>
             </ListView.View>

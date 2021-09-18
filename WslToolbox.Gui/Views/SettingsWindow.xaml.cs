@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WslToolbox.Gui.Configurations;
 using MahApps.Metro.Controls;
+using System;
 
 namespace WslToolbox.Gui.Views
 {
@@ -28,6 +29,11 @@ namespace WslToolbox.Gui.Views
         {
             DialogResult = true;
             Close();
+        }
+
+        private void OpenConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

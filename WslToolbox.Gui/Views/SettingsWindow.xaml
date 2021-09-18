@@ -8,6 +8,9 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="Settings" Height="272" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Height" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False">
+    <mah:MetroWindow.Resources>
+
+    </mah:MetroWindow.Resources>
     <Grid Margin="10,0,10,10">
         <GroupBox Header=" General " Margin="4,10,4,44">
             <StackPanel Height="Auto" Margin="4,4,4,4">
@@ -25,6 +28,7 @@
             </StackPanel>
         </GroupBox>
         <Button x:Name="SaveConfiguration" Content="Save" Margin="0,0,4,5" Click="SaveConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
+        <Button x:Name="OpenConfiguration" Content="JSON" Margin="0,0,91,5" Click="OpenConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" IsEnabled="false" />
         <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
     </Grid>
 </mah:MetroWindow>
