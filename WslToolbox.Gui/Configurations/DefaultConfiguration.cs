@@ -1,4 +1,4 @@
-﻿namespace WslToolboxGui.Configurations
+﻿namespace WslToolbox.Gui.Configurations
 {
     public class DefaultConfiguration
     {

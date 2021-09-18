@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace WslToolboxCore
+namespace WslToolbox.Core
 {
     public class DistributionClass
     {

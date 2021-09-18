@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
-namespace WslToolboxGui.Views
+namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for ImportDistroWindow.xaml

@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
-using WslToolboxGui.Classes;
-using WslToolboxGui.Handlers;
-using WslToolboxCore;
+using WslToolbox.Gui.Classes;
+using WslToolbox.Gui.Handlers;
+using WslToolbox.Core;
 
-namespace WslToolboxGui.Views
+namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

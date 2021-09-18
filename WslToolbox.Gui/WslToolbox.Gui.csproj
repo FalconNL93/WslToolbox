@@ -5,7 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Product>WSL Toolbox</Product>
-    <StartupObject>WslToolboxGui.App</StartupObject>
+    <StartupObject>WslToolbox.Gui.App</StartupObject>
     <DebugType>none</DebugType>
     <Platforms>AnyCPU;x64</Platforms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WslToolboxCore\WslToolboxCore.csproj" />
+    <ProjectReference Include="..\WslToolboxCore\WslToolbox.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

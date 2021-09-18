@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using WslToolboxGui.Configurations;
+using WslToolbox.Gui.Configurations;
 
-namespace WslToolboxGui.Views
+namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WslToolboxCore
+namespace WslToolbox.Core
 {
     public static class ToolboxClass
     {

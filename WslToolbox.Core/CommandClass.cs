@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace WslToolboxCore
+namespace WslToolbox.Core
 {
     public class CommandClass
     {
