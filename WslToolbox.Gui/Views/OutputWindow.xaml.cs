@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for OutputWindow.xaml
     /// </summary>
-    public partial class OutputWindow : Window
+    public partial class OutputWindow : MetroWindow
     {
         public OutputWindow()
         {

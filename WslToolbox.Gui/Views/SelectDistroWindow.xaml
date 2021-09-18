@@ -1,8 +1,10 @@
-﻿<Window x:Class="WslToolbox.Gui.Views.SelectDistroWindow"
+﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SelectDistroWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" Height="171" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/Resources/Images/toolbox.png" SizeToContent="Height">
     <Grid Margin="10,10,10,12">
         <GroupBox Header=" Select distribution " Margin="0,0,0,10">
@@ -14,4 +16,4 @@
             </Grid>
         </GroupBox>
     </Grid>
-</Window>
+</mah:MetroWindow>

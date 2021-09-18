@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Core;
+using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for SelectDistroWindow.xaml
     /// </summary>
-    public partial class SelectDistroWindow : Window
+    public partial class SelectDistroWindow : MetroWindow
     {
         public SelectDistroWindow()
         {

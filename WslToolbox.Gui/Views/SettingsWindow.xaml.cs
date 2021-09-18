@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using WslToolbox.Gui.Configurations;
+using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : MetroWindow
     {
         private readonly DefaultConfiguration Configuration;
 

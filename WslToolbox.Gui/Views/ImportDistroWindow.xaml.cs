@@ -3,13 +3,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for ImportDistroWindow.xaml
     /// </summary>
-    public partial class ImportDistroWindow : Window
+    public partial class ImportDistroWindow : MetroWindow
     {
         private static readonly Regex ValidCharacters = new("^[a-zA-Z0-9]*$");
 

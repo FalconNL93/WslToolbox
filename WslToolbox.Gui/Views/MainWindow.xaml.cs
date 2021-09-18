@@ -6,13 +6,14 @@ using System.Windows;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Core;
+using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private readonly ConfigurationHandler Config = new();
         private readonly OutputWindow OutputWindow = new();
