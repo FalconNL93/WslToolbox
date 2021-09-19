@@ -1,9 +1,9 @@
-﻿using System.Windows;
-using WslToolbox.Gui.Configurations;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Linq;
-using MahApps.Metro.Controls.Dialogs;
+using System.Windows;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Views
@@ -39,7 +39,6 @@ namespace WslToolbox.Gui.Views
                 ConfigHandler.Reset();
                 SaveConfigurationAndClose();
             }
-
         }
 
         private void SaveConfigurationAndClose()

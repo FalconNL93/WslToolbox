@@ -1,7 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.IO;
 using System.Windows;
-using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {

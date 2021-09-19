@@ -28,7 +28,7 @@
             <TextBox x:Name="ImportDistroName" Height="21" Text="" TextWrapping="Wrap" TextChanged="ImportDistroName_TextChanged" />
             <Label Content="Installation folder:" FontWeight="Bold" />
             <TextBox x:Name="ImportDistroLocation" Height="21" Text="Double click here to browse..." TextWrapping="Wrap" IsReadOnly="True" MouseDoubleClick="ImportDistroLocation_MouseDoubleClick" />
-            <Button x:Name="ImportDistroButton" Content="Import" Click="Button_Click" IsEnabled="false"/>
+            <Button x:Name="ImportDistroButton" Content="Import" Click="Button_Click" IsEnabled="false" />
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

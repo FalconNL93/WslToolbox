@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using MahApps.Metro.Controls;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using WslToolbox.Gui.Classes;
 using WslToolbox.Core;
-using MahApps.Metro.Controls;
 
 namespace WslToolbox.Gui.Views
 {

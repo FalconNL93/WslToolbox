@@ -18,7 +18,6 @@
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MahApps.Styles.ListViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
-                
             </ListView.Resources>
 
             <ListView.View>
@@ -59,7 +58,7 @@
                     <Setter Property="Width" Value="106" />
                     <Setter Property="Height" Value="25" />
                 </Style>
-                <Style TargetType="{x:Type Separator}" >
+                <Style TargetType="{x:Type Separator}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                 </Style>
             </StackPanel.Resources>

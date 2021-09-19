@@ -1,14 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
+using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Core;
-using MahApps.Metro.Controls;
-using ControlzEx.Theming;
-using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Views
 {
@@ -26,7 +24,7 @@ namespace WslToolbox.Gui.Views
             InitializeComponent();
             PopulateWsl();
             PopulateSelectedDistro();
-            HandleConfiguration();            
+            HandleConfiguration();
         }
 
         private DistributionClass SelectedDistro { get; set; }
