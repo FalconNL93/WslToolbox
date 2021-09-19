@@ -17,7 +17,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline
-OutputDir=C:\Users\pvand\Documents\Src\WslToolbox\InnoSetup\bin
+OutputDir=bin
 OutputBaseFilename=WslToolbox-setup
 Compression=lzma
 SolidCompression=yes
@@ -31,7 +31,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\pvand\Documents\Src\WslToolbox\WslToolbox.Gui\bin\Release\Windows\*.*"; DestDir: "{app}"; Flags: ignoreversion external recursesubdirs createallsubdirs
+Source: "..\WslToolbox.Gui\bin\Release\Windows\*.*"; DestDir: "{app}"; Flags: ignoreversion external recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
