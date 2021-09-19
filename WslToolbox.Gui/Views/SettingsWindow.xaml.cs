@@ -2,6 +2,9 @@
 using WslToolbox.Gui.Configurations;
 using MahApps.Metro.Controls;
 using System;
+using System.Linq;
+using MahApps.Metro.Controls.Dialogs;
+using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Views
 {
@@ -11,11 +14,13 @@ namespace WslToolbox.Gui.Views
     public partial class SettingsWindow : MetroWindow
     {
         private readonly DefaultConfiguration Configuration;
+        private readonly ConfigurationHandler ConfigHandler;
 
-        public SettingsWindow(DefaultConfiguration configuration)
+        public SettingsWindow(DefaultConfiguration configuration, ConfigurationHandler configHandler)
         {
             Configuration = configuration;
             DataContext = configuration;
+            ConfigHandler = configHandler;
 
             InitializeComponent();
         }
@@ -25,15 +30,32 @@ namespace WslToolbox.Gui.Views
             Close();
         }
 
-        private void SaveConfiguration_Click(object sender, RoutedEventArgs e)
+        private async void OpenConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialogResult resetSettings = await this.ShowMessageAsync("Reset configuration", "Do you want to reset your configuration?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (resetSettings == MessageDialogResult.Affirmative)
+            {
+                ConfigHandler.Reset();
+                SaveConfigurationAndClose();
+            }
+
+        }
+
+        private void SaveConfigurationAndClose()
         {
             DialogResult = true;
             Close();
         }
 
-        private void OpenConfiguration_Click(object sender, RoutedEventArgs e)
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            Style.ItemsSource = Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
+        }
 
+        private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveConfigurationAndClose();
         }
     }
 }

@@ -4,7 +4,7 @@ using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Handlers
 {
-    internal class ConfigurationHandler
+    public class ConfigurationHandler
     {
         private readonly string FileName;
 
@@ -24,5 +24,7 @@ namespace WslToolbox.Gui.Handlers
         public void Read() => Configuration = JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(FileName));
 
         public void Save() => File.WriteAllText(FileName, JsonSerializer.Serialize(Configuration));
+
+        public void Reset() => Configuration = new();
     }
 }

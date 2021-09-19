@@ -200,18 +200,7 @@ namespace WslToolbox.Gui.Views
                 OutputWindow.Show();
             }
 
-            if (Config.Configuration.Style == ThemeConfiguration.Styles.Auto)
-            {
-                ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
-                ThemeManager.Current.SyncTheme();
-            } else
-            {
-                _ = ThemeManager.Current.ChangeTheme(this,
-                    Config.Configuration.Style == ThemeConfiguration.Styles.Light
-                    ? ThemeConfiguration.Light
-                    : ThemeConfiguration.Dark
-                );
-            }
+            ThemeHandler.Set(Config.Configuration.Style);
         }
 
         private void PopulateSelectedDistro()
@@ -279,7 +268,7 @@ namespace WslToolbox.Gui.Views
 
         private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new(Config.Configuration);
+            SettingsWindow settingsWindow = new(Config.Configuration, Config);
             settingsWindow.ShowDialog();
 
             if ((bool)settingsWindow.DialogResult)

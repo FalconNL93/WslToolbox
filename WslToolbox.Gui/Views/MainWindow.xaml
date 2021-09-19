@@ -6,8 +6,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False"
-        Background="{StaticResource MahApps.Brushes.ThemeBackground}">
+        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False">
     <Grid Margin="10,0,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />
