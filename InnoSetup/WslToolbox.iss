@@ -31,7 +31,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\WslToolbox.Gui\bin\Release\Windows\*.*"; DestDir: "{app}"; Flags: ignoreversion external recursesubdirs createallsubdirs
+Source: "{#SourcePath}\..\WslToolbox.Gui\bin\Release\Windows\*.*"; DestDir: "{app}"; Flags: ignoreversion external recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
