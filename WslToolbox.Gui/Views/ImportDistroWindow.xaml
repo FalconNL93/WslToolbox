@@ -6,7 +6,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Import" Height="183" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
+        Title="Import" Height="183" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True">
     <Grid Margin="10,10,10,10">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="270" Margin="5,5,5,5">
             <StackPanel.Resources>
