@@ -6,14 +6,16 @@ namespace WslToolbox.Gui.Handlers
 {
     public class ConfigurationHandler
     {
-        private readonly string FileName;
+        private readonly string ConfigurationFile;
+        private readonly string ConfigurationPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        private readonly string ConfigurationFileName = "settings.json";
 
         public ConfigurationHandler()
         {
-            FileName = "settings.json";
+            ConfigurationFile = $"{ConfigurationPath}/{ConfigurationFileName}";
             Configuration = new();
 
-            if (File.Exists(FileName))
+            if (File.Exists(ConfigurationFile))
             {
                 Read();
             }
@@ -21,9 +23,9 @@ namespace WslToolbox.Gui.Handlers
 
         public DefaultConfiguration Configuration { get; set; }
 
-        public void Read() => Configuration = JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(FileName));
+        public void Read() => Configuration = JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(ConfigurationFile));
 
-        public void Save() => File.WriteAllText(FileName, JsonSerializer.Serialize(Configuration));
+        public void Save() => File.WriteAllText(ConfigurationFile, JsonSerializer.Serialize(Configuration));
 
         public void Reset() => Configuration = new();
     }
