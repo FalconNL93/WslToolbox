@@ -12,21 +12,13 @@
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
-        <ListView Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single">
-            <ListView.Resources>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource MahApps.Styles.ListViewItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.Resources>
-
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="State" DisplayMemberBinding="{Binding State}" />
-                    <GridViewColumn Header="WSL Version" DisplayMemberBinding="{Binding Version}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="State" Binding="{Binding State}" />
+                <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="298" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
         <StackPanel HorizontalAlignment="Center" Margin="0,10,0,46" Width="106">
@@ -34,7 +26,7 @@
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                     <Setter Property="Width" Value="106" />
-                    <Setter Property="Height" Value="25" />
+                    <Setter Property="Height" Value="28" />
                 </Style>
                 <Style TargetType="{x:Type Separator}">
                     <Setter Property="Margin" Value="0,5,0,0" />
@@ -55,7 +47,7 @@
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                     <Setter Property="Width" Value="106" />
-                    <Setter Property="Height" Value="25" />
+                    <Setter Property="Height" Value="28" />
                 </Style>
                 <Style TargetType="{x:Type Separator}">
                     <Setter Property="Margin" Value="0,5,0,0" />

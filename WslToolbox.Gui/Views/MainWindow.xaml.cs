@@ -229,16 +229,10 @@ namespace WslToolbox.Gui.Views
 
         private async void PopulateWsl()
         {
-            OutputWindow.WriteOutput("Populating...");
-            List<DistributionClass> DistroList = await ToolboxClass.ListDistributions().ConfigureAwait(true);
+            List<DistributionClass> DistroList = await ToolboxClass.
+                ListDistributions(Config.Configuration.HideDockerDistributions).
+                ConfigureAwait(true);
 
-            if (Config.Configuration.HideDockerDistributions)
-            {
-                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop");
-                _ = DistroList.RemoveAll(distro => distro.Name == "docker-desktop-data");
-            }
-
-            OutputWindow.WriteOutput($"Populated {DistroList.Count} distributions.");
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
         }

@@ -25,7 +25,7 @@ namespace WslToolbox.Core
             return await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.ImportDistribution} {name} {path} {file}")).ConfigureAwait(true);
         }
 
-        public static async Task<List<DistributionClass>> ListDistributions()
+        public static async Task<List<DistributionClass>> ListDistributions(bool withoutDocker = false)
         {
             CommandClass distributionListOutput = CommandClass.ExecuteCommand(WslCommands.List);
             CommandClass distributionAvailableListOutput = CommandClass.ExecuteCommand(WslCommands.ListAvailable);
@@ -33,7 +33,14 @@ namespace WslToolbox.Core
             List<DistributionClass> distributionList = DistributionClass.FromOutput(distributionListOutput.Output);
             List<DistributionClass> distributionListAvailable = DistributionClass.FromAvailableOutput(distributionAvailableListOutput.Output);
 
-            distributionList.AddRange(distributionListAvailable.Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
+            distributionList.AddRange(distributionListAvailable
+                .Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
+
+            if (withoutDocker)
+            {
+                _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop");
+                _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop-data");
+            }
 
             return await Task.FromResult(distributionList).ConfigureAwait(true);
         }
