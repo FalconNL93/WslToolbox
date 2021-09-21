@@ -9,11 +9,12 @@
         Title="Output" Height="315" Width="502" SizeToContent="Manual" ResizeMode="CanResize">
     <Grid Margin="5,10,5,10">
         <TextBox x:Name="OutputBlock" TextWrapping="Wrap" Margin="10,10,10,45" IsReadOnly="True" />
-        <StackPanel Margin="10,10,10,10" Orientation="Horizontal" FlowDirection="RightToLeft" Height="25" VerticalAlignment="Bottom">
+        <StackPanel Margin="10,10,10,10" Orientation="Horizontal" FlowDirection="RightToLeft" Height="28" VerticalAlignment="Bottom">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
                     <Setter Property="Margin" Value="0,0,5,0" />
                     <Setter Property="MinWidth" Value="80" />
+                    <Setter Property="Height" Value="28" />
                 </Style>
             </StackPanel.Resources>
             <Button x:Name="SaveLog" Content="Save" Click="SaveLog_Click" />
