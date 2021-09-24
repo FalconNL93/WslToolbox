@@ -1,30 +1,43 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainView : MetroWindow
     {
         private readonly ConfigurationHandler Config = new();
-        private readonly OutputWindow OutputWindow = new();
+        private readonly OutputView OutputWindow = new();
         private readonly SystemTrayClass SystemTray = new();
+        private readonly AssemblyName GuiAssembly;
+        private readonly AssemblyName CoreAssembly;
 
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
+            GuiAssembly = Assembly.GetExecutingAssembly().GetName();
+            CoreAssembly = GenericClass.Assembly().GetName();
+
             PopulateWsl();
             PopulateSelectedDistro();
             HandleConfiguration();
+            Trace.WriteLine("Initialized.");
         }
 
         private DistributionClass SelectedDistro { get; set; }
@@ -102,7 +115,7 @@ namespace WslToolbox.Gui.Views
 
             string fileName = saveExportDialog.FileName;
 
-            ImportDistroWindow importDistroWindow = new(fileName);
+            ImportView importDistroWindow = new(fileName);
             importDistroWindow.ShowDialog();
 
             if (!(bool)importDistroWindow.DialogResult)
@@ -127,7 +140,7 @@ namespace WslToolbox.Gui.Views
 
         private void DistroInstall_Click(object sender, RoutedEventArgs e)
         {
-            SelectDistroWindow selectDistroWindow = new();
+            SelectDistroView selectDistroWindow = new();
 
             bool? distroSelected = selectDistroWindow.ShowDialog();
 
@@ -186,12 +199,7 @@ namespace WslToolbox.Gui.Views
 
         private void HandleConfiguration()
         {
-            SystemTray.Dispose();
-
-            if (Config.Configuration.EnableSystemTray)
-            {
-                SystemTray.Show();
-            }
+            HandleSystemTray();
 
             if (Config.Configuration.OutputOnStartup)
             {
@@ -199,6 +207,26 @@ namespace WslToolbox.Gui.Views
             }
 
             ThemeHandler.Set(Config.Configuration.Style);
+        }
+
+        private void HandleSystemTray()
+        {
+            SystemTray.Dispose();
+
+            if (Config.Configuration.EnableSystemTray)
+            {
+                SystemTray.Show();
+                SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => WindowState = WindowState.Normal;
+                ContextMenu contextMenuSystemTray = new();
+
+                SystemTray.Tray.ContextMenu = contextMenuSystemTray;
+            }
+        }
+
+        public class MenuItem
+        {
+            public string Name { get; set; }
+            public ICommand Command { get; set; }
         }
 
         private void PopulateSelectedDistro()
@@ -260,7 +288,7 @@ namespace WslToolbox.Gui.Views
 
         private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new(Config.Configuration, Config);
+            SettingsView settingsWindow = new(Config.Configuration, Config);
             settingsWindow.ShowDialog();
 
             if ((bool)settingsWindow.DialogResult)
@@ -273,11 +301,34 @@ namespace WslToolbox.Gui.Views
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
-            OutputWindow.Show();
+            UpdateWsl.IsEnabled = false;
             OutputWindow.WriteOutput("Checking for WSL Updates...");
             CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
             OutputWindow.WriteOutput(output);
+
+            if (output.Contains("No updates are available."))
+            {
+                _ = await this.ShowMessageAsync("WSL Update", "No updates are available.");
+            }
+
+            UpdateWsl.IsEnabled = true;
+        }
+
+        private async void ToolboxInfo_Click(object sender, RoutedEventArgs e)
+        {
+            string GuiVersion = $"{GuiAssembly.Version.Major}.{GuiAssembly.Version.Minor}.{GuiAssembly.Version.Build}";
+            string CoreVersion = $"{CoreAssembly.Version.Major}.{CoreAssembly.Version.Minor}.{CoreAssembly.Version.Build}";
+
+            _ = await this.ShowMessageAsync("About", $"Gui: {GuiVersion}\nCore: {CoreVersion}");
+        }
+
+        private void MetroWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (Config.Configuration.MinimizeToTray && Config.Configuration.EnableSystemTray)
+            {
+                ShowInTaskbar = WindowState != WindowState.Minimized;
+            }
         }
     }
 }

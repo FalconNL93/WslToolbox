@@ -19,7 +19,6 @@ namespace WslToolbox.Gui.Classes
             TaskbarIcon toolboxIcon = new();
             toolboxIcon.ToolTipText = Assembly.GetExecutingAssembly().GetName().Name;
             toolboxIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-
             Tray = toolboxIcon;
         }
 

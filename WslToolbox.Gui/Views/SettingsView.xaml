@@ -1,0 +1,44 @@
+﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Settings" Height="205" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Height" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
+    <mah:MetroWindow.Resources>
+        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
+            <Setter Property="Margin" Value="4,3,4,0" />
+        </Style>
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+            <Setter Property="Margin" Value="4,3,4,0" />
+        </Style>
+        <Style TargetType="{x:Type Separator}">
+            <Setter Property="Margin" Value="4,10,4,5" />
+        </Style>
+    </mah:MetroWindow.Resources>
+    <Grid Margin="10,0,10,10">
+        <TabControl Margin="4,10,4,40" Style="{DynamicResource MahApps.Styles.TabControl.Animated}">
+            <TabItem Header="General">
+                <StackPanel Height="Auto" Margin="4,4,4,4">
+                    <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
+                    <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
+                    <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Enable system tray" IsChecked="{Binding MinimizeToTray}" />
+                    <CheckBox x:Name="OutputOnStartup" Content="Show output on startup" ToolTip="Show output on startup" IsChecked="{Binding OutputOnStartup}" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Appearance">
+                <StackPanel Height="Auto" Margin="4,4,4,4">
+                    <Label Content="Theme:" FontWeight="Bold" />
+                    <ComboBox x:Name="Style" SelectedValue="{Binding Style}" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
+        <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
+        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
+    </Grid>
+</mah:MetroWindow>

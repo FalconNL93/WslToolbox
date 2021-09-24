@@ -6,11 +6,11 @@ using System.Windows;
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for OutputWindow.xaml
+    /// Interaction logic for OutputView.xaml
     /// </summary>
-    public partial class OutputWindow : MetroWindow
+    public partial class OutputView : MetroWindow
     {
-        public OutputWindow()
+        public OutputView()
         {
             InitializeComponent();
         }

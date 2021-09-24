@@ -4,6 +4,7 @@
     {
         public bool DebugLogging { get; set; }
         public bool EnableSystemTray { get; set; }
+        public bool MinimizeToTray { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
         public bool OutputOnStartup { get; set; }
         public ThemeConfiguration.Styles Style { get; set; } = ThemeConfiguration.Styles.Auto;

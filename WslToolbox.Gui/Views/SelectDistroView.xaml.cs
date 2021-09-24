@@ -7,11 +7,11 @@ using WslToolbox.Core;
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for SelectDistroWindow.xaml
+    /// Interaction logic for SelectDistroView.xaml
     /// </summary>
-    public partial class SelectDistroWindow : MetroWindow
+    public partial class SelectDistroView : MetroWindow
     {
-        public SelectDistroWindow()
+        public SelectDistroView()
         {
             InitializeComponent();
             InstallDistro.IsEnabled = false;

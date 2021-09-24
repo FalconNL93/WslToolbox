@@ -9,14 +9,14 @@ using WslToolbox.Gui.Handlers;
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsWindow.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsWindow : MetroWindow
+    public partial class SettingsView : MetroWindow
     {
         private readonly DefaultConfiguration Configuration;
         private readonly ConfigurationHandler ConfigHandler;
 
-        public SettingsWindow(DefaultConfiguration configuration, ConfigurationHandler configHandler)
+        public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler)
         {
             Configuration = configuration;
             DataContext = configuration;

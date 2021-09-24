@@ -8,13 +8,13 @@ using System.Windows.Input;
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for ImportDistroWindow.xaml
+    /// Interaction logic for ImportView.xaml
     /// </summary>
-    public partial class ImportDistroWindow : MetroWindow
+    public partial class ImportView : MetroWindow
     {
         private static readonly Regex ValidCharacters = new("^[a-zA-Z0-9]*$");
 
-        public ImportDistroWindow(string path)
+        public ImportView(string path)
         {
             InitializeComponent();
         }

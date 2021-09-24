@@ -1,5 +1,5 @@
 #define MyAppName "WslToolbox"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "FalconNL93"
 #define MyAppURL "https://github.com/FalconNL93/WslToolbox"
 #define MyAppExeName "WslToolbox.Gui.exe"
