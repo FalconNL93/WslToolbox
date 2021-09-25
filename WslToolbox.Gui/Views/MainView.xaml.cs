@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
@@ -21,16 +19,17 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private readonly ConfigurationHandler Config = new();
         private readonly OutputView OutputWindow = new();
-        private readonly SystemTrayClass SystemTray = new();
+        public readonly SystemTrayClass SystemTray = new();
         private readonly AssemblyName GuiAssembly;
         private readonly AssemblyName CoreAssembly;
+        private readonly MainViewModel ViewModel;
 
         public MainView()
         {
             InitializeComponent();
             DataContext = new MainViewModel(this);
+            ViewModel = (MainViewModel)DataContext;
             GuiAssembly = Assembly.GetExecutingAssembly().GetName();
             CoreAssembly = GenericClass.Assembly().GetName();
 
@@ -201,35 +200,26 @@ namespace WslToolbox.Gui.Views
         {
             HandleSystemTray();
 
-            if (Config.Configuration.OutputOnStartup)
+            if (ViewModel.Config.Configuration.OutputOnStartup)
             {
                 OutputWindow.Show();
             }
 
-            ThemeHandler.Set(Config.Configuration.Style);
+            ThemeHandler.Set(ViewModel.Config.Configuration.Style);
         }
 
         private void HandleSystemTray()
         {
             SystemTray.Dispose();
 
-            if (Config.Configuration.EnableSystemTray)
+            if (ViewModel.Config.Configuration.EnableSystemTray)
             {
                 SystemTray.Show();
-                SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => WindowState = WindowState.Normal;
-
-                CompositeCollection contextMenuSystemTrayItems = new()
-                {
-                    new MenuItem()
-                    {
-                        Header = "Show Application",
-                        Command = ((MainViewModel)DataContext).ShowApplicationCommand
-                    }
-                };
+                SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => ViewModel.ShowApplicationCommand.Execute(null);
 
                 SystemTray.Tray.ContextMenu = new()
                 {
-                    ItemsSource = contextMenuSystemTrayItems
+                    ItemsSource = ViewModel.ContextMenuSystemTrayItems()
                 };
             }
         }
@@ -263,7 +253,7 @@ namespace WslToolbox.Gui.Views
         private async void PopulateWsl()
         {
             List<DistributionClass> DistroList = await ToolboxClass.
-                ListDistributions(Config.Configuration.HideDockerDistributions).
+                ListDistributions(ViewModel.Config.Configuration.HideDockerDistributions).
                 ConfigureAwait(true);
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
@@ -291,19 +281,6 @@ namespace WslToolbox.Gui.Views
 
         private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
 
-        private void ToolboxSettings_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsView settingsWindow = new(Config.Configuration, Config);
-            settingsWindow.ShowDialog();
-
-            if ((bool)settingsWindow.DialogResult)
-            {
-                Config.Save();
-                PopulateWsl();
-                HandleConfiguration();
-            }
-        }
-
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             UpdateWsl.IsEnabled = false;
@@ -330,7 +307,7 @@ namespace WslToolbox.Gui.Views
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)
         {
-            if (Config.Configuration.MinimizeToTray && Config.Configuration.EnableSystemTray)
+            if (ViewModel.Config.Configuration.MinimizeToTray && ViewModel.Config.Configuration.EnableSystemTray)
             {
                 ShowInTaskbar = WindowState != WindowState.Minimized;
             }
