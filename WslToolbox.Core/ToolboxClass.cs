@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,6 +63,8 @@ namespace WslToolbox.Core
         public static async Task<CommandClass> UnregisterDistribution(DistributionClass distribution) => await Task.Run(() => CommandClass.ExecuteCommand($"{WslCommands.UnregisterDistribution} {distribution.Name}")).ConfigureAwait(true);
 
         public static async Task<CommandClass> UpdateWsl() => await Task.Run(() => CommandClass.ExecuteCommand(WslCommands.Update)).ConfigureAwait(true);
+
+        public static async Task<bool> ServiceIsRunning() => await Task.Run(() => Process.GetProcessesByName("wslhost").Length > 0).ConfigureAwait(true);
     }
 
     internal static class WslCommands

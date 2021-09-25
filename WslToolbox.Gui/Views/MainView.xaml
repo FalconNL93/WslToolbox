@@ -43,9 +43,9 @@
                 </Style>
             </StackPanel.Resources>
             <Label Content="WSL Service" FontWeight="Bold" />
-            <Button x:Name="StartWsl" Content="Start" Click="StartWsl_Click" />
-            <Button x:Name="StopWsl" Content="Stop" Command="{Binding RestartWslServiceCommand}" />
-            <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click" />
+            <Button x:Name="StartWsl" Content="Start" Click="StartWsl_Click" Command="{Binding StartWslServiceCommand}" />
+            <Button x:Name="StopWsl" Content="Stop" Command="{Binding StopWslServiceCommand}" />
+            <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click" Command="{Binding RestartWslServiceCommand}" />
             <Button x:Name="UpdateWsl" Content="Update" Click="UpdateWsl_Click" />
             <Button x:Name="RefreshWsl" Content="Refresh" Click="RefreshWsl_Click" />
             <Label Content="Toolbox" FontWeight="Bold" Margin="0,10,0,0" />
