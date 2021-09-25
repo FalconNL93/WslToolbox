@@ -8,7 +8,7 @@
         Background="{StaticResource MahApps.Brushes.ThemeBackground}"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Settings" Height="205" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Height" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
+        Title="Settings" Height="248" Width="354" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="Height" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
     <mah:MetroWindow.Resources>
         <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
             <Setter Property="Margin" Value="4,3,4,0" />

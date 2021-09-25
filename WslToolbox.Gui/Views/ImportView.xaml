@@ -6,7 +6,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  Background="{StaticResource MahApps.Brushes.ThemeBackground}"
                  mc:Ignorable="d"
-        Title="Import" Height="183" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True">
+        Title="Import" Height="198" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True">
     <Grid Margin="10,10,10,10">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="270" Margin="5,5,5,5">
             <StackPanel.Resources>

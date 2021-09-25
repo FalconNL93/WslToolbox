@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Data;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
@@ -30,7 +30,7 @@ namespace WslToolbox.Gui.Views
         public MainView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(this);
             GuiAssembly = Assembly.GetExecutingAssembly().GetName();
             CoreAssembly = GenericClass.Assembly().GetName();
 
@@ -217,16 +217,21 @@ namespace WslToolbox.Gui.Views
             {
                 SystemTray.Show();
                 SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => WindowState = WindowState.Normal;
-                ContextMenu contextMenuSystemTray = new();
 
-                SystemTray.Tray.ContextMenu = contextMenuSystemTray;
+                CompositeCollection contextMenuSystemTrayItems = new()
+                {
+                    new MenuItem()
+                    {
+                        Header = "Show Application",
+                        Command = ((MainViewModel)DataContext).ShowApplicationCommand
+                    }
+                };
+
+                SystemTray.Tray.ContextMenu = new()
+                {
+                    ItemsSource = contextMenuSystemTrayItems
+                };
             }
-        }
-
-        public class MenuItem
-        {
-            public string Name { get; set; }
-            public ICommand Command { get; set; }
         }
 
         private void PopulateSelectedDistro()

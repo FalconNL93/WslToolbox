@@ -4,12 +4,10 @@ using System.Windows.Input;
 
 namespace WslToolbox.Gui.Commands
 {
-    public class ClickCommandHandler : ICommand
+    public class RelayCommand : ICommand
     {
-        public ClickCommandHandler()
-        {
-            Trace.WriteLine("Class Init");
-        }
+        private Action<object> execute;
+        private Func<object, bool> canExecute;
 
         public event EventHandler CanExecuteChanged
         {
@@ -17,14 +15,20 @@ namespace WslToolbox.Gui.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        {
+            this.execute = execute;
+            this.canExecute = canExecute;
+        }
+
         public bool CanExecute(object parameter)
         {
-            return true;
+            return this.canExecute == null || this.canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            Trace.WriteLine("Executed!");
+            this.execute(parameter);
         }
     }
 }
