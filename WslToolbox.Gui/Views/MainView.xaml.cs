@@ -11,6 +11,8 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
+using System.Threading;
+using System.ComponentModel;
 
 namespace WslToolbox.Gui.Views
 {
@@ -21,25 +23,32 @@ namespace WslToolbox.Gui.Views
     {
         private readonly OutputView OutputWindow = new();
         public readonly SystemTrayClass SystemTray = new();
-        private readonly AssemblyName GuiAssembly;
-        private readonly AssemblyName CoreAssembly;
-        private readonly MainViewModel ViewModel;
+        private readonly AssemblyName GuiAssembly = Assembly.GetExecutingAssembly().GetName();
+        private readonly AssemblyName CoreAssembly = GenericClass.Assembly().GetName();
+        private MainViewModel ViewModel;
+        private DistributionClass SelectedDistro { get; set; }
 
         public MainView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(this);
-            ViewModel = (MainViewModel)DataContext;
-            GuiAssembly = Assembly.GetExecutingAssembly().GetName();
-            CoreAssembly = GenericClass.Assembly().GetName();
-
+            InitializeViewModel();
             PopulateWsl();
             PopulateSelectedDistro();
             HandleConfiguration();
-            Trace.WriteLine("Initialized.");
         }
 
-        private DistributionClass SelectedDistro { get; set; }
+        private void InitializeViewModel()
+        {
+            DataContext = new MainViewModel(this);
+            ViewModel = (MainViewModel)DataContext;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SystemTray.Dispose();
+
+            base.OnClosing(e);
+        }
 
         protected override void OnClosed(EventArgs e)
         {
@@ -205,7 +214,7 @@ namespace WslToolbox.Gui.Views
                 OutputWindow.Show();
             }
 
-            ThemeHandler.Set(ViewModel.Config.Configuration.Style);
+            ThemeHandler.Set(ViewModel.Config.Configuration.SelectedStyle);
         }
 
         private void HandleSystemTray()
@@ -214,12 +223,18 @@ namespace WslToolbox.Gui.Views
 
             if (ViewModel.Config.Configuration.EnableSystemTray)
             {
+                if (ViewModel.Config.Configuration.MinimizeOnStartup)
+                {
+                    WindowState = WindowState.Minimized;
+                    Hide();
+                }
+
                 SystemTray.Show();
                 SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => ViewModel.ShowApplicationCommand.Execute(null);
 
                 SystemTray.Tray.ContextMenu = new()
                 {
-                    ItemsSource = ViewModel.ContextMenuSystemTrayItems()
+                    ItemsSource = ViewModel.SystemTrayMenuItems()
                 };
             }
         }

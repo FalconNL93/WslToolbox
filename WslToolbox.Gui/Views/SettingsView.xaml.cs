@@ -49,7 +49,7 @@ namespace WslToolbox.Gui.Views
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Style.ItemsSource = Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
+            SelectedStyle.ItemsSource = Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
         }
 
         private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)

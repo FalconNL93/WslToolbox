@@ -11,7 +11,12 @@ namespace WslToolbox.Gui.Classes
 
         public void Dispose()
         {
-            Tray?.Dispose();
+            if (Tray is TaskbarIcon)
+            {
+                Tray.Visibility = System.Windows.Visibility.Hidden;
+                Tray.Icon.Dispose();
+                Tray.Dispose();
+            }
         }
 
         public void Show()
