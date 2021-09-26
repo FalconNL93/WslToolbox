@@ -13,8 +13,8 @@ namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
-        public readonly ConfigurationHandler Config = new();
         private readonly MainView View;
+        public readonly ConfigurationHandler Config = new();
         public ICommand ShowApplicationCommand => new RelayCommand(ShowApplication, o => View.WindowState == System.Windows.WindowState.Minimized);
         public ICommand SaveConfigurationCommand => new RelayCommand(o => { Config.Save(); }, o => true);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
@@ -22,19 +22,31 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, CanExecuteStop);
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, CanExecuteStop);
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
+        
+        public Timer ServicePoller;
         public Func<object, bool> CanExecuteStart = o => true;
         public Func<object, bool> CanExecuteStop = o => true;
 
         public MainViewModel(MainView view)
         {
             View = view;
-
+            InitializeHandlers();
             PollTimerInitializer();
+        }
+
+        private void InitializeHandlers()
+        {
+            Config.ConfigUpdatedSuccessfully += SaveSuccessfullyEvent;
         }
 
         public CompositeCollection SystemTrayMenuItems()
         {
             return SystemTrayMenuCollection.Items(this);
+        }
+
+        public CompositeCollection DataGridMenuItems()
+        {
+            return DataGridMenuCollection.Items(this);
         }
 
         public void ShowSettings(object parameter)
@@ -78,22 +90,30 @@ namespace WslToolbox.Gui.ViewModels
             CanExecuteStop = o => Config.Configuration.PollServiceStatus ? isRunning : true;
         }
 
-        public void PollTimerInitializer()
+        public void PollTimerInitializer(int interval = 2000)
         {
-            Timer poller = Config.Configuration.PollServiceStatus ? new(PollCallBack, null, 0, 2000) : null;
+            ServicePoller = Config.Configuration.PollServiceStatus ? new(PollCallBack, null, 0, interval) : null;
         }
+
 
         private async void PollCallBack(object o)
         {
             bool isRunning = await ToolboxClass.ServiceIsRunning();
             CanExecuteStop = o => isRunning;
             CanExecuteStart = o => !isRunning;
+
+            Trace.WriteLine("[Poll] Service running: " + isRunning);
         }
 
         public void ShowApplication(object o)
         {
             View.WindowState = System.Windows.WindowState.Normal;
             View.Show();
+        }
+
+        public void SaveSuccessfullyEvent(object sender, EventArgs e)
+        {
+            View.HandleConfiguration();
         }
     }
 }

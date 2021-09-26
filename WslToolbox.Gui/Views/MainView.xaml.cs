@@ -39,8 +39,10 @@ namespace WslToolbox.Gui.Views
 
         private void InitializeViewModel()
         {
-            DataContext = new MainViewModel(this);
-            ViewModel = (MainViewModel)DataContext;
+            MainViewModel viewModel = new(this);
+
+            DataContext = viewModel;
+            ViewModel = viewModel;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -59,7 +61,6 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroConvert_Click(object sender, RoutedEventArgs e)
         {
-            OutputWindow.WriteOutput($"Converting {SelectedDistro.Name} to WSL2...");
             CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro).ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -93,13 +94,10 @@ namespace WslToolbox.Gui.Views
 
             try
             {
-                OutputWindow.WriteOutput($"Exporting {SelectedDistro.Name} to {fileName}...");
                 CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName).ConfigureAwait(true);
-                OutputWindow.WriteOutput($"{SelectedDistro.Name} exported.");
             }
             catch (Exception ex)
             {
-                OutputWindow.WriteOutput($"{SelectedDistro.Name} export failed.");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -133,15 +131,12 @@ namespace WslToolbox.Gui.Views
 
             try
             {
-                OutputWindow.WriteOutput($"Importing {fileName} as {importDistroWindow.DistroName}...");
                 CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
-                OutputWindow.WriteOutput($"{importDistroWindow.DistroName} imported.");
 
                 PopulateWsl();
             }
             catch (Exception ex)
             {
-                OutputWindow.WriteOutput("Import failed.");
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -205,7 +200,7 @@ namespace WslToolbox.Gui.Views
             }
         }
 
-        private void HandleConfiguration()
+        public void HandleConfiguration()
         {
             HandleSystemTray();
 
@@ -273,6 +268,10 @@ namespace WslToolbox.Gui.Views
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
+            DistroDetails.ContextMenu = new()
+            {
+                ItemsSource = ViewModel.DataGridMenuItems()
+            };
         }
 
         private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
@@ -299,10 +298,8 @@ namespace WslToolbox.Gui.Views
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             UpdateWsl.IsEnabled = false;
-            OutputWindow.WriteOutput("Checking for WSL Updates...");
             CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
-            OutputWindow.WriteOutput(output);
 
             if (output.Contains("No updates are available."))
             {

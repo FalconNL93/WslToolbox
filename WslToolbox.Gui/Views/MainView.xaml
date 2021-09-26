@@ -18,16 +18,6 @@
                 <DataGridTextColumn Header="State" Binding="{Binding State}" />
                 <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
             </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="== Work in Progress ==" IsEnabled="False" />
-                    <MenuItem Header="Start" IsEnabled="False" />
-                    <MenuItem Header="Stop" IsEnabled="False" />
-                    <MenuItem Header="Restart" IsEnabled="False" />
-                    <MenuItem Header="Set default" IsEnabled="False" />
-                    <MenuItem Header="Start shell" IsEnabled="False" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
         </DataGrid>
         <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="298" />
         <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
