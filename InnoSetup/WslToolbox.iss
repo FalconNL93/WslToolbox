@@ -21,11 +21,21 @@ OutputDir=bin
 OutputBaseFilename=WslToolbox-setup
 Compression=lzma
 SolidCompression=yes
-WizardStyle=classic
 DisableWelcomePage=no
+
+; Use classic theme
+WizardStyle=classic
+SetupIconFile=compiler:SetupClassicIcon.ico
+WizardImageFile=compiler:WizClassicImage.bmp
+WizardSmallImageFile=compiler:WizClassicSmallImage.bmp
+
+
+[Messages]
+BeveledLabel={#MyAppName}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "dutch"; MessagesFile: "compiler:languages\Dutch.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
