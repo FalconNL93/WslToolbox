@@ -30,13 +30,13 @@ namespace WslToolbox.Gui.ViewModels
         public MainViewModel(MainView view)
         {
             View = view;
-            InitializeHandlers();
+            InitializeEventHandlers();
             PollTimerInitializer();
         }
 
-        private void InitializeHandlers()
+        private void InitializeEventHandlers()
         {
-            Config.ConfigUpdatedSuccessfully += SaveSuccessfullyEvent;
+            Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
         }
 
         public CompositeCollection SystemTrayMenuItems()

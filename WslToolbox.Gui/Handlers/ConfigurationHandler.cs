@@ -2,17 +2,18 @@
 using System.IO;
 using System.Text.Json;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Exceptions;
 
 namespace WslToolbox.Gui.Handlers
 {
     public class ConfigurationHandler
     {
         private readonly string ConfigurationFile;
-        private readonly string ConfigurationPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        private readonly string ConfigurationPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         private readonly string ConfigurationFileName = "settings.json";
 
-        public event EventHandler ConfigUpdatedSuccessfully;
-        public event EventHandler ConfigUpdatedFailed;
+        public event EventHandler ConfigurationUpdatedSuccessfully;
+        public event EventHandler ConfigurationUpdatedFailed;
 
         public ConfigurationHandler()
         {
@@ -34,12 +35,11 @@ namespace WslToolbox.Gui.Handlers
             try
             {
                 File.WriteAllText(ConfigurationFile, JsonSerializer.Serialize(Configuration));
-                ConfigUpdatedSuccessfully?.Invoke(this, EventArgs.Empty);
+                ConfigurationUpdatedSuccessfully?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                ConfigUpdatedFailed?.Invoke(this, EventArgs.Empty);
-                throw new Exception(e.Message);
+                throw new ConfigurationNotSaved(e.Message, e);
             }
         }
 
