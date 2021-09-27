@@ -6,19 +6,17 @@ namespace WslToolbox.Gui.Collections
 {
     public static class SystemTrayMenuCollection
     {
-        public static CompositeCollection Items(MainViewModel viewModel)
+        public static CompositeCollection Items(MainViewModel viewModel) => new()
         {
-            return new()
+            new MenuItem()
             {
-                new MenuItem()
-                {
-                    Header = "Show Application",
-                    Command = viewModel.ShowApplicationCommand
-                },
-                new MenuItem()
-                {
-                    Header = "WSL Service",
-                    ItemsSource = new CompositeCollection()
+                Header = "Show Application",
+                Command = viewModel.ShowApplicationCommand
+            },
+            new MenuItem()
+            {
+                Header = "WSL Service",
+                ItemsSource = new CompositeCollection()
                     {
                         new MenuItem()
                         {
@@ -36,19 +34,18 @@ namespace WslToolbox.Gui.Collections
                             Command = viewModel.RestartWslServiceCommand
                         },
                     }
-                },
-                new MenuItem()
-                {
-                    Header = "Settings",
-                    Command = viewModel.ShowSettingsCommand
-                },
-                new Separator(),
-                new MenuItem()
-                {
-                    Header = "Exit Application",
-                    Command = viewModel.ExitApplicationCommand
-                },
-            };
-        }
+            },
+            new MenuItem()
+            {
+                Header = "Settings",
+                Command = viewModel.ShowSettingsCommand
+            },
+            new Separator(),
+            new MenuItem()
+            {
+                Header = "Exit Application",
+                Command = viewModel.ExitApplicationCommand
+            },
+        };
     }
 }

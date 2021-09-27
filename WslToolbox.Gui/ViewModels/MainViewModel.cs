@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Data;
@@ -18,14 +19,26 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowApplicationCommand => new RelayCommand(ShowApplication, o => View.WindowState == System.Windows.WindowState.Minimized);
         public ICommand SaveConfigurationCommand => new RelayCommand(o => { Config.Save(); }, o => true);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
-        public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, CanExecuteStart);
-        public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, CanExecuteStop);
-        public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, CanExecuteStop);
+        public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => true);
+        public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => true);
+        public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
-        
+        public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => true);
+        public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => true);
+
         public Timer ServicePoller;
-        public Func<object, bool> CanExecuteStart = o => true;
-        public Func<object, bool> CanExecuteStop = o => true;
+
+        private DistributionClass _selectedDistribution;
+
+        public DistributionClass SelectedDistribution {
+            get {
+                return _selectedDistribution;
+            }
+            set 
+            {
+                _selectedDistribution = value;
+            }
+        }
 
         public MainViewModel(MainView view)
         {
@@ -76,18 +89,14 @@ namespace WslToolbox.Gui.ViewModels
             StartWslServiceCommand.Execute(null);
         }
 
-        public async void CanStart(object parameter)
+        public async void StartDistribution(object parameter)
         {
-            bool isRunning = await ToolboxClass.ServiceIsRunning();
-
-            CanExecuteStart = o => Config.Configuration.PollServiceStatus ? !isRunning : true;
+            _ = await ToolboxClass.StartDistribution((DistributionClass)parameter);
         }
 
-        public async void CanStop(object parameter)
+        public async void StopDistribution(object parameter)
         {
-            bool isRunning = await ToolboxClass.ServiceIsRunning();
-
-            CanExecuteStop = o => Config.Configuration.PollServiceStatus ? isRunning : true;
+            _ = await ToolboxClass.TerminateDistribution((DistributionClass)parameter);
         }
 
         public void PollTimerInitializer(int interval = 2000)
@@ -95,14 +104,9 @@ namespace WslToolbox.Gui.ViewModels
             ServicePoller = Config.Configuration.PollServiceStatus ? new(PollCallBack, null, 0, interval) : null;
         }
 
-
         private async void PollCallBack(object o)
         {
             bool isRunning = await ToolboxClass.ServiceIsRunning();
-            CanExecuteStop = o => isRunning;
-            CanExecuteStart = o => !isRunning;
-
-            Trace.WriteLine("[Poll] Service running: " + isRunning);
         }
 
         public void ShowApplication(object o)

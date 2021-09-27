@@ -12,7 +12,7 @@
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
-        <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100">
+        <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100" SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="State" Binding="{Binding State}" />

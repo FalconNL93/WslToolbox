@@ -26,7 +26,6 @@ namespace WslToolbox.Gui.Views
         private readonly AssemblyName GuiAssembly = Assembly.GetExecutingAssembly().GetName();
         private readonly AssemblyName CoreAssembly = GenericClass.Assembly().GetName();
         private MainViewModel ViewModel;
-        private DistributionClass SelectedDistro { get; set; }
 
         public MainView()
         {
@@ -61,15 +60,18 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroConvert_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass command = await ToolboxClass.ConvertDistribution(SelectedDistro).ConfigureAwait(true);
+            CommandClass command = await ToolboxClass.ConvertDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
             string output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            SelectedDistro = DistroDetails.SelectedItem is DistributionClass @class ? @class : null;
             PopulateSelectedDistro();
+            DistroDetails.ContextMenu = ViewModel.SelectedDistribution is DistributionClass ? new()
+            {
+                ItemsSource = ViewModel.DataGridMenuItems()
+            } : null;
         }
 
         private async void DistroExport_Click(object sender, RoutedEventArgs e)
@@ -94,7 +96,7 @@ namespace WslToolbox.Gui.Views
 
             try
             {
-                CommandClass command = await ToolboxClass.ExportDistribution(SelectedDistro, fileName).ConfigureAwait(true);
+                CommandClass command = await ToolboxClass.ExportDistribution(ViewModel.SelectedDistribution, fileName).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -131,7 +133,7 @@ namespace WslToolbox.Gui.Views
 
             try
             {
-                CommandClass command = await ToolboxClass.ImportDistribution(SelectedDistro, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
+                CommandClass command = await ToolboxClass.ImportDistribution(ViewModel.SelectedDistribution, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
 
                 PopulateWsl();
             }
@@ -156,31 +158,31 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroRestart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(true);
-            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(true);
+            _ = await ToolboxClass.TerminateDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.StartDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.SetDefaultDistribution(SelectedDistro).ConfigureAwait(true);
+            _ = await ToolboxClass.SetDefaultDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
-        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(SelectedDistro);
+        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(ViewModel.SelectedDistribution);
 
         private async void DistroStart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.StartDistribution(SelectedDistro).ConfigureAwait(true);
+            _ = await ToolboxClass.StartDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroStop_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(SelectedDistro).ConfigureAwait(true);
+            _ = await ToolboxClass.TerminateDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
@@ -188,13 +190,13 @@ namespace WslToolbox.Gui.Views
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult uninstallMessagebox = MessageBox.Show(
-                $"Are you sure you want to uninstall {SelectedDistro.Name}? This will also destroy all data within the distribution.", "Uninstall?",
+                $"Are you sure you want to uninstall {ViewModel.SelectedDistribution.Name}? This will also destroy all data within the distribution.", "Uninstall?",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
             if (uninstallMessagebox == MessageBoxResult.Yes)
             {
-                _ = await ToolboxClass.UnregisterDistribution(SelectedDistro).ConfigureAwait(true);
+                _ = await ToolboxClass.UnregisterDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
 
                 PopulateWsl();
             }
@@ -236,7 +238,7 @@ namespace WslToolbox.Gui.Views
 
         private void PopulateSelectedDistro()
         {
-            if (SelectedDistro == null)
+            if (ViewModel.SelectedDistribution == null)
             {
                 DistroSetDefault.IsEnabled = false;
                 DistroStart.IsEnabled = false;
@@ -250,13 +252,13 @@ namespace WslToolbox.Gui.Views
                 return;
             }
 
-            DistroStart.IsEnabled = SelectedDistro.State != DistributionClass.StateRunning;
-            DistroStop.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
+            DistroStart.IsEnabled = ViewModel.SelectedDistribution.State != DistributionClass.StateRunning;
+            DistroStop.IsEnabled = ViewModel.SelectedDistribution.State == DistributionClass.StateRunning;
             DistroRestart.IsEnabled = true;
-            DistroConvert.IsEnabled = SelectedDistro.Version != 2;
+            DistroConvert.IsEnabled = ViewModel.SelectedDistribution.Version != 2;
             DistroUninstall.IsEnabled = true;
-            DistroSetDefault.IsEnabled = !SelectedDistro.IsDefault;
-            DistroShell.IsEnabled = SelectedDistro.State == DistributionClass.StateRunning;
+            DistroSetDefault.IsEnabled = !ViewModel.SelectedDistribution.IsDefault;
+            DistroShell.IsEnabled = ViewModel.SelectedDistribution.State == DistributionClass.StateRunning;
             DistroExport.IsEnabled = true;
         }
 
@@ -268,10 +270,6 @@ namespace WslToolbox.Gui.Views
 
             DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
-            DistroDetails.ContextMenu = new()
-            {
-                ItemsSource = ViewModel.DataGridMenuItems()
-            };
         }
 
         private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
