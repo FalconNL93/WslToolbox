@@ -57,8 +57,6 @@ namespace WslToolbox.Gui.ViewModels
 
         public void ShowSettings(object parameter)
         {
-            LogHandler.Log().Debug("Debug log");
-            LogHandler.Log().Error("Error log");
             SettingsView settingsWindow = new(Config.Configuration, Config);
             settingsWindow.ShowDialog();
 

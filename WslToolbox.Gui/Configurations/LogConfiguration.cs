@@ -5,7 +5,7 @@ namespace WslToolbox.Gui.Configurations
 {
     public class LogConfiguration
     {
-        public static string FileName = $"log.txt";
+        public static string FileName = $"{Directory.GetCurrentDirectory()}/logs/log.txt";
 
         public static IConfiguration Configuration()
         {

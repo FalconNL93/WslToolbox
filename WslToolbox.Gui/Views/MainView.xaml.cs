@@ -13,6 +13,7 @@ using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
 using System.Threading;
 using System.ComponentModel;
+using Serilog.Core;
 
 namespace WslToolbox.Gui.Views
 {
@@ -23,6 +24,7 @@ namespace WslToolbox.Gui.Views
     {
         private readonly AssemblyName GuiAssembly = Assembly.GetExecutingAssembly().GetName();
         private readonly AssemblyName CoreAssembly = GenericClass.Assembly().GetName();
+        private readonly Logger Log = LogHandler.Log();
         private MainViewModel ViewModel;
 
         public readonly SystemTrayClass SystemTray = new();
