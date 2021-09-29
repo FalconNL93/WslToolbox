@@ -35,7 +35,7 @@
                     <CheckBox x:Name="PollServiceStatus" Content="Poll service status" ToolTip="Pull service status" IsChecked="{Binding PollServiceStatus}" />
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Appearance" >
+            <TabItem Header="Appearance">
                 <StackPanel>
                     <Label Content="Theme:" FontWeight="Bold" />
                     <ComboBox x:Name="SelectedStyle" SelectedValue="{Binding SelectedStyle}" />
@@ -47,7 +47,7 @@
                         <TextBlock FontWeight="Bold">Configuration File:</TextBlock>
                         <LineBreak />
                         <Hyperlink x:Name="OpenJsonFileLink"
-                                   NavigateUri="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                                   NavigateUri="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                    ToolTip="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                                    <TextBlock Text="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" MaxWidth="400" TextTrimming="CharacterEllipsis" />
                         </Hyperlink>

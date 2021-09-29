@@ -1,9 +1,10 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -11,9 +12,6 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
-using System.Threading;
-using System.ComponentModel;
-using Serilog.Core;
 
 namespace WslToolbox.Gui.Views
 {
