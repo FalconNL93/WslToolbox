@@ -1,12 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using Serilog.Core;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 
@@ -15,6 +17,7 @@ namespace WslToolbox.Gui.ViewModels
     public class MainViewModel
     {
         private readonly MainView View;
+
         public readonly ConfigurationHandler Config = new();
         public ICommand ShowApplicationCommand => new RelayCommand(ShowApplication, o => View.WindowState == System.Windows.WindowState.Minimized);
         public ICommand SaveConfigurationCommand => new RelayCommand(o => { Config.Save(); }, o => true);
@@ -25,24 +28,15 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => true);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => true);
+        public ICommand OpenLogFileCommand => new RelayCommand(OpenLogFile, o => File.Exists(LogConfiguration.FileName));
 
         public Timer ServicePoller;
-
-        private DistributionClass _selectedDistribution;
-
-        public DistributionClass SelectedDistribution {
-            get {
-                return _selectedDistribution;
-            }
-            set 
-            {
-                _selectedDistribution = value;
-            }
-        }
+        public DistributionClass SelectedDistribution { get; set; }
 
         public MainViewModel(MainView view)
         {
             View = view;
+
             InitializeEventHandlers();
             PollTimerInitializer();
         }
@@ -64,6 +58,8 @@ namespace WslToolbox.Gui.ViewModels
 
         public void ShowSettings(object parameter)
         {
+            LogHandler.Log().Debug("Debug log");
+            LogHandler.Log().Error("Error log");
             SettingsView settingsWindow = new(Config.Configuration, Config);
             settingsWindow.ShowDialog();
 
@@ -118,6 +114,14 @@ namespace WslToolbox.Gui.ViewModels
         public void SaveSuccessfullyEvent(object sender, EventArgs e)
         {
             View.HandleConfiguration();
+        }
+
+        public void OpenLogFile(object parameter)
+        {
+            _ = Process.Start(new ProcessStartInfo("explorer")
+            {
+                Arguments = Path.GetFullPath(LogConfiguration.FileName)
+            });
         }
     }
 }

@@ -21,19 +21,19 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private readonly OutputView OutputWindow = new();
-        public readonly SystemTrayClass SystemTray = new();
         private readonly AssemblyName GuiAssembly = Assembly.GetExecutingAssembly().GetName();
         private readonly AssemblyName CoreAssembly = GenericClass.Assembly().GetName();
         private MainViewModel ViewModel;
+
+        public readonly SystemTrayClass SystemTray = new();
 
         public MainView()
         {
             InitializeComponent();
             InitializeViewModel();
             PopulateWsl();
-            PopulateSelectedDistro();
             HandleConfiguration();
+            Activity.IsActive = false;
         }
 
         private void InitializeViewModel()
@@ -67,7 +67,6 @@ namespace WslToolbox.Gui.Views
 
         private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            PopulateSelectedDistro();
             DistroDetails.ContextMenu = ViewModel.SelectedDistribution is DistributionClass ? new()
             {
                 ItemsSource = ViewModel.DataGridMenuItems()
@@ -206,11 +205,6 @@ namespace WslToolbox.Gui.Views
         {
             HandleSystemTray();
 
-            if (ViewModel.Config.Configuration.OutputOnStartup)
-            {
-                OutputWindow.Show();
-            }
-
             ThemeHandler.Set(ViewModel.Config.Configuration.SelectedStyle);
         }
 
@@ -234,32 +228,6 @@ namespace WslToolbox.Gui.Views
                     ItemsSource = ViewModel.SystemTrayMenuItems()
                 };
             }
-        }
-
-        private void PopulateSelectedDistro()
-        {
-            if (ViewModel.SelectedDistribution == null)
-            {
-                DistroSetDefault.IsEnabled = false;
-                DistroStart.IsEnabled = false;
-                DistroStop.IsEnabled = false;
-                DistroConvert.IsEnabled = false;
-                DistroRestart.IsEnabled = false;
-                DistroUninstall.IsEnabled = false;
-                DistroShell.IsEnabled = false;
-                DistroExport.IsEnabled = false;
-
-                return;
-            }
-
-            DistroStart.IsEnabled = ViewModel.SelectedDistribution.State != DistributionClass.StateRunning;
-            DistroStop.IsEnabled = ViewModel.SelectedDistribution.State == DistributionClass.StateRunning;
-            DistroRestart.IsEnabled = true;
-            DistroConvert.IsEnabled = ViewModel.SelectedDistribution.Version != 2;
-            DistroUninstall.IsEnabled = true;
-            DistroSetDefault.IsEnabled = !ViewModel.SelectedDistribution.IsDefault;
-            DistroShell.IsEnabled = ViewModel.SelectedDistribution.State == DistributionClass.StateRunning;
-            DistroExport.IsEnabled = true;
         }
 
         private async void PopulateWsl()
@@ -290,9 +258,6 @@ namespace WslToolbox.Gui.Views
         }
 
         private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl().ConfigureAwait(true);
-
-        private void ToolboxOutput_Click(object sender, RoutedEventArgs e) => OutputWindow.Show();
-
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             UpdateWsl.IsEnabled = false;

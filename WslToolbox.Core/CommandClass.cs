@@ -36,6 +36,11 @@ namespace WslToolbox.Core
 
         public static void StartShell(DistributionClass distribution)
         {
+            if (distribution is null)
+            {
+                return;
+            }
+
             string shellCommand = $"-Command wsl -d {distribution.Name}";
 
             if (!distribution.IsInstalled)

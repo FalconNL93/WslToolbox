@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WslToolbox.Gui.Exceptions
 {
-    class ConfigurationNotSaved : Exception
+    internal class ConfigurationNotSaved : Exception
     {
         public ConfigurationNotSaved()
         {

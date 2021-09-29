@@ -8,8 +8,10 @@ namespace WslToolbox.Gui.Handlers
 {
     public class ConfigurationHandler
     {
-        private readonly string ConfigurationFile;
-        private readonly string ConfigurationPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        public string ConfigurationFile { get; }
+        public string ConfigurationPath { get; } = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        public bool ConfigurationExists { get; }
+
         private readonly string ConfigurationFileName = "settings.json";
 
         public event EventHandler ConfigurationUpdatedSuccessfully;
@@ -17,11 +19,12 @@ namespace WslToolbox.Gui.Handlers
 
         public ConfigurationHandler()
         {
-            ConfigurationFile = $"{ConfigurationPath}/{ConfigurationFileName}";
+            ConfigurationFile = $"{ConfigurationPath}\\{ConfigurationFileName}";
             Configuration = new();
 
             if (File.Exists(ConfigurationFile))
             {
+                ConfigurationExists = File.Exists(ConfigurationFile);
                 Read();
             }
         }

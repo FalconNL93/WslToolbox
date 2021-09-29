@@ -10,5 +10,11 @@
         public bool OutputOnStartup { get; set; }
         public bool PollServiceStatus { get; set; }
         public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
+        public Serilog Serilog { get; set; } = new();
+    }
+
+    public class Serilog
+    {
+        public string MinimumLevel { get; set; } = "Error";
     }
 }
