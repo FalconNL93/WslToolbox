@@ -1,10 +1,5 @@
-﻿using System;
-using Serilog.Core;
-using Serilog;
-using System.Reflection;
+﻿using Microsoft.Extensions.Configuration;
 using System.IO;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 
 namespace WslToolbox.Gui.Configurations
 {
@@ -14,11 +9,12 @@ namespace WslToolbox.Gui.Configurations
 
         public static IConfiguration Configuration()
         {
-           return new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(path: "settings.json", optional: true, reloadOnChange: true)
-                .Build();
+            return new ConfigurationBuilder()
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                 .AddJsonFile(path: "settings.json", optional: true, reloadOnChange: true)
+                 .Build();
         }
+
         public enum LogLevel
         {
             Verbose,

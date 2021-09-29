@@ -53,7 +53,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <Label Content="Log level:" FontWeight="Bold" />
-                    <TextBox x:Name="MinimumLevel" Text="{Binding Serilog.MinimumLevel}" IsReadOnly="true" IsEnabled="false"/>
+                    <ComboBox x:Name="MinimumLevel" SelectedValue="{Binding Logging.MinimumLevel}" />
                 </StackPanel>
             </TabItem>
         </TabControl>

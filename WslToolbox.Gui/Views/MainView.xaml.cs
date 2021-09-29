@@ -258,6 +258,7 @@ namespace WslToolbox.Gui.Views
         }
 
         private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl().ConfigureAwait(true);
+
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             UpdateWsl.IsEnabled = false;

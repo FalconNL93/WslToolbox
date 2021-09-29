@@ -1,4 +1,6 @@
-﻿namespace WslToolbox.Gui.Configurations
+﻿using Serilog.Events;
+
+namespace WslToolbox.Gui.Configurations
 {
     public class DefaultConfiguration
     {
@@ -10,11 +12,11 @@
         public bool OutputOnStartup { get; set; }
         public bool PollServiceStatus { get; set; }
         public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
-        public Serilog Serilog { get; set; } = new();
+        public Logging Logging { get; set; } = new();
     }
 
-    public class Serilog
+    public class Logging
     {
-        public string MinimumLevel { get; set; } = "Error";
+        public LogEventLevel MinimumLevel { get; set; } = LogEventLevel.Error;
     }
 }

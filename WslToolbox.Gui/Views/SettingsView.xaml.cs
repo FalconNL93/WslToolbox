@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Serilog.Events;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -40,7 +41,8 @@ namespace WslToolbox.Gui.Views
                             Arguments = e.Uri.ToString()
                         });
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     LogHandler.Log().Error(ex, ex.Message);
                     MessageBox.Show("An error has occurred while executing the request action." +
@@ -75,6 +77,7 @@ namespace WslToolbox.Gui.Views
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SelectedStyle.ItemsSource = Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
+            MinimumLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel)).Cast<LogEventLevel>();
         }
 
         private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)

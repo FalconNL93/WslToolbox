@@ -15,6 +15,7 @@ namespace WslToolbox.Gui.Handlers
         private readonly string ConfigurationFileName = "settings.json";
 
         public event EventHandler ConfigurationUpdatedSuccessfully;
+
         public event EventHandler ConfigurationUpdatedFailed;
 
         public ConfigurationHandler()
