@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Exceptions;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 
@@ -15,30 +18,39 @@ namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
-        private readonly MainView View;
-
         public readonly ConfigurationHandler Config = new();
-        public ICommand ShowApplicationCommand => new RelayCommand(ShowApplication, o => View.WindowState == System.Windows.WindowState.Minimized);
-        public ICommand SaveConfigurationCommand => new RelayCommand(o => { Config.Save(); }, o => true);
+        private readonly MainView _view;
+
+        private Timer _servicePoller;
+
+        public MainViewModel(MainView view)
+        {
+            _view = view;
+
+            InitializeEventHandlers();
+            PollTimerInitializer();
+        }
+
+        public ICommand ShowApplicationCommand =>
+            new RelayCommand(ShowApplication, o => _view.WindowState == WindowState.Minimized);
+
+        public ICommand SaveConfigurationCommand => new RelayCommand(SaveConfiguration, o => true);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
-        public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => true);
+        public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
         public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => true);
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => true);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => true);
-        public ICommand OpenLogFileCommand => new RelayCommand(OpenLogFile, o => File.Exists(LogConfiguration.FileName));
+        
+        public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
-        public Timer ServicePoller;
+        public ICommand OpenLogFileCommand =>
+            new RelayCommand(OpenLogFile, o => File.Exists(LogConfiguration.FileName));
+
         public DistributionClass SelectedDistribution { get; set; }
 
-        public MainViewModel(MainView view)
-        {
-            View = view;
-
-            InitializeEventHandlers();
-            PollTimerInitializer();
-        }
+        private bool CanStartWslService { get; set; } = true;
 
         private void InitializeEventHandlers()
         {
@@ -55,65 +67,81 @@ namespace WslToolbox.Gui.ViewModels
             return DataGridMenuCollection.Items(this);
         }
 
-        public void ShowSettings(object parameter)
+        private void ShowSettings(object parameter)
         {
             SettingsView settingsWindow = new(Config.Configuration, Config);
             settingsWindow.ShowDialog();
 
-            if ((bool)settingsWindow.DialogResult && SaveConfigurationCommand.CanExecute(null))
-            {
-                SaveConfigurationCommand.Execute(null);
-            }
+            if (settingsWindow.DialogResult != null && (bool) settingsWindow.DialogResult &&
+                SaveConfigurationCommand.CanExecute(null)) SaveConfigurationCommand.Execute(null);
         }
 
-        public async void StartWslService(object parameter)
+        private async void StartWslService(object parameter)
         {
+            CanStartWslService = false;
             _ = await ToolboxClass.StartWsl().ConfigureAwait(true);
+            CanStartWslService = true;
         }
 
-        public async void StopWslService(object parameter)
+        private async void StopWslService(object parameter)
         {
+            CanStartWslService = false;
             _ = await ToolboxClass.StopWsl().ConfigureAwait(true);
+            CanStartWslService = true;
         }
 
-        public void RestartWslService(object parameter)
+        private void RestartWslService(object parameter)
         {
             StopWslServiceCommand.Execute(null);
             StartWslServiceCommand.Execute(null);
         }
 
-        public async void StartDistribution(object parameter)
+        private async void StartDistribution(object parameter)
         {
-            _ = await ToolboxClass.StartDistribution((DistributionClass)parameter);
+            _ = await ToolboxClass.StartDistribution((DistributionClass) parameter);
         }
 
-        public async void StopDistribution(object parameter)
+        private async void StopDistribution(object parameter)
         {
-            _ = await ToolboxClass.TerminateDistribution((DistributionClass)parameter);
+            _ = await ToolboxClass.TerminateDistribution((DistributionClass) parameter);
         }
 
-        public void PollTimerInitializer(int interval = 2000)
+        private void PollTimerInitializer(int interval = 2000)
         {
-            ServicePoller = Config.Configuration.PollServiceStatus ? new(PollCallBack, null, 0, interval) : null;
+            _servicePoller = Config.Configuration.PollServiceStatus ? new Timer(PollCallBack, null, 0, interval) : null;
         }
 
         private async void PollCallBack(object o)
         {
-            bool isRunning = await ToolboxClass.ServiceIsRunning();
+            await ToolboxClass.ServiceIsRunning();
         }
 
-        public void ShowApplication(object o)
+        private void ShowApplication(object o)
         {
-            View.WindowState = System.Windows.WindowState.Normal;
-            View.Show();
+            _view.WindowState = WindowState.Normal;
+            _view.Show();
         }
 
-        public void SaveSuccessfullyEvent(object sender, EventArgs e)
+        private void SaveSuccessfullyEvent(object sender, EventArgs e)
         {
-            View.HandleConfiguration();
+            LogHandler.Log().Debug("Configuration file saved, reloading configuration");
+            _view.HandleConfiguration();
         }
 
-        public void OpenLogFile(object parameter)
+        private async void SaveConfiguration(object parameter)
+        {
+            try
+            {
+                Config.Save();
+            }
+            catch (ConfigurationFileNotSavedException e)
+            {
+                LogHandler.Log().Error(e.Message, e);
+                await _view.ShowMessageAsync("Error", "Your configuration is not saved due to an error.");
+            }
+        }
+
+        private void OpenLogFile(object parameter)
         {
             _ = Process.Start(new ProcessStartInfo("explorer")
             {

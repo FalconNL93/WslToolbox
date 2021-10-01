@@ -5,22 +5,29 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  mc:Ignorable="d"
-        Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png" SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False" StateChanged="MetroWindow_StateChanged">
+                 Title="WSL Toolbox" Height="421" Width="626" WindowStartupLocation="CenterScreen"
+                 ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" Icon="/Resources/Images/toolbox.png"
+                 SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False" StateChanged="MetroWindow_StateChanged">
     <Grid Margin="10,0,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="63*" />
             <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
-        <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2" SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100" SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
+        <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2"
+                  SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click"
+                  SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100"
+                  SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="State" Binding="{Binding State}" />
                 <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Width="165" />
-        <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
+        <Label x:Name="DefaultDistribution" Content="DefaultDistribution" Grid.Column="2" HorizontalAlignment="Left"
+               Margin="68,10,0,0" VerticalAlignment="Top" Width="165" />
+        <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top"
+               FontWeight="Bold" Height="26" Width="55" Grid.Column="2" />
         <StackPanel HorizontalAlignment="Center" Margin="0,10,0,19" Width="106">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
@@ -35,16 +42,18 @@
             <Label Content="WSL Service" FontWeight="Bold" />
             <Button x:Name="StartWsl" Content="Start" Click="StartWsl_Click" Command="{Binding StartWslServiceCommand}" />
             <Button x:Name="StopWsl" Content="Stop" Command="{Binding StopWslServiceCommand}" />
-            <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click" Command="{Binding RestartWslServiceCommand}" />
+            <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click"
+                    Command="{Binding RestartWslServiceCommand}" />
             <Button x:Name="UpdateWsl" Content="Update" Click="UpdateWsl_Click" />
             <Button x:Name="RefreshWsl" Content="Refresh" Click="RefreshWsl_Click" />
             <Label Content="Toolbox" FontWeight="Bold" Margin="0,10,0,0" />
             <Button x:Name="ToolboxSettings" Content="Settings" Command="{Binding ShowSettingsCommand}" />
-            <Button x:Name="ToolboxOutput" Content="Open log"  Command="{Binding OpenLogFileCommand}" />
+            <Button x:Name="ToolboxOutput" Content="Open log" Command="{Binding OpenLogFileCommand}" />
             <Button x:Name="ToolboxInfo" Content="Info" Click="ToolboxInfo_Click" />
             <Button x:Name="ExitButton" Content="Exit" Command="{Binding ExitApplicationCommand}" />
         </StackPanel>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="366" Margin="10,10,0,0" VerticalAlignment="Top" Width="106">
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="366" Margin="10,10,0,0" VerticalAlignment="Top"
+                    Width="106">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
                     <Setter Property="Margin" Value="0,5,0,0" />
@@ -68,6 +77,7 @@
             <Button x:Name="DistroExport" Content="Export" Click="DistroExport_Click" />
             <Button x:Name="DistroUninstall" Content="Delete" Click="DistroUninstall_Click" />
         </StackPanel>
-        <mah:ProgressRing x:Name="Activity" Grid.Column="2" HorizontalAlignment="Right" Margin="0,13,10,0" VerticalAlignment="Top" Height="19" Width="16" IsActive="false" />
+        <mah:ProgressRing x:Name="Activity" Grid.Column="2" HorizontalAlignment="Right" Margin="0,13,10,0"
+                          VerticalAlignment="Top" Height="19" Width="16" IsActive="false" />
     </Grid>
 </mah:MetroWindow>

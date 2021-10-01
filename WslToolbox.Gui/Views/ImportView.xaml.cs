@@ -1,14 +1,15 @@
-﻿using MahApps.Metro.Controls;
-using Microsoft.Win32;
-using System.IO;
+﻿using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
+using Microsoft.Win32;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for ImportView.xaml
+    ///     Interaction logic for ImportView.xaml
     /// </summary>
     public partial class ImportView : MetroWindow
     {
@@ -22,19 +23,25 @@ namespace WslToolbox.Gui.Views
         public string DistroName { get; set; }
         public string DistroSelectedDirectory { get; set; }
 
-        private static bool ValidateDistroName(string DistroName) => ValidCharacters.IsMatch(DistroName) && DistroName.Length >= 3;
+        private static bool ValidateDistroName(string DistroName)
+        {
+            return ValidCharacters.IsMatch(DistroName) && DistroName.Length >= 3;
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateDistroName(ImportDistroName.Text))
             {
-                _ = MessageBox.Show("Only alphanumeric characters are allowed, minimum characters are 3.", "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("Only alphanumeric characters are allowed, minimum characters are 3.",
+                    "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (!Directory.Exists(ImportDistroLocation.Text) || ImportDistroLocation.Text == "Double click here to browse...")
+            if (!Directory.Exists(ImportDistroLocation.Text) ||
+                ImportDistroLocation.Text == "Double click here to browse...")
             {
-                _ = MessageBox.Show("Installation location does not exist or is not selected.", "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("Installation location does not exist or is not selected.", "Import distribution",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -55,10 +62,7 @@ namespace WslToolbox.Gui.Views
                 RestoreDirectory = true
             };
 
-            if (!(bool)openLocation.ShowDialog())
-            {
-                return;
-            }
+            if (!(bool) openLocation.ShowDialog()) return;
 
             DistroSelectedDirectory = Path.GetDirectoryName(openLocation.FileName);
             ImportDistroLocation.Text = Path.GetDirectoryName(openLocation.FileName);
@@ -66,7 +70,7 @@ namespace WslToolbox.Gui.Views
             DistroName = ImportDistroName.Text;
         }
 
-        private void ImportDistroName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void ImportDistroName_TextChanged(object sender, TextChangedEventArgs e)
         {
             ImportDistroButton.IsEnabled = ImportDistroName.Text.Length >= 1;
         }

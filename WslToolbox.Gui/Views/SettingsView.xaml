@@ -6,9 +6,11 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  Background="{StaticResource MahApps.Brushes.ThemeBackground}"
                  mc:Ignorable="d"
-        Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False" Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
+                 Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+                 SizeToContent="WidthAndHeight" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False"
+                 Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False"
+                 IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
     <mah:MetroWindow.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
             <Setter Property="Margin" Value="4,3,4,0" />
         </Style>
@@ -27,18 +29,29 @@
         <TabControl Margin="4,10,4,40" Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}">
             <TabItem Header="General">
                 <StackPanel>
-                    <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution" ToolTip="Show docker distributions in the list of Distributions" IsChecked="{Binding HideDockerDistributions}" />
-                    <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray" IsChecked="{Binding EnableSystemTray}" />
-                    <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Enable system tray" IsChecked="{Binding MinimizeToTray}" IsEnabled="{Binding EnableSystemTray}" Margin="24,3,4,0" />
-                    <CheckBox x:Name="MinimizeOnStartup" Content="Minimize to tray on startup" ToolTip="Enable system tray" IsChecked="{Binding MinimizeOnStartup}" IsEnabled="{Binding EnableSystemTray}" Margin="24,3,4,0" />
-                    <CheckBox x:Name="OutputOnStartup" Content="Show output on startup" ToolTip="Show output on startup" IsChecked="{Binding OutputOnStartup}" />
-                    <CheckBox x:Name="PollServiceStatus" Content="Poll service status" ToolTip="Pull service status" IsChecked="{Binding PollServiceStatus}" />
+                    <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution"
+                              ToolTip="Show docker distributions in the list of Distributions"
+                              IsChecked="{Binding Configuration.HideDockerDistributions}" />
+                    <CheckBox x:Name="StartOnBoot" Content="Launch application on system startup" ToolTip="Launch application on system startup"
+                              IsChecked="{Binding StartOnBootHandler.IsEnabled}" Command="{Binding StartOnBoootCommand}"/>
+                    <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray"
+                              IsChecked="{Binding Configuration.EnableSystemTray}" />
+                    <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Enable system tray"
+                              IsChecked="{Binding Configuration.MinimizeToTray}" IsEnabled="{Binding Configuration.EnableSystemTray}"
+                              Margin="24,3,4,0" />
+                    <CheckBox x:Name="MinimizeOnStartup" Content="Minimize to tray on startup"
+                              ToolTip="Enable system tray" IsChecked="{Binding Configuration.MinimizeOnStartup}"
+                              IsEnabled="{Binding EnableSystemTray}" Margin="24,3,4,0" />
+                    <CheckBox x:Name="OutputOnStartup" Content="Show output on startup"
+                              ToolTip="Show output on startup" IsChecked="{Binding Configuration.OutputOnStartup}" />
+                    <CheckBox x:Name="PollServiceStatus" Content="Poll service status" ToolTip="Pull service status"
+                              IsChecked="{Binding Configuration.PollServiceStatus}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Appearance">
                 <StackPanel>
                     <Label Content="Theme:" FontWeight="Bold" />
-                    <ComboBox x:Name="SelectedStyle" SelectedValue="{Binding SelectedStyle}" />
+                    <ComboBox x:Name="SelectedStyle" SelectedValue="{Binding Configuration.SelectedStyle}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Other">
@@ -47,18 +60,22 @@
                         <TextBlock FontWeight="Bold">Configuration File:</TextBlock>
                         <LineBreak />
                         <Hyperlink x:Name="OpenJsonFileLink"
-                                   NavigateUri="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                   ToolTip="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
-                                   <TextBlock Text="{Binding Path=ConfigHandler.ConfigurationFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" MaxWidth="400" TextTrimming="CharacterEllipsis" />
+                                   NavigateUri="{Binding Configuration.ConfigurationFile}"
+                                   ToolTip="{Binding Configuration.ConfigurationFile}">
+                            <TextBlock Text="{Binding Configuration.ConfigurationFile}" MaxWidth="400"
+                                       TextTrimming="CharacterEllipsis" />
                         </Hyperlink>
                     </TextBlock>
                     <Label Content="Log level:" FontWeight="Bold" />
-                    <ComboBox x:Name="MinimumLevel" SelectedValue="{Binding Logging.MinimumLevel}" />
+                    <ComboBox x:Name="MinimumLevel" SelectedValue="{Binding Configuration.Logging.MinimumLevel}" />
                 </StackPanel>
             </TabItem>
         </TabControl>
-        <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
-        <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
-        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
+        <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
+        <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"
+                Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
+        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27"
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
     </Grid>
 </mah:MetroWindow>

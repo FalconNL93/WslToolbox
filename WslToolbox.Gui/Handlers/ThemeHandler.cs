@@ -1,5 +1,5 @@
-﻿using ControlzEx.Theming;
-using System.Windows;
+﻿using System.Windows;
+using ControlzEx.Theming;
 using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Handlers
@@ -17,8 +17,8 @@ namespace WslToolbox.Gui.Handlers
             {
                 _ = ThemeManager.Current.ChangeTheme(Application.Current,
                     style == ThemeConfiguration.Styles.Light
-                    ? ThemeConfiguration.Light
-                    : ThemeConfiguration.Dark
+                        ? ThemeConfiguration.Light
+                        : ThemeConfiguration.Dark
                 );
             }
         }

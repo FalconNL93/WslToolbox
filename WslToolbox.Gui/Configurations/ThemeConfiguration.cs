@@ -9,7 +9,7 @@
             Dark
         }
 
-        public static string Light = "Light.Blue";
-        public static string Dark = "Dark.Steel";
+        public const string Light = "Light.Blue";
+        public const string Dark = "Dark.Steel";
     }
 }

@@ -1,22 +1,22 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Reflection;
+using System.Windows;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace WslToolbox.Gui.Classes
 {
     public class SystemTrayClass : IDisposable
     {
-        public TaskbarIcon Tray { get; set; }
+        public TaskbarIcon Tray { get; private set; }
 
         public void Dispose()
         {
-            if (Tray is TaskbarIcon)
-            {
-                Tray.Visibility = System.Windows.Visibility.Hidden;
-                Tray.Icon.Dispose();
-                Tray.Dispose();
-            }
+            if (Tray is null) return;
+
+            Tray.Visibility = Visibility.Hidden;
+            Tray.Icon.Dispose();
+            Tray.Dispose();
         }
 
         public void Show()

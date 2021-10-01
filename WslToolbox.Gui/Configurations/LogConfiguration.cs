@@ -1,28 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.IO;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace WslToolbox.Gui.Configurations
 {
-    public class LogConfiguration
+    public static class LogConfiguration
     {
-        public static string FileName = $"{Directory.GetCurrentDirectory()}/logs/log.txt";
+        public static readonly string FileName = $"{Directory.GetCurrentDirectory()}/logs/log.txt";
 
         public static IConfiguration Configuration()
         {
             return new ConfigurationBuilder()
-                 .SetBasePath(Directory.GetCurrentDirectory())
-                 .AddJsonFile(path: "settings.json", optional: true, reloadOnChange: true)
-                 .Build();
-        }
-
-        public enum LogLevel
-        {
-            Verbose,
-            Debug,
-            Information,
-            Warning,
-            Error,
-            Fatal
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("settings.json", true, true)
+                .Build();
         }
     }
 }

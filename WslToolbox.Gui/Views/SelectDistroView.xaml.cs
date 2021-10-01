@@ -1,13 +1,14 @@
-﻿using MahApps.Metro.Controls;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using MahApps.Metro.Controls;
 using WslToolbox.Core;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for SelectDistroView.xaml
+    ///     Interaction logic for SelectDistroView.xaml
     /// </summary>
     public partial class SelectDistroView : MetroWindow
     {
@@ -15,10 +16,11 @@ namespace WslToolbox.Gui.Views
         {
             InitializeComponent();
             InstallDistro.IsEnabled = false;
-            NoticeBlock.Text = "Due to current restrictions in WSL CLI, installing an existing distro is not possible. You can export an existing distro and import it back with a different name.";
+            NoticeBlock.Text =
+                "Due to current restrictions in WSL CLI, installing an existing distro is not possible. You can export an existing distro and import it back with a different name.";
             AvailableDistros.IsEnabled = false;
 
-            List<DistributionClass> distroList = FetchDistributions();
+            var distroList = FetchDistributions();
             AvailableDistros.ItemsSource = distroList.FindAll(x => !x.IsInstalled);
             AvailableDistros.DisplayMemberPath = "Name";
             AvailableDistros.IsEnabled = true;
@@ -26,7 +28,7 @@ namespace WslToolbox.Gui.Views
 
         private static List<DistributionClass> FetchDistributions()
         {
-            Task<List<DistributionClass>> distroList = Task.Run(async () => await ToolboxClass.ListDistributions().ConfigureAwait(true));
+            var distroList = Task.Run(async () => await ToolboxClass.ListDistributions().ConfigureAwait(true));
 
             return distroList.Result;
         }
@@ -38,15 +40,12 @@ namespace WslToolbox.Gui.Views
 
         private void InstallDistro_Click(object sender, RoutedEventArgs e)
         {
-            if (AvailableDistros.SelectedItem != null)
-            {
-                DialogResult = true;
-            }
+            if (AvailableDistros.SelectedItem != null) DialogResult = true;
 
             Close();
         }
 
-        private void AvailableDistros_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void AvailableDistros_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InstallDistro.IsEnabled = true;
         }

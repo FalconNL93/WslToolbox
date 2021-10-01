@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using WslToolbox.Core.Exceptions;
 
 namespace WslToolbox.Core
 {
@@ -11,21 +12,21 @@ namespace WslToolbox.Core
         public int ExitCode { get; set; }
         public string Output { get; set; }
 
-        public static CommandClass ExecuteCommand(string command)
+        public static CommandClass ExecuteCommand(string command, int timeout = 2000)
         {
             Process p = new();
             CommandClass wslProces = new();
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.CreateNoWindow = true;
             p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = "pwsh.exe";
-            p.StartInfo.Arguments = $"-Command {command}";
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.Arguments = $"/c {command}";
 
             p.Start();
             var reader = p.StandardOutput;
             var output = reader.ReadToEnd();
 
-            p.WaitForExit();
+            if (!p.WaitForExit(timeout)) throw new ExecuteCommandTimeoutException();
 
             wslProces.Command = command;
             wslProces.ExitCode = p.ExitCode;
@@ -36,25 +37,16 @@ namespace WslToolbox.Core
 
         public static void StartShell(DistributionClass distribution)
         {
-            if (distribution is null)
-            {
-                return;
-            }
+            if (distribution is null) return;
 
-            string shellCommand = $"-Command wsl -d {distribution.Name}";
+            var shellCommand = $"/c wsl -d {distribution.Name}";
 
-            if (!distribution.IsInstalled)
-            {
-                shellCommand = $"-Command wsl --install -d {distribution.Name}";
-            }
+            if (!distribution.IsInstalled) shellCommand = $"/c wsl --install -d {distribution.Name}";
 
-            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled)
-            {
-                return;
-            }
+            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled) return;
 
             Process p = new();
-            p.StartInfo.FileName = "pwsh.exe";
+            p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.Arguments = shellCommand;
             p.Start();
         }

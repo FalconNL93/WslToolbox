@@ -24,10 +24,7 @@ namespace WslToolbox.Core
 
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (line?.Length == 0 || line.StartsWith("NAME") || line.StartsWith("Install"))
-                    {
-                        continue;
-                    }
+                    if (line?.Length == 0 || line.StartsWith("NAME") || line.StartsWith("Install")) continue;
 
                     var tabbed = line.Split("\t");
                     DistributionClass distro = new();

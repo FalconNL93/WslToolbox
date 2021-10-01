@@ -1,13 +1,12 @@
-﻿using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
-using Serilog.Core;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Handlers;
@@ -16,16 +15,15 @@ using WslToolbox.Gui.ViewModels;
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    ///     Interaction logic for MainView.xaml
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private readonly AssemblyName GuiAssembly = Assembly.GetExecutingAssembly().GetName();
-        private readonly AssemblyName CoreAssembly = GenericClass.Assembly().GetName();
-        private readonly Logger Log = LogHandler.Log();
-        private MainViewModel ViewModel;
-
-        public readonly SystemTrayClass SystemTray = new();
+        private readonly AssemblyName _coreAssembly = GenericClass.Assembly().GetName();
+        private readonly AssemblyName _guiAssembly = Assembly.GetExecutingAssembly().GetName();
+        private readonly Logger _log = LogHandler.Log();
+        private readonly SystemTrayClass _systemTray = new();
+        private MainViewModel _viewModel;
 
         public MainView()
         {
@@ -33,7 +31,6 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             PopulateWsl();
             HandleConfiguration();
-            Activity.IsActive = false;
         }
 
         private void InitializeViewModel()
@@ -41,12 +38,12 @@ namespace WslToolbox.Gui.Views
             MainViewModel viewModel = new(this);
 
             DataContext = viewModel;
-            ViewModel = viewModel;
+            _viewModel = viewModel;
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            SystemTray.Dispose();
+            _systemTray.Dispose();
 
             base.OnClosing(e);
         }
@@ -60,42 +57,32 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroConvert_Click(object sender, RoutedEventArgs e)
         {
-            CommandClass command = await ToolboxClass.ConvertDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
-            string output = Regex.Replace(command.Output, "\t", " ");
+            var command = await ToolboxClass.ConvertDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
+            var output = Regex.Replace(command.Output, "\t", " ");
             MessageBox.Show(output, "Convert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void DistroDetails_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void DistroDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DistroDetails.ContextMenu = ViewModel.SelectedDistribution is DistributionClass ? new()
-            {
-                ItemsSource = ViewModel.DataGridMenuItems()
-            } : null;
+            DistroDetails.ContextMenu = _viewModel.SelectedDistribution is DistributionClass
+                ? new ContextMenu
+                {
+                    ItemsSource = _viewModel.DataGridMenuItems()
+                }
+                : null;
         }
 
         private async void DistroExport_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveExportDialog = new()
-            {
-                Title = "Export",
-                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
-                AddExtension = true,
-                OverwritePrompt = true,
-                DefaultExt = "tar",
-                FilterIndex = 1,
-                RestoreDirectory = true
-            };
+            var saveExportDialog = FileDialogHandler.SaveFileDialog();
 
-            if (!(bool)saveExportDialog.ShowDialog())
-            {
-                return;
-            }
+            if (!(bool) saveExportDialog.ShowDialog()) return;
 
-            string fileName = saveExportDialog.FileName;
+            var fileName = saveExportDialog.FileName;
 
             try
             {
-                CommandClass command = await ToolboxClass.ExportDistribution(ViewModel.SelectedDistribution, fileName).ConfigureAwait(true);
+                await ToolboxClass.ExportDistribution(_viewModel.SelectedDistribution, fileName).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -105,34 +92,21 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroImport_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog saveExportDialog = new()
-            {
-                Title = "Export",
-                Filter = "Tarball (*.tar)|*.tar|All files (*.*)|*.*",
-                AddExtension = true,
-                DefaultExt = "tar",
-                FilterIndex = 1,
-                RestoreDirectory = true
-            };
+            var openExportDialog = FileDialogHandler.OpenFileDialog();
 
-            if (!(bool)saveExportDialog.ShowDialog())
-            {
-                return;
-            }
+            if (!(bool) openExportDialog.ShowDialog()) return;
 
-            string fileName = saveExportDialog.FileName;
+            var fileName = openExportDialog.FileName;
 
             ImportView importDistroWindow = new(fileName);
             importDistroWindow.ShowDialog();
 
-            if (!(bool)importDistroWindow.DialogResult)
-            {
-                return;
-            }
+            if (!(bool) importDistroWindow.DialogResult) return;
 
             try
             {
-                CommandClass command = await ToolboxClass.ImportDistribution(ViewModel.SelectedDistribution, importDistroWindow.DistroName, importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
+                await ToolboxClass.ImportDistribution(_viewModel.SelectedDistribution, importDistroWindow.DistroName,
+                    importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
 
                 PopulateWsl();
             }
@@ -146,101 +120,104 @@ namespace WslToolbox.Gui.Views
         {
             SelectDistroView selectDistroWindow = new();
 
-            bool? distroSelected = selectDistroWindow.ShowDialog();
+            var distroSelected = selectDistroWindow.ShowDialog();
 
-            if ((bool)distroSelected)
-            {
-                DistributionClass selectedDistro = (DistributionClass)selectDistroWindow.AvailableDistros.SelectedItem;
-                ToolboxClass.ShellDistribution(selectedDistro);
-            }
+            if (!(bool) distroSelected) return;
+
+            var selectedDistro = (DistributionClass) selectDistroWindow.AvailableDistros.SelectedItem;
+            ToolboxClass.ShellDistribution(selectedDistro);
         }
 
         private async void DistroRestart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
-            _ = await ToolboxClass.StartDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.TerminateDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.StartDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroSetDefault_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.SetDefaultDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.SetDefaultDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
-        private void DistroShell_Click(object sender, RoutedEventArgs e) => ToolboxClass.ShellDistribution(ViewModel.SelectedDistribution);
+        private void DistroShell_Click(object sender, RoutedEventArgs e)
+        {
+            ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
+        }
 
         private async void DistroStart_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.StartDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.StartDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroStop_Click(object sender, RoutedEventArgs e)
         {
-            _ = await ToolboxClass.TerminateDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            _ = await ToolboxClass.TerminateDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();
         }
 
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult uninstallMessagebox = MessageBox.Show(
-                $"Are you sure you want to uninstall {ViewModel.SelectedDistribution.Name}? This will also destroy all data within the distribution.", "Uninstall?",
+            var uninstallMessagebox = MessageBox.Show(
+                $"Are you sure you want to uninstall {_viewModel.SelectedDistribution.Name}? This will also destroy all data within the distribution.",
+                "Uninstall?",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
-            if (uninstallMessagebox == MessageBoxResult.Yes)
-            {
-                _ = await ToolboxClass.UnregisterDistribution(ViewModel.SelectedDistribution).ConfigureAwait(true);
+            if (uninstallMessagebox != MessageBoxResult.Yes) return;
 
-                PopulateWsl();
-            }
+            _ = await ToolboxClass.UnregisterDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
+
+            PopulateWsl();
         }
 
         public void HandleConfiguration()
         {
             HandleSystemTray();
 
-            ThemeHandler.Set(ViewModel.Config.Configuration.SelectedStyle);
+            ThemeHandler.Set(_viewModel.Config.Configuration.SelectedStyle);
+            _log.Debug("Configuration file applied");
         }
 
         private void HandleSystemTray()
         {
-            SystemTray.Dispose();
+            _systemTray.Dispose();
 
-            if (ViewModel.Config.Configuration.EnableSystemTray)
+            if (!_viewModel.Config.Configuration.EnableSystemTray) return;
+            if (_viewModel.Config.Configuration.MinimizeOnStartup)
             {
-                if (ViewModel.Config.Configuration.MinimizeOnStartup)
-                {
-                    WindowState = WindowState.Minimized;
-                    Hide();
-                }
-
-                SystemTray.Show();
-                SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => ViewModel.ShowApplicationCommand.Execute(null);
-
-                SystemTray.Tray.ContextMenu = new()
-                {
-                    ItemsSource = ViewModel.SystemTrayMenuItems()
-                };
+                WindowState = WindowState.Minimized;
+                Hide();
             }
+
+            _systemTray.Show();
+            _systemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplicationCommand.Execute(null);
+
+            _systemTray.Tray.ContextMenu = new ContextMenu
+            {
+                ItemsSource = _viewModel.SystemTrayMenuItems()
+            };
         }
 
         private async void PopulateWsl()
         {
-            List<DistributionClass> DistroList = await ToolboxClass.
-                ListDistributions(ViewModel.Config.Configuration.HideDockerDistributions).
-                ConfigureAwait(true);
+            var distroList = await ToolboxClass
+                .ListDistributions(_viewModel.Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
 
-            DistroDetails.ItemsSource = DistroList.FindAll(x => x.IsInstalled);
+            DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
             DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
         }
 
-        private void RefreshWsl_Click(object sender, RoutedEventArgs e) => PopulateWsl();
+        private void RefreshWsl_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateWsl();
+        }
 
         private async void RestartWsl_Click(object sender, RoutedEventArgs e)
         {
@@ -248,7 +225,10 @@ namespace WslToolbox.Gui.Views
             await ToolboxClass.StartWsl().ConfigureAwait(true);
         }
 
-        private async void StartWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StartWsl().ConfigureAwait(true);
+        private async void StartWsl_Click(object sender, RoutedEventArgs e)
+        {
+            await ToolboxClass.StartWsl().ConfigureAwait(true);
+        }
 
         private async void StatusWsl_Click(object sender, RoutedEventArgs e)
         {
@@ -257,36 +237,36 @@ namespace WslToolbox.Gui.Views
             PopulateWsl();
         }
 
-        private async void StopWsl_Click(object sender, RoutedEventArgs e) => await ToolboxClass.StopWsl().ConfigureAwait(true);
+        private async void StopWsl_Click(object sender, RoutedEventArgs e)
+        {
+            await ToolboxClass.StopWsl().ConfigureAwait(true);
+        }
 
         private async void UpdateWsl_Click(object sender, RoutedEventArgs e)
         {
             UpdateWsl.IsEnabled = false;
-            CommandClass command = await ToolboxClass.UpdateWsl().ConfigureAwait(true);
-            string output = Regex.Replace(command.Output, "\t", " ");
+            var command = await ToolboxClass.UpdateWsl().ConfigureAwait(true);
+            var output = Regex.Replace(command.Output, "\t", " ");
 
             if (output.Contains("No updates are available."))
-            {
                 _ = await this.ShowMessageAsync("WSL Update", "No updates are available.");
-            }
 
             UpdateWsl.IsEnabled = true;
         }
 
         private async void ToolboxInfo_Click(object sender, RoutedEventArgs e)
         {
-            string GuiVersion = $"{GuiAssembly.Version.Major}.{GuiAssembly.Version.Minor}.{GuiAssembly.Version.Build}";
-            string CoreVersion = $"{CoreAssembly.Version.Major}.{CoreAssembly.Version.Minor}.{CoreAssembly.Version.Build}";
+            var guiVersion = $"{_guiAssembly.Version.Major}.{_guiAssembly.Version.Minor}.{_guiAssembly.Version.Build}";
+            var coreVersion =
+                $"{_coreAssembly.Version.Major}.{_coreAssembly.Version.Minor}.{_coreAssembly.Version.Build}";
 
-            _ = await this.ShowMessageAsync("About", $"Gui: {GuiVersion}\nCore: {CoreVersion}");
+            _ = await this.ShowMessageAsync("About", $"Gui: {guiVersion}\nCore: {coreVersion}");
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)
         {
-            if (ViewModel.Config.Configuration.MinimizeToTray && ViewModel.Config.Configuration.EnableSystemTray)
-            {
+            if (_viewModel.Config.Configuration.MinimizeToTray && _viewModel.Config.Configuration.EnableSystemTray)
                 ShowInTaskbar = WindowState != WindowState.Minimized;
-            }
         }
     }
 }
