@@ -16,13 +16,20 @@ namespace WslToolbox.Gui.ViewModels
             _view = view;
             ConfigHandler = configHandler;
             Configuration = configuration;
+
+            InitializeSettingsElements();
+        }
+
+        private void InitializeSettingsElements()
+        {
             GeneralSettings = new GeneralSettingsCollection(this).Items();
+            AppearanceSettings = new AppearanceSettingsCollection(this).Items();
         }
 
         public StartOnBootHandler StartOnBootHandler { get; } = new();
         public ConfigurationHandler ConfigHandler { get; }
         public DefaultConfiguration Configuration { get; }
-
-        public CompositeCollection GeneralSettings { get; }
+        public CompositeCollection GeneralSettings { get; set; }
+        public CompositeCollection AppearanceSettings { get; set; }
     }
 }

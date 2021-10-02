@@ -47,7 +47,6 @@ namespace WslToolbox.Gui.Handlers
             }
             else
             {
-                Debug.WriteLine("Disabling");
                 _registryKey.DeleteValue(_appRegistryName, false);
             }
         }

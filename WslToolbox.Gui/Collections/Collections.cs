@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
@@ -14,28 +15,43 @@ namespace WslToolbox.Gui.Collections
             _source = source;
         }
 
-        private Binding AddBinding(string path)
+        private Binding AddBinding(string path, BindingMode mode = BindingMode.Default)
         {
-            var binding = new Binding(path)
+            return new Binding(path)
             {
-                Mode = BindingMode.Default,
+                Mode = mode,
                 Source = _source
             };
-
-            return binding;
         }
 
-        protected CheckBox AddCheckBox(string name, string content, string bind)
+        protected CheckBox AddCheckBox(string name, string content, string bind, string requires = null)
         {
-            var newCheckBox = new CheckBox
+            var checkBox = new CheckBox
             {
                 Name = name,
                 Content = content
             };
 
-            newCheckBox.SetBinding(ToggleButton.IsCheckedProperty, AddBinding(bind));
+            checkBox.SetBinding(ToggleButton.IsCheckedProperty, AddBinding(bind));
 
-            return newCheckBox;
+            if (requires != null) checkBox.SetBinding(UIElement.IsEnabledProperty, AddBinding(requires));
+
+            return checkBox;
+        }
+        
+        protected ComboBox AddComboBox(string name, IEnumerable items, string bind, string requires = null)
+        {
+            var comboBox = new ComboBox
+            {
+                Name = name,
+                ItemsSource = items,
+            };
+            
+            if (requires != null) comboBox.SetBinding(UIElement.IsEnabledProperty, AddBinding(requires));
+            
+            comboBox.SetBinding(Selector.SelectedItemProperty, AddBinding(bind));
+
+            return comboBox;
         }
     }
 }
