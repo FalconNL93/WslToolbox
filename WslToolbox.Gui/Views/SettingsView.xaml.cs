@@ -17,6 +17,7 @@ namespace WslToolbox.Gui.Views
     public partial class SettingsView : MetroWindow
     {
         private readonly SettingsViewModel _viewModel;
+
         public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler)
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace WslToolbox.Gui.Views
 
             DataContext = viewModel;
             _viewModel = viewModel;
-            
+
             InitializeEventHandlers();
         }
 

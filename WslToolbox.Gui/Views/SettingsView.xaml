@@ -32,12 +32,14 @@
                     <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution"
                               ToolTip="Show docker distributions in the list of Distributions"
                               IsChecked="{Binding Configuration.HideDockerDistributions}" />
-                    <CheckBox x:Name="StartOnBoot" Content="Launch application on system startup" ToolTip="Launch application on system startup"
-                              IsChecked="{Binding StartOnBootHandler.IsEnabled}" Command="{Binding StartOnBoootCommand}"/>
+                    <CheckBox x:Name="StartOnBoot" Content="Launch application on system startup"
+                              ToolTip="Launch application on system startup"
+                              IsChecked="{Binding StartOnBootHandler.IsEnabled}" />
                     <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray"
                               IsChecked="{Binding Configuration.EnableSystemTray}" />
                     <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Enable system tray"
-                              IsChecked="{Binding Configuration.MinimizeToTray}" IsEnabled="{Binding Configuration.EnableSystemTray}"
+                              IsChecked="{Binding Configuration.MinimizeToTray}"
+                              IsEnabled="{Binding Configuration.EnableSystemTray}"
                               Margin="24,3,4,0" />
                     <CheckBox x:Name="MinimizeOnStartup" Content="Minimize to tray on startup"
                               ToolTip="Enable system tray" IsChecked="{Binding Configuration.MinimizeOnStartup}"

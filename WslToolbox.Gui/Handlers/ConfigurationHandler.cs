@@ -19,10 +19,9 @@ namespace WslToolbox.Gui.Handlers
 
         public DefaultConfiguration Configuration { get; set; }
         public bool ConfigurationExists { get; }
-        public event EventHandler ConfigurationUpdatedFailed;
         public event EventHandler ConfigurationUpdatedSuccessfully;
 
-        public void Read()
+        private void Read()
         {
             Configuration =
                 JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(Configuration.ConfigurationFile));

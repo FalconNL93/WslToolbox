@@ -8,7 +8,7 @@ namespace WslToolbox.Gui.Collections
     {
         public static CompositeCollection Items(MainViewModel viewModel)
         {
-            return new()
+            return new CompositeCollection
             {
                 new MenuItem
                 {

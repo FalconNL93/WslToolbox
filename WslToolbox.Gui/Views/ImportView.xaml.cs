@@ -23,9 +23,9 @@ namespace WslToolbox.Gui.Views
         public string DistroName { get; set; }
         public string DistroSelectedDirectory { get; set; }
 
-        private static bool ValidateDistroName(string DistroName)
+        private static bool ValidateDistroName(string distroName)
         {
-            return ValidCharacters.IsMatch(DistroName) && DistroName.Length >= 3;
+            return ValidCharacters.IsMatch(distroName) && distroName.Length >= 3;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

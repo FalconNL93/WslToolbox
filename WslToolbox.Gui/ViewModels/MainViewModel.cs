@@ -18,8 +18,8 @@ namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
-        public readonly ConfigurationHandler Config = new();
         private readonly MainView _view;
+        public readonly ConfigurationHandler Config = new();
 
         private Timer _servicePoller;
 
@@ -42,7 +42,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => true);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => true);
-        
+
         public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
         public ICommand OpenLogFileCommand =>
