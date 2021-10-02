@@ -29,47 +29,7 @@
         <TabControl Margin="4,10,4,40" Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}">
             <TabItem Header="General">
                 <StackPanel>
-                    <CheckBox x:Name="HideDockerDistributions" Content="Hide Docker distribution"
-                              ToolTip="Show docker distributions in the list of Distributions"
-                              IsChecked="{Binding Configuration.HideDockerDistributions}" />
-                    <CheckBox x:Name="StartOnBoot" Content="Launch application on system startup"
-                              ToolTip="Launch application on system startup"
-                              IsChecked="{Binding StartOnBootHandler.IsEnabled}" />
-                    <CheckBox x:Name="EnableSystemTray" Content="Enable system tray" ToolTip="Enable system tray"
-                              IsChecked="{Binding Configuration.EnableSystemTray}" />
-                    <CheckBox x:Name="MinimizeToTray" Content="Minimize to tray" ToolTip="Enable system tray"
-                              IsChecked="{Binding Configuration.MinimizeToTray}"
-                              IsEnabled="{Binding Configuration.EnableSystemTray}"
-                              Margin="24,3,4,0" />
-                    <CheckBox x:Name="MinimizeOnStartup" Content="Minimize to tray on startup"
-                              ToolTip="Enable system tray" IsChecked="{Binding Configuration.MinimizeOnStartup}"
-                              IsEnabled="{Binding EnableSystemTray}" Margin="24,3,4,0" />
-                    <CheckBox x:Name="OutputOnStartup" Content="Show output on startup"
-                              ToolTip="Show output on startup" IsChecked="{Binding Configuration.OutputOnStartup}" />
-                    <CheckBox x:Name="PollServiceStatus" Content="Poll service status" ToolTip="Pull service status"
-                              IsChecked="{Binding Configuration.PollServiceStatus}" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Appearance">
-                <StackPanel>
-                    <Label Content="Theme:" FontWeight="Bold" />
-                    <ComboBox x:Name="SelectedStyle" SelectedValue="{Binding Configuration.SelectedStyle}" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Other">
-                <StackPanel>
-                    <TextBlock x:Name="OpenJsonFileBlock" Padding="5,0,0,10">
-                        <TextBlock FontWeight="Bold">Configuration File:</TextBlock>
-                        <LineBreak />
-                        <Hyperlink x:Name="OpenJsonFileLink"
-                                   NavigateUri="{Binding Configuration.ConfigurationFile}"
-                                   ToolTip="{Binding Configuration.ConfigurationFile}">
-                            <TextBlock Text="{Binding Configuration.ConfigurationFile}" MaxWidth="400"
-                                       TextTrimming="CharacterEllipsis" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <Label Content="Log level:" FontWeight="Bold" />
-                    <ComboBox x:Name="MinimumLevel" SelectedValue="{Binding Configuration.Logging.MinimumLevel}" />
+                    <ItemsControl ItemsSource="{Binding GeneralSettings}" />
                 </StackPanel>
             </TabItem>
         </TabControl>

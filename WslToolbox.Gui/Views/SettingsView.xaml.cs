@@ -1,10 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Serilog.Events;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
@@ -26,31 +22,31 @@ namespace WslToolbox.Gui.Views
             DataContext = viewModel;
             _viewModel = viewModel;
 
-            InitializeEventHandlers();
+            // InitializeEventHandlers();
         }
 
-        private void InitializeEventHandlers()
-        {
-            OpenJsonFileLink.RequestNavigate += (sender, e) =>
-            {
-                try
-                {
-                    if (_viewModel.ConfigHandler.ConfigurationExists)
-                        _ = Process.Start(new ProcessStartInfo("explorer")
-                        {
-                            Arguments = e.Uri.ToString()
-                        });
-                }
-                catch (Exception ex)
-                {
-                    LogHandler.Log().Error(ex, ex.Message);
-                    MessageBox.Show("An error has occurred while executing the request action." +
-                                    $"{Environment.NewLine}{Environment.NewLine}{ex.Message}{Environment.NewLine}{Environment.NewLine}" +
-                                    "Open log file for more information.", "Error", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
-            };
-        }
+        // private void InitializeEventHandlers()
+        // {
+        //     OpenJsonFileLink.RequestNavigate += (sender, e) =>
+        //     {
+        //         try
+        //         {
+        //             if (_viewModel.ConfigHandler.ConfigurationExists)
+        //                 _ = Process.Start(new ProcessStartInfo("explorer")
+        //                 {
+        //                     Arguments = e.Uri.ToString()
+        //                 });
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             LogHandler.Log().Error(ex, ex.Message);
+        //             MessageBox.Show("An error has occurred while executing the request action." +
+        //                             $"{Environment.NewLine}{Environment.NewLine}{ex.Message}{Environment.NewLine}{Environment.NewLine}" +
+        //                             "Open log file for more information.", "Error", MessageBoxButton.OK,
+        //                 MessageBoxImage.Error);
+        //         }
+        //     };
+        // }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -75,9 +71,9 @@ namespace WslToolbox.Gui.Views
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            SelectedStyle.ItemsSource =
-                Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
-            MinimumLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel)).Cast<LogEventLevel>();
+            // SelectedStyle.ItemsSource =
+            //     Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
+            // MinimumLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel)).Cast<LogEventLevel>();
         }
 
         private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)

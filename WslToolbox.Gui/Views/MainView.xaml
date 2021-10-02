@@ -40,7 +40,7 @@
                 </Style>
             </StackPanel.Resources>
             <Label Content="WSL Service" FontWeight="Bold" />
-            <Button x:Name="StartWsl" Content="Start" Click="StartWsl_Click" Command="{Binding StartWslServiceCommand}" />
+            <Button x:Name="StartWsl" Content="Start" Command="{Binding StartWslServiceCommand}" />
             <Button x:Name="StopWsl" Content="Stop" Command="{Binding StopWslServiceCommand}" />
             <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click"
                     Command="{Binding RestartWslServiceCommand}" />
@@ -65,8 +65,10 @@
                 </Style>
             </StackPanel.Resources>
             <Label Content="Distribution" FontWeight="Bold" Margin="0,0,0,0" />
-            <Button x:Name="DistroStart" Content="Start" Click="DistroStart_Click" />
-            <Button x:Name="DistroStop" Content="Stop" Click="DistroStop_Click" />
+            <Button x:Name="DistroStart" Content="Start" Command="{Binding StartDistributionCommand}"
+                    CommandParameter="{Binding SelectedDistribution}" />
+            <Button x:Name="DistroStop" Content="Stop" Command="{Binding StopDistributionCommand}"
+                    CommandParameter="{Binding SelectedDistribution}" />
             <Button x:Name="DistroRestart" Content="Restart" Click="DistroRestart_Click" />
             <Button x:Name="DistroSetDefault" Content="Set default" Click="DistroSetDefault_Click" />
             <Button x:Name="DistroConvert" Content="Convert" Click="DistroConvert_Click" />

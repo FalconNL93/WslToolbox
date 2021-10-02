@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -21,14 +20,11 @@ namespace WslToolbox.Gui.ViewModels
         private readonly MainView _view;
         public readonly ConfigurationHandler Config = new();
 
-        private Timer _servicePoller;
-
         public MainViewModel(MainView view)
         {
             _view = view;
 
             InitializeEventHandlers();
-            PollTimerInitializer();
         }
 
         public ICommand ShowApplicationCommand =>
@@ -37,11 +33,11 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand SaveConfigurationCommand => new RelayCommand(SaveConfiguration, o => true);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
         public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
-        public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => true);
+        public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => CanStopWslService);
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
-        public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => true);
-        public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => true);
+        public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => CanStartDistribution);
+        public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => CanStopDistribution);
 
         public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
@@ -51,6 +47,10 @@ namespace WslToolbox.Gui.ViewModels
         public DistributionClass SelectedDistribution { get; set; }
 
         private bool CanStartWslService { get; set; } = true;
+        private bool CanStopWslService { get; set; } = true;
+        private bool CanStartDistribution { get; set; } = true;
+        private bool CanStopDistribution { get; set; } = true;
+
 
         private void InitializeEventHandlers()
         {
@@ -85,9 +85,9 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void StopWslService(object parameter)
         {
-            CanStartWslService = false;
+            CanStopWslService = false;
             _ = await ToolboxClass.StopWsl().ConfigureAwait(true);
-            CanStartWslService = true;
+            CanStopWslService = true;
         }
 
         private void RestartWslService(object parameter)
@@ -98,22 +98,16 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void StartDistribution(object parameter)
         {
+            CanStartDistribution = false;
             _ = await ToolboxClass.StartDistribution((DistributionClass) parameter);
+            CanStartDistribution = true;
         }
 
         private async void StopDistribution(object parameter)
         {
+            CanStopDistribution = false;
             _ = await ToolboxClass.TerminateDistribution((DistributionClass) parameter);
-        }
-
-        private void PollTimerInitializer(int interval = 2000)
-        {
-            _servicePoller = Config.Configuration.PollServiceStatus ? new Timer(PollCallBack, null, 0, interval) : null;
-        }
-
-        private async void PollCallBack(object o)
-        {
-            await ToolboxClass.ServiceIsRunning();
+            CanStopDistribution = true;
         }
 
         private void ShowApplication(object o)
