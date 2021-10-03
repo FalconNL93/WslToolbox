@@ -58,8 +58,7 @@ namespace WslToolbox.Gui.Helpers
         {
             var textBlock = new TextBlock
             {
-                Padding = new Thickness(5, 0, 0, 10),
-                MaxWidth = 400
+                Padding = new Thickness(5, 0, 0, 10)
             };
 
             var textBlockHyperlink = new TextBlock
@@ -70,7 +69,7 @@ namespace WslToolbox.Gui.Helpers
                 Text = name ?? url
             };
 
-            var hyperlink = new Hyperlink(textBlockHyperlink.Inlines.LastInline)
+            var hyperlink = new Hyperlink
             {
                 NavigateUri = new Uri(url)
             };
@@ -79,6 +78,7 @@ namespace WslToolbox.Gui.Helpers
 
             RegisterHyperlinkRequestNavigate(hyperlink);
 
+            hyperlink.Inlines.Add(textBlockHyperlink.Inlines.FirstInline);
             textBlock.Inlines.Add(hyperlink);
             return textBlock;
         }

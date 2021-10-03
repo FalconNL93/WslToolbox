@@ -16,28 +16,28 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox("HideDockerDistributions",
                     "Hide Docker Distributions",
                     "Configuration.HideDockerDistributions",
-                    _source),
+                    Source),
 
                 UiElementHelper.AddCheckBox("StartOnBoot",
                     "Launch application on system startup",
                     "StartOnBootHandler.IsEnabled",
-                    _source),
+                    Source),
 
                 UiElementHelper.AddCheckBox("EnableSystemTray",
                     "Enable system tray",
                     "Configuration.EnableSystemTray",
-                    _source),
+                    Source),
 
                 UiElementHelper.AddCheckBox("MinimizeToTray",
                     "Minimize to tray",
                     "Configuration.MinimizeToTray",
-                    _source,
+                    Source,
                     "Configuration.EnableSystemTray"),
 
                 UiElementHelper.AddCheckBox("MinimizeOnStartup",
                     "Minimize on startup",
                     "Configuration.MinimizeOnStartup",
-                    _source,
+                    Source,
                     "Configuration.EnableSystemTray")
             };
         }

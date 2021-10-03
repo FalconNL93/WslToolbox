@@ -14,7 +14,7 @@ namespace WslToolbox.Gui.Collections.Settings
 
         public CompositeCollection Items()
         {
-            var viewModel = (SettingsViewModel) _source;
+            var viewModel = (SettingsViewModel) Source;
 
             return new CompositeCollection
             {

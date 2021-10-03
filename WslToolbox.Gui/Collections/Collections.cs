@@ -2,11 +2,11 @@
 {
     public abstract class Collections
     {
-        protected readonly object _source;
+        protected readonly object Source;
 
         protected Collections(object source)
         {
-            _source = source;
+            Source = source;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     "SelectedStyle",
                     ThemeConfiguration.GetValues(),
                     "Configuration.SelectedStyle",
-                    _source)
+                    Source)
             };
         }
     }
