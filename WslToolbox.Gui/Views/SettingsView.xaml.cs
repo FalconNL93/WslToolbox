@@ -21,12 +21,6 @@ namespace WslToolbox.Gui.Views
 
             DataContext = viewModel;
             _viewModel = viewModel;
-
-            // InitializeEventHandlers();
-        }
-
-        private void InitializeEventHandlers()
-        {
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -52,9 +46,6 @@ namespace WslToolbox.Gui.Views
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // SelectedStyle.ItemsSource =
-            //     Enum.GetValues(typeof(ThemeConfiguration.Styles)).Cast<ThemeConfiguration.Styles>();
-            // MinimumLevel.ItemsSource = Enum.GetValues(typeof(LogEventLevel)).Cast<LogEventLevel>();
         }
 
         private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)

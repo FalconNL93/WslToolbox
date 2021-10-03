@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,8 +18,6 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private readonly AssemblyName _coreAssembly = GenericClass.Assembly().GetName();
-        private readonly AssemblyName _guiAssembly = Assembly.GetExecutingAssembly().GetName();
         private readonly Logger _log = LogHandler.Log();
         private readonly SystemTrayClass _systemTray = new();
         private MainViewModel _viewModel;
@@ -252,15 +249,6 @@ namespace WslToolbox.Gui.Views
                 _ = await this.ShowMessageAsync("WSL Update", "No updates are available.");
 
             UpdateWsl.IsEnabled = true;
-        }
-
-        private async void ToolboxInfo_Click(object sender, RoutedEventArgs e)
-        {
-            var guiVersion = $"{_guiAssembly.Version.Major}.{_guiAssembly.Version.Minor}.{_guiAssembly.Version.Build}";
-            var coreVersion =
-                $"{_coreAssembly.Version.Major}.{_coreAssembly.Version.Minor}.{_coreAssembly.Version.Build}";
-
-            _ = await this.ShowMessageAsync("About", $"Gui: {guiVersion}\nCore: {coreVersion}");
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)
