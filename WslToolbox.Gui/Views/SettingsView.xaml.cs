@@ -25,28 +25,9 @@ namespace WslToolbox.Gui.Views
             // InitializeEventHandlers();
         }
 
-        // private void InitializeEventHandlers()
-        // {
-        //     OpenJsonFileLink.RequestNavigate += (sender, e) =>
-        //     {
-        //         try
-        //         {
-        //             if (_viewModel.ConfigHandler.ConfigurationExists)
-        //                 _ = Process.Start(new ProcessStartInfo("explorer")
-        //                 {
-        //                     Arguments = e.Uri.ToString()
-        //                 });
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             LogHandler.Log().Error(ex, ex.Message);
-        //             MessageBox.Show("An error has occurred while executing the request action." +
-        //                             $"{Environment.NewLine}{Environment.NewLine}{ex.Message}{Environment.NewLine}{Environment.NewLine}" +
-        //                             "Open log file for more information.", "Error", MessageBoxButton.OK,
-        //                 MessageBoxImage.Error);
-        //         }
-        //     };
-        // }
+        private void InitializeEventHandlers()
+        {
+        }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {

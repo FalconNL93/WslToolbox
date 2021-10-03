@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
@@ -15,12 +16,16 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                new Label()
+                new Label
                 {
                     FontWeight = FontWeights.Bold,
                     Content = "Theme"
                 },
-                AddComboBox("SelectedStyle", ThemeConfiguration.GetValues(), "Configuration.SelectedStyle")
+                UiElementHelper.AddComboBox(
+                    "SelectedStyle",
+                    ThemeConfiguration.GetValues(),
+                    "Configuration.SelectedStyle",
+                    _source)
             };
         }
     }

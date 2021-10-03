@@ -37,6 +37,11 @@
                     <ItemsControl ItemsSource="{Binding AppearanceSettings}" />
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Other">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding OtherSettings}" />
+                </StackPanel>
+            </TabItem>
         </TabControl>
         <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />

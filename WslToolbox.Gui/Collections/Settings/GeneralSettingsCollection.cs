@@ -1,4 +1,5 @@
 ﻿using System.Windows.Data;
+using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
@@ -12,26 +13,31 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                AddCheckBox("HideDockerDistributions",
+                UiElementHelper.AddCheckBox("HideDockerDistributions",
                     "Hide Docker Distributions",
-                    "Configuration.HideDockerDistributions"),
+                    "Configuration.HideDockerDistributions",
+                    _source),
 
-                AddCheckBox("StartOnBoot",
+                UiElementHelper.AddCheckBox("StartOnBoot",
                     "Launch application on system startup",
-                    "StartOnBootHandler.IsEnabled"),
+                    "StartOnBootHandler.IsEnabled",
+                    _source),
 
-                AddCheckBox("EnableSystemTray",
+                UiElementHelper.AddCheckBox("EnableSystemTray",
                     "Enable system tray",
-                    "Configuration.EnableSystemTray"),
+                    "Configuration.EnableSystemTray",
+                    _source),
 
-                AddCheckBox("MinimizeToTray",
+                UiElementHelper.AddCheckBox("MinimizeToTray",
                     "Minimize to tray",
                     "Configuration.MinimizeToTray",
+                    _source,
                     "Configuration.EnableSystemTray"),
 
-                AddCheckBox("MinimizeOnStartup",
+                UiElementHelper.AddCheckBox("MinimizeOnStartup",
                     "Minimize on startup",
                     "Configuration.MinimizeOnStartup",
+                    _source,
                     "Configuration.EnableSystemTray")
             };
         }

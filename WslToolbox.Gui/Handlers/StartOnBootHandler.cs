@@ -42,13 +42,9 @@ namespace WslToolbox.Gui.Handlers
         private void StartOnBoot(bool enable)
         {
             if (enable)
-            {
                 _registryKey.SetValue(_appRegistryName, _appRegistryFileName);
-            }
             else
-            {
                 _registryKey.DeleteValue(_appRegistryName, false);
-            }
         }
 
         private void RegistryExists()
