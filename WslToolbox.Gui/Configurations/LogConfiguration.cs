@@ -13,7 +13,7 @@ namespace WslToolbox.Gui.Configurations
         {
             return new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"{AppConfiguration.AppLogsFileName}", true, true)
+                .AddJsonFile($"{AppConfiguration.AppConfigurationFileName}", true, true)
                 .Build();
         }
     }

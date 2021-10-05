@@ -20,7 +20,7 @@ namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
-        public Logger Log;
+        public readonly Logger Log;
         private readonly MainView _view;
         public readonly ConfigurationHandler Config = new();
         public readonly bool OsSupported = OsHandler.Supported();

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Serilog;
 using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
@@ -72,7 +71,7 @@ namespace WslToolbox.Gui.Views
 
         private void DistroDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DistroDetails.ContextMenu = _viewModel.SelectedDistribution is DistributionClass
+            DistroDetails.ContextMenu = _viewModel.SelectedDistribution != null
                 ? new ContextMenu
                 {
                     ItemsSource = _viewModel.DataGridMenuItems()
@@ -155,21 +154,7 @@ namespace WslToolbox.Gui.Views
         {
             ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
         }
-
-        private async void DistroStart_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.StartDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
-
-            PopulateWsl();
-        }
-
-        private async void DistroStop_Click(object sender, RoutedEventArgs e)
-        {
-            _ = await ToolboxClass.TerminateDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
-
-            PopulateWsl();
-        }
-
+        
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
             var uninstallMessagebox = await this.ShowMessageAsync("Uninstall?",
