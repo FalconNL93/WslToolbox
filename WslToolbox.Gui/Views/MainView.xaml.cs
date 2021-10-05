@@ -19,8 +19,8 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private Logger _log;
         private readonly SystemTrayClass _systemTray = new();
+        private Logger _log;
         private MainViewModel _viewModel;
 
         public MainView()
@@ -52,7 +52,15 @@ namespace WslToolbox.Gui.Views
         private async void ShowOsUnsupportedMessage()
         {
             await this.ShowMessageAsync("Warning",
-                $"Your current operating system is not supported by {AppConfiguration.AppName}");
+                $"Your current operating system build {Environment.OSVersion.Version.Build} is not supported by {AppConfiguration.AppName}.\n\n" +
+                $"Build {AppConfiguration.AppMinimalOsBuild} or higher is required.", MessageDialogStyle.Affirmative,
+                new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Close"
+                }
+            );
+
+            Environment.Exit(1);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -154,7 +162,7 @@ namespace WslToolbox.Gui.Views
         {
             ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
         }
-        
+
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
             var uninstallMessagebox = await this.ShowMessageAsync("Uninstall?",

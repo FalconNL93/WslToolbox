@@ -20,28 +20,18 @@ namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
-        public readonly Logger Log;
+        private readonly bool _osSupported = OsHandler.Supported();
         private readonly MainView _view;
         public readonly ConfigurationHandler Config = new();
-        public readonly bool OsSupported = OsHandler.Supported();
+        public readonly Logger Log;
 
         public MainViewModel(MainView view)
         {
-            Log = LogHandler.Log();
+            Log = Log();
             _view = view;
             InitializeEventHandlers();
 
-            if (AppConfiguration.IsDebugRelease)
-            {
-                DebugMode();
-            }
-        }
-
-        private void DebugMode()
-        {
-            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Debug;
-
-            Debug.WriteLine("Running in Debug Mode");
+            if (AppConfiguration.IsDebugRelease) DebugMode();
         }
 
         public ICommand ShowApplicationCommand =>
@@ -67,6 +57,11 @@ namespace WslToolbox.Gui.ViewModels
         private bool CanStopWslService { get; set; } = true;
         private bool CanStartDistribution { get; set; } = true;
         private bool CanStopDistribution { get; set; } = true;
+
+        private void DebugMode()
+        {
+            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Debug;
+        }
 
         private void InitializeEventHandlers()
         {
@@ -101,7 +96,7 @@ namespace WslToolbox.Gui.ViewModels
 
         public bool ShowUnsupportedOsMessage()
         {
-            return !OsSupported && !Config.Configuration.HideUnsupportedOsMessage;
+            return !_osSupported && !Config.Configuration.HideUnsupportedOsMessage;
         }
 
         private async void StopWslService(object parameter)

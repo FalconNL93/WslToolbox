@@ -1,5 +1,4 @@
 ﻿using Serilog.Events;
-using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Configurations
 {
