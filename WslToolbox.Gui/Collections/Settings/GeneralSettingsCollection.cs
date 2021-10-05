@@ -1,4 +1,5 @@
 ﻿using System.Windows.Data;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Collections.Settings
@@ -13,7 +14,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddCheckBox("HideDockerDistributions",
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideDockerDistributions),
                     "Hide Docker Distributions",
                     "Configuration.HideDockerDistributions",
                     Source),
@@ -23,18 +24,18 @@ namespace WslToolbox.Gui.Collections.Settings
                     "StartOnBootHandler.IsEnabled",
                     Source),
 
-                UiElementHelper.AddCheckBox("EnableSystemTray",
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableSystemTray),
                     "Enable system tray",
                     "Configuration.EnableSystemTray",
                     Source),
 
-                UiElementHelper.AddCheckBox("MinimizeToTray",
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.MinimizeToTray),
                     "Minimize to tray",
                     "Configuration.MinimizeToTray",
                     Source,
                     "Configuration.EnableSystemTray"),
 
-                UiElementHelper.AddCheckBox("MinimizeOnStartup",
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.MinimizeOnStartup),
                     "Minimize on startup",
                     "Configuration.MinimizeOnStartup",
                     Source,

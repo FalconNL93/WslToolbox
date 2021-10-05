@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Reflection;
-using Serilog.Events;
+﻿using Serilog.Events;
+using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Configurations
 {
@@ -9,11 +8,10 @@ namespace WslToolbox.Gui.Configurations
         public DefaultConfiguration()
         {
             ConfigurationFile =
-                $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}\\{ConfigurationFileName}";
+                $"{AppConfiguration.AppExecutableDirectory}\\{AppConfiguration.AppConfigurationFileName}";
         }
 
         public string ConfigurationFile { get; }
-        public string ConfigurationFileName { get; } = "settings.json";
         public bool EnableSystemTray { get; set; }
         public bool MinimizeToTray { get; set; }
         public bool MinimizeOnStartup { get; set; }
@@ -21,10 +19,11 @@ namespace WslToolbox.Gui.Configurations
         public bool PollServiceStatus { get; set; }
         public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
         public Logging Logging { get; set; } = new();
+        public bool HideUnsupportedOsMessage { get; set; }
     }
 
     public class Logging
     {
-        public LogEventLevel MinimumLevel { get; set; } = LogEventLevel.Error;
+        public LogEventLevel MinimumLevel { get; set; } = AppConfiguration.AppDefaultLogLevel();
     }
 }

@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
+using Serilog.Core;
+using Serilog.Events;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
@@ -12,19 +14,34 @@ using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Exceptions;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
+using static WslToolbox.Gui.Handlers.LogHandler;
 
 namespace WslToolbox.Gui.ViewModels
 {
     public class MainViewModel
     {
+        public Logger Log;
         private readonly MainView _view;
         public readonly ConfigurationHandler Config = new();
+        public readonly bool OsSupported = OsHandler.Supported();
 
         public MainViewModel(MainView view)
         {
+            Log = LogHandler.Log();
             _view = view;
-
             InitializeEventHandlers();
+
+            if (AppConfiguration.IsDebugRelease)
+            {
+                DebugMode();
+            }
+        }
+
+        private void DebugMode()
+        {
+            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Debug;
+
+            Debug.WriteLine("Running in Debug Mode");
         }
 
         public ICommand ShowApplicationCommand =>
@@ -50,7 +67,6 @@ namespace WslToolbox.Gui.ViewModels
         private bool CanStopWslService { get; set; } = true;
         private bool CanStartDistribution { get; set; } = true;
         private bool CanStopDistribution { get; set; } = true;
-
 
         private void InitializeEventHandlers()
         {
@@ -81,6 +97,11 @@ namespace WslToolbox.Gui.ViewModels
             CanStartWslService = false;
             _ = await ToolboxClass.StartWsl().ConfigureAwait(true);
             CanStartWslService = true;
+        }
+
+        public bool ShowUnsupportedOsMessage()
+        {
+            return !OsSupported && !Config.Configuration.HideUnsupportedOsMessage;
         }
 
         private async void StopWslService(object parameter)
@@ -118,7 +139,7 @@ namespace WslToolbox.Gui.ViewModels
 
         private void SaveSuccessfullyEvent(object sender, EventArgs e)
         {
-            LogHandler.Log().Debug("Configuration file saved, reloading configuration");
+            Log().Debug("Configuration file saved, reloading configuration");
             _view.HandleConfiguration();
         }
 
@@ -130,7 +151,7 @@ namespace WslToolbox.Gui.ViewModels
             }
             catch (ConfigurationFileNotSavedException e)
             {
-                LogHandler.Log().Error(e.Message, e);
+                Log().Error(e.Message, e);
                 await _view.ShowMessageAsync("Error", "Your configuration is not saved due to an error.");
             }
         }

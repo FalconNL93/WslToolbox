@@ -1,17 +1,19 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using Microsoft.Extensions.Configuration;
 
 namespace WslToolbox.Gui.Configurations
 {
     public static class LogConfiguration
     {
-        public static readonly string FileName = $"{Directory.GetCurrentDirectory()}/logs/log.txt";
+        public static readonly string FileName =
+            $"{AppConfiguration.AppExecutableDirectory}/{AppConfiguration.AppLogsFileName}";
 
         public static IConfiguration Configuration()
         {
             return new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("settings.json", true, true)
+                .AddJsonFile($"{AppConfiguration.AppLogsFileName}", true, true)
                 .Build();
         }
     }

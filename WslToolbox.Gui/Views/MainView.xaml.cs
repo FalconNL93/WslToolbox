@@ -5,9 +5,11 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Serilog;
 using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
 
@@ -18,7 +20,7 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        private readonly Logger _log = LogHandler.Log();
+        private Logger _log;
         private readonly SystemTrayClass _systemTray = new();
         private MainViewModel _viewModel;
 
@@ -36,6 +38,9 @@ namespace WslToolbox.Gui.Views
 
             DataContext = viewModel;
             _viewModel = viewModel;
+            _log = _viewModel.Log;
+
+            if (_viewModel.ShowUnsupportedOsMessage()) ShowOsUnsupportedMessage();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -43,6 +48,12 @@ namespace WslToolbox.Gui.Views
             _systemTray.Dispose();
 
             base.OnClosing(e);
+        }
+
+        private async void ShowOsUnsupportedMessage()
+        {
+            await this.ShowMessageAsync("Warning",
+                $"Your current operating system is not supported by {AppConfiguration.AppName}");
         }
 
         protected override void OnClosed(EventArgs e)
@@ -161,14 +172,13 @@ namespace WslToolbox.Gui.Views
 
         private async void DistroUninstall_Click(object sender, RoutedEventArgs e)
         {
-            var uninstallMessagebox = MessageBox.Show(
+            var uninstallMessagebox = await this.ShowMessageAsync("Uninstall?",
                 $"Are you sure you want to uninstall {_viewModel.SelectedDistribution.Name}? This will also destroy all data within the distribution.",
-                "Uninstall?",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+                MessageDialogStyle.AffirmativeAndNegative);
 
-            if (uninstallMessagebox != MessageBoxResult.Yes) return;
+            if (uninstallMessagebox != MessageDialogResult.Affirmative) return;
 
+            _log.Information($"Uninstalling distribution {_viewModel.SelectedDistribution.Name}");
             _ = await ToolboxClass.UnregisterDistribution(_viewModel.SelectedDistribution).ConfigureAwait(true);
 
             PopulateWsl();

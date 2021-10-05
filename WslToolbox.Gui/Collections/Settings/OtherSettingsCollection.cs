@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using WslToolbox.Core;
+using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
 
@@ -44,7 +46,19 @@ namespace WslToolbox.Gui.Collections.Settings
                         new Run(Environment.NewLine),
                         new Run($"Core: {GenericClass.AssemblyVersionHuman}")
                     }
-                }
+                },
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
+                    Content = OsHandler.Supported()
+                        ? "OS is supported"
+                        : "OS is not supported"
+                },
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideUnsupportedOsMessage),
+                    "Hide unsupported operating system notification",
+                    "Configuration.HideUnsupportedOsMessage",
+                    Source
+                )
             };
         }
     }
