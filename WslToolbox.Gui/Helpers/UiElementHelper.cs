@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Documents;
 using WslToolbox.Gui.Handlers;
 
@@ -12,15 +11,6 @@ namespace WslToolbox.Gui.Helpers
 {
     public static class UiElementHelper
     {
-        private static Binding AddBinding(string path, object source, BindingMode mode = BindingMode.Default)
-        {
-            return new Binding(path)
-            {
-                Mode = mode,
-                Source = source
-            };
-        }
-
         public static CheckBox AddCheckBox(string name, string content, string bind, object source,
             string requires = null)
         {
@@ -30,9 +20,10 @@ namespace WslToolbox.Gui.Helpers
                 Content = content
             };
 
-            checkBox.SetBinding(ToggleButton.IsCheckedProperty, AddBinding(bind, source));
+            checkBox.SetBinding(ToggleButton.IsCheckedProperty, BindHelper.BindingObject(bind, source));
 
-            if (requires != null) checkBox.SetBinding(UIElement.IsEnabledProperty, AddBinding(requires, source));
+            if (requires != null)
+                checkBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
 
             return checkBox;
         }
@@ -46,9 +37,10 @@ namespace WslToolbox.Gui.Helpers
                 ItemsSource = items
             };
 
-            if (requires != null) comboBox.SetBinding(UIElement.IsEnabledProperty, AddBinding(requires, source));
+            if (requires != null)
+                comboBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
 
-            comboBox.SetBinding(Selector.SelectedItemProperty, AddBinding(bind, source));
+            comboBox.SetBinding(Selector.SelectedItemProperty, BindHelper.BindingObject(bind, source));
 
             return comboBox;
         }

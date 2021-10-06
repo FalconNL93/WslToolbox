@@ -20,8 +20,8 @@
             <ColumnDefinition Width="187*" />
         </Grid.ColumnDefinitions>
         <DataGrid Margin="8,41,10,10" x:Name="DistroDetails" Grid.Column="2"
-                  SelectionChanged="DistroDetails_SelectionChanged" MouseDoubleClick="DistroShell_Click"
-                  SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="false" MinColumnWidth="100"
+                  SelectionChanged="DistroDetails_SelectionChanged" SelectionMode="Single" IsReadOnly="True"
+                  AutoGenerateColumns="false" MinColumnWidth="100"
                   SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
@@ -47,12 +47,12 @@
             <Label Content="WSL Service" FontWeight="Bold" />
             <Button x:Name="StartWsl" Content="Start" Command="{Binding StartWslServiceCommand}" />
             <Button x:Name="StopWsl" Content="Stop" Command="{Binding StopWslServiceCommand}" />
-            <Button x:Name="RestartWsl" Content="Restart" Click="RestartWsl_Click"
+            <Button x:Name="RestartWsl" Content="Restart"
                     Command="{Binding RestartWslServiceCommand}" />
-            <Button x:Name="UpdateWsl" Content="Update" Click="UpdateWsl_Click" />
-            <Button x:Name="RefreshWsl" Content="Refresh" Click="RefreshWsl_Click" />
+            <Button x:Name="UpdateWsl" Content="Update" />
+            <Button x:Name="RefreshWsl" Content="Refresh" />
             <Label Content="Toolbox" FontWeight="Bold" Margin="0,10,0,0" />
-            <Button x:Name="ToolboxSettings" Content="Settings" Command="{Binding ShowSettingsCommand}" />
+            <Button x:Name="ToolboxSettings" Content="Settings" />
             <Button x:Name="ToolboxOutput" Content="Open log" Command="{Binding OpenLogFileCommand}" />
             <Button x:Name="ExitButton" Content="Exit" Command="{Binding ExitApplicationCommand}" />
         </StackPanel>
@@ -73,15 +73,15 @@
                     CommandParameter="{Binding SelectedDistribution}" />
             <Button x:Name="DistroStop" Content="Stop" Command="{Binding StopDistributionCommand}"
                     CommandParameter="{Binding SelectedDistribution}" />
-            <Button x:Name="DistroRestart" Content="Restart" Click="DistroRestart_Click" />
-            <Button x:Name="DistroSetDefault" Content="Set default" Click="DistroSetDefault_Click" />
-            <Button x:Name="DistroConvert" Content="Convert" Click="DistroConvert_Click" />
-            <Button x:Name="DistroShell" Content="Start shell" Click="DistroShell_Click" />
+            <Button x:Name="DistroRestart" Content="Restart" />
+            <Button x:Name="DistroSetDefault" Content="Set default" />
+            <Button x:Name="DistroConvert" Content="Convert" />
+            <Button x:Name="DistroShell" Content="Start shell" />
             <Separator />
-            <Button x:Name="DistroInstall" Content="Install" Click="DistroInstall_Click" />
-            <Button x:Name="DistroImport" Content="Import" Click="DistroImport_Click" />
-            <Button x:Name="DistroExport" Content="Export" Click="DistroExport_Click" />
-            <Button x:Name="DistroUninstall" Content="Delete" Click="DistroUninstall_Click" />
+            <Button x:Name="DistroInstall" Content="Install" />
+            <Button x:Name="DistroImport" Content="Import" />
+            <Button x:Name="DistroExport" Content="Export" />
+            <Button x:Name="DistroUninstall" Content="Delete" />
         </StackPanel>
         <mah:ProgressRing x:Name="Activity" Grid.Column="2" HorizontalAlignment="Right" Margin="0,13,10,0"
                           VerticalAlignment="Top" Height="19" Width="16" IsActive="false" />

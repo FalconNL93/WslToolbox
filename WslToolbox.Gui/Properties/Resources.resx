@@ -130,4 +130,10 @@
             PublicKeyToken=b03f5f7f11d50a3a
         </value>
     </data>
+    <data name="OS_NOT_SUPPORTED" xml:space="preserve">
+        <value>Your current operating system build {0} is not supported by {1}.</value>
+    </data>
+    <data name="OS_NOT_SUPPORTED_BUILD_REQUIRED">
+        <value>Build {0} or higher is required.</value>
+    </data>
 </root>

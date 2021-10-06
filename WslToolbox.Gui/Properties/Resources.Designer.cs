@@ -69,5 +69,23 @@ namespace WslToolbox.Gui.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your current operating system build {0} is not supported by {1}..
+        /// </summary>
+        internal static string OS_NOT_SUPPORTED {
+            get {
+                return ResourceManager.GetString("OS_NOT_SUPPORTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build {0} or higher is required..
+        /// </summary>
+        internal static string OS_NOT_SUPPORTED_BUILD_REQUIRED {
+            get {
+                return ResourceManager.GetString("OS_NOT_SUPPORTED_BUILD_REQUIRED", resourceCulture);
+            }
+        }
     }
 }
