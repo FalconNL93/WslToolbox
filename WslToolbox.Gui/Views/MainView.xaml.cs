@@ -8,6 +8,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
+using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
@@ -37,7 +38,10 @@ namespace WslToolbox.Gui.Views
         {
             BindElement[] mainViewBindings =
             {
-                new(ToolboxSettings, ButtonBase.CommandProperty, "ShowSettingsCommand", DataContext)
+                new(ToolboxSettings, ButtonBase.CommandProperty, nameof(ShowSettingsCommand), DataContext),
+                new(DistroExport, ButtonBase.CommandProperty, nameof(_viewModel.ShowExportDialogCommand), DataContext),
+                new(DistroImport, ButtonBase.CommandProperty, nameof(_viewModel.ShowImportDialogCommand), DataContext),
+                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFileCommand), DataContext)
             };
 
             BindHelper.AddBindings(mainViewBindings);

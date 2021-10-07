@@ -29,9 +29,9 @@ namespace WslToolbox.Gui.ViewModels
 
         private void InitializeSettingsElements()
         {
-            GeneralSettings = new GeneralSettingsCollection(this).Items();
-            AppearanceSettings = new AppearanceSettingsCollection(this).Items();
-            OtherSettings = new OtherSettingsCollection(this).Items();
+            GeneralSettings = new GeneralSettingsGenericCollection(this).Items();
+            AppearanceSettings = new AppearanceSettingsGenericCollection(this).Items();
+            OtherSettings = new OtherSettingsGenericCollection(this).Items();
         }
     }
 }

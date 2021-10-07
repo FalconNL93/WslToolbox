@@ -11,9 +11,9 @@ using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
-    public class OtherSettingsCollection : Collections
+    public class OtherSettingsGenericCollection : GenericCollection
     {
-        public OtherSettingsCollection(object source) : base(source)
+        public OtherSettingsGenericCollection(object source) : base(source)
         {
         }
 

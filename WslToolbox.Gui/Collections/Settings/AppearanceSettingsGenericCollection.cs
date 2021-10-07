@@ -6,9 +6,9 @@ using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
-    public class AppearanceSettingsCollection : Collections
+    public class AppearanceSettingsGenericCollection : GenericCollection
     {
-        public AppearanceSettingsCollection(object source) : base(source)
+        public AppearanceSettingsGenericCollection(object source) : base(source)
         {
         }
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -42,14 +40,15 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
         public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => CanStopWslService);
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
-        public ICommand ShowSettingsCommand => new RelayCommand(ShowSettings, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => CanStartDistribution);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => CanStopDistribution);
+        public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config);
+        public ICommand ShowExportDialogCommand => new ShowExportDialogCommand(this);
+        public ICommand ShowImportDialogCommand => new RelayCommand(ShowImportDialog, o => CanImportDistribution);
 
         public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
-        public ICommand OpenLogFileCommand =>
-            new RelayCommand(OpenLogFile, o => File.Exists(LogConfiguration.FileName));
+        public ICommand OpenLogFileCommand => new OpenLogFileCommand();
 
         public DistributionClass SelectedDistribution { get; set; }
 
@@ -57,6 +56,7 @@ namespace WslToolbox.Gui.ViewModels
         private bool CanStopWslService { get; set; } = true;
         private bool CanStartDistribution { get; set; } = true;
         private bool CanStopDistribution { get; set; } = true;
+        private bool CanImportDistribution { get; set; } = true;
 
         private void DebugMode()
         {
@@ -78,13 +78,31 @@ namespace WslToolbox.Gui.ViewModels
             return DataGridMenuCollection.Items(this);
         }
 
-        private void ShowSettings(object parameter)
+        private async void ShowImportDialog(object parameter)
         {
-            SettingsView settingsWindow = new(Config.Configuration, Config);
-            settingsWindow.ShowDialog();
+            var openExportDialog = FileDialogHandler.OpenFileDialog();
 
-            if (settingsWindow.DialogResult != null && (bool) settingsWindow.DialogResult &&
-                SaveConfigurationCommand.CanExecute(null)) SaveConfigurationCommand.Execute(null);
+            if (!(bool) openExportDialog.ShowDialog()) return;
+
+            var fileName = openExportDialog.FileName;
+
+            ImportView importDistroWindow = new(fileName);
+            importDistroWindow.ShowDialog();
+
+            if (!(bool) importDistroWindow.DialogResult) return;
+
+            try
+            {
+                CanImportDistribution = false;
+                await ToolboxClass.ImportDistribution(SelectedDistribution, importDistroWindow.DistroName,
+                    importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            CanImportDistribution = true;
         }
 
         private async void StartWslService(object parameter)
@@ -149,14 +167,6 @@ namespace WslToolbox.Gui.ViewModels
                 Log().Error(e.Message, e);
                 await _view.ShowMessageAsync("Error", "Your configuration is not saved due to an error.");
             }
-        }
-
-        private void OpenLogFile(object parameter)
-        {
-            _ = Process.Start(new ProcessStartInfo("explorer")
-            {
-                Arguments = Path.GetFullPath(LogConfiguration.FileName)
-            });
         }
     }
 }

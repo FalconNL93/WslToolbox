@@ -4,9 +4,9 @@ using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
-    public class GeneralSettingsCollection : Collections
+    public class GeneralSettingsGenericCollection : GenericCollection
     {
-        public GeneralSettingsCollection(object source) : base(source)
+        public GeneralSettingsGenericCollection(object source) : base(source)
         {
         }
 
