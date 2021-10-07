@@ -11,7 +11,7 @@ namespace WslToolbox.Gui.Handlers
             return new OpenFileDialog
             {
                 Title = "Export",
-                //Filter = FileDialogFilter,
+                Filter = Filter(),
                 AddExtension = FileDialogConfiguration.AddExtension,
                 DefaultExt = FileDialogConfiguration.DefaultExtension,
                 FilterIndex = FileDialogConfiguration.FilterIndex,
@@ -24,7 +24,7 @@ namespace WslToolbox.Gui.Handlers
             return new SaveFileDialog
             {
                 Title = "Export",
-                //Filter = FileDialogFilter,
+                Filter = Filter(),
                 AddExtension = FileDialogConfiguration.AddExtension,
                 DefaultExt = FileDialogConfiguration.DefaultExtension,
                 FilterIndex = FileDialogConfiguration.FilterIndex,
@@ -33,7 +33,7 @@ namespace WslToolbox.Gui.Handlers
             };
         }
 
-        public static string CreateFilter()
+        private static string Filter()
         {
             return string.Join("|", FileDialogConfiguration.Filter
                 .Select(x => x.Key + "|" + x.Value)

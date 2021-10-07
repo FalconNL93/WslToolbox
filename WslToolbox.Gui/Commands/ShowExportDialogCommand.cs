@@ -12,6 +12,8 @@ namespace WslToolbox.Gui.Commands
         public ShowExportDialogCommand(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
+            IsExecutableDefault = o => _mainViewModel.SelectedDistribution != null;
+            IsExecutable = IsExecutableDefault;
         }
 
         public override async void Execute(object parameter)
@@ -33,7 +35,7 @@ namespace WslToolbox.Gui.Commands
                 LogHandler.Log().Error(ex.Message, ex);
             }
 
-            IsExecutable = o => true;
+            IsExecutable = IsExecutableDefault;
         }
     }
 }

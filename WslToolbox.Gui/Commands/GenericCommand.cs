@@ -6,6 +6,7 @@ namespace WslToolbox.Gui.Commands
     public abstract class GenericCommand : ICommand
     {
         private protected Func<object, bool> IsExecutable;
+        private protected Func<object, bool> IsExecutableDefault;
         public abstract void Execute(object parameter);
 
         event EventHandler ICommand.CanExecuteChanged
