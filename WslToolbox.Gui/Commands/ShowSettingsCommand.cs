@@ -17,9 +17,9 @@ namespace WslToolbox.Gui.Commands
             SettingsView settingsWindow = new(_config.Configuration, _config);
             settingsWindow.ShowDialog();
 
-            // SaveConfiguration:
-            // if (settingsWindow.DialogResult != null && (bool) settingsWindow.DialogResult &&
-            //     IsExecutable(null)) Execute(null);
+            var saveSettingsCommand = new SaveSettingsCommand(_config);
+            if (settingsWindow.DialogResult != null && (bool) settingsWindow.DialogResult)
+                saveSettingsCommand.Execute(null);
 
             settingsWindow.Close();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -10,12 +11,19 @@ using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Exceptions;
+using CommandLine;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
 
 namespace WslToolbox.Gui.ViewModels
 {
+    public class Options
+    {
+        [Option('d', "debug", Default = false, HelpText = "Enable debug mode")]
+        public bool DebugMode { get; set; }
+    }
+
     public class MainViewModel
     {
         private readonly bool _osSupported = OsHandler.Supported();
@@ -25,17 +33,22 @@ namespace WslToolbox.Gui.ViewModels
 
         public MainViewModel(MainView view)
         {
+            var args = Environment.GetCommandLineArgs();
             Log = Log();
             _view = view;
             InitializeEventHandlers();
 
-            if (AppConfiguration.IsDebugRelease) DebugMode();
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(o =>
+                {
+                    if (o.DebugMode) DebugMode();
+                });
         }
 
         public ICommand ShowApplicationCommand =>
             new RelayCommand(ShowApplication, o => _view.WindowState == WindowState.Minimized);
 
-        public ICommand SaveConfigurationCommand => new RelayCommand(SaveConfiguration, o => true);
+        public ICommand SaveConfigurationCommand => new SaveSettingsCommand(Config);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
         public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
         public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => CanStopWslService);
@@ -60,7 +73,9 @@ namespace WslToolbox.Gui.ViewModels
 
         private void DebugMode()
         {
-            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Debug;
+            Debug.WriteLine("Debug mode enabled.");
+            _view.Title = $"{_view.Title} - Debug Mode";
+            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Verbose;
         }
 
         private void InitializeEventHandlers()
@@ -154,19 +169,6 @@ namespace WslToolbox.Gui.ViewModels
         {
             Log().Debug("Configuration file saved, reloading configuration");
             _view.HandleConfiguration();
-        }
-
-        private async void SaveConfiguration(object parameter)
-        {
-            try
-            {
-                Config.Save();
-            }
-            catch (ConfigurationFileNotSavedException e)
-            {
-                Log().Error(e.Message, e);
-                await _view.ShowMessageAsync("Error", "Your configuration is not saved due to an error.");
-            }
         }
     }
 }

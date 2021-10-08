@@ -50,6 +50,17 @@ namespace WslToolbox.Gui.Collections.Settings
                 new Label
                 {
                     FontWeight = FontWeights.Bold,
+                    Content = "Log level"
+                },
+                UiElementHelper.AddComboBox(
+                    "MinimumLevel",
+                    LogConfiguration.GetValues(),
+                    "Configuration.Logging.MinimumLevel",
+                    Source
+                ),
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
                     Content = OsHandler.Supported()
                         ? "OS is supported"
                         : "OS is not supported"
