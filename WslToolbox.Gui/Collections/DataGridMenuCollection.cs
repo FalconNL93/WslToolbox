@@ -15,12 +15,36 @@ namespace WslToolbox.Gui.Collections
                     Header = viewModel.SelectedDistribution.Name,
                     IsEnabled = false
                 },
+                new MenuItem
+                {
+                    Header = viewModel.SelectedDistribution.Guid,
+                    IsEnabled = false
+                },
                 new Separator(),
                 new MenuItem
                 {
-                    Header = "Shell"
+                    Header = "Open base path",
+                    Command = viewModel.OpenBasePathDistributionCommand,
+                    CommandParameter = viewModel.SelectedDistribution,
+                    ToolTip = viewModel.SelectedDistribution.BasePathLocal
+                },
+                new MenuItem
+                {
+                    Header = "Rename...",
+                    Command = viewModel.RenameDistributionCommand,
+                    CommandParameter = viewModel.SelectedDistribution
+                },
+                new MenuItem
+                {
+                    Header = "Change base path...",
+                    Command = viewModel.ChangeBasePathDistributionCommand,
+                    CommandParameter = viewModel.SelectedDistribution
                 },
                 new Separator(),
+                new MenuItem
+                {
+                    Header = "Open shell"
+                },
                 new MenuItem
                 {
                     Header = "Start",
@@ -40,11 +64,11 @@ namespace WslToolbox.Gui.Collections
                 new Separator(),
                 new MenuItem
                 {
-                    Header = "Set default"
+                    Header = "Set as default distribution"
                 },
                 new MenuItem
                 {
-                    Header = "Convert"
+                    Header = "Convert to WSL2"
                 }
             };
         }

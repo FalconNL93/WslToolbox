@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using CommandLine;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
 using Serilog.Events;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
-using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Exceptions;
-using CommandLine;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
 
@@ -55,6 +55,14 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => CanStartDistribution);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => CanStopDistribution);
+        public ICommand RenameDistributionCommand => new RelayCommand(RenameDistribution, o => CanRenameDistribution);
+
+        public ICommand ChangeBasePathDistributionCommand =>
+            new RelayCommand(ChangeBasePathDistribution, o => CanChangeBasePathDistribution);
+
+        public ICommand OpenBasePathDistributionCommand =>
+            new RelayCommand(OpenBasePathDistribution, CanOpenBasePathDistribution);
+
         public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config);
         public ICommand ShowExportDialogCommand => new ShowExportDialogCommand(this);
         public ICommand ShowImportDialogCommand => new RelayCommand(ShowImportDialog, o => CanImportDistribution);
@@ -69,7 +77,18 @@ namespace WslToolbox.Gui.ViewModels
         private bool CanStopWslService { get; set; } = true;
         private bool CanStartDistribution { get; set; } = true;
         private bool CanStopDistribution { get; set; } = true;
+        private bool CanRenameDistribution { get; set; } = true;
+        private bool CanChangeBasePathDistribution { get; } = false;
+
         private bool CanImportDistribution { get; set; } = true;
+
+        private bool CanOpenBasePathDistribution(object arg)
+        {
+            if (arg == null) return false;
+
+            var dist = (DistributionClass) arg;
+            return Directory.Exists(dist.BasePathLocal);
+        }
 
         private void DebugMode()
         {
@@ -157,6 +176,38 @@ namespace WslToolbox.Gui.ViewModels
             CanStopDistribution = false;
             _ = await ToolboxClass.TerminateDistribution((DistributionClass) parameter);
             CanStopDistribution = true;
+        }
+
+        private async void RenameDistribution(object parameter)
+        {
+            CanRenameDistribution = false;
+            var newName = await _view.ShowInputAsync(
+                "Rename",
+                "Enter a new name for this distribution. The distribution will be restarted after renaming.");
+            try
+            {
+                ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
+                await _view.ShowMessageAsync("Rename", $"Distribution has been renamed to {newName}.");
+            }
+            catch (Exception e)
+            {
+                await _view.ShowMessageAsync("Error", e.Message);
+            }
+
+            CanRenameDistribution = true;
+        }
+
+        private static void ChangeBasePathDistribution(object parameter)
+        {
+        }
+
+        private static void OpenBasePathDistribution(object parameter)
+        {
+            var distribution = (DistributionClass) parameter;
+
+            if (!Directory.Exists(distribution.BasePathLocal)) return;
+
+            ExplorerHelper.OpenLocal(distribution.BasePathLocal);
         }
 
         private void ShowApplication(object o)

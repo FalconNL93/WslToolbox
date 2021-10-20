@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WslToolbox.Core.Helpers;
 
 namespace WslToolbox.Core
 {
@@ -98,6 +99,17 @@ namespace WslToolbox.Core
             return await Task
                 .Run(() => CommandClass.ExecuteCommand($"{WslCommands.TerminateDistribution} {distribution.Name}"))
                 .ConfigureAwait(true);
+        }
+
+        public static async void RenameDistribution(DistributionClass distribution, string newName)
+        {
+            await TerminateDistribution(distribution);
+
+            await Task
+                .Run(() => { RegistryHelper.ChangeKey(distribution, "DistributionName", newName); })
+                .ConfigureAwait(true);
+
+            await StartDistribution(distribution);
         }
 
         public static async Task<CommandClass> UnregisterDistribution(DistributionClass distribution)

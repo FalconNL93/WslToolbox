@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using WslToolbox.Core.Helpers;
 
 namespace WslToolbox.Core
 {
@@ -12,6 +13,9 @@ namespace WslToolbox.Core
         public string Name { get; set; }
         public string State { get; set; }
         public int Version { get; set; }
+        public string Guid { get; set; }
+        public string BasePath { get; set; }
+        public string BasePathLocal { get; set; }
 
         public static List<DistributionClass> FromAvailableOutput(string output)
         {
@@ -27,13 +31,14 @@ namespace WslToolbox.Core
                     if (line?.Length == 0 || line.StartsWith("NAME") || line.StartsWith("Install")) continue;
 
                     var tabbed = line.Split("\t");
-                    DistributionClass distro = new();
-
-                    distro.IsDefault = false;
-                    distro.Name = tabbed[0];
-                    distro.State = "Available";
-                    distro.Version = 2;
-                    distro.IsInstalled = false;
+                    DistributionClass distro = new()
+                    {
+                        IsDefault = false,
+                        Name = tabbed[0],
+                        State = "Available",
+                        Version = 2,
+                        IsInstalled = false
+                    };
 
                     distros.Add(distro);
                 }
@@ -46,24 +51,25 @@ namespace WslToolbox.Core
         {
             List<DistributionClass> distros = new();
 
-            using (StringReader reader = new(output))
+            using StringReader reader = new(output);
+            var headerLine = reader.ReadLine();
+            string line;
+
+            while ((line = reader.ReadLine()) != null)
             {
-                var headerLine = reader.ReadLine();
-                string line;
+                var tabbed = line.Split("\t");
+                DistributionClass distro = new();
 
-                while ((line = reader.ReadLine()) != null)
-                {
-                    var tabbed = line.Split("\t");
-                    DistributionClass distro = new();
+                distro.IsDefault = tabbed[0] == "*" ? distro.IsDefault = true : distro.IsDefault = false;
+                distro.Name = tabbed[1];
+                distro.State = tabbed[2];
+                distro.Version = int.Parse(tabbed[3]);
+                distro.IsInstalled = true;
+                distro.Guid = RegistryHelper.DistributionRegistryByName(tabbed[1]);
+                distro.BasePath = RegistryHelper.GetKey(distro, "BasePath");
+                distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
 
-                    distro.IsDefault = tabbed[0] == "*" ? distro.IsDefault = true : distro.IsDefault = false;
-                    distro.Name = tabbed[1];
-                    distro.State = tabbed[2];
-                    distro.Version = int.Parse(tabbed[3]);
-                    distro.IsInstalled = true;
-
-                    distros.Add(distro);
-                }
+                distros.Add(distro);
             }
 
             return distros;

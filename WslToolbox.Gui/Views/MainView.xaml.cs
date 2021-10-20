@@ -39,8 +39,6 @@ namespace WslToolbox.Gui.Views
             BindElement[] mainViewBindings =
             {
                 new(ToolboxSettings, ButtonBase.CommandProperty, nameof(ShowSettingsCommand), DataContext),
-                new(DistroExport, ButtonBase.CommandProperty, nameof(_viewModel.ShowExportDialogCommand), DataContext),
-                new(DistroImport, ButtonBase.CommandProperty, nameof(_viewModel.ShowImportDialogCommand), DataContext),
                 new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFileCommand), DataContext)
             };
 

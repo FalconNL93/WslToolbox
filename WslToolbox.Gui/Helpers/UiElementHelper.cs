@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Helpers
 {
@@ -68,29 +66,11 @@ namespace WslToolbox.Gui.Helpers
 
             if (tooltip is not null) hyperlink.ToolTip = tooltip;
 
-            RegisterHyperlinkRequestNavigate(hyperlink);
+            ExplorerHelper.OpenHyperlink(hyperlink);
 
             hyperlink.Inlines.Add(textBlockHyperlink.Inlines.FirstInline);
             textBlock.Inlines.Add(hyperlink);
             return textBlock;
-        }
-
-        private static void RegisterHyperlinkRequestNavigate(Hyperlink hyperlink)
-        {
-            hyperlink.RequestNavigate += (sender, e) =>
-            {
-                try
-                {
-                    _ = Process.Start(new ProcessStartInfo("explorer")
-                    {
-                        Arguments = e.Uri.ToString()
-                    });
-                }
-                catch (Exception ex)
-                {
-                    LogHandler.Log().Error(ex, ex.Message);
-                }
-            };
         }
     }
 }
