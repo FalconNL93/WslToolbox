@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # idea
 .idea/
+
+# NSIS
+Setup/*
+!Setup/*.nsi
