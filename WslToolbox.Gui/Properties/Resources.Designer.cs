@@ -61,6 +61,24 @@ namespace WslToolbox.Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string BOOL_NO {
+            get {
+                return ResourceManager.GetString("BOOL_NO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string BOOL_YES {
+            get {
+                return ResourceManager.GetString("BOOL_YES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap gear {

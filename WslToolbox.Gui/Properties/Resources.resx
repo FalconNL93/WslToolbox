@@ -136,4 +136,10 @@
     <data name="OS_NOT_SUPPORTED_BUILD_REQUIRED">
         <value>Build {0} or higher is required.</value>
     </data>
+    <data name="BOOL_YES" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="BOOL_NO" xml:space="preserve">
+        <value>No</value>
+    </data>
 </root>

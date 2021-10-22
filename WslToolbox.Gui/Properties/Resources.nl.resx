@@ -15,4 +15,10 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
+    <data name="BOOL_NO" xml:space="preserve">
+        <value>Nee</value>
+    </data>
+    <data name="BOOL_YES" xml:space="preserve">
+        <value>Ja</value>
+    </data>
 </root>

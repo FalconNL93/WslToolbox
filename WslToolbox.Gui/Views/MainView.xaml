@@ -15,7 +15,7 @@
                  xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
                  StateChanged="MetroWindow_StateChanged">
     <mah:MetroWindow.Resources>
-        <h:BoolToValueConverter x:Key="BoolToValueConverter" TrueValue="Yes" FalseValue="No" />
+        <h:BoolToValueConverter x:Key="BoolToValueConverter" />
     </mah:MetroWindow.Resources>
     <Grid Margin="5,0,5,0">
         <mah:MetroAnimatedTabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
