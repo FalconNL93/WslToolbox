@@ -48,6 +48,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowApplicationCommand =>
             new RelayCommand(ShowApplication, o => _view.WindowState == WindowState.Minimized);
 
+        public ICommand NotImplementedCommand => new RelayCommand(o => { }, o => false);
         public ICommand SaveConfigurationCommand => new SaveSettingsCommand(Config);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
         public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
@@ -94,7 +95,7 @@ namespace WslToolbox.Gui.ViewModels
         {
             Debug.WriteLine("Debug mode enabled.");
             _view.Title = $"{_view.Title} - Debug Mode";
-            Config.Configuration.Logging.MinimumLevel = LogEventLevel.Verbose;
+            Config.Configuration.MinimumLogLevel = LogEventLevel.Verbose;
         }
 
         private void InitializeEventHandlers()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -39,6 +40,27 @@ namespace WslToolbox.Gui.Helpers
                 comboBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
 
             comboBox.SetBinding(Selector.SelectedItemProperty, BindHelper.BindingObject(bind, source));
+
+            return comboBox;
+        }
+
+        public static ComboBox AddComboBox(string name, Dictionary<int, string> items, string bind, object source,
+            string requires = null)
+        {
+            var comboBox = new ComboBox
+            {
+                Name = name,
+                ItemsSource = items,
+                SelectedValuePath = "Key",
+                DisplayMemberPath = "Value"
+            };
+
+            if (requires != null)
+                comboBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+            comboBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
+
+            if (items.Count <= 1) comboBox.IsEnabled = false;
 
             return comboBox;
         }

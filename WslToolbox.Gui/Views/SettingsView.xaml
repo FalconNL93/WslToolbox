@@ -32,6 +32,11 @@
                     <ItemsControl ItemsSource="{Binding GeneralSettings}" />
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Grid">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding GridSettings}" />
+                </StackPanel>
+            </TabItem>
             <TabItem Header="Appearance">
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding AppearanceSettings}" />

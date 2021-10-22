@@ -38,8 +38,17 @@ namespace WslToolbox.Gui.Views
         {
             BindElement[] mainViewBindings =
             {
+                // Service
+                new(StartWsl, ButtonBase.CommandProperty, nameof(_viewModel.StartWslServiceCommand), DataContext),
+                new(StopWsl, ButtonBase.CommandProperty, nameof(_viewModel.StopWslServiceCommand), DataContext),
+                new(RestartWsl, ButtonBase.CommandProperty, nameof(_viewModel.RestartWslServiceCommand), DataContext),
+                new(UpdateWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplementedCommand), DataContext),
+                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplementedCommand), DataContext),
+
+                // Other
                 new(ToolboxSettings, ButtonBase.CommandProperty, nameof(ShowSettingsCommand), DataContext),
-                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFileCommand), DataContext)
+                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFileCommand), DataContext),
+                new(ExitButton, ButtonBase.CommandProperty, nameof(_viewModel.ExitApplicationCommand), DataContext)
             };
 
             BindHelper.AddBindings(mainViewBindings);
@@ -133,7 +142,6 @@ namespace WslToolbox.Gui.Views
                 .ListDistributions(_viewModel.Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
 
             DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
-            DefaultDistribution.Content = ToolboxClass.DefaultDistribution().Name;
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)

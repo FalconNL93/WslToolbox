@@ -12,7 +12,11 @@
                  ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow"
                  Icon="/Resources/Images/toolbox.png"
                  SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False"
+                 xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
                  StateChanged="MetroWindow_StateChanged">
+    <mah:MetroWindow.Resources>
+        <h:BoolToValueConverter x:Key="BoolToValueConverter" TrueValue="Yes" FalseValue="No" />
+    </mah:MetroWindow.Resources>
     <Grid Margin="5,0,5,0">
         <mah:MetroAnimatedTabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
                                      Width="559" mah:HeaderedControlHelper.HeaderFontSize="20"
@@ -30,11 +34,7 @@
             </mah:MetroAnimatedTabControl.Resources>
             <TabItem Header="Distributions">
                 <Grid>
-                    <Label x:Name="DefaultDistribution" Content="DefaultDistribution" HorizontalAlignment="Left"
-                           Margin="68,10,0,0" VerticalAlignment="Top" Width="165" />
-                    <Label Content="Default:" HorizontalAlignment="Left" Margin="8,10,0,0" VerticalAlignment="Top"
-                           FontWeight="Bold" Height="26" Width="55" />
-                    <DataGrid Margin="8,41,10,10" x:Name="DistroDetails"
+                    <DataGrid Margin="8,0,10,10" x:Name="DistroDetails"
                               SelectionChanged="DistroDetails_SelectionChanged" SelectionMode="Single"
                               IsReadOnly="True"
                               AutoGenerateColumns="false" MinColumnWidth="100"
@@ -43,17 +43,18 @@
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="State" Binding="{Binding State}" />
                             <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
+                            <DataGridTextColumn Header="Default"
+                                                Binding="{Binding IsDefault, Converter={StaticResource BoolToValueConverter}}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="WSL">
+            <TabItem Header="WSL Service">
                 <Grid>
                     <StackPanel HorizontalAlignment="Left" Width="106">
-                        <Button x:Name="StartWsl" Content="Start" Command="{Binding StartWslServiceCommand}" />
-                        <Button x:Name="StopWsl" Content="Stop" Command="{Binding StopWslServiceCommand}" />
-                        <Button x:Name="RestartWsl" Content="Restart"
-                                Command="{Binding RestartWslServiceCommand}" />
+                        <Button x:Name="StartWsl" Content="Start" />
+                        <Button x:Name="StopWsl" Content="Stop" />
+                        <Button x:Name="RestartWsl" Content="Restart" />
                         <Button x:Name="UpdateWsl" Content="Update" />
                         <Button x:Name="RefreshWsl" Content="Refresh" />
                     </StackPanel>
@@ -63,8 +64,8 @@
                 <Grid>
                     <StackPanel HorizontalAlignment="Left" Width="106">
                         <Button x:Name="ToolboxSettings" Content="Settings" />
-                        <Button x:Name="ToolboxOutput" Content="Open log" Command="{Binding OpenLogFileCommand}" />
-                        <Button x:Name="ExitButton" Content="Exit" Command="{Binding ExitApplicationCommand}" />
+                        <Button x:Name="ToolboxOutput" Content="Open log" />
+                        <Button x:Name="ExitButton" Content="Exit" />
                     </StackPanel>
                 </Grid>
             </TabItem>

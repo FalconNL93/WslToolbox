@@ -53,9 +53,9 @@ namespace WslToolbox.Gui.Collections.Settings
                     Content = "Log level"
                 },
                 UiElementHelper.AddComboBox(
-                    "MinimumLevel",
+                    "MinimumLogLevel",
                     LogConfiguration.GetValues(),
-                    "Configuration.Logging.MinimumLevel",
+                    "Configuration.MinimumLogLevel",
                     Source
                 ),
                 new Label

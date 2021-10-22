@@ -16,13 +16,9 @@ namespace WslToolbox.Gui.Configurations
         public bool MinimizeOnStartup { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
         public bool PollServiceStatus { get; set; }
-        public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
-        public Logging Logging { get; set; } = new();
         public bool HideUnsupportedOsMessage { get; set; }
-    }
-
-    public class Logging
-    {
-        public LogEventLevel MinimumLevel { get; set; } = AppConfiguration.AppDefaultLogLevel();
+        public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
+        public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
+        public GridConfiguration GridConfiguration { get; set; } = new();
     }
 }

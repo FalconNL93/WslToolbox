@@ -12,6 +12,8 @@ namespace WslToolbox.Gui.Configurations
         public static readonly string FileName =
             $"{AppConfiguration.AppExecutableDirectory}/{AppConfiguration.AppLogsFileName}";
 
+        public static LogEventLevel MinimumLevel { get; set; } = AppConfiguration.AppDefaultLogLevel();
+
         public static IConfiguration Configuration()
         {
             return new ConfigurationBuilder()
