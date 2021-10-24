@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -27,11 +29,29 @@ namespace WslToolbox.Gui.Views
 
         public MainView()
         {
+            WslIsEnabledCheck();
             InitializeComponent();
             InitializeViewModel();
             InitializeBindings();
             PopulateWsl();
             HandleConfiguration();
+        }
+
+        private static void WslIsEnabledCheck()
+        {
+            var system32 = Environment.SystemDirectory;
+            if (File.Exists($@"{system32}\wsl.exe")) return;
+            
+            var messageBoxResult =
+                MessageBox.Show("WSL does not appear to be installed on your system. Do you want to enable WSL?",
+                    "Error", MessageBoxButton.YesNo);
+
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ToolboxClass.EnableWslComponent();
+            }
+
+            Environment.Exit(1);
         }
 
         private void InitializeBindings()

@@ -12,27 +12,49 @@ namespace WslToolbox.Core
         public int ExitCode { get; set; }
         public string Output { get; set; }
 
-        public static CommandClass ExecuteCommand(string command, int timeout = 2000)
+        public static CommandClass ExecuteCommand(string command, int timeout = 2000, bool elevated = false,
+            string executable = "cmd.exe")
         {
-            Process p = new();
-            CommandClass wslProces = new();
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.Arguments = $"/c {command}";
+            CommandClass wslProcess = new()
+            {
+                Command = command
+            };
+
+            Process p = new()
+            {
+                StartInfo = ProcessStartInfo(command, elevated, executable)
+            };
 
             p.Start();
+
+            if (elevated) return wslProcess;
+
             var reader = p.StandardOutput;
             var output = reader.ReadToEnd();
 
-            if (!p.WaitForExit(timeout)) throw new ExecuteCommandTimeoutException();
+            wslProcess.ExitCode = p.ExitCode;
+            wslProcess.Output = FormatOutput(output);
 
-            wslProces.Command = command;
-            wslProces.ExitCode = p.ExitCode;
-            wslProces.Output = FormatOutput(output);
+            return wslProcess;
+        }
 
-            return wslProces;
+        private static ProcessStartInfo ProcessStartInfo(string arguments, bool elevated = false,
+            string executable = "cmd.exe")
+        {
+            arguments = elevated 
+                ? $"-NoExit {arguments}" 
+                : $"/c {arguments}";
+
+            return new ProcessStartInfo
+            {
+                UseShellExecute = elevated,
+                WindowStyle = elevated ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden,
+                FileName = executable,
+                Arguments = $"{arguments}",
+                CreateNoWindow = !elevated,
+                RedirectStandardOutput = !elevated,
+                Verb = elevated ? "runas" : string.Empty
+            };
         }
 
         public static void StartShell(DistributionClass distribution)

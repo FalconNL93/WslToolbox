@@ -20,6 +20,12 @@ namespace WslToolbox.Core
                 .ConfigureAwait(true);
         }
 
+        public static void EnableWslComponent()
+        {
+            CommandClass.ExecuteCommand($"{WslCommands.EnableWslComponent}", elevated: true,
+                executable: "powershell.exe");
+        }
+
         public static DistributionClass DefaultDistribution()
         {
             return ListDistributions().Result.Find(distro => distro.IsDefault);
@@ -145,6 +151,7 @@ namespace WslToolbox.Core
             UnregisterDistribution = "wsl --unregister",
             ConvertDistribution = "wsl --set-version",
             ExportDistribution = "wsl --export",
-            ImportDistribution = "wsl --import";
+            ImportDistribution = "wsl --import",
+            EnableWslComponent = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux";
     }
 }
