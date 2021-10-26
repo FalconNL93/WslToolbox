@@ -11,18 +11,21 @@ namespace WslToolbox.Gui.ViewModels
         private readonly SettingsView _view;
 
         public SettingsViewModel(SettingsView view, DefaultConfiguration configuration,
-            ConfigurationHandler configHandler)
+            ConfigurationHandler configHandler, OsHandler osHandler)
         {
             _view = view;
             ConfigHandler = configHandler;
             Configuration = configuration;
+            OsHandler = osHandler;
 
             InitializeSettingsElements();
         }
 
-        public StartOnBootHandler StartOnBootHandler { get; } = new();
         public ConfigurationHandler ConfigHandler { get; }
         public DefaultConfiguration Configuration { get; }
+        public OsHandler OsHandler { get; }
+
+        public StartOnBootHandler StartOnBootHandler { get; } = new();
         public CompositeCollection GeneralSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }
         public CompositeCollection AppearanceSettings { get; set; }

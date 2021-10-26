@@ -1,13 +1,30 @@
 ﻿using System;
-using WslToolbox.Gui.Configurations;
 
 namespace WslToolbox.Gui.Handlers
 {
-    public static class OsHandler
+    public class OsHandler
     {
-        public static bool Supported()
+        public enum States
         {
-            return Environment.OSVersion.Version.Build >= AppConfiguration.AppMinimalOsBuild;
+            Unsupported,
+            Minimum,
+            Recommended
+        }
+
+        public const int MinimumOsBuild = 19041;
+        public const int RecommendedOsBuild = 19043;
+        public readonly int OsBuild = Environment.OSVersion.Version.Build;
+
+        public readonly States State;
+
+        public OsHandler()
+        {
+            State = OsBuild switch
+            {
+                >= RecommendedOsBuild => States.Recommended,
+                >= MinimumOsBuild => States.Minimum,
+                _ => States.Unsupported
+            };
         }
     }
 }

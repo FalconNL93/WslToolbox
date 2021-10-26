@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
-using WslToolbox.Core.Exceptions;
 
 namespace WslToolbox.Core
 {
@@ -41,8 +40,8 @@ namespace WslToolbox.Core
         private static ProcessStartInfo ProcessStartInfo(string arguments, bool elevated = false,
             string executable = "cmd.exe")
         {
-            arguments = elevated 
-                ? $"-NoExit {arguments}" 
+            arguments = elevated
+                ? $"-NoExit {arguments}"
                 : $"/c {arguments}";
 
             return new ProcessStartInfo

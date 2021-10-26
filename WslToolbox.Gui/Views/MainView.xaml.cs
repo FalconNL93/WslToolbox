@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,15 +40,12 @@ namespace WslToolbox.Gui.Views
         {
             var system32 = Environment.SystemDirectory;
             if (File.Exists($@"{system32}\wsl.exe")) return;
-            
+
             var messageBoxResult =
                 MessageBox.Show("WSL does not appear to be installed on your system. Do you want to enable WSL?",
-                    "Error", MessageBoxButton.YesNo);
+                    Properties.Resources.ERROR, MessageBoxButton.YesNo);
 
-            if (messageBoxResult == MessageBoxResult.Yes)
-            {
-                ToolboxClass.EnableWslComponent();
-            }
+            if (messageBoxResult == MessageBoxResult.Yes) ToolboxClass.EnableWslComponent();
 
             Environment.Exit(1);
         }
@@ -96,10 +92,10 @@ namespace WslToolbox.Gui.Views
         {
             var notSupportedMessageDialogResult = await this.ShowMessageAsync("Warning",
                 string.Format(
-                    Properties.Resources.OS_NOT_SUPPORTED, Environment.OSVersion.Version.Build,
+                    Properties.Resources.OS_NOT_SUPPORTED, _viewModel.OsHandler.OsBuild,
                     AppConfiguration.AppName) +
                 Environment.NewLine + string.Format(
-                    Properties.Resources.OS_NOT_SUPPORTED_BUILD_REQUIRED, AppConfiguration.AppMinimalOsBuild),
+                    Properties.Resources.OS_NOT_SUPPORTED_BUILD_REQUIRED, OsHandler.MinimumOsBuild),
                 MessageDialogStyle.AffirmativeAndNegative,
                 new MetroDialogSettings
                 {

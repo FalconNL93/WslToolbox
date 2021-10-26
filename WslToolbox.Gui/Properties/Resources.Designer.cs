@@ -79,12 +79,20 @@ namespace WslToolbox.Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static System.Drawing.Bitmap gear {
+        internal static string ERROR {
             get {
-                object obj = ResourceManager.GetObject("gear", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can only use alphanumeric characters and must contain 3 characters or more. Spaces are not allowed..
+        /// </summary>
+        internal static string ERROR_ONLY_ALPHANUMERIC {
+            get {
+                return ResourceManager.GetString("ERROR_ONLY_ALPHANUMERIC", resourceCulture);
             }
         }
         

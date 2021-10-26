@@ -75,7 +75,7 @@ SectionEnd
 
 ;-------------------------------------------------------------------------------
 ; Include localization
-!include "wsltoolbox-en.nsi"
+!include "lang\en.nsi"
 
 ;-------------------------------------------------------------------------------
 ; Section localization

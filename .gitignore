@@ -367,8 +367,9 @@ FodyWeavers.xsd
 
 # NSIS
 Setup/*
+!Setup/lang/
 !Setup/*.nsi
-!Setup/lang/*.nsi
 
 # VSCode
 .vscode/
+*.code-workspace

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
 
@@ -26,10 +28,10 @@ namespace WslToolbox.Gui.ViewModels
 
     public class MainViewModel
     {
-        private readonly bool _osSupported = OsHandler.Supported();
         private readonly MainView _view;
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
+        public readonly OsHandler OsHandler = new();
 
         public MainViewModel(MainView view)
         {
@@ -64,7 +66,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand OpenBasePathDistributionCommand =>
             new RelayCommand(OpenBasePathDistribution, CanOpenBasePathDistribution);
 
-        public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config);
+        public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config, OsHandler);
         public ICommand ShowExportDialogCommand => new ShowExportDialogCommand(this);
         public ICommand ShowImportDialogCommand => new RelayCommand(ShowImportDialog, o => CanImportDistribution);
 
@@ -149,7 +151,7 @@ namespace WslToolbox.Gui.ViewModels
 
         public bool ShowUnsupportedOsMessage()
         {
-            return !_osSupported && !Config.Configuration.HideUnsupportedOsMessage;
+            return OsHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
         }
 
         private async void StopWslService(object parameter)
@@ -184,16 +186,26 @@ namespace WslToolbox.Gui.ViewModels
             CanRenameDistribution = false;
             var newName = await _view.ShowInputAsync(
                 "Rename",
-                "Enter a new name for this distribution. The distribution will be restarted after renaming.");
-            try
-            {
-                ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
-                await _view.ShowMessageAsync("Rename", $"Distribution has been renamed to {newName}.");
-            }
-            catch (Exception e)
-            {
-                await _view.ShowMessageAsync("Error", e.Message);
-            }
+                "Enter a new name for this distribution. The distribution will be restarted after renaming.\n\n" +
+                "You can only use alphanumeric characters and must contain 3 characters or more. Spaces are not allowed.");
+
+            if (newName is not null)
+                try
+                {
+                    if (newName.All(char.IsLetterOrDigit) && newName.Length >= 3)
+                    {
+                        ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
+                        await _view.ShowMessageAsync("Rename", $"Distribution has been renamed to {newName}.");
+                    }
+                    else
+                    {
+                        await _view.ShowMessageAsync(Resources.ERROR, Resources.ERROR_ONLY_ALPHANUMERIC);
+                    }
+                }
+                catch (Exception e)
+                {
+                    await _view.ShowMessageAsync(Resources.ERROR, e.Message);
+                }
 
             CanRenameDistribution = true;
         }
