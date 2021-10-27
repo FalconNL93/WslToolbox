@@ -97,6 +97,33 @@ namespace WslToolbox.Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notice.
+        /// </summary>
+        internal static string NOTICE {
+            get {
+                return ResourceManager.GetString("NOTICE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your current operating system build {0} is not recommended by {1}..
+        /// </summary>
+        internal static string OS_MINIMUM {
+            get {
+                return ResourceManager.GetString("OS_MINIMUM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build {0} or higher is recommended..
+        /// </summary>
+        internal static string OS_MINIMUM_BUILD {
+            get {
+                return ResourceManager.GetString("OS_MINIMUM_BUILD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your current operating system build {0} is not supported by {1}..
         /// </summary>
         internal static string OS_NOT_SUPPORTED {

@@ -17,6 +17,7 @@ namespace WslToolbox.Gui.Configurations
         public bool HideDockerDistributions { get; set; } = true;
         public bool PollServiceStatus { get; set; }
         public bool HideUnsupportedOsMessage { get; set; }
+        public bool ShowMinimumOsMessage { get; set; }
         public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();

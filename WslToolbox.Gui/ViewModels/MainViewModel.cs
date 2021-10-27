@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace WslToolbox.Gui.ViewModels
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
         public readonly OsHandler OsHandler = new();
+        public List<DistributionClass> DistroList = new();
 
         public MainViewModel(MainView view)
         {
@@ -45,6 +47,8 @@ namespace WslToolbox.Gui.ViewModels
                 {
                     if (o.DebugMode) DebugMode();
                 });
+
+            RefreshDistributions();
         }
 
         public ICommand ShowApplicationCommand =>
@@ -55,10 +59,14 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
         public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
         public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => CanStopWslService);
+        public ICommand RefreshCommand => new RelayCommand(RefreshDistributionsView, o => true);
         public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => CanStartDistribution);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => CanStopDistribution);
         public ICommand RenameDistributionCommand => new RelayCommand(RenameDistribution, o => CanRenameDistribution);
+
+        public ICommand SetDefaultDistributionCommand =>
+            new RelayCommand(SetDefaultDistribution, CanSetDefaultDistribution);
 
         public ICommand ChangeBasePathDistributionCommand =>
             new RelayCommand(ChangeBasePathDistribution, o => CanChangeBasePathDistribution);
@@ -73,6 +81,8 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
         public ICommand OpenLogFileCommand => new OpenLogFileCommand();
+        public ICommand CopyToClipboardCommand => new CopyToClipboardCommand();
+        public ICommand OpenDistributionShell => new OpenDistributionShell(this);
 
         public DistributionClass SelectedDistribution { get; set; }
 
@@ -91,6 +101,14 @@ namespace WslToolbox.Gui.ViewModels
 
             var dist = (DistributionClass) arg;
             return Directory.Exists(dist.BasePathLocal);
+        }
+
+        private bool CanSetDefaultDistribution(object arg)
+        {
+            if (arg == null) return false;
+
+            var dist = (DistributionClass) arg;
+            return !dist.IsDefault;
         }
 
         private void DebugMode()
@@ -154,6 +172,11 @@ namespace WslToolbox.Gui.ViewModels
             return OsHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
         }
 
+        public bool ShowMinimumOsMessage()
+        {
+            return OsHandler.State == OsHandler.States.Minimum && Config.Configuration.ShowMinimumOsMessage;
+        }
+
         private async void StopWslService(object parameter)
         {
             CanStopWslService = false;
@@ -179,6 +202,11 @@ namespace WslToolbox.Gui.ViewModels
             CanStopDistribution = false;
             _ = await ToolboxClass.TerminateDistribution((DistributionClass) parameter);
             CanStopDistribution = true;
+        }
+
+        private async void SetDefaultDistribution(object parameter)
+        {
+            await ToolboxClass.SetDefaultDistribution((DistributionClass) parameter);
         }
 
         private async void RenameDistribution(object parameter)
@@ -212,6 +240,18 @@ namespace WslToolbox.Gui.ViewModels
 
         private static void ChangeBasePathDistribution(object parameter)
         {
+        }
+
+        private async void RefreshDistributions()
+        {
+            DistroList = await ToolboxClass
+                .ListDistributions(Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
+        }
+
+        private void RefreshDistributionsView(object parameter)
+        {
+            RefreshDistributions();
+            _view.PopulateWsl();
         }
 
         private static void OpenBasePathDistribution(object parameter)

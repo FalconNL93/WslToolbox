@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
@@ -14,6 +14,9 @@ using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
+using Application = System.Windows.Application;
+using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
+using MessageBox = System.Windows.MessageBox;
 
 namespace WslToolbox.Gui.Views
 {
@@ -31,8 +34,8 @@ namespace WslToolbox.Gui.Views
             WslIsEnabledCheck();
             InitializeComponent();
             InitializeViewModel();
-            InitializeBindings();
             PopulateWsl();
+            InitializeBindings();
             HandleConfiguration();
         }
 
@@ -59,7 +62,7 @@ namespace WslToolbox.Gui.Views
                 new(StopWsl, ButtonBase.CommandProperty, nameof(_viewModel.StopWslServiceCommand), DataContext),
                 new(RestartWsl, ButtonBase.CommandProperty, nameof(_viewModel.RestartWslServiceCommand), DataContext),
                 new(UpdateWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplementedCommand), DataContext),
-                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplementedCommand), DataContext),
+                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.RefreshCommand), DataContext),
 
                 // Other
                 new(ToolboxSettings, ButtonBase.CommandProperty, nameof(ShowSettingsCommand), DataContext),
@@ -79,6 +82,7 @@ namespace WslToolbox.Gui.Views
             _log = _viewModel.Log;
 
             if (_viewModel.ShowUnsupportedOsMessage()) ShowOsUnsupportedMessage();
+            if (_viewModel.ShowMinimumOsMessage()) ShowOsUnsupportedMessage(OsHandler.States.Minimum);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -88,14 +92,27 @@ namespace WslToolbox.Gui.Views
             base.OnClosing(e);
         }
 
-        private async void ShowOsUnsupportedMessage()
+        private async void ShowOsUnsupportedMessage(OsHandler.States state = OsHandler.States.Unsupported)
         {
-            var notSupportedMessageDialogResult = await this.ShowMessageAsync("Warning",
-                string.Format(
-                    Properties.Resources.OS_NOT_SUPPORTED, _viewModel.OsHandler.OsBuild,
-                    AppConfiguration.AppName) +
-                Environment.NewLine + string.Format(
-                    Properties.Resources.OS_NOT_SUPPORTED_BUILD_REQUIRED, OsHandler.MinimumOsBuild),
+            var osTitle = "Warning";
+            var osMessage = string.Format(
+                                Properties.Resources.OS_NOT_SUPPORTED, _viewModel.OsHandler.OsBuild,
+                                AppConfiguration.AppName) +
+                            Environment.NewLine + string.Format(
+                                Properties.Resources.OS_NOT_SUPPORTED_BUILD_REQUIRED, OsHandler.MinimumOsBuild);
+
+            if (state == OsHandler.States.Minimum)
+            {
+                osTitle = Properties.Resources.NOTICE;
+                osMessage = string.Format(
+                                Properties.Resources.OS_MINIMUM, _viewModel.OsHandler.OsBuild,
+                                AppConfiguration.AppName) +
+                            Environment.NewLine + string.Format(
+                                Properties.Resources.OS_MINIMUM_BUILD, OsHandler.RecommendedOsBuild);
+            }
+
+            var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
+                osMessage,
                 MessageDialogStyle.AffirmativeAndNegative,
                 new MetroDialogSettings
                 {
@@ -152,12 +169,14 @@ namespace WslToolbox.Gui.Views
             };
         }
 
-        private async void PopulateWsl()
+        public void PopulateWsl()
         {
-            var distroList = await ToolboxClass
-                .ListDistributions(_viewModel.Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
+            var distroList = _viewModel.DistroList;
 
-            DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
+            if (distroList != null)
+            {
+                DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
+            }
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)

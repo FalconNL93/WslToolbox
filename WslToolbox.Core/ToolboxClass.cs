@@ -56,13 +56,11 @@ namespace WslToolbox.Core
                 DistributionClass.FromAvailableOutput(distributionAvailableListOutput.Output);
 
             distributionList.AddRange(distributionListAvailable
-                .Where(dist1 => !distributionList.Any(dist2 => dist2.Name == dist1.Name)));
+                .Where(dist1 => distributionList.All(dist2 => dist2.Name != dist1.Name)));
 
-            if (withoutDocker)
-            {
-                _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop");
-                _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop-data");
-            }
+            if (!withoutDocker) return await Task.FromResult(distributionList).ConfigureAwait(true);
+            _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop");
+            _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop-data");
 
             return await Task.FromResult(distributionList).ConfigureAwait(true);
         }

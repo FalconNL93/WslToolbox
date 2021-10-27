@@ -143,4 +143,13 @@
     <data name="ERROR" xml:space="preserve">
         <value>Error</value>
     </data>
+    <data name="OS_MINIMUM" xml:space="preserve">
+        <value>Your current operating system build {0} is not recommended by {1}.</value>
+    </data>
+    <data name="OS_MINIMUM_BUILD" xml:space="preserve">
+        <value>Build {0} or higher is recommended.</value>
+    </data>
+    <data name="NOTICE" xml:space="preserve">
+        <value>Notice</value>
+    </data>
 </root>

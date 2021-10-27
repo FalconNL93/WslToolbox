@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using WslToolbox.Core.Helpers;
 
@@ -51,25 +52,31 @@ namespace WslToolbox.Core
         {
             List<DistributionClass> distros = new();
 
-            using StringReader reader = new(output);
-            var headerLine = reader.ReadLine();
-            string line;
-
-            while ((line = reader.ReadLine()) != null)
+            try
             {
-                var tabbed = line.Split("\t");
-                DistributionClass distro = new();
+                using StringReader reader = new(output);
+                var headerLine = reader.ReadLine();
+                string line;
 
-                distro.IsDefault = tabbed[0] == "*" ? distro.IsDefault = true : distro.IsDefault = false;
-                distro.Name = tabbed[1];
-                distro.State = tabbed[2];
-                distro.Version = int.Parse(tabbed[3]);
-                distro.IsInstalled = true;
-                distro.Guid = RegistryHelper.DistributionRegistryByName(tabbed[1]);
-                distro.BasePath = RegistryHelper.GetKey(distro, "BasePath");
-                distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var tabbed = line.Split("\t");
+                    DistributionClass distro = new();
 
-                distros.Add(distro);
+                    distro.IsDefault = tabbed[0] == "*" ? distro.IsDefault = true : distro.IsDefault = false;
+                    distro.Name = tabbed[1];
+                    distro.State = tabbed[2];
+                    distro.Version = int.Parse(tabbed[3]);
+                    distro.IsInstalled = true;
+                    distro.Guid = RegistryHelper.DistributionRegistryByName(tabbed[1]);
+                    distro.BasePath = RegistryHelper.GetKey(distro, "BasePath");
+                    distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
+
+                    distros.Add(distro);
+                }
+            }
+            catch (Exception e)
+            {
             }
 
             return distros;
