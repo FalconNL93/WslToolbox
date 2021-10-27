@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using System.Windows.Controls.Primitives;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
@@ -14,9 +14,6 @@ using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
-using Application = System.Windows.Application;
-using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
-using MessageBox = System.Windows.MessageBox;
 
 namespace WslToolbox.Gui.Views
 {
@@ -173,10 +170,7 @@ namespace WslToolbox.Gui.Views
         {
             var distroList = _viewModel.DistroList;
 
-            if (distroList != null)
-            {
-                DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
-            }
+            if (distroList != null) DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)

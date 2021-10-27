@@ -13,6 +13,7 @@ using Serilog.Events;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
+using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Properties;
@@ -82,7 +83,8 @@ namespace WslToolbox.Gui.ViewModels
 
         public ICommand OpenLogFileCommand => new OpenLogFileCommand();
         public ICommand CopyToClipboardCommand => new CopyToClipboardCommand();
-        public ICommand OpenDistributionShell => new OpenDistributionShell(this);
+
+        public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
 
         public DistributionClass SelectedDistribution { get; set; }
 
