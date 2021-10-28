@@ -177,7 +177,8 @@ namespace WslToolbox.Gui.Views
         {
             var distributionList = _viewModel.DistributionList;
 
-            if (distributionList != null) DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
+            if (distributionList != null)
+                DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)

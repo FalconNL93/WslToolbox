@@ -32,7 +32,8 @@
                      TextChanged="ImportDistributionName_TextChanged" />
             <Label Content="Installation folder:" FontWeight="Bold" />
             <TextBox x:Name="ImportDistributionLocation" Height="21" Text="Double click here to browse..."
-                     TextWrapping="Wrap" IsReadOnly="True" MouseDoubleClick="ImportDistributionLocation_MouseDoubleClick" />
+                     TextWrapping="Wrap" IsReadOnly="True"
+                     MouseDoubleClick="ImportDistributionLocation_MouseDoubleClick" />
             <Button x:Name="ImportDistributionButton" Content="Import" Click="Button_Click" IsEnabled="false" />
         </StackPanel>
     </Grid>
