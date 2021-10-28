@@ -34,8 +34,10 @@
             </mah:MetroAnimatedTabControl.Resources>
             <TabItem Header="Distributions">
                 <Grid>
-                    <DataGrid Margin="8,0,10,10" x:Name="DistroDetails"
-                              SelectionChanged="DistroDetails_SelectionChanged" SelectionMode="Single"
+                    <mah:DropDownButton x:Name="ControlMenuButton" HorizontalAlignment="Left" Height="15"
+                                        Margin="8,10,0,0" VerticalAlignment="Top" Width="199" Content="Manage..." />
+                    <DataGrid Margin="8,41,10,10" x:Name="DistributionDetails"
+                              SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
                               IsReadOnly="True"
                               AutoGenerateColumns="false" MinColumnWidth="100"
                               SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">

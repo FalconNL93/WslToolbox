@@ -1,7 +1,7 @@
 ﻿using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 
-namespace WslToolbox.Gui.Commands
+namespace WslToolbox.Gui.Commands.Settings
 {
     public class ShowSettingsCommand : GenericCommand
     {

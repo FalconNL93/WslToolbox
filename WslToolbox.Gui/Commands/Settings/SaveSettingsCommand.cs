@@ -1,7 +1,7 @@
 ﻿using WslToolbox.Gui.Exceptions;
 using WslToolbox.Gui.Handlers;
 
-namespace WslToolbox.Gui.Commands
+namespace WslToolbox.Gui.Commands.Settings
 {
     public class SaveSettingsCommand : GenericCommand
     {

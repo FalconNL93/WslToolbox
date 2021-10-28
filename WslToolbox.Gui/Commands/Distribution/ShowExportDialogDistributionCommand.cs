@@ -3,13 +3,13 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
 
-namespace WslToolbox.Gui.Commands
+namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowExportDialogCommand : GenericCommand
+    public class ShowExportDialogDistributionCommand : GenericCommand
     {
         private readonly MainViewModel _mainViewModel;
 
-        public ShowExportDialogCommand(MainViewModel mainViewModel)
+        public ShowExportDialogDistributionCommand(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             IsExecutableDefault = o => _mainViewModel.SelectedDistribution != null;

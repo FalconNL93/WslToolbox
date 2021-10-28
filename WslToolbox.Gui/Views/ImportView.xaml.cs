@@ -20,25 +20,25 @@ namespace WslToolbox.Gui.Views
             InitializeComponent();
         }
 
-        public string DistroName { get; set; }
-        public string DistroSelectedDirectory { get; set; }
+        public string DistributionName { get; set; }
+        public string DistributionSelectedDirectory { get; set; }
 
-        private static bool ValidateDistroName(string distroName)
+        private static bool ValidateDistributionName(string distributionName)
         {
-            return ValidCharacters.IsMatch(distroName) && distroName.Length >= 3;
+            return ValidCharacters.IsMatch(distributionName) && distributionName.Length >= 3;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateDistroName(ImportDistroName.Text))
+            if (!ValidateDistributionName(ImportDistributionName.Text))
             {
                 _ = MessageBox.Show("Only alphanumeric characters are allowed, minimum characters are 3.",
                     "Import distribution", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (!Directory.Exists(ImportDistroLocation.Text) ||
-                ImportDistroLocation.Text == "Double click here to browse...")
+            if (!Directory.Exists(ImportDistributionLocation.Text) ||
+                ImportDistributionLocation.Text == "Double click here to browse...")
             {
                 _ = MessageBox.Show("Installation location does not exist or is not selected.", "Import distribution",
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -49,7 +49,7 @@ namespace WslToolbox.Gui.Views
             Close();
         }
 
-        private void ImportDistroLocation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ImportDistributionLocation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openLocation = new()
             {
@@ -64,15 +64,15 @@ namespace WslToolbox.Gui.Views
 
             if (!(bool) openLocation.ShowDialog()) return;
 
-            DistroSelectedDirectory = Path.GetDirectoryName(openLocation.FileName);
-            ImportDistroLocation.Text = Path.GetDirectoryName(openLocation.FileName);
+            DistributionSelectedDirectory = Path.GetDirectoryName(openLocation.FileName);
+            ImportDistributionLocation.Text = Path.GetDirectoryName(openLocation.FileName);
 
-            DistroName = ImportDistroName.Text;
+            DistributionName = ImportDistributionName.Text;
         }
 
-        private void ImportDistroName_TextChanged(object sender, TextChangedEventArgs e)
+        private void ImportDistributionName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ImportDistroButton.IsEnabled = ImportDistroName.Text.Length >= 1;
+            ImportDistributionButton.IsEnabled = ImportDistributionName.Text.Length >= 1;
         }
     }
 }

@@ -9,7 +9,8 @@ using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
-using WslToolbox.Gui.Commands;
+using WslToolbox.Gui.Collections;
+using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
@@ -33,6 +34,7 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             PopulateWsl();
             InitializeBindings();
+            InitializeContextMenus();
             HandleConfiguration();
         }
 
@@ -68,6 +70,11 @@ namespace WslToolbox.Gui.Views
             };
 
             BindHelper.AddBindings(mainViewBindings);
+        }
+
+        private void InitializeContextMenus()
+        {
+            ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
         }
 
         private void InitializeViewModel()
@@ -129,9 +136,9 @@ namespace WslToolbox.Gui.Views
             Application.Current.Shutdown();
         }
 
-        private void DistroDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DistributionDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DistroDetails.ContextMenu = _viewModel.SelectedDistribution != null
+            DistributionDetails.ContextMenu = _viewModel.SelectedDistribution != null
                 ? new ContextMenu
                 {
                     ItemsSource = _viewModel.DataGridMenuItems()
@@ -168,9 +175,9 @@ namespace WslToolbox.Gui.Views
 
         public void PopulateWsl()
         {
-            var distroList = _viewModel.DistroList;
+            var distributionList = _viewModel.DistributionList;
 
-            if (distroList != null) DistroDetails.ItemsSource = distroList.FindAll(x => x.IsInstalled);
+            if (distributionList != null) DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
         }
 
         private void MetroWindow_StateChanged(object sender, EventArgs e)

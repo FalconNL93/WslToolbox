@@ -14,6 +14,8 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
+using WslToolbox.Gui.Commands.Service;
+using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Properties;
@@ -34,7 +36,7 @@ namespace WslToolbox.Gui.ViewModels
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
         public readonly OsHandler OsHandler = new();
-        public List<DistributionClass> DistroList = new();
+        public List<DistributionClass> DistributionList = new();
 
         public MainViewModel(MainView view)
         {
@@ -58,10 +60,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand NotImplementedCommand => new RelayCommand(o => { }, o => false);
         public ICommand SaveConfigurationCommand => new SaveSettingsCommand(Config);
         public ICommand ExitApplicationCommand => new RelayCommand(o => { Environment.Exit(-1); }, o => true);
-        public ICommand StartWslServiceCommand => new RelayCommand(StartWslService, o => CanStartWslService);
-        public ICommand StopWslServiceCommand => new RelayCommand(StopWslService, o => CanStopWslService);
         public ICommand RefreshCommand => new RelayCommand(RefreshDistributionsView, o => true);
-        public ICommand RestartWslServiceCommand => new RelayCommand(RestartWslService, o => true);
         public ICommand StartDistributionCommand => new RelayCommand(StartDistribution, o => CanStartDistribution);
         public ICommand StopDistributionCommand => new RelayCommand(StopDistribution, o => CanStopDistribution);
         public ICommand RenameDistributionCommand => new RelayCommand(RenameDistribution, o => CanRenameDistribution);
@@ -76,8 +75,14 @@ namespace WslToolbox.Gui.ViewModels
             new RelayCommand(OpenBasePathDistribution, CanOpenBasePathDistribution);
 
         public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config, OsHandler);
-        public ICommand ShowExportDialogCommand => new ShowExportDialogCommand(this);
-        public ICommand ShowImportDialogCommand => new RelayCommand(ShowImportDialog, o => CanImportDistribution);
+        public ICommand ShowExportDialogCommand => new ShowExportDialogDistributionCommand(this);
+        public ICommand ShowImportDialogCommand => new ShowImportDialogCommand(this);
+
+        public ICommand StartWslServiceCommand => new StartWslServiceCommand();
+        public ICommand StopWslServiceCommand => new StopWslServiceCommand();
+        public ICommand RestartWslServiceCommand => new RestartWslServiceCommand();
+
+        public ICommand ShowSelectDialogCommand => new ShowSelectDistributionDialogCommand();
 
         public ICommand StartOnBoot => new RelayCommand(null, o => false);
 
@@ -87,15 +92,10 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
 
         public DistributionClass SelectedDistribution { get; set; }
-
-        private bool CanStartWslService { get; set; } = true;
-        private bool CanStopWslService { get; set; } = true;
         private bool CanStartDistribution { get; set; } = true;
         private bool CanStopDistribution { get; set; } = true;
         private bool CanRenameDistribution { get; set; } = true;
         private bool CanChangeBasePathDistribution { get; } = false;
-
-        private bool CanImportDistribution { get; set; } = true;
 
         private bool CanOpenBasePathDistribution(object arg)
         {
@@ -135,40 +135,6 @@ namespace WslToolbox.Gui.ViewModels
             return DataGridMenuCollection.Items(this);
         }
 
-        private async void ShowImportDialog(object parameter)
-        {
-            var openExportDialog = FileDialogHandler.OpenFileDialog();
-
-            if (!(bool) openExportDialog.ShowDialog()) return;
-
-            var fileName = openExportDialog.FileName;
-
-            ImportView importDistroWindow = new(fileName);
-            importDistroWindow.ShowDialog();
-
-            if (!(bool) importDistroWindow.DialogResult) return;
-
-            try
-            {
-                CanImportDistribution = false;
-                await ToolboxClass.ImportDistribution(SelectedDistribution, importDistroWindow.DistroName,
-                    importDistroWindow.DistroSelectedDirectory, fileName).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            CanImportDistribution = true;
-        }
-
-        private async void StartWslService(object parameter)
-        {
-            CanStartWslService = false;
-            _ = await ToolboxClass.StartWsl().ConfigureAwait(true);
-            CanStartWslService = true;
-        }
-
         public bool ShowUnsupportedOsMessage()
         {
             return OsHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
@@ -177,19 +143,6 @@ namespace WslToolbox.Gui.ViewModels
         public bool ShowMinimumOsMessage()
         {
             return OsHandler.State == OsHandler.States.Minimum && Config.Configuration.ShowMinimumOsMessage;
-        }
-
-        private async void StopWslService(object parameter)
-        {
-            CanStopWslService = false;
-            _ = await ToolboxClass.StopWsl().ConfigureAwait(true);
-            CanStopWslService = true;
-        }
-
-        private void RestartWslService(object parameter)
-        {
-            StopWslServiceCommand.Execute(null);
-            StartWslServiceCommand.Execute(null);
         }
 
         private async void StartDistribution(object parameter)
@@ -246,7 +199,7 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void RefreshDistributions()
         {
-            DistroList = await ToolboxClass
+            DistributionList = await ToolboxClass
                 .ListDistributions(Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
         }
 

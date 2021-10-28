@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SelectDistroView"
+﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SelectDistributionView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,9 +12,9 @@
     <Grid Margin="10,10,10,12">
         <GroupBox Header=" Select distribution " Margin="0,0,0,10">
             <Grid>
-                <ComboBox x:Name="AvailableDistros" Margin="10,10,10,0" IsReadOnly="True" Height="24"
-                          VerticalAlignment="Top" SelectionChanged="AvailableDistros_SelectionChanged" />
-                <Button x:Name="InstallDistro" Content="Install" Margin="0,39,10,0" Click="InstallDistro_Click"
+                <ComboBox x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True" Height="24"
+                          VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged" />
+                <Button x:Name="InstallDistribution" Content="Install" Margin="0,39,10,0" Click="InstallDistribution_Click"
                         Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" IsEnabled="False" />
                 <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,39,0,0" Width="82"
                         Click="Button_Click_1" Height="24" VerticalAlignment="Top" />
