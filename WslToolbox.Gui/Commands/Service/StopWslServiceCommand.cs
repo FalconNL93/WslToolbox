@@ -7,10 +7,10 @@ namespace WslToolbox.Gui.Commands.Service
     {
         public StopWslServiceCommand()
         {
-            IsExecutableDefault = o => false;
+            IsExecutableDefault = _ => false;
             IsExecutable = IsExecutableDefault;
 
-            IsExecutable = o => Process.GetProcessesByName("wslhost").Length > 0;
+            IsExecutable = _ => Process.GetProcessesByName("wslhost").Length > 0;
         }
 
         public override async void Execute(object parameter)

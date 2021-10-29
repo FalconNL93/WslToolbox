@@ -8,7 +8,7 @@ namespace WslToolbox.Gui.Commands
     {
         public OpenLogFileCommand()
         {
-            IsExecutable = o => File.Exists(LogConfiguration.FileName);
+            IsExecutable = _ => File.Exists(LogConfiguration.FileName);
         }
 
         public override void Execute(object parameter)

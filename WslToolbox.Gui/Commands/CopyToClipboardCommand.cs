@@ -7,7 +7,7 @@ namespace WslToolbox.Gui.Commands
     {
         public CopyToClipboardCommand()
         {
-            IsExecutable = o => true;
+            IsExecutable = _ => true;
         }
 
         public override void Execute(object parameter)

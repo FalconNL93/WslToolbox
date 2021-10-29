@@ -7,7 +7,7 @@ namespace WslToolbox.Gui.Commands.Distribution
     {
         public ShowSelectDistributionDialogCommand()
         {
-            IsExecutableDefault = o => true;
+            IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
 

@@ -1,18 +1,15 @@
 ﻿using System;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowExportDialogDistributionCommand : GenericCommand
+    public class ShowExportDialogDistributionCommand : GenericDistributionCommand
     {
-        private readonly MainViewModel _mainViewModel;
-
-        public ShowExportDialogDistributionCommand(MainViewModel mainViewModel)
+        public ShowExportDialogDistributionCommand(DistributionClass distributionClass) : base(
+            distributionClass)
         {
-            _mainViewModel = mainViewModel;
-            IsExecutableDefault = o => _mainViewModel.SelectedDistribution != null;
+            IsExecutableDefault = _ => distributionClass != null;
             IsExecutable = IsExecutableDefault;
         }
 
@@ -26,8 +23,8 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             try
             {
-                IsExecutable = o => false;
-                await ToolboxClass.ExportDistribution(_mainViewModel.SelectedDistribution, fileName)
+                IsExecutable = _ => false;
+                await ToolboxClass.ExportDistribution((DistributionClass) parameter, fileName)
                     .ConfigureAwait(true);
             }
             catch (Exception ex)

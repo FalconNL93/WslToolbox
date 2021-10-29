@@ -63,9 +63,7 @@ namespace WslToolbox.Gui.Collections
                         },
                         new MenuItem
                         {
-                            Header = "Change base path...",
-                            Command = viewModel.ChangeBasePathDistributionCommand,
-                            CommandParameter = viewModel.SelectedDistribution
+                            Header = "Change base path..."
                         }
                     }
                 },
@@ -95,6 +93,12 @@ namespace WslToolbox.Gui.Collections
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new Separator(),
+                new MenuItem
+                {
+                    Header = "Export",
+                    Command = viewModel.ShowExportDialogCommand,
+                    CommandParameter = viewModel.SelectedDistribution
+                },
                 new MenuItem
                 {
                     Header = "Set as default distribution",

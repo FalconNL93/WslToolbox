@@ -106,6 +106,15 @@ namespace WslToolbox.Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Due to current restrictions in WSL CLI, installing an existing distribution is not possible. You can export an existing distro and import it back with a different name..
+        /// </summary>
+        internal static string NOTICE_INSTALL_EXISTING_DISTRIBUTION {
+            get {
+                return ResourceManager.GetString("NOTICE_INSTALL_EXISTING_DISTRIBUTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your current operating system build {0} is not recommended by {1}..
         /// </summary>
         internal static string OS_MINIMUM {

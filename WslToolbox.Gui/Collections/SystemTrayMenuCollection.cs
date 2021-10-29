@@ -46,7 +46,8 @@ namespace WslToolbox.Gui.Collections
                 new MenuItem
                 {
                     Header = "Exit Application",
-                    Command = viewModel.ExitApplicationCommand
+                    Command = viewModel.ExitApplicationCommand,
+                    CommandParameter = 1
                 }
             };
         }

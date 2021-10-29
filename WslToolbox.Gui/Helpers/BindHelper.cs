@@ -32,13 +32,14 @@ namespace WslToolbox.Gui.Helpers
             foreach (var bindElement in bindElements)
                 try
                 {
-                    BindingOperations.SetBinding(bindElement.Element, bindElement.Property, BindingObject(
-                        bindElement.Command, bindElement.BindingSource,
-                        bindElement.BindingMode));
-
-                    LogHandler.Log()
-                        .Debug("Registered binding element {Element} to {Command}",
-                            bindElement.Element.ToString(), bindElement.Command);
+                    BindingOperations.SetBinding(
+                        bindElement.Element,
+                        bindElement.Property,
+                        BindingObject(
+                            bindElement.Command,
+                            bindElement.BindingSource,
+                            bindElement.BindingMode
+                        ));
                 }
                 catch (Exception e)
                 {
@@ -53,7 +54,7 @@ namespace WslToolbox.Gui.Helpers
             return new Binding(path)
             {
                 Mode = mode,
-                Source = source
+                Source = source,
             };
         }
     }

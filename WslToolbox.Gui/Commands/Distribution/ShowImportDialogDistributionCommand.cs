@@ -2,19 +2,16 @@
 using System.Windows;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.ViewModels;
 using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowImportDialogCommand : GenericCommand
+    public class ShowImportDialogCommand : GenericDistributionCommand
     {
-        private readonly MainViewModel _mainViewModel;
-
-        public ShowImportDialogCommand(MainViewModel mainViewModel)
+        public ShowImportDialogCommand(DistributionClass distributionClass) : base(
+            distributionClass)
         {
-            _mainViewModel = mainViewModel;
-            IsExecutableDefault = o => true;
+            IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
 
@@ -33,8 +30,8 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             try
             {
-                IsExecutable = o => false;
-                await ToolboxClass.ImportDistribution(_mainViewModel.SelectedDistribution,
+                IsExecutable = _ => false;
+                await ToolboxClass.ImportDistribution((DistributionClass) parameter,
                     importDistributionWindow.DistributionName,
                     importDistributionWindow.DistributionSelectedDirectory, fileName).ConfigureAwait(true);
             }

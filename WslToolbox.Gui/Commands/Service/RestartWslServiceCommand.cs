@@ -6,7 +6,7 @@ namespace WslToolbox.Gui.Commands.Service
     {
         public RestartWslServiceCommand()
         {
-            IsExecutable = o => true;
+            IsExecutable = _ => true;
         }
 
         public override async void Execute(object parameter)

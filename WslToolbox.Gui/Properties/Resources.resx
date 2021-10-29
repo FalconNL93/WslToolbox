@@ -152,4 +152,7 @@
     <data name="NOTICE" xml:space="preserve">
         <value>Notice</value>
     </data>
+    <data name="NOTICE_INSTALL_EXISTING_DISTRIBUTION" xml:space="preserve">
+        <value>Due to current restrictions in WSL CLI, installing an existing distribution is not possible. You can export an existing distro and import it back with a different name.</value>
+    </data>
 </root>

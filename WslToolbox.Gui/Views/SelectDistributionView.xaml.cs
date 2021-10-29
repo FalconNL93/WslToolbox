@@ -16,8 +16,7 @@ namespace WslToolbox.Gui.Views
         {
             InitializeComponent();
             InstallDistribution.IsEnabled = false;
-            NoticeBlock.Text =
-                "Due to current restrictions in WSL CLI, installing an existing distribution is not possible. You can export an existing distro and import it back with a different name.";
+            NoticeBlock.Text = Properties.Resources.NOTICE_INSTALL_EXISTING_DISTRIBUTION;
             AvailableDistributions.IsEnabled = false;
 
             var distributionList = FetchDistributions();

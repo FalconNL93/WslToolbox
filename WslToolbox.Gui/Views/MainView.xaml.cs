@@ -175,6 +175,7 @@ namespace WslToolbox.Gui.Views
 
         public void PopulateWsl()
         {
+            _viewModel.RefreshDistributions();
             var distributionList = _viewModel.DistributionList;
 
             if (distributionList != null)

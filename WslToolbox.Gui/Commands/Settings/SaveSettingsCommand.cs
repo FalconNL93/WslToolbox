@@ -16,7 +16,7 @@ namespace WslToolbox.Gui.Commands.Settings
         {
             try
             {
-                IsExecutable = o => false;
+                IsExecutable = _ => false;
                 _config.Save();
             }
             catch (ConfigurationFileNotSavedException e)
@@ -24,7 +24,7 @@ namespace WslToolbox.Gui.Commands.Settings
                 LogHandler.Log().Error(e.Message, e);
             }
 
-            IsExecutable = o => true;
+            IsExecutable = _ => true;
         }
     }
 }
