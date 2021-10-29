@@ -82,12 +82,11 @@ namespace WslToolbox.Gui.ViewModels
         private void InitializeStatusPoller()
         {
             _statusPoller.Interval = 5000;
-            _statusPoller.Enabled = true;
+            _statusPoller.Enabled = false;
         }
 
         private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)
         {
-            Debug.WriteLine("Polling...");
             RefreshDistributions();
             RefreshCommand.Execute(null);
         }
