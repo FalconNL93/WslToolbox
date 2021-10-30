@@ -13,7 +13,7 @@ namespace WslToolbox.Gui.Collections
                 new MenuItem
                 {
                     Header = "Show Application",
-                    Command = viewModel.ShowApplicationCommand
+                    Command = viewModel.ShowApplication
                 },
                 new MenuItem
                 {
@@ -23,30 +23,30 @@ namespace WslToolbox.Gui.Collections
                         new MenuItem
                         {
                             Header = "Start WSL Service",
-                            Command = viewModel.StartWslServiceCommand
+                            Command = viewModel.StartWslService
                         },
                         new MenuItem
                         {
                             Header = "Stop WSL Service",
-                            Command = viewModel.StopWslServiceCommand
+                            Command = viewModel.StopWslService
                         },
                         new MenuItem
                         {
                             Header = "Restart WSL Service",
-                            Command = viewModel.RestartWslServiceCommand
+                            Command = viewModel.RestartWslService
                         }
                     }
                 },
                 new MenuItem
                 {
                     Header = "Settings",
-                    Command = viewModel.ShowSettingsCommand
+                    Command = viewModel.ShowSettings
                 },
                 new Separator(),
                 new MenuItem
                 {
                     Header = "Exit Application",
-                    Command = viewModel.ExitApplicationCommand,
+                    Command = viewModel.ExitApplication,
                     CommandParameter = 1
                 }
             };

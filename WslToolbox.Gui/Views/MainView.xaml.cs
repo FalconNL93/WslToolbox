@@ -10,7 +10,6 @@ using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
-using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
@@ -29,13 +28,14 @@ namespace WslToolbox.Gui.Views
 
         public MainView()
         {
+            InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
-            InitializeViewModel();
-            PopulateWsl();
             InitializeBindings();
             InitializeContextMenus();
             HandleConfiguration();
+
+            PopulateWsl();
         }
 
         private static void WslIsEnabledCheck()
@@ -57,16 +57,16 @@ namespace WslToolbox.Gui.Views
             BindElement[] mainViewBindings =
             {
                 // Service
-                new(StartWsl, ButtonBase.CommandProperty, nameof(_viewModel.StartWslServiceCommand), DataContext),
-                new(StopWsl, ButtonBase.CommandProperty, nameof(_viewModel.StopWslServiceCommand), DataContext),
-                new(RestartWsl, ButtonBase.CommandProperty, nameof(_viewModel.RestartWslServiceCommand), DataContext),
-                new(UpdateWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplementedCommand), DataContext),
-                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.RefreshCommand), DataContext),
+                new(StartWsl, ButtonBase.CommandProperty, nameof(_viewModel.StartWslService), DataContext),
+                new(StopWsl, ButtonBase.CommandProperty, nameof(_viewModel.StopWslService), DataContext),
+                new(RestartWsl, ButtonBase.CommandProperty, nameof(_viewModel.RestartWslService), DataContext),
+                new(UpdateWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplemented), DataContext),
+                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.Refresh), DataContext),
 
                 // Other
-                new(ToolboxSettings, ButtonBase.CommandProperty, nameof(ShowSettingsCommand), DataContext),
-                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFileCommand), DataContext),
-                new(ExitButton, ButtonBase.CommandProperty, nameof(_viewModel.ExitApplicationCommand), DataContext)
+                new(ToolboxSettings, ButtonBase.CommandProperty, nameof(_viewModel.ShowSettings), DataContext),
+                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFile), DataContext),
+                new(ExitButton, ButtonBase.CommandProperty, nameof(_viewModel.ExitApplication), DataContext)
             };
 
             BindHelper.AddBindings(mainViewBindings);
@@ -165,7 +165,7 @@ namespace WslToolbox.Gui.Views
             }
 
             _systemTray.Show();
-            _systemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplicationCommand.Execute(null);
+            _systemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplication.Execute(null);
 
             _systemTray.Tray.ContextMenu = new ContextMenu
             {
@@ -175,6 +175,12 @@ namespace WslToolbox.Gui.Views
 
         public void PopulateWsl()
         {
+            if (_viewModel == null)
+            {
+                MessageBox.Show("Could not initialize ViewModel", "Error", MessageBoxButton.OK);
+                Environment.Exit(1);
+            }
+
             _viewModel.RefreshDistributions();
             var distributionList = _viewModel.DistributionList;
 

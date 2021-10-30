@@ -19,6 +19,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutable = IsExecutableDefault;
         }
 
+        public static event EventHandler DistributionRenamed;
+
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
@@ -46,6 +48,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 }
 
             IsExecutable = _ => true;
+            DistributionRenamed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

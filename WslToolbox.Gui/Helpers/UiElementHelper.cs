@@ -65,6 +65,34 @@ namespace WslToolbox.Gui.Helpers
             return comboBox;
         }
 
+        public static TextBox AddTextBox(string name, string content, string bind, object source,
+            string requires = null, bool enabled = false)
+        {
+            var textBox = new TextBox
+            {
+                Name = name,
+                Text = content
+            };
+
+            if (requires != null)
+                textBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+            else
+                textBox.IsEnabled = enabled;
+
+            textBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
+
+            return textBox;
+        }
+
+        public static ItemsControl AddItemsControl(string bind, object source)
+        {
+            var itemsControl = new ItemsControl();
+
+            itemsControl.SetBinding(ItemsControl.ItemsSourceProperty, BindHelper.BindingObject(bind, source));
+
+            return itemsControl;
+        }
+
         public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,
             string bind = null)
         {

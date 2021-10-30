@@ -39,8 +39,6 @@ namespace WslToolbox.Gui.ViewModels
             var args = Environment.GetCommandLineArgs();
             Log = Log();
             _view = view;
-            InitializeEventHandlers();
-            InitializeStatusPoller();
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(o =>
@@ -48,47 +46,56 @@ namespace WslToolbox.Gui.ViewModels
                     if (o.DebugMode) DebugMode();
                 });
 
-            RefreshDistributions();
+            InitializeEventHandlers();
+            InitializeStatusPoller();
         }
 
-        public ICommand ShowApplicationCommand => new ShowApplicationCommand(_view);
-        public ICommand NotImplementedCommand => new NotImplementedCommand();
+        public ICommand ShowApplication => new ShowApplicationCommand(_view);
+        public ICommand NotImplemented => new NotImplementedCommand();
         public ICommand SaveConfigurationCommand => new SaveSettingsCommand(Config);
-        public ICommand ExitApplicationCommand => new ExitApplicationCommand();
-        public ICommand RefreshCommand => new RefreshDistributionsCommand(_view);
-        public ICommand ShowSettingsCommand => new ShowSettingsCommand(Config, OsHandler);
-        public ICommand ShowExportDialogCommand => new ShowExportDialogDistributionCommand(SelectedDistribution);
-        public ICommand ShowImportDialogCommand => new ShowImportDialogCommand(SelectedDistribution);
-        public ICommand StartWslServiceCommand => new StartWslServiceCommand();
-        public ICommand StopWslServiceCommand => new StopWslServiceCommand();
-        public ICommand RestartWslServiceCommand => new RestartWslServiceCommand();
-        public ICommand ShowSelectDialogCommand => new ShowSelectDistributionDialogCommand();
-        public ICommand OpenLogFileCommand => new OpenLogFileCommand();
-        public ICommand CopyToClipboardCommand => new CopyToClipboardCommand();
+        public ICommand ExitApplication => new ExitApplicationCommand();
+        public ICommand Refresh => new RefreshDistributionsCommand(_view);
+        public ICommand ShowSettings => new ShowSettingsCommand(Config, OsHandler);
+        public ICommand ShowExportDialog => new ShowExportDialogDistributionCommand(SelectedDistribution);
+        public ICommand ShowImportDialog => new ShowImportDialogCommand(SelectedDistribution);
+        public ICommand StartWslService => new StartWslServiceCommand();
+        public ICommand StopWslService => new StopWslServiceCommand();
+        public ICommand RestartWslService => new RestartWslServiceCommand();
+        public ICommand ShowSelectDialog => new ShowSelectDistributionDialogCommand();
+        public ICommand OpenLogFile => new OpenLogFileCommand();
+        public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
-        public ICommand RenameDistributionCommand => new RenameDistributionCommand(SelectedDistribution, _view);
-        public ICommand StartDistributionCommand => new StartDistributionCommand(SelectedDistribution);
-        public ICommand StopDistributionCommand => new StopDistributionCommand(SelectedDistribution);
-        public ICommand SetDefaultDistributionCommand => new SetDefaultDistributionCommand(SelectedDistribution);
-        public ICommand OpenBasePathDistributionCommand => new OpenBasePathDistribution(SelectedDistribution);
+        public ICommand RenameDistribution => new RenameDistributionCommand(SelectedDistribution, _view);
+        public ICommand StartDistribution => new StartDistributionCommand(SelectedDistribution);
+        public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
+        public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
+        public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()
         {
             _statusPoller.Elapsed += StatusPollerEventHandler;
             Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
+            StartDistributionCommand.DistributionStarted += DistributionChangedEventHandler;
+            StopDistributionCommand.DistributionStopped += DistributionChangedEventHandler;
+            RenameDistributionCommand.DistributionRenamed += DistributionChangedEventHandler;
+            SetDefaultDistributionCommand.DistributionDefaultChanged += DistributionChangedEventHandler;
+        }
+
+        private void DistributionChangedEventHandler(object sender, EventArgs e)
+        {
+            _view.PopulateWsl();
         }
 
         private void InitializeStatusPoller()
         {
-            _statusPoller.Interval = 5000;
-            _statusPoller.Enabled = false;
+            _statusPoller.Enabled = Config.Configuration.EnableServicePolling;
+            _statusPoller.Interval = Config.Configuration.ServicePollingInterval;
         }
 
         private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)
         {
-            RefreshDistributions();
-            RefreshCommand.Execute(null);
+            _view.PopulateWsl();
         }
 
         private void DebugMode()

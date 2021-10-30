@@ -4,7 +4,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 {
     public class RefreshDistributionsCommand : GenericCommand
     {
-        private readonly MainView _mainView;
+        private MainView _mainView;
 
         public RefreshDistributionsCommand(MainView mainView)
         {
@@ -15,6 +15,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override void Execute(object parameter)
         {
+            _mainView ??= (MainView) parameter;
             _mainView.PopulateWsl();
         }
     }

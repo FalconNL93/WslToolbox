@@ -18,7 +18,7 @@ namespace WslToolbox.Gui.Collections
                         new MenuItem
                         {
                             Header = "Rename",
-                            Command = viewModel.RenameDistributionCommand,
+                            Command = viewModel.RenameDistribution,
                             CommandParameter = viewModel.SelectedDistribution
                         }
                     }
@@ -36,7 +36,7 @@ namespace WslToolbox.Gui.Collections
                         new MenuItem
                         {
                             Header = "Copy GUID to clipboard",
-                            Command = viewModel.CopyToClipboardCommand,
+                            Command = viewModel.CopyToClipboard,
                             CommandParameter = viewModel.SelectedDistribution.Guid
                         }
                     }
@@ -50,14 +50,14 @@ namespace WslToolbox.Gui.Collections
                         new MenuItem
                         {
                             Header = "Copy base path to clipboard",
-                            Command = viewModel.CopyToClipboardCommand,
+                            Command = viewModel.CopyToClipboard,
                             CommandParameter = viewModel.SelectedDistribution.BasePathLocal,
                             ToolTip = viewModel.SelectedDistribution.BasePathLocal
                         },
                         new MenuItem
                         {
                             Header = "Open base path",
-                            Command = viewModel.OpenBasePathDistributionCommand,
+                            Command = viewModel.OpenBasePathDistribution,
                             CommandParameter = viewModel.SelectedDistribution,
                             ToolTip = viewModel.SelectedDistribution.BasePathLocal
                         },
@@ -77,32 +77,32 @@ namespace WslToolbox.Gui.Collections
                 new MenuItem
                 {
                     Header = "Start",
-                    Command = viewModel.StartDistributionCommand,
+                    Command = viewModel.StartDistribution,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new MenuItem
                 {
                     Header = "Stop",
-                    Command = viewModel.StopDistributionCommand,
+                    Command = viewModel.StopDistribution,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new MenuItem
                 {
                     Header = "Restart",
-                    Command = viewModel.RestartWslServiceCommand,
+                    Command = viewModel.RestartWslService,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new Separator(),
                 new MenuItem
                 {
                     Header = "Export",
-                    Command = viewModel.ShowExportDialogCommand,
+                    Command = viewModel.ShowExportDialog,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new MenuItem
                 {
                     Header = "Set as default distribution",
-                    Command = viewModel.SetDefaultDistributionCommand,
+                    Command = viewModel.SetDefaultDistribution,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new MenuItem

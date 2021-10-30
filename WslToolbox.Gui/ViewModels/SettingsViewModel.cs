@@ -1,7 +1,10 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using WslToolbox.Gui.Collections.Settings;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.ViewModels
@@ -18,7 +21,8 @@ namespace WslToolbox.Gui.ViewModels
             Configuration = configuration;
             OsHandler = osHandler;
 
-            InitializeSettingsElements();
+            InitializeSettingsTabsElements();
+            InitializeSettingsElement();
         }
 
         public ConfigurationHandler ConfigHandler { get; }
@@ -29,14 +33,41 @@ namespace WslToolbox.Gui.ViewModels
         public CompositeCollection GeneralSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }
         public CompositeCollection AppearanceSettings { get; set; }
+        public CompositeCollection ExperimentalSettings { get; set; }
         public CompositeCollection OtherSettings { get; set; }
 
-        private void InitializeSettingsElements()
+        private void InitializeSettingsTabsElements()
         {
             GeneralSettings = new GeneralSettingsGenericCollection(this).Items();
             GridSettings = new GridSettingsGenericCollection(this).Items();
             AppearanceSettings = new AppearanceSettingsGenericCollection(this).Items();
+            ExperimentalSettings = new ExperimentalSettingsGenericCollection(this).Items();
             OtherSettings = new OtherSettingsGenericCollection(this).Items();
+        }
+
+        private void InitializeSettingsElement()
+        {
+            _view.SettingsControl.ItemsSource = new[]
+            {
+                AddTabItem("General", "GeneralSettings"),
+                AddTabItem("Grid", "GridSettings"),
+                AddTabItem("Appearance", "AppearanceSettings"),
+                AddTabItem("Experimental", "ExperimentalSettings", Configuration.ShowExperimentalSettings),
+                AddTabItem("Other", "OtherSettings")
+            };
+        }
+
+        private TabItem AddTabItem(string header, string bind, bool visible = true)
+        {
+            return new TabItem
+            {
+                Visibility = visible ? Visibility.Visible : Visibility.Collapsed,
+                Header = header,
+                Content = new StackPanel
+                {
+                    Children = {UiElementHelper.AddItemsControl(bind, this)}
+                }
+            };
         }
     }
 }

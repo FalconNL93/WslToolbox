@@ -1,5 +1,4 @@
 ﻿using System;
-using ControlzEx.Standard;
 
 namespace WslToolbox.Gui.Commands
 {

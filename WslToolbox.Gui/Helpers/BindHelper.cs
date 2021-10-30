@@ -54,7 +54,7 @@ namespace WslToolbox.Gui.Helpers
             return new Binding(path)
             {
                 Mode = mode,
-                Source = source,
+                Source = source
             };
         }
     }
