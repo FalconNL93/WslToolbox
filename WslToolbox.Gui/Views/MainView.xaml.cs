@@ -150,7 +150,7 @@ namespace WslToolbox.Gui.Views
         {
             HandleSystemTray();
 
-            ThemeHandler.Set(_viewModel.Config.Configuration.SelectedStyle);
+            ThemeHandler.Set(_viewModel.Config.Configuration.AppearanceConfiguration.SelectedStyle);
         }
 
         private void HandleSystemTray()

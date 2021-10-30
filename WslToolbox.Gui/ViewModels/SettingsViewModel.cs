@@ -52,7 +52,8 @@ namespace WslToolbox.Gui.ViewModels
                 AddTabItem("General", "GeneralSettings"),
                 AddTabItem("Grid", "GridSettings"),
                 AddTabItem("Appearance", "AppearanceSettings"),
-                AddTabItem("Experimental", "ExperimentalSettings", Configuration.ShowExperimentalSettings),
+                AddTabItem("Experimental", "ExperimentalSettings",
+                    Configuration.ExperimentalConfiguration.ShowExperimentalSettings),
                 AddTabItem("Other", "OtherSettings")
             };
         }

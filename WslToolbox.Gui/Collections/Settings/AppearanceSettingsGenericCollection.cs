@@ -22,9 +22,9 @@ namespace WslToolbox.Gui.Collections.Settings
                     Content = "Theme"
                 },
                 UiElementHelper.AddComboBox(
-                    nameof(DefaultConfiguration.SelectedStyle),
+                    nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
                     ThemeConfiguration.GetValues(),
-                    "Configuration.SelectedStyle",
+                    "Configuration.AppearanceConfiguration.SelectedStyle",
                     Source)
             };
         }

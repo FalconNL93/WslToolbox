@@ -61,13 +61,17 @@ namespace WslToolbox.Gui.Collections.Settings
                 new Label
                 {
                     FontWeight = FontWeights.Bold,
-                    Content = viewModel.OsHandler.State == OsHandler.States.Unsupported
-                        ? "OS not is supported"
-                        : "OS is supported"
+                    Content = "Other"
                 },
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideUnsupportedOsMessage),
                     "Hide unsupported operating system notification",
                     "Configuration.HideUnsupportedOsMessage",
+                    Source
+                ),
+                UiElementHelper.AddCheckBox(
+                    nameof(DefaultConfiguration.ExperimentalConfiguration.ShowExperimentalSettings),
+                    "Show experimental configuration",
+                    "Configuration.ExperimentalConfiguration.ShowExperimentalSettings",
                     Source
                 )
             };

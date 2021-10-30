@@ -19,6 +19,11 @@ namespace WslToolbox.Gui.Collections.Settings
 
             return new CompositeCollection
             {
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
+                    Content = "Some functionality may or may not work as expected."
+                },
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableServicePolling),
                     "Service polling",
                     "Configuration.EnableServicePolling",

@@ -135,6 +135,7 @@ namespace WslToolbox.Gui.ViewModels
         {
             Debug.WriteLine("Configuration file saved, reloading configuration");
             _view.HandleConfiguration();
+            _view.PopulateWsl();
         }
     }
 }
