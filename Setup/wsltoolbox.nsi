@@ -55,30 +55,21 @@ VIAddVersionKey "FileVersion" "${SETUP_VERSION}"
 ;-------------------------------------------------------------------------------
 ; Languages
 !insertmacro MUI_LANGUAGE "English"
+!include "lang\en.nsh"
 
 ;-------------------------------------------------------------------------------
 ; Installer Sections
-Section "${PRODUCT_NAME}" WslToolbox
-	SetOutPath $INSTDIR
-    SectionIn RO
-    File /r "..\WslToolbox.Gui\bin\Release\x64\*"
-	WriteUninstaller "$INSTDIR\Uninstall.exe"
-SectionEnd
+!include "sections\default.nsh"
+!include "sections\shortcuts.nsh"
 
 ;-------------------------------------------------------------------------------
-; Uninstaller Sections
-Section "Uninstall"
-	Delete "$INSTDIR\Uninstall.exe"
-	RMDir "$INSTDIR"
-	DeleteRegKey /ifempty HKCU "Software\FalconNL93\${PRODUCT_NAME}"
-SectionEnd
-
-;-------------------------------------------------------------------------------
-; Include localization
-!include "lang\en.nsi"
+; Uninstaller Section
+!include "sections\uninstall.nsh"
 
 ;-------------------------------------------------------------------------------
 ; Section localization
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${WslToolbox} $(component_default)
+!insertmacro MUI_DESCRIPTION_TEXT ${StartMenuShortcut} $(component_start_menu_shortcut)
+!insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(component_desktop_shortcut)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
