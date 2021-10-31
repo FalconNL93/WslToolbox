@@ -6,8 +6,7 @@ namespace WslToolbox.Gui.Commands.Distribution
     {
         public OpenShellDistributionCommand(DistributionClass distributionClass) : base(distributionClass)
         {
-            IsExecutableDefault = _ =>
-                DistributionClass is {State: DistributionClass.StateRunning};
+            IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
 

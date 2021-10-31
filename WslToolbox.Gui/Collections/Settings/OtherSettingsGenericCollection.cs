@@ -5,7 +5,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using WslToolbox.Core;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
 

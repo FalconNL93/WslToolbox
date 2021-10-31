@@ -58,12 +58,13 @@ namespace WslToolbox.Gui.ViewModels
             };
         }
 
-        private TabItem AddTabItem(string header, string bind, bool visible = true)
+        private TabItem AddTabItem(string header, string bind, bool visible = true, bool enabled = true)
         {
             return new TabItem
             {
                 Visibility = visible ? Visibility.Visible : Visibility.Collapsed,
                 Header = header,
+                IsEnabled = enabled,
                 Content = new StackPanel
                 {
                     Children = {UiElementHelper.AddItemsControl(bind, this)}
