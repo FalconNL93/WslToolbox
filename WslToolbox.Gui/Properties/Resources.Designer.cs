@@ -149,5 +149,14 @@ namespace WslToolbox.Gui.Properties {
                 return ResourceManager.GetString("OS_NOT_SUPPORTED_BUILD_REQUIRED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string WARNING {
+            get {
+                return ResourceManager.GetString("WARNING", resourceCulture);
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace WslToolbox.Gui.Configurations
         public bool EnableSystemTray { get; set; }
         public bool MinimizeToTray { get; set; }
         public bool MinimizeOnStartup { get; set; }
+        public bool MinimizeOnClose { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
         public bool HideUnsupportedOsMessage { get; set; }
         public bool ShowMinimumOsMessage { get; set; }

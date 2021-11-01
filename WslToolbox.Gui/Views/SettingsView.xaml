@@ -7,7 +7,7 @@
                  Background="{StaticResource MahApps.Brushes.ThemeBackground}"
                  mc:Ignorable="d"
                  Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-                 SizeToContent="WidthAndHeight" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False"
+                 SizeToContent="WidthAndHeight" Icon="/Resources/Images/AppIcon.png" ShowIconOnTitleBar="False"
                  Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False"
                  IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
     <mah:MetroWindow.Resources>

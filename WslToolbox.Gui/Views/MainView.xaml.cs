@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
@@ -12,7 +11,6 @@ using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
@@ -31,7 +29,6 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
-            InitializeBindings();
             InitializeContextMenus();
             HandleConfiguration();
 
@@ -52,28 +49,10 @@ namespace WslToolbox.Gui.Views
             Environment.Exit(1);
         }
 
-        private void InitializeBindings()
-        {
-            BindElement[] mainViewBindings =
-            {
-                // Service
-                new(StartWsl, ButtonBase.CommandProperty, nameof(_viewModel.StartWslService), DataContext),
-                new(StopWsl, ButtonBase.CommandProperty, nameof(_viewModel.StopWslService), DataContext),
-                new(RestartWsl, ButtonBase.CommandProperty, nameof(_viewModel.RestartWslService), DataContext),
-                new(UpdateWsl, ButtonBase.CommandProperty, nameof(_viewModel.NotImplemented), DataContext),
-                new(RefreshWsl, ButtonBase.CommandProperty, nameof(_viewModel.Refresh), DataContext),
-
-                // Other
-                new(ToolboxSettings, ButtonBase.CommandProperty, nameof(_viewModel.ShowSettings), DataContext),
-                new(ToolboxOutput, ButtonBase.CommandProperty, nameof(_viewModel.OpenLogFile), DataContext),
-                new(ExitButton, ButtonBase.CommandProperty, nameof(_viewModel.ExitApplication), DataContext)
-            };
-
-            BindHelper.AddBindings(mainViewBindings);
-        }
-
         private void InitializeContextMenus()
         {
+            ServiceItems.ItemsSource = ServiceCollection.Items(_viewModel);
+            OtherItems.ItemsSource = OtherCollection.Items(_viewModel);
             ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
         }
 
@@ -91,6 +70,14 @@ namespace WslToolbox.Gui.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (_viewModel.Config.Configuration.MinimizeOnClose)
+            {
+                e.Cancel = true;
+                WindowState = WindowState.Minimized;
+
+                return;
+            }
+
             _systemTray.Dispose();
 
             base.OnClosing(e);
@@ -98,7 +85,7 @@ namespace WslToolbox.Gui.Views
 
         private async void ShowOsUnsupportedMessage(OsHandler.States state = OsHandler.States.Unsupported)
         {
-            var osTitle = "Warning";
+            var osTitle = Properties.Resources.WARNING;
             var osMessage = string.Format(
                                 Properties.Resources.OS_NOT_SUPPORTED, _viewModel.OsHandler.OsBuild,
                                 AppConfiguration.AppName) +

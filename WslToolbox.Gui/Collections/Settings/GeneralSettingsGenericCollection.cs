@@ -39,7 +39,12 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Minimize on startup",
                     "Configuration.MinimizeOnStartup",
                     Source,
-                    "Configuration.EnableSystemTray")
+                    "Configuration.EnableSystemTray"),
+
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.MinimizeOnClose),
+                    "Minimize when pressing close button",
+                    "Configuration.MinimizeOnClose",
+                    Source)
             };
         }
     }

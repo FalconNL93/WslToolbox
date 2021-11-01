@@ -9,8 +9,8 @@
                  Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
                  Height="341" Width="592"
                  WindowStartupLocation="CenterScreen"
-                 ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow"
-                 Icon="/Resources/Images/toolbox.png"
+                 ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
+                 Icon="/Resources/Images/AppIcon.png"
                  SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False"
                  xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
                  StateChanged="MetroWindow_StateChanged">
@@ -53,22 +53,12 @@
             </TabItem>
             <TabItem Header="WSL Service">
                 <Grid>
-                    <StackPanel HorizontalAlignment="Left" Width="106">
-                        <Button x:Name="StartWsl" Content="Start" />
-                        <Button x:Name="StopWsl" Content="Stop" />
-                        <Button x:Name="RestartWsl" Content="Restart" />
-                        <Button x:Name="UpdateWsl" Content="Update" />
-                        <Button x:Name="RefreshWsl" Content="Refresh" />
-                    </StackPanel>
+                    <ItemsControl x:Name="ServiceItems" HorizontalAlignment="Left" />
                 </Grid>
             </TabItem>
             <TabItem Header="Other">
                 <Grid>
-                    <StackPanel HorizontalAlignment="Left" Width="106">
-                        <Button x:Name="ToolboxSettings" Content="Settings" />
-                        <Button x:Name="ToolboxOutput" Content="Open log" />
-                        <Button x:Name="ExitButton" Content="Exit" />
-                    </StackPanel>
+                    <ItemsControl x:Name="OtherItems" HorizontalAlignment="Left" />
                 </Grid>
             </TabItem>
         </mah:MetroAnimatedTabControl>

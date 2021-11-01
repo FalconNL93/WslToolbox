@@ -7,7 +7,7 @@
                  Background="{StaticResource MahApps.Brushes.ThemeBackground}"
                  mc:Ignorable="d"
                  Title="Import" Height="198" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-                 WindowStartupLocation="CenterScreen" Icon="/Resources/Images/toolbox.png" ShowIconOnTitleBar="False"
+                 WindowStartupLocation="CenterScreen" Icon="/Resources/Images/AppIcon.png" ShowIconOnTitleBar="False"
                  IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" ShowTitleBar="False"
                  ShowDialogsOverTitleBar="True">
     <Grid Margin="10,10,10,10">

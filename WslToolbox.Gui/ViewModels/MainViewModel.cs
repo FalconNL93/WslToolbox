@@ -133,7 +133,6 @@ namespace WslToolbox.Gui.ViewModels
 
         private void SaveSuccessfullyEvent(object sender, EventArgs e)
         {
-            Debug.WriteLine("Configuration file saved, reloading configuration");
             _view.HandleConfiguration();
             _view.PopulateWsl();
         }
