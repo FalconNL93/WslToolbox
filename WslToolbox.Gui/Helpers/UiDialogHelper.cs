@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
 
@@ -33,10 +34,12 @@ namespace WslToolbox.Gui.Helpers
                 }
             };
 
+
             var dialog = new ContentDialog
             {
                 Title = title,
                 PrimaryButtonText = primaryButtonText,
+                PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,
                 Content = dialogContent
@@ -74,6 +77,7 @@ namespace WslToolbox.Gui.Helpers
             {
                 Title = title,
                 PrimaryButtonText = primaryButtonText,
+                PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,
                 Content = dialogContent

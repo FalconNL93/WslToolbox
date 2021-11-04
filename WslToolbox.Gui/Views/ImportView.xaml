@@ -10,10 +10,6 @@
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Margin="10,10,10,10">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="270" Margin="5,5,5,5">
-            <StackPanel.Resources>
-
-            </StackPanel.Resources>
-
             <Label Content="Distribution name:" FontWeight="Bold" />
             <TextBox x:Name="ImportDistributionName" Height="21" Text="" TextWrapping="Wrap"
                      TextChanged="ImportDistributionName_TextChanged" />

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using ModernWpf;
 using ModernWpf.Controls;
 using Serilog.Core;
 using WslToolbox.Core;
@@ -141,7 +142,7 @@ namespace WslToolbox.Gui.Views
         {
             HandleSystemTray();
 
-            ThemeHandler.Set(_viewModel.Config.Configuration.AppearanceConfiguration.SelectedStyle);
+            this.SetTheme(ElementTheme.Light);
         }
 
         private void HandleSystemTray()

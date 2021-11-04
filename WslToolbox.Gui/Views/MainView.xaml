@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WslToolbox.Gui.Configurations"
         mc:Ignorable="d"
         Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
-        Height="341" Width="592"
+        Height="341" Width="445"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
         Icon="/Resources/Images/AppIcon.png"
@@ -18,48 +18,50 @@
     <Window.Resources>
         <h:BoolToValueConverter x:Key="BoolToValueConverter" />
     </Window.Resources>
-    <Grid Margin="5,0,5,0">
-        <TabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
-                    Width="559">
-            <TabControl.Resources>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Margin" Value="10,10,0,10" />
-                </Style>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="0,5,0,0" />
-                    <Setter Property="Width" Value="106" />
-                    <Setter Property="Height" Value="28" />
-                </Style>
-            </TabControl.Resources>
-            <TabItem Header="Distributions">
-                <Grid>
-                    <ui:DropDownButton x:Name="ControlMenuButton" HorizontalAlignment="Left" Height="28"
-                                       Margin="8,10,0,0" VerticalAlignment="Top" Width="140" Content="Manage..." />
-                    <DataGrid Margin="8,49,10,10" x:Name="DistributionDetails"
-                              SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="false" MinColumnWidth="100"
-                              SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                            <DataGridTextColumn Header="State" Binding="{Binding State}" />
-                            <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
-                            <DataGridTextColumn Header="Default"
-                                                Binding="{Binding IsDefault, Converter={StaticResource BoolToValueConverter}}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="WSL Service">
-                <Grid>
-                    <ItemsControl x:Name="ServiceItems" HorizontalAlignment="Left" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Other">
-                <Grid>
-                    <ItemsControl x:Name="OtherItems" HorizontalAlignment="Left" />
-                </Grid>
-            </TabItem>
-        </TabControl>
+    <Grid Background="{DynamicResource AppContentBackgroundBrush}">
+        <ScrollViewer
+            x:Name="ContentScrollViewer">
+            <Grid>
+                <TabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top">
+                    <TabControl.Resources>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Margin" Value="0,5,0,0" />
+                            <Setter Property="Width" Value="106" />
+                            <Setter Property="Height" Value="28" />
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem Header="Distributions">
+                        <Grid>
+                            <ui:DropDownButton x:Name="ControlMenuButton" HorizontalAlignment="Left" Height="28"
+                                               Margin="8,10,0,0" VerticalAlignment="Top" Width="140"
+                                               Content="Manage..." />
+                            <DataGrid Margin="8,49,10,10" x:Name="DistributionDetails"
+                                      SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
+                                      IsReadOnly="True"
+                                      AutoGenerateColumns="false" MinColumnWidth="100"
+                                      SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="State" Binding="{Binding State}" />
+                                    <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
+                                    <DataGridTextColumn Header="Default"
+                                                        Binding="{Binding IsDefault, Converter={StaticResource BoolToValueConverter}}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="WSL Service">
+                        <Grid>
+                            <ItemsControl x:Name="ServiceItems" HorizontalAlignment="Left" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Other">
+                        <Grid>
+                            <ItemsControl x:Name="OtherItems" HorizontalAlignment="Left" />
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>
