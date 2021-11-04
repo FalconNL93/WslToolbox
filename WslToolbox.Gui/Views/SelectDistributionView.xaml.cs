@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
 using WslToolbox.Core;
 
 namespace WslToolbox.Gui.Views
@@ -10,7 +9,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for SelectDistributionView.xaml
     /// </summary>
-    public partial class SelectDistributionView : MetroWindow
+    public partial class SelectDistributionView : Window
     {
         public SelectDistributionView()
         {

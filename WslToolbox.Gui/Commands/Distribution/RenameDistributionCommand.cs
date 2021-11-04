@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using MahApps.Metro.Controls.Dialogs;
+using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
@@ -9,12 +14,9 @@ namespace WslToolbox.Gui.Commands.Distribution
 {
     public class RenameDistributionCommand : GenericDistributionCommand
     {
-        private readonly MainView _mainView;
-
-        public RenameDistributionCommand(DistributionClass distributionClass, MainView mainView) : base(
+        public RenameDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
-            _mainView = mainView;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
@@ -24,28 +26,35 @@ namespace WslToolbox.Gui.Commands.Distribution
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            var newName = await _mainView.ShowInputAsync(
-                "Rename",
+            var showDialog = await Helpers.UiHelperDialog.ShowInputDialog("Rename",
                 "Enter a new name for this distribution. The distribution will be restarted after renaming.\n\n" +
-                "You can only use alphanumeric characters and must contain 3 characters or more. Spaces are not allowed.");
+                "You can only use alphanumeric characters and must contain 3 characters or more. Spaces are not allowed.",
+                "Rename", closeButtonText: "Cancel");
 
-            if (newName is not null)
-                try
-                {
-                    if (newName.All(char.IsLetterOrDigit) && newName.Length >= 3)
+            if (showDialog.DialogResult == ContentDialogResult.Primary)
+            {
+                var newName = (string) showDialog.UserInput;
+
+                if (newName is not null)
+                    try
                     {
-                        ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
-                        await _mainView.ShowMessageAsync("Rename", $"Distribution has been renamed to {newName}.");
+                        if (newName.All(char.IsLetterOrDigit) && newName.Length >= 3)
+                        {
+                            ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
+                            await Helpers.UiHelperDialog.ShowMessageBox("Rename",
+                                $"Distribution has been renamed to {newName}.");
+                        }
+                        else
+                        {
+                            await Helpers.UiHelperDialog.ShowMessageBox(Resources.ERROR,
+                                Resources.ERROR_ONLY_ALPHANUMERIC);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        await _mainView.ShowMessageAsync(Resources.ERROR, Resources.ERROR_ONLY_ALPHANUMERIC);
+                        await Helpers.UiHelperDialog.ShowMessageBox(Resources.ERROR, e.Message);
                     }
-                }
-                catch (Exception e)
-                {
-                    await _mainView.ShowMessageAsync(Resources.ERROR, e.Message);
-                }
+            }
 
             IsExecutable = _ => true;
             DistributionRenamed?.Invoke(this, EventArgs.Empty);

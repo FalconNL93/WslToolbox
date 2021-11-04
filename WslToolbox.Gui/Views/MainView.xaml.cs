@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Serilog.Core;
 using WslToolbox.Core;
@@ -18,7 +17,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView : MetroWindow
+    public partial class MainView : Window
     {
         private readonly SystemTrayClass _systemTray = new();
         private Logger _log;
@@ -53,7 +52,7 @@ namespace WslToolbox.Gui.Views
         {
             ServiceItems.ItemsSource = ServiceCollection.Items(_viewModel);
             OtherItems.ItemsSource = OtherCollection.Items(_viewModel);
-            ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
+            //ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
         }
 
         private void InitializeViewModel()
@@ -102,18 +101,18 @@ namespace WslToolbox.Gui.Views
                                 Properties.Resources.OS_MINIMUM_BUILD, OsHandler.RecommendedOsBuild);
             }
 
-            var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
-                osMessage,
-                MessageDialogStyle.AffirmativeAndNegative,
-                new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Close",
-                    NegativeButtonText = "Continue anyway",
-                    DefaultButtonFocus = MessageDialogResult.Affirmative
-                }
-            );
+            // var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
+            //     osMessage,
+            //     MessageDialogStyle.AffirmativeAndNegative,
+            //     new MetroDialogSettings
+            //     {
+            //         AffirmativeButtonText = "Close",
+            //         NegativeButtonText = "Continue anyway",
+            //         DefaultButtonFocus = MessageDialogResult.Affirmative
+            //     }
+            // );
 
-            if (notSupportedMessageDialogResult == MessageDialogResult.Affirmative) Environment.Exit(1);
+            //if (notSupportedMessageDialogResult == MessageDialogResult.Affirmative) Environment.Exit(1);
         }
 
         protected override void OnClosed(EventArgs e)

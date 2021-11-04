@@ -28,31 +28,6 @@
     <Grid Margin="10,0,10,10" x:Name="SettingsGrid">
         <TabControl Margin="4,10,4,40" Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}"
                     x:Name="SettingsControl">
-            <!-- <TabItem Header="General"> -->
-            <!--     <StackPanel> -->
-            <!--         <ItemsControl ItemsSource="{Binding GeneralSettings}" /> -->
-            <!--     </StackPanel> -->
-            <!-- </TabItem> -->
-            <!-- <TabItem Header="Grid"> -->
-            <!--     <StackPanel> -->
-            <!--         <ItemsControl ItemsSource="{Binding GridSettings}" /> -->
-            <!--     </StackPanel> -->
-            <!-- </TabItem> -->
-            <!-- <TabItem Header="Appearance"> -->
-            <!--     <StackPanel> -->
-            <!--         <ItemsControl ItemsSource="{Binding AppearanceSettings}" /> -->
-            <!--     </StackPanel> -->
-            <!-- </TabItem> -->
-            <!-- <TabItem Header="Other"> -->
-            <!--     <StackPanel> -->
-            <!--         <ItemsControl ItemsSource="{Binding OtherSettings}" /> -->
-            <!--     </StackPanel> -->
-            <!-- </TabItem> -->
-            <!-- <TabItem Header="Experimental"> -->
-            <!--     <StackPanel> -->
-            <!--         <ItemsControl ItemsSource="{Binding ExperimentalSettings}" /> -->
-            <!--     </StackPanel> -->
-            <!-- </TabItem> -->
         </TabControl>
         <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />

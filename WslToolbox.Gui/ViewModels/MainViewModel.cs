@@ -65,7 +65,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
-        public ICommand RenameDistribution => new RenameDistributionCommand(SelectedDistribution, _view);
+        public ICommand RenameDistribution => new RenameDistributionCommand(SelectedDistribution);
         public ICommand StartDistribution => new StartDistributionCommand(SelectedDistribution);
         public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
