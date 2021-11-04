@@ -12,7 +12,7 @@
         Icon="/Resources/Images/AppIcon.png"
         SizeToContent="WidthAndHeight"
         xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
-        StateChanged="MetroWindow_StateChanged"
+        StateChanged="Window_StateChanged"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>
@@ -25,7 +25,7 @@
                 <Style TargetType="{x:Type Grid}">
                     <Setter Property="Margin" Value="10,10,0,10" />
                 </Style>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                     <Setter Property="Width" Value="106" />
                     <Setter Property="Height" Value="28" />

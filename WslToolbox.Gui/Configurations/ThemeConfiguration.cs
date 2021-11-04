@@ -13,9 +13,6 @@ namespace WslToolbox.Gui.Configurations
             Dark
         }
 
-        public const string Light = "Light.Blue";
-        public const string Dark = "Dark.Steel";
-
         public static IEnumerable<Styles> GetValues()
         {
             return Enum.GetValues(typeof(Styles)).Cast<Styles>();

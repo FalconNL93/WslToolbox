@@ -1,34 +1,16 @@
-﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SettingsView"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 Background="{StaticResource MahApps.Brushes.ThemeBackground}"
-                 mc:Ignorable="d"
-                 Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-                 SizeToContent="WidthAndHeight" Icon="/Resources/Images/AppIcon.png" ShowIconOnTitleBar="False"
-                 Loaded="MetroWindow_Loaded" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False"
-                 IsMinButtonEnabled="False" ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
-    <mah:MetroWindow.Resources>
-        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
-            <Setter Property="Margin" Value="4,3,4,0" />
-        </Style>
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
-            <Setter Property="Margin" Value="4,3,4,0" />
-        </Style>
-        <Style TargetType="{x:Type Separator}">
-            <Setter Property="Margin" Value="4,10,4,5" />
-        </Style>
-        <Style TargetType="{x:Type StackPanel}">
-            <Setter Property="Margin" Value="4,4,4,4" />
-            <Setter Property="Height" Value="Auto" />
-        </Style>
-    </mah:MetroWindow.Resources>
+﻿<Window x:Class="WslToolbox.Gui.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight" Icon="/Resources/Images/AppIcon.png"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Margin="10,0,10,10" x:Name="SettingsGrid">
-        <TabControl Margin="4,10,4,40" Style="{DynamicResource MahApps.Styles.TabControl.AnimatedSingleRow}"
-                    x:Name="SettingsControl">
-        </TabControl>
+        <TabControl Margin="4,10,4,40"
+                    x:Name="SettingsControl" />
         <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
         <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"
@@ -36,4 +18,4 @@
         <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27"
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
     </Grid>
-</mah:MetroWindow>
+</Window>

@@ -79,6 +79,7 @@ namespace WslToolbox.Gui.Helpers
                 Content = dialogContent
             };
 
+
             var showDialog = await dialog.ShowAsync();
 
             return new UiDialog

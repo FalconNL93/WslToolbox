@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls.Dialogs;
+using ModernWpf.Controls;
 using Serilog.Core;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
@@ -52,7 +52,12 @@ namespace WslToolbox.Gui.Views
         {
             ServiceItems.ItemsSource = ServiceCollection.Items(_viewModel);
             OtherItems.ItemsSource = OtherCollection.Items(_viewModel);
-            //ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
+            var controlMenuButtonFlyout = new MenuFlyout();
+
+            foreach (var menuItem in ManageMenuCollection.Items(_viewModel))
+                controlMenuButtonFlyout.Items.Add(menuItem);
+
+            ControlMenuButton.Flyout = controlMenuButtonFlyout;
         }
 
         private void InitializeViewModel()
@@ -174,7 +179,7 @@ namespace WslToolbox.Gui.Views
                 DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
         }
 
-        private void MetroWindow_StateChanged(object sender, EventArgs e)
+        private void Window_StateChanged(object sender, EventArgs e)
         {
             if (_viewModel.Config.Configuration.MinimizeToTray && _viewModel.Config.Configuration.EnableSystemTray)
                 ShowInTaskbar = WindowState != WindowState.Minimized;

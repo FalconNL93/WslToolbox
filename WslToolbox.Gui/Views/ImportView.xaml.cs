@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
 namespace WslToolbox.Gui.Views
@@ -11,7 +10,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for ImportView.xaml
     /// </summary>
-    public partial class ImportView : MetroWindow
+    public partial class ImportView : Window
     {
         private static readonly Regex ValidCharacters = new("^[a-zA-Z0-9]*$");
 
