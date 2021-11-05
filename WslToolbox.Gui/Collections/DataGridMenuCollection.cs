@@ -101,6 +101,12 @@ namespace WslToolbox.Gui.Collections
                 },
                 new MenuItem
                 {
+                    Header = "Delete",
+                    Command = viewModel.DeleteDistribution,
+                    CommandParameter = viewModel.SelectedDistribution
+                },
+                new MenuItem
+                {
                     Header = "Set as default distribution",
                     Command = viewModel.SetDefaultDistribution,
                     CommandParameter = viewModel.SelectedDistribution

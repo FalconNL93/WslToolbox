@@ -9,13 +9,12 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for SelectDistributionView.xaml
     /// </summary>
-    public partial class SelectDistributionView : Window
+    public partial class SelectDistributionView
     {
         public SelectDistributionView()
         {
             InitializeComponent();
             InstallDistribution.IsEnabled = false;
-            NoticeBlock.Text = Properties.Resources.NOTICE_INSTALL_EXISTING_DISTRIBUTION;
             AvailableDistributions.IsEnabled = false;
 
             var distributionList = FetchDistributions();

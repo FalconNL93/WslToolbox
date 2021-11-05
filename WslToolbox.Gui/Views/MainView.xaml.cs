@@ -3,15 +3,16 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using ModernWpf;
 using ModernWpf.Controls;
 using Serilog.Core;
+using SourceChord.FluentWPF;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
+using ElementTheme = ModernWpf.ElementTheme;
 
 namespace WslToolbox.Gui.Views
 {

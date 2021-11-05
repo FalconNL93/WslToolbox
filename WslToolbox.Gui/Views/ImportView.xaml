@@ -3,13 +3,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
         Title="Import" Height="198" Width="300" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen" Icon="/Resources/Images/AppIcon.png"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
+        fw:AcrylicWindow.Enabled="True"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Margin="10,10,10,10">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="270" Margin="5,5,5,5">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+            </StackPanel.Resources>
             <Label Content="Distribution name:" FontWeight="Bold" />
             <TextBox x:Name="ImportDistributionName" Height="21" Text="" TextWrapping="Wrap"
                      TextChanged="ImportDistributionName_TextChanged" />

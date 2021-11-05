@@ -70,6 +70,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
+        public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution);
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()
@@ -80,6 +81,9 @@ namespace WslToolbox.Gui.ViewModels
             StopDistributionCommand.DistributionStopped += DistributionChangedEventHandler;
             RenameDistributionCommand.DistributionRenamed += DistributionChangedEventHandler;
             SetDefaultDistributionCommand.DistributionDefaultChanged += DistributionChangedEventHandler;
+            ShowExportDialogDistributionCommand.DistributionExporting += DistributionChangedEventHandler;
+            ShowExportDialogDistributionCommand.DistributionExported += DistributionChangedEventHandler;
+            DeleteDistributionCommand.DistributionDeleted += DistributionChangedEventHandler;
         }
 
         private void DistributionChangedEventHandler(object sender, EventArgs e)

@@ -3,19 +3,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="Settings" Height="270" Width="453" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-        SizeToContent="WidthAndHeight" Icon="/Resources/Images/AppIcon.png"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        mc:Ignorable="d"
+        Title="Settings"
+        Height="270"
+        MinWidth="453"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        WindowStyle="SingleBorderWindow"
+        SizeToContent="WidthAndHeight"
+        Icon="/Resources/Images/AppIcon.png"
+        fw:AcrylicWindow.Enabled="True"
         ui:WindowHelper.UseModernWindowStyle="True">
-    <Grid Margin="10,0,10,10" x:Name="SettingsGrid">
+    <Grid Margin="10,0,10,10" fw:PointerTracker.Enabled="True">
         <TabControl Margin="4,10,4,40"
                     x:Name="SettingsControl" />
-        <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="27" VerticalAlignment="Bottom"
+        <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="32" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
         <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"
-                Height="27" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
-        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="27"
+                Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
+        <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="32"
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
     </Grid>
 </Window>
