@@ -1,26 +1,16 @@
 ﻿using System.Windows;
-using ControlzEx.Theming;
-using WslToolbox.Gui.Configurations;
+using ModernWpf;
 
 namespace WslToolbox.Gui.Handlers
 {
     public static class ThemeHandler
     {
-        public static void Set(ThemeConfiguration.Styles style)
+        public static void SetTheme(this FrameworkElement element, ElementTheme style)
         {
-            if (style == ThemeConfiguration.Styles.Auto)
-            {
-                ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
-                ThemeManager.Current.SyncTheme();
-            }
+            if (style == ElementTheme.Default)
+                ThemeManager.SetRequestedTheme(element, ElementTheme.Default);
             else
-            {
-                _ = ThemeManager.Current.ChangeTheme(Application.Current,
-                    style == ThemeConfiguration.Styles.Light
-                        ? ThemeConfiguration.Light
-                        : ThemeConfiguration.Dark
-                );
-            }
+                ThemeManager.SetRequestedTheme(element, style);
         }
     }
 }

@@ -1,42 +1,47 @@
-﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.MainView"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:local="clr-namespace:WslToolbox.Gui.Configurations"
-                 mc:Ignorable="d"
-                 Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
-                 Height="341" Width="592"
-                 WindowStartupLocation="CenterScreen"
-                 ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
-                 Icon="/Resources/Images/AppIcon.png"
-                 SizeToContent="WidthAndHeight" ShowIconOnTitleBar="False"
-                 xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
-                 StateChanged="MetroWindow_StateChanged">
-    <mah:MetroWindow.Resources>
+﻿<Window x:Class="WslToolbox.Gui.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:local="clr-namespace:WslToolbox.Gui.Configurations"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
+        mc:Ignorable="d"
+        Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
+        Height="341"
+        MinWidth="470"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        WindowStyle="SingleBorderWindow"
+        SizeToContent="WidthAndHeight"
+        Icon="/Resources/Images/AppIcon.png"
+        StateChanged="Window_StateChanged"
+        fw:AcrylicWindow.Enabled="True"
+        ui:WindowHelper.UseModernWindowStyle="True">
+    <Window.Resources>
         <h:BoolToValueConverter x:Key="BoolToValueConverter" />
-    </mah:MetroWindow.Resources>
-    <Grid Margin="5,0,5,0">
-        <mah:MetroAnimatedTabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
-                                     Width="559" mah:HeaderedControlHelper.HeaderFontSize="20"
-                                     mah:HeaderedControlHelper.HeaderFontStretch="Medium"
-                                     mah:HeaderedControlHelper.HeaderFontWeight="Normal">
-            <mah:MetroAnimatedTabControl.Resources>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Margin" Value="10,10,0,10" />
-                </Style>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
+    </Window.Resources>
+    <Grid Margin="5,5,5,5">
+        <TabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
+                    MinWidth="{Binding RelativeSource={RelativeSource FindAncestor, 
+    AncestorType={x:Type Window}},Path=MinWidth}">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="0,5,0,0" />
                     <Setter Property="Width" Value="106" />
-                    <Setter Property="Height" Value="28" />
+                    <Setter Property="Height" Value="32" />
                 </Style>
-            </mah:MetroAnimatedTabControl.Resources>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Margin" Value="2,5,5,5" />
+                </Style>
+            </TabControl.Resources>
             <TabItem Header="Distributions">
                 <Grid>
-                    <mah:DropDownButton x:Name="ControlMenuButton" HorizontalAlignment="Left" Height="28"
-                                        Margin="8,10,0,0" VerticalAlignment="Top" Width="140" Content="Manage..." />
-                    <DataGrid Margin="8,49,10,10" x:Name="DistributionDetails"
+                    <ui:DropDownButton x:Name="ControlMenuButton" HorizontalAlignment="Left" Height="33"
+                                       VerticalAlignment="Top" Width="140"
+                                       Content="Manage..." />
+                    <DataGrid Margin="0,49,10,10" x:Name="DistributionDetails"
                               SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
                               IsReadOnly="True"
                               AutoGenerateColumns="false" MinColumnWidth="100"
@@ -61,6 +66,6 @@
                     <ItemsControl x:Name="OtherItems" HorizontalAlignment="Left" />
                 </Grid>
             </TabItem>
-        </mah:MetroAnimatedTabControl>
+        </TabControl>
     </Grid>
-</mah:MetroWindow>
+</Window>

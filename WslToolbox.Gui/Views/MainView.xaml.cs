@@ -3,22 +3,23 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
+using ModernWpf.Controls;
 using Serilog.Core;
+using SourceChord.FluentWPF;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
+using ElementTheme = ModernWpf.ElementTheme;
 
 namespace WslToolbox.Gui.Views
 {
     /// <summary>
     ///     Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView : MetroWindow
+    public partial class MainView : Window
     {
         private readonly SystemTrayClass _systemTray = new();
         private Logger _log;
@@ -53,7 +54,12 @@ namespace WslToolbox.Gui.Views
         {
             ServiceItems.ItemsSource = ServiceCollection.Items(_viewModel);
             OtherItems.ItemsSource = OtherCollection.Items(_viewModel);
-            ControlMenuButton.ItemsSource = ManageMenuCollection.Items(_viewModel);
+            var controlMenuButtonFlyout = new MenuFlyout();
+
+            foreach (var menuItem in ManageMenuCollection.Items(_viewModel))
+                controlMenuButtonFlyout.Items.Add(menuItem);
+
+            ControlMenuButton.Flyout = controlMenuButtonFlyout;
         }
 
         private void InitializeViewModel()
@@ -102,18 +108,18 @@ namespace WslToolbox.Gui.Views
                                 Properties.Resources.OS_MINIMUM_BUILD, OsHandler.RecommendedOsBuild);
             }
 
-            var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
-                osMessage,
-                MessageDialogStyle.AffirmativeAndNegative,
-                new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Close",
-                    NegativeButtonText = "Continue anyway",
-                    DefaultButtonFocus = MessageDialogResult.Affirmative
-                }
-            );
+            // var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
+            //     osMessage,
+            //     MessageDialogStyle.AffirmativeAndNegative,
+            //     new MetroDialogSettings
+            //     {
+            //         AffirmativeButtonText = "Close",
+            //         NegativeButtonText = "Continue anyway",
+            //         DefaultButtonFocus = MessageDialogResult.Affirmative
+            //     }
+            // );
 
-            if (notSupportedMessageDialogResult == MessageDialogResult.Affirmative) Environment.Exit(1);
+            //if (notSupportedMessageDialogResult == MessageDialogResult.Affirmative) Environment.Exit(1);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -137,7 +143,7 @@ namespace WslToolbox.Gui.Views
         {
             HandleSystemTray();
 
-            ThemeHandler.Set(_viewModel.Config.Configuration.AppearanceConfiguration.SelectedStyle);
+            this.SetTheme(ElementTheme.Light);
         }
 
         private void HandleSystemTray()
@@ -175,7 +181,7 @@ namespace WslToolbox.Gui.Views
                 DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
         }
 
-        private void MetroWindow_StateChanged(object sender, EventArgs e)
+        private void Window_StateChanged(object sender, EventArgs e)
         {
             if (_viewModel.Config.Configuration.MinimizeToTray && _viewModel.Config.Configuration.EnableSystemTray)
                 ShowInTaskbar = WindowState != WindowState.Minimized;

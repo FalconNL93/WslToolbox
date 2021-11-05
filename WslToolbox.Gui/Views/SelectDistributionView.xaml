@@ -1,26 +1,31 @@
-﻿<mah:MetroWindow x:Class="WslToolbox.Gui.Views.SelectDistributionView"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 mc:Ignorable="d" Height="179" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-                 Icon="/Resources/Images/AppIcon.png" SizeToContent="Height"
-                 Background="{StaticResource MahApps.Brushes.ThemeBackground}" ShowIconOnTitleBar="False"
-                 IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False"
-                 ShowTitleBar="False" ShowDialogsOverTitleBar="True" ShowCloseButton="False">
-    <Grid Margin="10,10,10,12">
-        <GroupBox Header=" Select distribution " Margin="0,0,0,10">
+﻿<Window x:Class="WslToolbox.Gui.Views.SelectDistributionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        mc:Ignorable="d" Height="199" Width="278" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Icon="/Resources/Images/AppIcon.png" SizeToContent="Height"
+        ui:WindowHelper.UseModernWindowStyle="True">
+
+    <Grid Margin="10,10,10,10" fw:PointerTracker.Enabled="True">
+        <GroupBox Header=" Select distribution ">
             <Grid>
-                <ComboBox x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True" Height="24"
-                          VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged" />
-                <Button x:Name="InstallDistribution" Content="Install" Margin="0,39,10,0"
-                        Click="InstallDistribution_Click"
-                        Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" IsEnabled="False" />
-                <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,39,0,0" Width="82"
-                        Click="Button_Click_1" Height="24" VerticalAlignment="Top" />
-                <TextBlock x:Name="NoticeBlock" Margin="10,68,10,10" Text="Notice" TextWrapping="Wrap" />
+                <ComboBox
+                    ui:ControlHelper.Header="Colors"
+                    ui:ControlHelper.PlaceholderText="Pick a color"
+                    x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True" Height="24"
+                    VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged"
+                    Style="{StaticResource ComboBoxRevealStyle}" />
+
+                <Button x:Name="InstallDistribution" Content="Install" Margin="0,58,10,0"
+                        Click="InstallDistribution_Click" Height="29" VerticalAlignment="Top"
+                        HorizontalAlignment="Right" Width="82"
+                        IsEnabled="False" />
+                <Button Content="Cancel" Margin="10,58,0,0" Width="82"
+                        Click="Button_Click_1" Height="29" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
     </Grid>
-</mah:MetroWindow>
+</Window>

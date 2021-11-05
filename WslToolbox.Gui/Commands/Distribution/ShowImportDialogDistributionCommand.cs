@@ -14,6 +14,9 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
+        
+        public static event EventHandler DistributionImporting;
+        public static event EventHandler DistributionImported;
 
         public override async void Execute(object parameter)
         {
@@ -40,6 +43,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            DistributionImported?.Invoke(this, EventArgs.Empty);
             IsExecutable = IsExecutableDefault;
         }
     }

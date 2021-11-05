@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
+using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
@@ -10,7 +10,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : MetroWindow
+    public partial class SettingsView : Window
     {
         private readonly SettingsViewModel _viewModel;
 
@@ -30,10 +30,10 @@ namespace WslToolbox.Gui.Views
 
         private async void OpenConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            var resetSettings = await this.ShowMessageAsync("Reset configuration",
-                "Do you want to reset your configuration?", MessageDialogStyle.AffirmativeAndNegative);
+            var resetSettings = await UiHelperDialog.ShowMessageBox("Reset configuration",
+                "Do you want to reset your configuration?", "Reset", closeButtonText: "Cancel");
 
-            if (resetSettings != MessageDialogResult.Affirmative) return;
+            if (resetSettings.DialogResult != ContentDialogResult.Primary) return;
             _viewModel.ConfigHandler.Reset();
             SaveConfigurationAndClose();
         }
@@ -42,10 +42,6 @@ namespace WslToolbox.Gui.Views
         {
             DialogResult = true;
             Close();
-        }
-
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)
