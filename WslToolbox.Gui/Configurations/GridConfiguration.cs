@@ -4,9 +4,9 @@ namespace WslToolbox.Gui.Configurations
 {
     public class GridConfiguration
     {
-        private const int GridConfigurationDoNothing = 0;
-        private const int GridConfigurationOpenTerminal = 1;
-        private const int GridConfigurationOpenContextMenu = 2;
+        public const int GridConfigurationDoNothing = 0;
+        public const int GridConfigurationOpenTerminal = 1;
+        public const int GridConfigurationOpenContextMenu = 2;
 
         public int DoubleClick { get; set; } = GridConfigurationDoNothing;
         public int SingleClick { get; set; } = GridConfigurationDoNothing;
@@ -25,8 +25,7 @@ namespace WslToolbox.Gui.Configurations
         public static Dictionary<int, string> DoubleClickValues()
         {
             var values = DefaultValues();
-
-            values.Remove(GridConfigurationOpenTerminal);
+            
             values.Remove(GridConfigurationOpenContextMenu);
 
             return values;

@@ -13,8 +13,6 @@
         <GroupBox Header=" Select distribution ">
             <Grid>
                 <ComboBox
-                    ui:ControlHelper.Header="Colors"
-                    ui:ControlHelper.PlaceholderText="Pick a color"
                     x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True" Height="24"
                     VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged"
                     Style="{StaticResource ComboBoxRevealStyle}" />

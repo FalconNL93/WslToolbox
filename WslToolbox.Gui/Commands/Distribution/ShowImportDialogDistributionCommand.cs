@@ -14,7 +14,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
-        
+
         public static event EventHandler DistributionImporting;
         public static event EventHandler DistributionImported;
 

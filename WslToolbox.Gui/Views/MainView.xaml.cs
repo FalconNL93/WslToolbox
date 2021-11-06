@@ -1,18 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using ModernWpf;
 using ModernWpf.Controls;
 using Serilog.Core;
-using SourceChord.FluentWPF;
 using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
-using ElementTheme = ModernWpf.ElementTheme;
 
 namespace WslToolbox.Gui.Views
 {
@@ -60,6 +61,20 @@ namespace WslToolbox.Gui.Views
                 controlMenuButtonFlyout.Items.Add(menuItem);
 
             ControlMenuButton.Flyout = controlMenuButtonFlyout;
+
+            DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
+        }
+
+        private void DistributionDetailsOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine("Double clicked!");
+            if (_viewModel.SelectedDistribution == null) return;
+
+            if (_viewModel.Config.Configuration.GridConfiguration.DoubleClick ==
+                GridConfiguration.GridConfigurationOpenTerminal)
+            {
+                ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
+            }
         }
 
         private void InitializeViewModel()
@@ -141,9 +156,20 @@ namespace WslToolbox.Gui.Views
 
         public void HandleConfiguration()
         {
+            HandleTheme();
             HandleSystemTray();
+        }
 
-            this.SetTheme(ElementTheme.Light);
+        private void HandleTheme()
+        {
+            var selectedStyle = _viewModel.Config.Configuration.AppearanceConfiguration.SelectedStyle;
+
+            ThemeManager.Current.ApplicationTheme = selectedStyle switch
+            {
+                ThemeConfiguration.Styles.Light => ApplicationTheme.Light,
+                ThemeConfiguration.Styles.Dark => ApplicationTheme.Dark,
+                _ => null
+            };
         }
 
         private void HandleSystemTray()

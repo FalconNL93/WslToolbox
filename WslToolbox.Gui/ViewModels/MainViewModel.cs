@@ -70,7 +70,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
-        public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution);
+        public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()

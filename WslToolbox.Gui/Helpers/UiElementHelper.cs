@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using ModernWpf.Controls.Primitives;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Helpers
 {
@@ -33,13 +36,13 @@ namespace WslToolbox.Gui.Helpers
             var comboBox = new ComboBox
             {
                 Name = name,
-                ItemsSource = items
+                ItemsSource = items,
             };
 
             if (requires != null)
                 comboBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
 
-            comboBox.SetBinding(Selector.SelectedItemProperty, BindHelper.BindingObject(bind, source));
+            comboBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
 
             return comboBox;
         }
@@ -52,7 +55,7 @@ namespace WslToolbox.Gui.Helpers
                 Name = name,
                 ItemsSource = items,
                 SelectedValuePath = "Key",
-                DisplayMemberPath = "Value"
+                DisplayMemberPath = "Value",
             };
 
             if (requires != null)

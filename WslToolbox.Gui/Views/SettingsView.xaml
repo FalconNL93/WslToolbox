@@ -7,7 +7,7 @@
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
         Title="Settings"
-        Height="270"
+        MinHeight="330"
         MinWidth="453"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
@@ -17,8 +17,26 @@
         fw:AcrylicWindow.Enabled="True"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Margin="10,0,10,10" fw:PointerTracker.Enabled="True">
-        <TabControl Margin="4,10,4,40"
-                    x:Name="SettingsControl" />
+        <TabControl Margin="4,10,4,40" x:Name="SettingsControl">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Margin" Value="0,5,0,5" />
+                </Style>
+            </TabControl.Resources>
+        </TabControl>
+
         <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="32" VerticalAlignment="Bottom"
                 HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
         <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"

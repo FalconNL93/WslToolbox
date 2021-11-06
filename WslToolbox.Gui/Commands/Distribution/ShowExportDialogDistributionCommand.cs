@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
 
@@ -13,7 +12,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutableDefault = _ => distributionClass != null;
             IsExecutable = IsExecutableDefault;
         }
-        
+
         public static event EventHandler DistributionExporting;
         public static event EventHandler DistributionExported;
 
