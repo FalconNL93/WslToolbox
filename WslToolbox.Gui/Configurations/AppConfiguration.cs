@@ -6,7 +6,7 @@ namespace WslToolbox.Gui.Configurations
 {
     public static class AppConfiguration
     {
-        public static string AppName => "WSL Toolbox";
+        public static string AppName => "WSL Toolbox - Beta";
         public static string AppLogsFileName => "logs.txt";
         public static string AppConfigurationFileName => "settings.json";
 
