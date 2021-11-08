@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
 
@@ -59,7 +60,9 @@ namespace WslToolbox.Gui.Helpers
         public static async Task<UiDialog> ShowMessageBox(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
-            string closeButtonText = "OK")
+            string closeButtonText = "OK",
+            bool withConfirmationCheckbox = false,
+            string confirmationCheckboxText = null)
         {
             var dialogContent = new StackPanel
             {
@@ -67,7 +70,9 @@ namespace WslToolbox.Gui.Helpers
                 {
                     new TextBlock
                     {
-                        Text = text
+                        Text = text,
+                        TextTrimming = TextTrimming.WordEllipsis,
+                        TextWrapping = TextWrapping.Wrap
                     }
                 }
             };
@@ -82,6 +87,18 @@ namespace WslToolbox.Gui.Helpers
                 Content = dialogContent
             };
 
+            if (withConfirmationCheckbox)
+            {
+                var consentCheckbox = new CheckBox
+                {
+                    Margin = new Thickness(0, 10, 0, 0),
+                    Content = confirmationCheckboxText
+                };
+
+                dialogContent.Children.Add(consentCheckbox);
+                dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty,
+                    BindHelper.BindingObject(nameof(consentCheckbox.IsChecked), consentCheckbox));
+            }
 
             var showDialog = await dialog.ShowAsync();
 

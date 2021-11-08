@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Settings"
         Height="380"
+        MinHeight="380"
         MinWidth="453"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"

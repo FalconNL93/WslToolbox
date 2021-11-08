@@ -12,12 +12,13 @@ namespace WslToolbox.Gui.Helpers
     public static class UiElementHelper
     {
         public static CheckBox AddCheckBox(string name, string content, string bind, object source,
-            string requires = null)
+            string requires = null, Visibility visibility = Visibility.Visible)
         {
             var checkBox = new CheckBox
             {
                 Name = name,
-                Content = content
+                Content = content,
+                Visibility = visibility
             };
 
             checkBox.SetBinding(ToggleButton.IsCheckedProperty, BindHelper.BindingObject(bind, source));

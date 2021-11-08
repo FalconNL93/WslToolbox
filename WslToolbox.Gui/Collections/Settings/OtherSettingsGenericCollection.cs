@@ -65,7 +65,8 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideUnsupportedOsMessage),
                     "Hide unsupported operating system notification",
                     "Configuration.HideUnsupportedOsMessage",
-                    Source
+                    Source,
+                    visibility: Visibility.Collapsed
                 ),
                 UiElementHelper.AddCheckBox(
                     nameof(DefaultConfiguration.ExperimentalConfiguration.ShowExperimentalSettings),

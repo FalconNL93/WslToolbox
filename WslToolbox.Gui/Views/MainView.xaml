@@ -10,10 +10,11 @@
         Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
         Height="341"
         MinWidth="470"
+        MinHeight="341"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
+        ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
-        SizeToContent="WidthAndHeight"
+        SizeToContent="Width"
         Icon="/Resources/Images/AppIcon.png"
         StateChanged="Window_StateChanged"
         ui:WindowHelper.UseModernWindowStyle="True">
@@ -21,7 +22,7 @@
         <h:BoolToValueConverter x:Key="BoolToValueConverter" />
     </Window.Resources>
     <Grid Margin="5,5,5,5">
-        <TabControl HorizontalAlignment="Left" Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
+        <TabControl Height="303" Margin="5,5,5,5" VerticalAlignment="Top"
                     MinWidth="{Binding RelativeSource={RelativeSource FindAncestor, 
     AncestorType={x:Type Window}},Path=MinWidth}">
             <TabControl.Resources>

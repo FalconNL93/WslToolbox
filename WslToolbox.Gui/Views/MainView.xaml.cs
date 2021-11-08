@@ -11,7 +11,6 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Classes;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views

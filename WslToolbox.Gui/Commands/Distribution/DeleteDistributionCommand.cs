@@ -1,5 +1,7 @@
 ﻿using System;
+using ModernWpf.Controls;
 using WslToolbox.Core;
+using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -21,11 +23,13 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            // var deleteConfirmation = AcrylicMessageBox.Show((MainView) _view,
-            //     "Are you sure you want to remove this distribution?",
-            //     "Warning", MessageBoxButton.YesNo);
+            var resetSettings = await UiHelperDialog.ShowMessageBox("Delete distribution",
+                "Are you sure you want to delete this distribution? All data on this distribution will be lost!",
+                "Delete", closeButtonText: "Cancel",
+                withConfirmationCheckbox: true,
+                confirmationCheckboxText: "I confirm i want do delete this distribution.");
 
-            // if (deleteConfirmation != MessageBoxResult.Yes) return;
+            if (resetSettings.DialogResult != ContentDialogResult.Primary) return;
             var distribution = (DistributionClass) parameter;
 
             await ToolboxClass.UnregisterDistribution(distribution);
