@@ -20,6 +20,7 @@ namespace WslToolbox.Gui.Views
             var distributionList = FetchDistributions();
             AvailableDistributions.ItemsSource = distributionList.FindAll(x => !x.IsInstalled);
             AvailableDistributions.DisplayMemberPath = "Name";
+            AvailableDistributions.SelectedIndex = 0;
             AvailableDistributions.IsEnabled = true;
         }
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
-using ModernWpf.Controls.Primitives;
-using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Helpers
 {
@@ -36,7 +34,7 @@ namespace WslToolbox.Gui.Helpers
             var comboBox = new ComboBox
             {
                 Name = name,
-                ItemsSource = items,
+                ItemsSource = items
             };
 
             if (requires != null)
@@ -55,7 +53,7 @@ namespace WslToolbox.Gui.Helpers
                 Name = name,
                 ItemsSource = items,
                 SelectedValuePath = "Key",
-                DisplayMemberPath = "Value",
+                DisplayMemberPath = "Value"
             };
 
             if (requires != null)
@@ -97,16 +95,12 @@ namespace WslToolbox.Gui.Helpers
         }
 
         public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,
-            string bind = null)
+            string bind = null, CompositeCollection contextMenuItems = null)
         {
             var textBlock = new TextBlock
             {
-                Padding = new Thickness(5, 0, 0, 10)
-            };
-
-            var textBlockHyperlink = new TextBlock
-            {
-                MaxWidth = 400,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                MaxWidth = 350,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 TextWrapping = TextWrapping.Wrap,
                 Text = name ?? url
@@ -114,16 +108,28 @@ namespace WslToolbox.Gui.Helpers
 
             var hyperlink = new Hyperlink
             {
-                NavigateUri = new Uri(url)
+                NavigateUri = new Uri(url),
+                ContextMenu = contextMenuItems != null
+                    ? new ContextMenu {ItemsSource = contextMenuItems}
+                    : null
             };
 
             if (tooltip is not null) hyperlink.ToolTip = tooltip;
 
             ExplorerHelper.OpenHyperlink(hyperlink);
 
-            hyperlink.Inlines.Add(textBlockHyperlink.Inlines.FirstInline);
+            hyperlink.Inlines.Add(textBlock.Inlines.FirstInline);
             textBlock.Inlines.Add(hyperlink);
             return textBlock;
+        }
+
+        public static Separator HiddenSeparator()
+        {
+            return new Separator
+            {
+                Margin = new Thickness(0, 5, 0, 5),
+                Visibility = Visibility.Hidden
+            };
         }
     }
 }

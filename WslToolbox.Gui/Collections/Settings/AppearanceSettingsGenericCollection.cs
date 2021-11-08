@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers;
-using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Settings
 {

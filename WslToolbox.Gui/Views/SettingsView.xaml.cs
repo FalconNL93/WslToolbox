@@ -10,7 +10,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : Window
+    public partial class SettingsView
     {
         private readonly SettingsViewModel _viewModel;
 

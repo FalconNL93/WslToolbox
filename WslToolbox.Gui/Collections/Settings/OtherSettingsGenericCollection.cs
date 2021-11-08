@@ -29,7 +29,8 @@ namespace WslToolbox.Gui.Collections.Settings
                 },
                 UiElementHelper.AddHyperlink(
                     viewModel.Configuration.ConfigurationFile,
-                    tooltip: viewModel.Configuration.ConfigurationFile
+                    tooltip: viewModel.Configuration.ConfigurationFile,
+                    contextMenuItems: GenericMenuCollection.CopyToClipboard(viewModel.Configuration.ConfigurationFile)
                 ),
                 new Label
                 {
@@ -38,7 +39,6 @@ namespace WslToolbox.Gui.Collections.Settings
                 },
                 new TextBlock
                 {
-                    Padding = new Thickness(5, 0, 0, 10),
                     Inlines =
                     {
                         new Run($"GUI: {AssemblyHelper.AssemblyVersionHuman}"),

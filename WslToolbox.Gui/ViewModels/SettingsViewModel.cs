@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Collections.Settings;
@@ -61,15 +60,20 @@ namespace WslToolbox.Gui.ViewModels
 
         private TabItem AddTabItem(string header, string bind, bool visible = true, bool enabled = true)
         {
+            var scrollViewer = new ScrollViewer
+            {
+                Content = new StackPanel
+                {
+                    Children = {UiElementHelper.AddItemsControl(bind, this)}
+                }
+            };
+
             return new TabItem
             {
                 Visibility = visible ? Visibility.Visible : Visibility.Collapsed,
                 Header = header,
                 IsEnabled = enabled,
-                Content = new StackPanel
-                {
-                    Children = {UiElementHelper.AddItemsControl(bind, this)}
-                }
+                Content = scrollViewer
             };
         }
     }

@@ -8,8 +8,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public StartDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
-            IsExecutableDefault = _ => true;
-            IsExecutable = IsExecutableDefault;
+            IsExecutable = _ => distributionClass.State != DistributionClass.StateRunning;
         }
 
         public static event EventHandler DistributionStarted;

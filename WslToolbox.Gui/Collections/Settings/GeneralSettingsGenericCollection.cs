@@ -44,6 +44,11 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.MinimizeOnClose),
                     "Minimize when pressing close button",
                     "Configuration.MinimizeOnClose",
+                    Source),
+
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableDeleteCommand),
+                    "Disable the delete distribution menu item",
+                    "Configuration.DisableDeleteCommand",
                     Source)
             };
         }

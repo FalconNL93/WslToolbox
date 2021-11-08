@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.ViewModels;
 
@@ -63,7 +64,8 @@ namespace WslToolbox.Gui.Collections
                         },
                         new MenuItem
                         {
-                            Header = "Change base path..."
+                            Header = "Change base path...",
+                            IsEnabled = false
                         }
                     }
                 },
@@ -103,7 +105,11 @@ namespace WslToolbox.Gui.Collections
                 {
                     Header = "Delete",
                     Command = viewModel.DeleteDistribution,
-                    CommandParameter = viewModel.SelectedDistribution
+                    CommandParameter = viewModel.SelectedDistribution,
+                    IsEnabled = !viewModel.Config.Configuration.DisableDeleteCommand,
+                    Visibility = viewModel.Config.Configuration.DisableDeleteCommand
+                        ? Visibility.Collapsed
+                        : Visibility.Visible
                 },
                 new MenuItem
                 {

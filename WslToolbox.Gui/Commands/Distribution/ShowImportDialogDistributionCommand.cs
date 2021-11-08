@@ -15,7 +15,6 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutable = IsExecutableDefault;
         }
 
-        public static event EventHandler DistributionImporting;
         public static event EventHandler DistributionImported;
 
         public override async void Execute(object parameter)

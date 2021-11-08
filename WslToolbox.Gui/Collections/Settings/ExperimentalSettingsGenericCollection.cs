@@ -24,20 +24,41 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Some functionality may or may not work as expected."
                 },
+                UiElementHelper.HiddenSeparator(),
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
+                    Content = "Service polling"
+                },
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableServicePolling),
-                    "Service polling",
+                    "Enable service polling",
                     "Configuration.EnableServicePolling",
                     Source),
                 new Label
                 {
-                    FontWeight = FontWeights.Bold,
                     Content = "Interval in seconds"
                 },
                 UiElementHelper.AddTextBox(nameof(DefaultConfiguration.ServicePollingInterval),
                     $"{viewModel.Configuration.ServicePollingInterval / 1000}",
                     "Configuration.ServicePollingInterval",
                     Source,
-                    enabled: false)
+                    enabled: false),
+                UiElementHelper.HiddenSeparator(),
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
+                    Content = "Select an shell backend to use"
+                },
+                new Label
+                {
+                    FontWeight = FontWeights.Normal,
+                    Content = "Only installed backends will be shown in the dropdown menu"
+                },
+                UiElementHelper.AddComboBox(
+                    nameof(DefaultConfiguration.ExperimentalConfiguration.ShellBackend),
+                    ExperimentalConfiguration.ShellBackendValues(),
+                    "Configuration.ExperimentalConfiguration.ShellBackend",
+                    Source)
             };
         }
     }

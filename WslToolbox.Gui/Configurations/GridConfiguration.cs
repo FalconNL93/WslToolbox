@@ -8,9 +8,27 @@ namespace WslToolbox.Gui.Configurations
         public const int GridConfigurationOpenTerminal = 1;
         public const int GridConfigurationOpenContextMenu = 2;
 
-        public int DoubleClick { get; set; } = GridConfigurationDoNothing;
-        public int SingleClick { get; set; } = GridConfigurationDoNothing;
-        public int RightSingleClick { get; set; } = GridConfigurationOpenContextMenu;
+        private int _doubleClick = GridConfigurationOpenTerminal;
+        private int _rightSingleClick = GridConfigurationOpenContextMenu;
+        private int _singleClick = GridConfigurationDoNothing;
+
+        public int DoubleClick
+        {
+            get => _doubleClick;
+            set => _doubleClick = DoubleClickValues().ContainsKey(value) ? value : GridConfigurationDoNothing;
+        }
+
+        public int SingleClick
+        {
+            get => _singleClick;
+            set => _singleClick = SingleClickValues().ContainsKey(value) ? value : GridConfigurationDoNothing;
+        }
+
+        public int RightSingleClick
+        {
+            get => _rightSingleClick;
+            set => _rightSingleClick = RightSingleClickValues().ContainsKey(value) ? value : GridConfigurationDoNothing;
+        }
 
         private static Dictionary<int, string> DefaultValues()
         {
@@ -25,7 +43,7 @@ namespace WslToolbox.Gui.Configurations
         public static Dictionary<int, string> DoubleClickValues()
         {
             var values = DefaultValues();
-            
+
             values.Remove(GridConfigurationOpenContextMenu);
 
             return values;

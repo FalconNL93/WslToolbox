@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:WslToolbox.Gui.Configurations"
-        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
         mc:Ignorable="d"
         Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
@@ -17,7 +16,6 @@
         SizeToContent="WidthAndHeight"
         Icon="/Resources/Images/AppIcon.png"
         StateChanged="Window_StateChanged"
-        fw:AcrylicWindow.Enabled="True"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>
         <h:BoolToValueConverter x:Key="BoolToValueConverter" />

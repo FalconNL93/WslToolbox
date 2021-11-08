@@ -1,9 +1,7 @@
-﻿using ModernWpf;
-
-namespace WslToolbox.Gui.Configurations
+﻿namespace WslToolbox.Gui.Configurations
 {
     public class AppearanceConfiguration
     {
-        public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Light;
+        public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
     }
 }

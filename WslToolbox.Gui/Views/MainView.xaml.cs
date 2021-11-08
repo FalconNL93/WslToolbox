@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -63,18 +62,25 @@ namespace WslToolbox.Gui.Views
             ControlMenuButton.Flyout = controlMenuButtonFlyout;
 
             DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
+            DistributionDetails.MouseLeftButtonUp += DistributionDetailsOnMouseSingleClick;
         }
 
         private void DistributionDetailsOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("Double clicked!");
             if (_viewModel.SelectedDistribution == null) return;
 
             if (_viewModel.Config.Configuration.GridConfiguration.DoubleClick ==
                 GridConfiguration.GridConfigurationOpenTerminal)
-            {
                 ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
-            }
+        }
+
+        private void DistributionDetailsOnMouseSingleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (_viewModel.SelectedDistribution == null) return;
+
+            if (_viewModel.Config.Configuration.GridConfiguration.SingleClick ==
+                GridConfiguration.GridConfigurationOpenContextMenu)
+                DistributionDetails.ContextMenu.IsOpen = true;
         }
 
         private void InitializeViewModel()
@@ -84,9 +90,6 @@ namespace WslToolbox.Gui.Views
             DataContext = viewModel;
             _viewModel = viewModel;
             _log = _viewModel.Log;
-
-            if (_viewModel.ShowUnsupportedOsMessage()) ShowOsUnsupportedMessage();
-            if (_viewModel.ShowMinimumOsMessage()) ShowOsUnsupportedMessage(OsHandler.States.Minimum);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -102,39 +105,6 @@ namespace WslToolbox.Gui.Views
             _systemTray.Dispose();
 
             base.OnClosing(e);
-        }
-
-        private async void ShowOsUnsupportedMessage(OsHandler.States state = OsHandler.States.Unsupported)
-        {
-            var osTitle = Properties.Resources.WARNING;
-            var osMessage = string.Format(
-                                Properties.Resources.OS_NOT_SUPPORTED, _viewModel.OsHandler.OsBuild,
-                                AppConfiguration.AppName) +
-                            Environment.NewLine + string.Format(
-                                Properties.Resources.OS_NOT_SUPPORTED_BUILD_REQUIRED, OsHandler.MinimumOsBuild);
-
-            if (state == OsHandler.States.Minimum)
-            {
-                osTitle = Properties.Resources.NOTICE;
-                osMessage = string.Format(
-                                Properties.Resources.OS_MINIMUM, _viewModel.OsHandler.OsBuild,
-                                AppConfiguration.AppName) +
-                            Environment.NewLine + string.Format(
-                                Properties.Resources.OS_MINIMUM_BUILD, OsHandler.RecommendedOsBuild);
-            }
-
-            // var notSupportedMessageDialogResult = await this.ShowMessageAsync(osTitle,
-            //     osMessage,
-            //     MessageDialogStyle.AffirmativeAndNegative,
-            //     new MetroDialogSettings
-            //     {
-            //         AffirmativeButtonText = "Close",
-            //         NegativeButtonText = "Continue anyway",
-            //         DefaultButtonFocus = MessageDialogResult.Affirmative
-            //     }
-            // );
-
-            //if (notSupportedMessageDialogResult == MessageDialogResult.Affirmative) Environment.Exit(1);
         }
 
         protected override void OnClosed(EventArgs e)

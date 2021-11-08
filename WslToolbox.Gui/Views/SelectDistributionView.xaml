@@ -13,9 +13,8 @@
         <GroupBox Header=" Select distribution ">
             <Grid>
                 <ComboBox
-                    x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True" Height="24"
-                    VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged"
-                    Style="{StaticResource ComboBoxRevealStyle}" />
+                    x:Name="AvailableDistributions" Margin="10,10,10,0" IsReadOnly="True"
+                    VerticalAlignment="Top" SelectionChanged="AvailableDistribution_SelectionChanged" />
 
                 <Button x:Name="InstallDistribution" Content="Install" Margin="0,58,10,0"
                         Click="InstallDistribution_Click" Height="29" VerticalAlignment="Top"
