@@ -16,11 +16,18 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Double mouse click should"
-                },
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.HideWslVersion),
+                    "Hide WSL version in Grid",
+                    "Configuration.GridConfiguration.HideWslVersion",
+                    Source, enabled: false),
+                UiElementHelper.ItemExpander("Mouse behaviour", MouseBehaviourControls(), true)
+            };
+        }
+
+        private CompositeCollection MouseBehaviourControls()
+        {
+            return new CompositeCollection
+            {
                 UiElementHelper.AddComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.DoubleClick),
                     GridConfiguration.DoubleClickValues(),

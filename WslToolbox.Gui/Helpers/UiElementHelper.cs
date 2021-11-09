@@ -6,19 +6,21 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using ModernWpf.Controls;
 
 namespace WslToolbox.Gui.Helpers
 {
     public static class UiElementHelper
     {
         public static CheckBox AddCheckBox(string name, string content, string bind, object source,
-            string requires = null, Visibility visibility = Visibility.Visible)
+            string requires = null, Visibility visibility = Visibility.Visible, bool enabled = true)
         {
             var checkBox = new CheckBox
             {
                 Name = name,
                 Content = content,
-                Visibility = visibility
+                Visibility = visibility,
+                IsEnabled = enabled
             };
 
             checkBox.SetBinding(ToggleButton.IsCheckedProperty, BindHelper.BindingObject(bind, source));
@@ -68,12 +70,13 @@ namespace WslToolbox.Gui.Helpers
         }
 
         public static TextBox AddTextBox(string name, string content, string bind, object source,
-            string requires = null, bool enabled = false)
+            string requires = null, bool enabled = false, int width = 170)
         {
             var textBox = new TextBox
             {
                 Name = name,
-                Text = content
+                Text = content,
+                Width = width
             };
 
             if (requires != null)
@@ -86,13 +89,49 @@ namespace WslToolbox.Gui.Helpers
             return textBox;
         }
 
-        public static ItemsControl AddItemsControl(string bind, object source)
+        public static NumberBox AddNumberBox(string name, string header, int value, string bind, object source,
+            string requires = null, bool enabled = false, int width = 170)
+        {
+            var numberBox = new NumberBox
+            {
+                Name = name,
+                Header = header,
+                Value = value,
+                Width = width,
+                SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact
+            };
+
+            if (requires != null)
+                numberBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+            else
+                numberBox.IsEnabled = enabled;
+
+            numberBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
+
+            return numberBox;
+        }
+
+        public static ItemsControl AddItemsControl(string bind = null, object source = null)
         {
             var itemsControl = new ItemsControl();
 
-            itemsControl.SetBinding(ItemsControl.ItemsSourceProperty, BindHelper.BindingObject(bind, source));
+            if (bind != null)
+                itemsControl.SetBinding(ItemsControl.ItemsSourceProperty, BindHelper.BindingObject(bind, source));
 
             return itemsControl;
+        }
+
+        public static Expander ItemExpander(string header, CompositeCollection items, bool expanded = false,
+            bool expanderEnabled = true,
+            bool controlsEnabled = true)
+        {
+            return new Expander
+            {
+                Header = header,
+                Content = new ItemsControl {ItemsSource = items, IsEnabled = controlsEnabled},
+                IsExpanded = expanded,
+                IsEnabled = expanderEnabled
+            };
         }
 
         public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,

@@ -30,6 +30,8 @@ namespace WslToolbox.Gui.Configurations
             set => _rightSingleClick = RightSingleClickValues().ContainsKey(value) ? value : GridConfigurationDoNothing;
         }
 
+        public bool HideWslVersion { get; set; } = false;
+
         private static Dictionary<int, string> DefaultValues()
         {
             return new Dictionary<int, string>

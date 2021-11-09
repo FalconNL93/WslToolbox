@@ -19,8 +19,26 @@
         <Grid>
             <TabControl Margin="4,10,4,40" x:Name="SettingsControl" VerticalAlignment="Top">
                 <TabControl.Resources>
+                    <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+                        <Setter Property="Margin" Value="0,0,10,0" />
+                    </Style>
                     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                         <Setter Property="Margin" Value="0,0,0,5" />
+                        <Setter Property="MinWidth" Value="170" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                    </Style>
+                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                        <Setter Property="Margin" Value="0,0,0,10" />
+                        <Style.Resources>
+                            <Style TargetType="{x:Type ItemsControl}">
+                                <Setter Property="Margin" Value="10,5,0,0" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                    <Style TargetType="{x:Type ui:NumberBox}" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+                        <Setter Property="Margin" Value="0,0,0,5" />
+                        <Setter Property="MinWidth" Value="170" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
                     </Style>
                     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
                         <Setter Property="Margin" Value="0,0,0,5" />
@@ -30,6 +48,7 @@
                     </Style>
                     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                         <Setter Property="Margin" Value="0,0,0,5" />
+                        <Setter Property="MinWidth" Value="170" />
                     </Style>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Margin" Value="0,0,0,5" />
@@ -40,12 +59,12 @@
                 </TabControl.Resources>
             </TabControl>
             <Grid>
-                <Button x:Name="SaveConfigurationButton" Content="Save" Margin="0,0,4,5" Height="32"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right" Width="82" Click="SaveConfigurationButton_Click" />
-                <Button x:Name="ResetConfiguration" Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"
+                <Button Content="Save" Margin="0,0,4,5" Height="32"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82"
+                        Click="SaveConfigurationButton_Click" />
+                <Button Content="Reset" Margin="0,0,91,5" Click="OpenConfiguration_Click"
                         Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="82" />
-                <Button x:Name="CancelButton" Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="32"
+                <Button Content="Cancel" Margin="4,0,0,5" Click="CancelButton_Click" Height="32"
                         VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" />
             </Grid>
         </Grid>

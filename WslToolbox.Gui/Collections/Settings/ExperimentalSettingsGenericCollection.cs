@@ -9,14 +9,15 @@ namespace WslToolbox.Gui.Collections.Settings
 {
     public class ExperimentalSettingsGenericCollection : GenericCollection
     {
+        private readonly SettingsViewModel _viewModel;
+
         public ExperimentalSettingsGenericCollection(object source) : base(source)
         {
+            _viewModel = (SettingsViewModel) source;
         }
 
         public CompositeCollection Items()
         {
-            var viewModel = (SettingsViewModel) Source;
-
             return new CompositeCollection
             {
                 new Label
@@ -24,31 +25,32 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Some functionality may or may not work as expected."
                 },
-                UiElementHelper.HiddenSeparator(),
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Service polling"
-                },
+                UiElementHelper.ItemExpander("Service polling", ServicePollingControls()),
+                UiElementHelper.ItemExpander("Shell backend", ShellBackendControls(), controlsEnabled: false)
+            };
+        }
+
+        private CompositeCollection ServicePollingControls()
+        {
+            return new CompositeCollection
+            {
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableServicePolling),
                     "Enable service polling",
                     "Configuration.EnableServicePolling",
                     Source),
-                new Label
-                {
-                    Content = "Interval in seconds"
-                },
-                UiElementHelper.AddTextBox(nameof(DefaultConfiguration.ServicePollingInterval),
-                    $"{viewModel.Configuration.ServicePollingInterval / 1000}",
+                UiElementHelper.AddNumberBox(nameof(DefaultConfiguration.ServicePollingInterval),
+                    "Interval",
+                    _viewModel.Configuration.ServicePollingInterval / 1000,
                     "Configuration.ServicePollingInterval",
                     Source,
-                    enabled: false),
-                UiElementHelper.HiddenSeparator(),
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Select an shell backend to use"
-                },
+                    "Configuration.EnableServicePolling")
+            };
+        }
+
+        private CompositeCollection ShellBackendControls()
+        {
+            return new CompositeCollection
+            {
                 new Label
                 {
                     FontWeight = FontWeights.Normal,

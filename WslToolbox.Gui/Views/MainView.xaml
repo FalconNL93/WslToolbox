@@ -44,13 +44,17 @@
                               SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
                               IsReadOnly="True"
                               AutoGenerateColumns="false" MinColumnWidth="100"
-                              SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedDistribution,Mode=TwoWay}"
+                              RowDetailsVisibilityMode="Collapsed"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="State" Binding="{Binding State}" />
                             <DataGridTextColumn Header="WSL Version" Binding="{Binding Version}" />
                             <DataGridTextColumn Header="Default"
-                                                Binding="{Binding IsDefault, Converter={StaticResource BoolToValueConverter}}" />
+                                                Binding="{Binding IsDefault, Converter={StaticResource BoolToValueConverter}}"
+                                                Width="Auto" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -12,31 +11,43 @@ namespace WslToolbox.Gui.Collections.Settings
 {
     public class OtherSettingsGenericCollection : GenericCollection
     {
+        private readonly SettingsViewModel _viewModel;
+
         public OtherSettingsGenericCollection(object source) : base(source)
         {
+            _viewModel = (SettingsViewModel) Source;
         }
 
         public CompositeCollection Items()
         {
-            var viewModel = (SettingsViewModel) Source;
+            return new CompositeCollection
+            {
+                UiElementHelper.ItemExpander("Configuration", ConfigurationControls(), true),
+                UiElementHelper.ItemExpander("About", AboutControls(), true),
+                UiElementHelper.ItemExpander("Advanced", AdvancedControls())
+            };
+        }
 
+        private CompositeCollection ConfigurationControls()
+        {
             return new CompositeCollection
             {
                 new Label
                 {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Configuration File"
+                    Content = "Path (right click to copy):"
                 },
                 UiElementHelper.AddHyperlink(
-                    viewModel.Configuration.ConfigurationFile,
-                    tooltip: viewModel.Configuration.ConfigurationFile,
-                    contextMenuItems: GenericMenuCollection.CopyToClipboard(viewModel.Configuration.ConfigurationFile)
-                ),
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Version"
-                },
+                    _viewModel.Configuration.ConfigurationFile,
+                    tooltip: _viewModel.Configuration.ConfigurationFile,
+                    contextMenuItems: GenericMenuCollection.CopyToClipboard(_viewModel.Configuration.ConfigurationFile)
+                )
+            };
+        }
+
+        private CompositeCollection AboutControls()
+        {
+            return new CompositeCollection
+            {
                 new TextBlock
                 {
                     Inlines =
@@ -45,10 +56,16 @@ namespace WslToolbox.Gui.Collections.Settings
                         new Run(Environment.NewLine),
                         new Run($"Core: {GenericClass.AssemblyVersionHuman}")
                     }
-                },
+                }
+            };
+        }
+
+        private CompositeCollection AdvancedControls()
+        {
+            return new CompositeCollection
+            {
                 new Label
                 {
-                    FontWeight = FontWeights.Bold,
                     Content = "Log level"
                 },
                 UiElementHelper.AddComboBox(
@@ -56,17 +73,6 @@ namespace WslToolbox.Gui.Collections.Settings
                     LogConfiguration.GetValues(),
                     "Configuration.MinimumLogLevel",
                     Source
-                ),
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Other"
-                },
-                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideUnsupportedOsMessage),
-                    "Hide unsupported operating system notification",
-                    "Configuration.HideUnsupportedOsMessage",
-                    Source,
-                    visibility: Visibility.Collapsed
                 ),
                 UiElementHelper.AddCheckBox(
                     nameof(DefaultConfiguration.ExperimentalConfiguration.ShowExperimentalSettings),
