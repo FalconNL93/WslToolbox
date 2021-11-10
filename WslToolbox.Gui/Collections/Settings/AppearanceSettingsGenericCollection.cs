@@ -25,7 +25,8 @@ namespace WslToolbox.Gui.Collections.Settings
                     nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
                     ThemeConfiguration.GetValues(),
                     "Configuration.AppearanceConfiguration.SelectedStyle",
-                    Source)
+                    Source),
+                UiElementHelper.AddCheckBox("transparency", "Enable transparency", enabled: false)
             };
         }
     }

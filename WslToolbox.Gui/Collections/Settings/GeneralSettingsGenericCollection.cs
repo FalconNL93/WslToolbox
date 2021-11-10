@@ -35,6 +35,11 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableDeleteCommand),
                     "Disable the delete distribution menu item",
                     "Configuration.DisableDeleteCommand",
+                    Source),
+
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableShortcuts),
+                    "Disable all shortcuts",
+                    "Configuration.DisableShortcuts",
                     Source)
             };
         }

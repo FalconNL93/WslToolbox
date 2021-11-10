@@ -12,12 +12,12 @@ namespace WslToolbox.Gui.Collections
             {
                 new MenuItem
                 {
-                    Header = "New",
+                    Header = "Install distribution",
                     Command = viewModel.ShowSelectDialog
                 },
                 new MenuItem
                 {
-                    Header = "Import",
+                    Header = "Import distribution",
                     Command = viewModel.ShowImportDialog
                 }
             };

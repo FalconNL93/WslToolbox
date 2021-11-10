@@ -33,7 +33,7 @@ namespace WslToolbox.Gui.Collections
                 new Button
                 {
                     Content = "Update",
-                    IsEnabled = false
+                    Command = viewModel.UpdateWslService
                 }
             };
         }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -22,32 +25,21 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.ItemExpander("Configuration", ConfigurationControls(), true),
-                UiElementHelper.ItemExpander("About", AboutControls(), true),
-                UiElementHelper.ItemExpander("Advanced", AdvancedControls())
-            };
-        }
-
-        private CompositeCollection ConfigurationControls()
-        {
-            return new CompositeCollection
-            {
                 new Label
                 {
-                    Content = "Path (right click to copy):"
+                    FontWeight = FontWeights.Bold,
+                    Content = "Configuration path (right click to copy):"
                 },
                 UiElementHelper.AddHyperlink(
                     _viewModel.Configuration.ConfigurationFile,
                     tooltip: _viewModel.Configuration.ConfigurationFile,
                     contextMenuItems: GenericMenuCollection.CopyToClipboard(_viewModel.Configuration.ConfigurationFile)
-                )
-            };
-        }
-
-        private CompositeCollection AboutControls()
-        {
-            return new CompositeCollection
-            {
+                ),
+                new Label
+                {
+                    FontWeight = FontWeights.Bold,
+                    Content = "Version:"
+                },
                 new TextBlock
                 {
                     Inlines =
@@ -56,9 +48,11 @@ namespace WslToolbox.Gui.Collections.Settings
                         new Run(Environment.NewLine),
                         new Run($"Core: {GenericClass.AssemblyVersionHuman}")
                     }
-                }
+                },
+                UiElementHelper.ItemExpander("Advanced", AdvancedControls())
             };
         }
+
 
         private CompositeCollection AdvancedControls()
         {

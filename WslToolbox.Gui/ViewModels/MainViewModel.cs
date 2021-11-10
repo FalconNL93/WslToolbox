@@ -61,6 +61,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StartWslService => new StartWslServiceCommand();
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();
+        public ICommand UpdateWslService => new UpdateWslServiceCommand();
         public ICommand ShowSelectDialog => new ShowSelectDistributionDialogCommand();
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
@@ -84,11 +85,34 @@ namespace WslToolbox.Gui.ViewModels
             ShowExportDialogDistributionCommand.DistributionExporting += DistributionChangedEventHandler;
             ShowExportDialogDistributionCommand.DistributionExported += DistributionChangedEventHandler;
             DeleteDistributionCommand.DistributionDeleted += DistributionChangedEventHandler;
+
+            if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
+        }
+
+        private void ShortcutHandler()
+        {
+            _view.KeyUp += (sender, args) =>
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    switch (args.Key)
+                    {
+                        case Key.OemComma:
+                            ShowSettings.Execute(null);
+                            break;
+                        case Key.Q:
+                            ExitApplication.Execute(null);
+                            break;
+                    }
+                }
+
+                if (args.Key == Key.F5) Refresh.Execute(_view);
+            };
         }
 
         private void DistributionChangedEventHandler(object sender, EventArgs e)
         {
-            _view.PopulateWsl();
+            Refresh.Execute(_view);
         }
 
         private void InitializeStatusPoller()
@@ -99,7 +123,7 @@ namespace WslToolbox.Gui.ViewModels
 
         private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)
         {
-            _view.PopulateWsl();
+            Refresh.Execute(_view);
         }
 
         private void DebugMode()
@@ -138,7 +162,7 @@ namespace WslToolbox.Gui.ViewModels
         private void SaveSuccessfullyEvent(object sender, EventArgs e)
         {
             _view.HandleConfiguration();
-            _view.PopulateWsl();
+            Refresh.Execute(_view);
         }
     }
 }

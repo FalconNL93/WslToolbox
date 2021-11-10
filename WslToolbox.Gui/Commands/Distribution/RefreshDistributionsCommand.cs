@@ -1,4 +1,5 @@
-﻿using WslToolbox.Gui.Views;
+﻿using System.Threading.Tasks;
+using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -13,10 +14,13 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutable = IsExecutableDefault;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
+            IsExecutable = _ => false;
             _mainView ??= (MainView) parameter;
             _mainView.PopulateWsl();
+            await Task.Delay(2000);
+            IsExecutable = IsExecutableDefault;
         }
     }
 }
