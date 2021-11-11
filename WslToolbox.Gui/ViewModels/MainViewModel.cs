@@ -48,6 +48,7 @@ namespace WslToolbox.Gui.ViewModels
 
             InitializeEventHandlers();
             InitializeStatusPoller();
+            InitializeUpdater();
         }
 
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
@@ -72,6 +73,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
+        public ICommand CheckForUpdates => new CheckForUpdateCommand();
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()
@@ -94,7 +96,6 @@ namespace WslToolbox.Gui.ViewModels
             _view.KeyUp += (sender, args) =>
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
                     switch (args.Key)
                     {
                         case Key.OemComma:
@@ -104,7 +105,6 @@ namespace WslToolbox.Gui.ViewModels
                             ExitApplication.Execute(null);
                             break;
                     }
-                }
 
                 if (args.Key == Key.F5) Refresh.Execute(_view);
             };
@@ -119,6 +119,13 @@ namespace WslToolbox.Gui.ViewModels
         {
             _statusPoller.Enabled = Config.Configuration.EnableServicePolling;
             _statusPoller.Interval = Config.Configuration.ServicePollingInterval;
+        }
+
+        private void InitializeUpdater()
+        {
+            if (!Config.Configuration.AutoCheckUpdates) return;
+
+            CheckForUpdates.Execute(null);
         }
 
         private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)

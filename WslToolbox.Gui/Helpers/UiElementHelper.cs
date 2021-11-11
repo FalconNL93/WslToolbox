@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using ModernWpf.Controls;
 
 namespace WslToolbox.Gui.Helpers
@@ -30,6 +31,28 @@ namespace WslToolbox.Gui.Helpers
                 checkBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
 
             return checkBox;
+        }
+
+        public static Button AddButton(string name, string content, string bind = null, object source = null,
+            string requires = null, ICommand command = null, Visibility visibility = Visibility.Visible,
+            bool enabled = true)
+        {
+            var button = new Button
+            {
+                Name = name,
+                Content = content,
+                Visibility = visibility,
+                IsEnabled = enabled,
+                Command = command
+            };
+
+            if (bind != null)
+                button.SetBinding(ButtonBase.CommandProperty, BindHelper.BindingObject(bind, source));
+
+            if (requires != null)
+                button.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+            return button;
         }
 
         public static ComboBox AddComboBox(string name, IEnumerable items, string bind, object source,

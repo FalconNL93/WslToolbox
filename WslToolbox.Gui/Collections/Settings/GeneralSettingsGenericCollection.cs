@@ -1,4 +1,6 @@
-﻿using System.Windows.Data;
+﻿using System.Windows.Controls;
+using System.Windows.Data;
+using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
@@ -19,6 +21,7 @@ namespace WslToolbox.Gui.Collections.Settings
             return new CompositeCollection
             {
                 UiElementHelper.ItemExpander("General", GenericControls(), true),
+                UiElementHelper.ItemExpander("Updates", UpdateControls()),
                 UiElementHelper.ItemExpander("Behaviour", BehaviourControls())
             };
         }
@@ -41,6 +44,25 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Disable all shortcuts",
                     "Configuration.DisableShortcuts",
                     Source)
+            };
+        }
+
+        private CompositeCollection UpdateControls()
+        {
+            return new CompositeCollection
+            {
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.AutoCheckUpdates),
+                    "Automatically check for updates",
+                    "Configuration.AutoCheckUpdates",
+                    Source),
+                UiElementHelper.AddButton("CheckForUpdates",
+                    "Check for updates",
+                    command: new CheckForUpdateCommand()
+                ),
+                new Label
+                {
+                    Content = $"Current version: {AssemblyHelper.AssemblyVersionHuman}"
+                }
             };
         }
 

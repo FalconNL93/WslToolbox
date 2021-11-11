@@ -24,6 +24,7 @@ namespace WslToolbox.Gui.Configurations
         public int ServicePollingInterval { get; set; } = 5000;
         public bool DisableDeleteCommand { get; set; }
         public bool DisableShortcuts { get; set; }
+        public bool AutoCheckUpdates { get; set; }
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();
         public ExperimentalConfiguration ExperimentalConfiguration { get; set; } = new();

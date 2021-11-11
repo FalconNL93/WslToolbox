@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using WslToolbox.Core;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
@@ -35,20 +30,6 @@ namespace WslToolbox.Gui.Collections.Settings
                     tooltip: _viewModel.Configuration.ConfigurationFile,
                     contextMenuItems: GenericMenuCollection.CopyToClipboard(_viewModel.Configuration.ConfigurationFile)
                 ),
-                new Label
-                {
-                    FontWeight = FontWeights.Bold,
-                    Content = "Version:"
-                },
-                new TextBlock
-                {
-                    Inlines =
-                    {
-                        new Run($"GUI: {AssemblyHelper.AssemblyVersionHuman}"),
-                        new Run(Environment.NewLine),
-                        new Run($"Core: {GenericClass.AssemblyVersionHuman}")
-                    }
-                },
                 UiElementHelper.ItemExpander("Advanced", AdvancedControls())
             };
         }
