@@ -10,6 +10,7 @@ namespace WslToolbox.Gui.Helpers
     {
         public object UserInput { get; set; }
         public ContentDialogResult DialogResult { get; set; }
+        public ContentDialog Dialog { get; set; }
     }
 
     public static class UiHelperDialog
@@ -100,12 +101,14 @@ namespace WslToolbox.Gui.Helpers
                     BindHelper.BindingObject(nameof(consentCheckbox.IsChecked), consentCheckbox));
             }
 
+
             var showDialog = await dialog.ShowAsync();
 
             return new UiDialog
             {
                 UserInput = null,
-                DialogResult = showDialog
+                DialogResult = showDialog,
+                Dialog = dialog
             };
         }
     }

@@ -15,18 +15,26 @@ namespace WslToolbox.Gui.Handlers
             AutoUpdater.OpenDownloadPage = updateConfiguration.OpenDownloadPage;
         }
 
-        public static void ShowDialog()
+        public static bool IsAvailable()
         {
+            return AppConfiguration.EnableUpdater &&
+                   AppConfiguration.AppConfigurationUpdateXml != null;
+        }
+
+        public static void Handle()
+        {
+            if (!IsAvailable()) return;
+
             var configuration = new UpdateConfiguration();
             SetConfiguration(configuration);
 
             AutoUpdater.Start(configuration.Url);
-            AutoUpdater.CheckForUpdateEvent += args =>
-            {
-                if (!args.IsUpdateAvailable) return;
+            AutoUpdater.CheckForUpdateEvent += OnAutoUpdaterOnCheckForUpdateEvent;
+        }
 
-                AutoUpdater.ShowUpdateForm(args);
-            };
+        private static async void OnAutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
+        {
+            if (!args.IsUpdateAvailable) return;
         }
     }
 }

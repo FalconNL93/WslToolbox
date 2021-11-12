@@ -31,6 +31,7 @@ namespace WslToolbox.Gui.ViewModels
 
         public StartOnBootHandler StartOnBootHandler { get; } = new();
         public CompositeCollection GeneralSettings { get; set; }
+        public CompositeCollection UpdateSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }
         public CompositeCollection AppearanceSettings { get; set; }
         public CompositeCollection ExperimentalSettings { get; set; }
@@ -39,6 +40,7 @@ namespace WslToolbox.Gui.ViewModels
         private void InitializeSettingsTabsElements()
         {
             GeneralSettings = new GeneralSettingsGenericCollection(this).Items();
+            UpdateSettings = new UpdateSettingsGenericCollection(this).Items();
             GridSettings = new GridSettingsGenericCollection(this).Items();
             AppearanceSettings = new AppearanceSettingsGenericCollection(this).Items();
             ExperimentalSettings = new ExperimentalSettingsGenericCollection(this).Items();
@@ -50,6 +52,7 @@ namespace WslToolbox.Gui.ViewModels
             _view.SettingsControl.ItemsSource = new[]
             {
                 AddTabItem("General", "GeneralSettings"),
+                AddTabItem("Update", "UpdateSettings", enabled: UpdateHandler.IsAvailable()),
                 AddTabItem("Grid", "GridSettings"),
                 AddTabItem("Appearance", "AppearanceSettings"),
                 AddTabItem("Experimental", "ExperimentalSettings",

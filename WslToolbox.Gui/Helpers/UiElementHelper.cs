@@ -158,6 +158,20 @@ namespace WslToolbox.Gui.Helpers
             };
         }
 
+        public static ItemsControl AddItemGroup(CompositeCollection items, bool itemEnableOverride = false,
+            bool enabled = true)
+        {
+            var groupItems = new ItemsControl();
+
+            foreach (Control item in items)
+            {
+                if (itemEnableOverride) item.IsEnabled = enabled;
+                groupItems.Items.Add(item);
+            }
+
+            return groupItems;
+        }
+
         public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,
             string bind = null, CompositeCollection contextMenuItems = null)
         {

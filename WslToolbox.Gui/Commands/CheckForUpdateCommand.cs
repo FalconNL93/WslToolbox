@@ -1,5 +1,4 @@
-﻿using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Handlers;
+﻿using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands
 {
@@ -7,15 +6,15 @@ namespace WslToolbox.Gui.Commands
     {
         public CheckForUpdateCommand()
         {
-            IsExecutable = _ => AppConfiguration.AppConfigurationUpdateXml != null;
+            IsExecutable = _ => UpdateHandler.IsAvailable();
         }
 
         public override void Execute(object parameter)
         {
-            if (AppConfiguration.AppConfigurationUpdateXml == null) return;
+            if (!UpdateHandler.IsAvailable()) return;
 
             IsExecutable = _ => false;
-            UpdateHandler.ShowDialog();
+            UpdateHandler.Handle();
             IsExecutable = _ => true;
         }
     }
