@@ -1,6 +1,7 @@
 ﻿using System;
 using ModernWpf.Controls;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Helpers;
 
 namespace WslToolbox.Gui.Commands.Distribution
@@ -32,7 +33,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (resetSettings.DialogResult != ContentDialogResult.Primary) return;
             var distribution = (DistributionClass) parameter;
 
-            await ToolboxClass.UnregisterDistribution(distribution);
+            await UnregisterDistributionCommand.Execute(distribution);
             DistributionDeleted?.Invoke(this, EventArgs.Empty);
         }
     }

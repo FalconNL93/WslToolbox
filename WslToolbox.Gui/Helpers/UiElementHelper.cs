@@ -159,12 +159,15 @@ namespace WslToolbox.Gui.Helpers
         }
 
         public static ItemsControl AddItemGroup(CompositeCollection items, bool itemEnableOverride = false,
-            bool enabled = true)
+            bool enabled = true, object source = null, string requires = null)
         {
             var groupItems = new ItemsControl();
 
             foreach (Control item in items)
             {
+                if (requires != null)
+                    item.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
                 if (itemEnableOverride) item.IsEnabled = enabled;
                 groupItems.Items.Add(item);
             }

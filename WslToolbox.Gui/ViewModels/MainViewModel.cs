@@ -8,6 +8,8 @@ using CommandLine;
 using Serilog.Core;
 using Serilog.Events;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Distribution;
+using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
@@ -16,6 +18,10 @@ using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
+using OpenShellDistributionCommand = WslToolbox.Gui.Commands.Distribution.OpenShellDistributionCommand;
+using RenameDistributionCommand = WslToolbox.Gui.Commands.Distribution.RenameDistributionCommand;
+using SetDefaultDistributionCommand = WslToolbox.Gui.Commands.Distribution.SetDefaultDistributionCommand;
+using StartDistributionCommand = WslToolbox.Gui.Commands.Distribution.StartDistributionCommand;
 
 namespace WslToolbox.Gui.ViewModels
 {
@@ -80,13 +86,21 @@ namespace WslToolbox.Gui.ViewModels
         {
             _statusPoller.Elapsed += StatusPollerEventHandler;
             Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
-            StartDistributionCommand.DistributionStarted += DistributionChangedEventHandler;
-            StopDistributionCommand.DistributionStopped += DistributionChangedEventHandler;
-            RenameDistributionCommand.DistributionRenamed += DistributionChangedEventHandler;
-            SetDefaultDistributionCommand.DistributionDefaultChanged += DistributionChangedEventHandler;
-            ShowExportDialogDistributionCommand.DistributionExporting += DistributionChangedEventHandler;
-            ShowExportDialogDistributionCommand.DistributionExported += DistributionChangedEventHandler;
-            DeleteDistributionCommand.DistributionDeleted += DistributionChangedEventHandler;
+
+            ExportDistributionCommand.DistributionExportStarted +=
+                DistributionChangedEventHandler;
+            ImportDistributionCommand.DistributionImportStarted +=
+                DistributionChangedEventHandler;
+            Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameStarted +=
+                DistributionChangedEventHandler;
+            Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSet +=
+                DistributionChangedEventHandler;
+            Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished +=
+                DistributionChangedEventHandler;
+            TerminateDistributionCommand.DistributionTerminateFinished +=
+                DistributionChangedEventHandler;
+            UnregisterDistributionCommand.DistributionUnregisterFinished +=
+                DistributionChangedEventHandler;
 
             if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
         }
@@ -137,6 +151,7 @@ namespace WslToolbox.Gui.ViewModels
         {
             Debug.WriteLine("Debug mode enabled.");
             _view.Title = $"{_view.Title} - Debug Mode";
+
             Config.Configuration.MinimumLogLevel = LogEventLevel.Verbose;
         }
 
@@ -162,8 +177,9 @@ namespace WslToolbox.Gui.ViewModels
 
         public async void RefreshDistributions()
         {
-            DistributionList = await ToolboxClass
-                .ListDistributions(Config.Configuration.HideDockerDistributions).ConfigureAwait(true);
+            DistributionList = await ListServiceCommand
+                .ListDistributions(Config.Configuration.HideDockerDistributions)
+                .ConfigureAwait(true);
         }
 
         private void SaveSuccessfullyEvent(object sender, EventArgs e)

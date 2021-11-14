@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Gui.Views
 {
@@ -26,7 +27,8 @@ namespace WslToolbox.Gui.Views
 
         private static List<DistributionClass> FetchDistributions()
         {
-            var distributionList = Task.Run(async () => await ToolboxClass.ListDistributions().ConfigureAwait(true));
+            var distributionList = Task.Run(async () =>
+                await ListServiceCommand.ListDistributions().ConfigureAwait(true));
 
             return distributionList.Result;
         }

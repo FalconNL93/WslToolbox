@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using WslToolbox.Core;
+using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Gui.Commands.Service
 {
@@ -16,7 +16,7 @@ namespace WslToolbox.Gui.Commands.Service
         public override async void Execute(object parameter)
         {
             IsExecutable = IsExecutableDefault;
-            await ToolboxClass.StopWsl().ConfigureAwait(true);
+            await StopServiceCommand.Execute();
         }
     }
 }

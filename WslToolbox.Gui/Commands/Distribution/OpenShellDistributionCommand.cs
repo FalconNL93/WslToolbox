@@ -12,7 +12,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override void Execute(object parameter)
         {
-            ToolboxClass.ShellDistribution((DistributionClass) parameter);
+            Core.Commands.Distribution.OpenShellDistributionCommand.Execute((DistributionClass) parameter);
         }
     }
 }

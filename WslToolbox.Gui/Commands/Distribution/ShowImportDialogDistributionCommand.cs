@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 
@@ -33,8 +34,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                await ToolboxClass.ImportDistribution((DistributionClass) parameter,
-                    importDistributionWindow.DistributionName,
+                await ImportDistributionCommand.Execute((DistributionClass) parameter,
                     importDistributionWindow.DistributionSelectedDirectory, fileName).ConfigureAwait(true);
             }
             catch (Exception ex)

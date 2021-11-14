@@ -1,5 +1,6 @@
 ﻿using System;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Distribution;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -16,7 +17,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            _ = await ToolboxClass.TerminateDistribution((DistributionClass) parameter);
+            _ = await TerminateDistributionCommand.Execute((DistributionClass) parameter);
             IsExecutable = _ => true;
 
             DistributionStopped?.Invoke(this, EventArgs.Empty);

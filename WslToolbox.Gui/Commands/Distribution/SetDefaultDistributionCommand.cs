@@ -17,7 +17,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            _ = await ToolboxClass.SetDefaultDistribution((DistributionClass) parameter);
+            _ = await Core.Commands.Distribution.SetDefaultDistributionCommand.Execute((DistributionClass) parameter);
             IsExecutable = _ => true;
 
             DistributionDefaultChanged?.Invoke(this, EventArgs.Empty);

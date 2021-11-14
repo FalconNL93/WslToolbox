@@ -7,10 +7,11 @@ using System.Windows.Input;
 using ModernWpf;
 using ModernWpf.Controls;
 using Serilog.Core;
-using WslToolbox.Core;
-using WslToolbox.Gui.Classes;
+using WslToolbox.Core.Commands.Distribution;
+using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
@@ -20,7 +21,7 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView : Window
     {
-        private readonly SystemTrayClass _systemTray = new();
+        public readonly SystemTrayHelper SystemTray = new();
         private Logger _log;
         private MainViewModel _viewModel;
 
@@ -44,7 +45,7 @@ namespace WslToolbox.Gui.Views
                 MessageBox.Show("WSL does not appear to be installed on your system. Do you want to enable WSL?",
                     Properties.Resources.ERROR, MessageBoxButton.YesNo);
 
-            if (messageBoxResult == MessageBoxResult.Yes) ToolboxClass.EnableWslComponent();
+            if (messageBoxResult == MessageBoxResult.Yes) EnableServiceCommand.Execute();
 
             Environment.Exit(1);
         }
@@ -70,7 +71,7 @@ namespace WslToolbox.Gui.Views
 
             if (_viewModel.Config.Configuration.GridConfiguration.DoubleClick ==
                 GridConfiguration.GridConfigurationOpenTerminal)
-                ToolboxClass.ShellDistribution(_viewModel.SelectedDistribution);
+                OpenShellDistributionCommand.Execute(_viewModel.SelectedDistribution);
         }
 
         private void DistributionDetailsOnMouseSingleClick(object sender, MouseButtonEventArgs e)
@@ -101,7 +102,7 @@ namespace WslToolbox.Gui.Views
                 return;
             }
 
-            _systemTray.Dispose();
+            SystemTray.Dispose();
 
             base.OnClosing(e);
         }
@@ -143,7 +144,7 @@ namespace WslToolbox.Gui.Views
 
         private void HandleSystemTray()
         {
-            _systemTray.Dispose();
+            SystemTray.Dispose();
 
             if (!_viewModel.Config.Configuration.EnableSystemTray) return;
             if (_viewModel.Config.Configuration.MinimizeOnStartup)
@@ -152,10 +153,10 @@ namespace WslToolbox.Gui.Views
                 Hide();
             }
 
-            _systemTray.Show();
-            _systemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplication.Execute(null);
+            SystemTray.Show();
+            SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplication.Execute(null);
 
-            _systemTray.Tray.ContextMenu = new ContextMenu
+            SystemTray.Tray.ContextMenu = new ContextMenu
             {
                 ItemsSource = _viewModel.SystemTrayMenuItems()
             };

@@ -34,6 +34,7 @@ namespace WslToolbox.Gui.ViewModels
         public CompositeCollection UpdateSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }
         public CompositeCollection AppearanceSettings { get; set; }
+        public CompositeCollection NotificationSettings { get; set; }
         public CompositeCollection ExperimentalSettings { get; set; }
         public CompositeCollection OtherSettings { get; set; }
 
@@ -43,6 +44,7 @@ namespace WslToolbox.Gui.ViewModels
             UpdateSettings = new UpdateSettingsGenericCollection(this).Items();
             GridSettings = new GridSettingsGenericCollection(this).Items();
             AppearanceSettings = new AppearanceSettingsGenericCollection(this).Items();
+            NotificationSettings = new NotificationSettingsGenericCollection(this).Items();
             ExperimentalSettings = new ExperimentalSettingsGenericCollection(this).Items();
             OtherSettings = new OtherSettingsGenericCollection(this).Items();
         }
@@ -55,6 +57,7 @@ namespace WslToolbox.Gui.ViewModels
                 AddTabItem("Update", "UpdateSettings", enabled: UpdateHandler.IsAvailable()),
                 AddTabItem("Grid", "GridSettings"),
                 AddTabItem("Appearance", "AppearanceSettings"),
+                AddTabItem("Notifications", "NotificationSettings", enabled: false),
                 AddTabItem("Experimental", "ExperimentalSettings",
                     Configuration.ExperimentalConfiguration.ShowExperimentalSettings),
                 AddTabItem("Other", "OtherSettings")

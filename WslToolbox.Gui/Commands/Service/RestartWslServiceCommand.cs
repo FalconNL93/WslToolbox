@@ -1,4 +1,4 @@
-﻿using WslToolbox.Core;
+﻿using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Gui.Commands.Service
 {
@@ -11,7 +11,7 @@ namespace WslToolbox.Gui.Commands.Service
 
         public override async void Execute(object parameter)
         {
-            var serviceIsRunning = await ToolboxClass.ServiceIsRunning();
+            var serviceIsRunning = await StatusServiceCommand.ServiceIsRunning();
 
             if (serviceIsRunning) new StopWslServiceCommand().Execute(null);
             if (!serviceIsRunning) new StartWslServiceCommand().Execute(null);

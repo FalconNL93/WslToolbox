@@ -1,5 +1,6 @@
 ﻿using System;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands.Distribution
@@ -13,9 +14,6 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutable = IsExecutableDefault;
         }
 
-        public static event EventHandler DistributionExporting;
-        public static event EventHandler DistributionExported;
-
         public override async void Execute(object parameter)
         {
             var saveExportDialog = FileDialogHandler.SaveFileDialog();
@@ -27,7 +25,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                await ToolboxClass.ExportDistribution((DistributionClass) parameter, fileName)
+                await ExportDistributionCommand
+                    .Execute((DistributionClass) parameter, fileName)
                     .ConfigureAwait(true);
             }
             catch (Exception ex)
@@ -35,7 +34,6 @@ namespace WslToolbox.Gui.Commands.Distribution
                 LogHandler.Log().Error(ex.Message, ex);
             }
 
-            DistributionExported?.Invoke(this, EventArgs.Empty);
             IsExecutable = IsExecutableDefault;
         }
     }

@@ -35,7 +35,8 @@ namespace WslToolbox.Gui.Commands.Distribution
                     {
                         if (newName.All(char.IsLetterOrDigit) && newName.Length >= 3)
                         {
-                            ToolboxClass.RenameDistribution((DistributionClass) parameter, newName);
+                            Core.Commands.Distribution.RenameDistributionCommand.Execute((DistributionClass) parameter,
+                                newName);
                             await UiHelperDialog.ShowMessageBox("Rename",
                                 $"Distribution has been renamed to {newName}.");
                         }

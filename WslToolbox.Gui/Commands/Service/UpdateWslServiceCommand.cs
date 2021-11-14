@@ -1,4 +1,4 @@
-﻿using WslToolbox.Core;
+﻿using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Gui.Commands.Service
 {
@@ -12,7 +12,7 @@ namespace WslToolbox.Gui.Commands.Service
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            await ToolboxClass.UpdateWsl();
+            await UpdateServiceCommand.Execute();
             IsExecutable = _ => true;
         }
     }

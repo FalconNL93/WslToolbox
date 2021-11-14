@@ -20,7 +20,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (!(bool) selectedDistributionView) return;
 
             var selectedDistribution = (DistributionClass) selectDistributionWindow.AvailableDistributions.SelectedItem;
-            ToolboxClass.ShellDistribution(selectedDistribution);
+            Core.Commands.Distribution.OpenShellDistributionCommand.Execute(selectedDistribution);
         }
     }
 }
