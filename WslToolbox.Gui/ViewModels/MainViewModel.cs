@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Timers;
@@ -17,7 +16,6 @@ using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
-using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
@@ -37,8 +35,9 @@ namespace WslToolbox.Gui.ViewModels
     public class MainViewModel
     {
         private readonly Timer _statusPoller = new();
-        private readonly MainView _view;
         private readonly UpdateHandler _updateHandler;
+        private readonly MainView _view;
+        public readonly ICommand CheckForUpdates;
 
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
@@ -86,7 +85,6 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
-        public readonly ICommand CheckForUpdates;
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()
@@ -119,15 +117,11 @@ namespace WslToolbox.Gui.ViewModels
             if (!e.UpdateAvailable) return;
 
             if (e.ShowPrompt)
-            {
                 _updateHandler.ShowUpdatePrompt();
-            }
             else if (_view.SystemTray.Tray != null &&
                      Config.Configuration.NotificationConfiguration.NewVersionAvailable)
-            {
-                _view.SystemTray.ShowNotification($"Update available",
+                _view.SystemTray.ShowNotification("Update available",
                     $"Version {e.CurrentVersion} now available to install.");
-            }
         }
 
         private void ShortcutHandler()

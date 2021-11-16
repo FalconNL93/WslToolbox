@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
 using AutoUpdaterDotNET;
 using ModernWpf.Controls;
@@ -25,8 +24,8 @@ namespace WslToolbox.Gui.Handlers
     public class UpdateHandler
     {
         private readonly Window _view;
-        private UpdateInfoEventArgs _updateArgs;
         private bool _showPrompt = true;
+        private UpdateInfoEventArgs _updateArgs;
 
         public UpdateHandler(Window view)
         {
@@ -85,7 +84,7 @@ namespace WslToolbox.Gui.Handlers
                     InstalledVersion = args.InstalledVersion,
                     Mandatory = args.Mandatory,
                     DownloadUrl = args.DownloadURL,
-                    ChangelogUrl = args.ChangelogURL,
+                    ChangelogUrl = args.ChangelogURL
                 });
         }
 
