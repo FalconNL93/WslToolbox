@@ -96,6 +96,12 @@ namespace WslToolbox.Gui.Collections
                 new Separator(),
                 new MenuItem
                 {
+                    Header = "Delete",
+                    Command = viewModel.DeleteDistribution,
+                    CommandParameter = viewModel.SelectedDistribution
+                },
+                new MenuItem
+                {
                     Header = "Export",
                     Command = viewModel.ShowExportDialog,
                     CommandParameter = viewModel.SelectedDistribution

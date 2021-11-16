@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -15,6 +17,7 @@ using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
@@ -35,9 +38,11 @@ namespace WslToolbox.Gui.ViewModels
     {
         private readonly Timer _statusPoller = new();
         private readonly MainView _view;
+        private readonly UpdateHandler _updateHandler;
+
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
-        public readonly OsHandler OsHandler = new();
+        private readonly OsHandler OsHandler = new();
         public List<DistributionClass> DistributionList = new();
 
         public MainViewModel(MainView view)
@@ -45,6 +50,8 @@ namespace WslToolbox.Gui.ViewModels
             var args = Environment.GetCommandLineArgs();
             Log = Log();
             _view = view;
+            _updateHandler = new UpdateHandler(_view);
+            CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(o =>
@@ -79,7 +86,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
-        public ICommand CheckForUpdates => new CheckForUpdateCommand();
+        public readonly ICommand CheckForUpdates;
         public DistributionClass SelectedDistribution { get; set; }
 
         private void InitializeEventHandlers()
@@ -102,7 +109,25 @@ namespace WslToolbox.Gui.ViewModels
             UnregisterDistributionCommand.DistributionUnregisterFinished +=
                 DistributionChangedEventHandler;
 
+            UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
+
             if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
+        }
+
+        private void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
+        {
+            if (!e.UpdateAvailable) return;
+
+            if (e.ShowPrompt)
+            {
+                _updateHandler.ShowUpdatePrompt();
+            }
+            else if (_view.SystemTray.Tray != null &&
+                     Config.Configuration.NotificationConfiguration.NewVersionAvailable)
+            {
+                _view.SystemTray.ShowNotification($"Update available",
+                    $"Version {e.CurrentVersion} now available to install.");
+            }
         }
 
         private void ShortcutHandler()
@@ -135,11 +160,12 @@ namespace WslToolbox.Gui.ViewModels
             _statusPoller.Interval = Config.Configuration.ServicePollingInterval;
         }
 
-        private void InitializeUpdater()
+        private async void InitializeUpdater()
         {
             if (!Config.Configuration.AutoCheckUpdates) return;
 
-            CheckForUpdates.Execute(null);
+            await Task.Delay(5000);
+            CheckForUpdates.Execute(false);
         }
 
         private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)

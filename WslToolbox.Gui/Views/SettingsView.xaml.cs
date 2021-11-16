@@ -30,10 +30,12 @@ namespace WslToolbox.Gui.Views
 
         private async void OpenConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            var resetSettings = await UiHelperDialog.ShowMessageBox("Reset configuration",
+            var resetSettings = UiHelperDialog.ShowMessageBoxInfo("Reset configuration",
                 "Do you want to reset your configuration?", "Reset", closeButtonText: "Cancel");
 
-            if (resetSettings.DialogResult != ContentDialogResult.Primary) return;
+            var resetSettingsResult = await resetSettings.ShowAsync();
+
+            if (resetSettingsResult != ContentDialogResult.Primary) return;
             _viewModel.ConfigHandler.Reset();
             SaveConfigurationAndClose();
         }

@@ -37,18 +37,18 @@ namespace WslToolbox.Gui.Commands.Distribution
                         {
                             Core.Commands.Distribution.RenameDistributionCommand.Execute((DistributionClass) parameter,
                                 newName);
-                            await UiHelperDialog.ShowMessageBox("Rename",
-                                $"Distribution has been renamed to {newName}.");
+                            await UiHelperDialog.ShowMessageBoxInfo("Rename",
+                                $"Distribution has been renamed to {newName}.").ShowAsync();
                         }
                         else
                         {
-                            await UiHelperDialog.ShowMessageBox(Resources.ERROR,
-                                Resources.ERROR_ONLY_ALPHANUMERIC);
+                            await UiHelperDialog.ShowMessageBoxInfo(Resources.ERROR,
+                                Resources.ERROR_ONLY_ALPHANUMERIC).ShowAsync();
                         }
                     }
                     catch (Exception e)
                     {
-                        await UiHelperDialog.ShowMessageBox(Resources.ERROR, e.Message);
+                        await UiHelperDialog.ShowMessageBoxInfo(Resources.ERROR, e.Message).ShowAsync();
                     }
             }
 

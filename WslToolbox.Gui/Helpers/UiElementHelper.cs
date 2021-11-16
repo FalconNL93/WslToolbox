@@ -14,14 +14,16 @@ namespace WslToolbox.Gui.Helpers
     public static class UiElementHelper
     {
         public static CheckBox AddCheckBox(string name, string content, string bind = null, object source = null,
-            string requires = null, Visibility visibility = Visibility.Visible, bool enabled = true)
+            string requires = null, Visibility visibility = Visibility.Visible, bool enabled = true,
+            bool isChecked = false)
         {
             var checkBox = new CheckBox
             {
                 Name = name,
                 Content = content,
                 Visibility = visibility,
-                IsEnabled = enabled
+                IsEnabled = enabled,
+                IsChecked = isChecked
             };
 
             if (bind != null)

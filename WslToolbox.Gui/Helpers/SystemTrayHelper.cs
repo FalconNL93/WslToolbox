@@ -29,6 +29,8 @@ namespace WslToolbox.Gui.Helpers
 
         public void ShowNotification(string title, string message, BalloonIcon symbol = BalloonIcon.None)
         {
+            if (Tray.IsDisposed) return;
+
             Tray.ShowBalloonTip(title, message, symbol);
         }
     }

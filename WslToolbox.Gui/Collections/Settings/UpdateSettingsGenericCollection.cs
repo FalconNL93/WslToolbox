@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
-using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
@@ -17,7 +16,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddItemGroup(UpdateControls(), true, UpdateHandler.IsAvailable())
+                UiElementHelper.AddItemGroup(UpdateControls(), false, UpdateHandler.IsAvailable())
             };
         }
 
@@ -28,10 +27,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates",
                     "Configuration.AutoCheckUpdates",
-                    Source),
-                UiElementHelper.AddButton("CheckForUpdates",
-                    "Check for updates",
-                    command: new CheckForUpdateCommand()
+                    Source
                 ),
                 new Label
                 {

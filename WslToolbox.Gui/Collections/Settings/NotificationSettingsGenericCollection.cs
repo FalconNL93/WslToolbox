@@ -18,7 +18,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.Enabled),
                     "Enable notifications",
                     "Configuration.NotificationConfiguration.Enabled",
-                    Source, enabled: false),
+                    Source),
                 new Separator(),
                 UiElementHelper.AddItemGroup(NotificationControls(),
                     source: Source,
@@ -30,14 +30,12 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.DistributionExported),
-                    "Distribution exported",
-                    "Configuration.NotificationConfiguration.DistributionExported",
-                    Source),
-                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.DistributionImported),
-                    "Distribution imported",
-                    "Configuration.NotificationConfiguration.DistributionImported",
-                    Source)
+                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.NewVersionAvailable),
+                    "New version available",
+                    "Configuration.NotificationConfiguration.NewVersionAvailable",
+                    Source,
+                    "Configuration.AutoCheckUpdates"
+                )
             };
         }
     }

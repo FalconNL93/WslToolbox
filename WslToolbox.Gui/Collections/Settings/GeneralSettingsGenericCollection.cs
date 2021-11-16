@@ -33,7 +33,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     Source),
 
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableShortcuts),
-                    "Disable all shortcuts",
+                    "Disable all keyboard shortcuts",
                     "Configuration.DisableShortcuts",
                     Source)
             };

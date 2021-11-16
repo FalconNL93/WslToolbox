@@ -4,35 +4,37 @@ using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections
 {
-    public static class ServiceCollection
+    public static class ServiceMenuCollection
     {
         public static CompositeCollection Items(MainViewModel viewModel)
         {
             return new CompositeCollection
             {
-                new Button
+                new MenuItem
                 {
-                    Content = "Start",
-                    Command = viewModel.StartWslService
-                },
-                new Button
-                {
-                    Content = "Stop",
-                    Command = viewModel.StopWslService
-                },
-                new Button
-                {
-                    Content = "Restart",
-                    Command = viewModel.RestartWslService
-                },
-                new Button
-                {
-                    Content = "Refresh",
+                    Header = "Refresh",
                     Command = viewModel.Refresh
                 },
-                new Button
+                new Separator(),
+                new MenuItem
                 {
-                    Content = "Update",
+                    Header = "Start",
+                    Command = viewModel.StartWslService
+                },
+                new MenuItem
+                {
+                    Header = "Stop",
+                    Command = viewModel.StopWslService
+                },
+                new MenuItem
+                {
+                    Header = "Restart",
+                    Command = viewModel.RestartWslService
+                },
+                new Separator(),
+                new MenuItem
+                {
+                    Header = "Update WSL",
                     Command = viewModel.UpdateWslService
                 }
             };

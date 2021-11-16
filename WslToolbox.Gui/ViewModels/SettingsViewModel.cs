@@ -57,7 +57,7 @@ namespace WslToolbox.Gui.ViewModels
                 AddTabItem("Update", "UpdateSettings", enabled: UpdateHandler.IsAvailable()),
                 AddTabItem("Grid", "GridSettings"),
                 AddTabItem("Appearance", "AppearanceSettings"),
-                AddTabItem("Notifications", "NotificationSettings", enabled: false),
+                AddTabItem("Notifications", "NotificationSettings"),
                 AddTabItem("Experimental", "ExperimentalSettings",
                     Configuration.ExperimentalConfiguration.ShowExperimentalSettings),
                 AddTabItem("Other", "OtherSettings")

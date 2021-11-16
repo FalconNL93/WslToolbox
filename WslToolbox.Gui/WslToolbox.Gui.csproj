@@ -28,28 +28,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="toolbox.png"/>
+        <None Remove="toolbox.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0"/>
-        <PackageReference Include="CommandLineParser" Version="2.9.0-preview1"/>
-        <PackageReference Include="FluentWPF" Version="0.10.2"/>
-        <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
-        <PackageReference Include="ModernWpfUI" Version="0.9.4"/>
-        <PackageReference Include="Serilog" Version="2.11.0-dev-01371"/>
-        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947"/>
+        <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
+        <PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
+        <PackageReference Include="FluentWPF" Version="0.10.2" />
+        <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+        <PackageReference Include="ModernWpfUI" Version="0.9.4" />
+        <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj"/>
+        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Resource Include="Resources\Images\AppIcon.png"/>
+        <Resource Include="Resources\Images\AppIcon.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -65,10 +65,6 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Classes"/>
     </ItemGroup>
 
 </Project>
