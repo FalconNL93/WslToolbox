@@ -13,7 +13,7 @@ namespace WslToolbox.Gui.Configurations
 #if(DEBUG)
         public static string AppConfigurationUpdateXml => "http://localhost/wsltoolbox.xml";
 #else
-        public static string AppConfigurationUpdateXml => null;
+        public static string AppConfigurationUpdateXml => "https://falconnl93.github.io/wsltoolbox-docs/update.xml";
 #endif
 
         public static string AppExecutableDirectory { get; } =

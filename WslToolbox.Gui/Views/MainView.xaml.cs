@@ -52,15 +52,20 @@ namespace WslToolbox.Gui.Views
 
         private void InitializeContextMenus()
         {
+            var addControlMenuButtonFlyout = new MenuFlyout();
             var controlMenuButtonFlyout = new MenuFlyout();
             var serviceControlMenuButtonFlyout = new MenuFlyout();
 
-            foreach (var menuItem in ManageMenuCollection.Items(_viewModel))
-                controlMenuButtonFlyout.Items.Add(menuItem);
+            foreach (var menuItem in AddMenuCollection.Items(_viewModel))
+                addControlMenuButtonFlyout.Items.Add(menuItem);
 
             foreach (var menuItem in ServiceMenuCollection.Items(_viewModel))
                 serviceControlMenuButtonFlyout.Items.Add(menuItem);
 
+            foreach (var menuItem in ManageMenuCollection.Items(_viewModel))
+                controlMenuButtonFlyout.Items.Add(menuItem);
+
+            AddControlMenuButton.Flyout = addControlMenuButtonFlyout;
             ControlMenuButton.Flyout = controlMenuButtonFlyout;
             ServiceControlMenuButton.Flyout = serviceControlMenuButtonFlyout;
 

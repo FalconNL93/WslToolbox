@@ -17,6 +17,7 @@ using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
 using OpenShellDistributionCommand = WslToolbox.Gui.Commands.Distribution.OpenShellDistributionCommand;
@@ -112,9 +113,18 @@ namespace WslToolbox.Gui.ViewModels
             if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
         }
 
-        private void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
+        private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
         {
-            if (!e.UpdateAvailable) return;
+            if (!e.UpdateAvailable)
+            {
+                if (e.ShowPrompt && e.UpdateError == null)
+                    await UiHelperDialog.ShowMessageBoxInfo(
+                        "Update",
+                        "You are running the latest version.",
+                        closeButtonText: "Close", dialogOwner: _view).ShowAsync();
+
+                return;
+            }
 
             if (e.ShowPrompt)
                 _updateHandler.ShowUpdatePrompt();
