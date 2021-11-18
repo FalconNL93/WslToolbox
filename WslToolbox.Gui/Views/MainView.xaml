@@ -26,11 +26,13 @@
         </Style>
     </Window.Resources>
     <Grid Margin="15,10,15,5">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <ui:DropDownButton x:Name="AddControlMenuButton" Height="33" Content="Add..." />
-            <ui:DropDownButton x:Name="ServiceControlMenuButton" Height="33" Content="WSL Service" />
-            <ui:DropDownButton x:Name="ControlMenuButton" Height="33" Content="More..." />
-        </StackPanel>
+        <ItemsControl x:Name="TopMenu" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
         <DataGrid Margin="0,49,10,10" x:Name="DistributionDetails"
                   SelectionChanged="DistributionDetails_SelectionChanged" SelectionMode="Single"
                   IsReadOnly="True"

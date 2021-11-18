@@ -97,6 +97,15 @@ namespace WslToolbox.Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not finish update.
+        /// </summary>
+        internal static string ERROR_UPDATE_GENERIC {
+            get {
+                return ResourceManager.GetString("ERROR_UPDATE_GENERIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notice.
         /// </summary>
         internal static string NOTICE {

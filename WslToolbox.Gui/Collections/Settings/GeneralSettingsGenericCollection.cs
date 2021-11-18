@@ -19,7 +19,7 @@ namespace WslToolbox.Gui.Collections.Settings
             return new CompositeCollection
             {
                 UiElementHelper.ItemExpander("General", GenericControls(), true),
-                UiElementHelper.ItemExpander("Behaviour", BehaviourControls())
+                UiElementHelper.ItemExpander("Behaviour", BehaviourControls(), true)
             };
         }
 
@@ -33,7 +33,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     Source),
 
                 UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableShortcuts),
-                    "Disable all keyboard shortcuts",
+                    "Disable keyboard shortcuts",
                     "Configuration.DisableShortcuts",
                     Source)
             };

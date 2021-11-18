@@ -18,6 +18,7 @@ using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
 using OpenShellDistributionCommand = WslToolbox.Gui.Commands.Distribution.OpenShellDistributionCommand;
@@ -115,8 +116,12 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
         {
+            if (e.UpdateError != null)
+                LogHandler.Log().Error(e.UpdateError, Resources.ERROR_UPDATE_GENERIC);
+
             if (!e.UpdateAvailable)
             {
+                LogHandler.Log().Information("No update available");
                 if (e.ShowPrompt && e.UpdateError == null)
                     await UiHelperDialog.ShowMessageBoxInfo(
                         "Update",
@@ -126,6 +131,7 @@ namespace WslToolbox.Gui.ViewModels
                 return;
             }
 
+            LogHandler.Log().Information("Version {CurrentVersion} is available", e.CurrentVersion);
             if (e.ShowPrompt)
                 _updateHandler.ShowUpdatePrompt();
             else if (_view.SystemTray.Tray != null &&

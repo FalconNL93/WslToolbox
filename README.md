@@ -35,23 +35,6 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 | F5        | Refresh distributions
 | CTRL + ,  | Open settings
 
-## Future features and improvements
-
-- Install distribution by ISO
-- Auto updater
-- Code improvements
-- UI improvements
-- Improve service status on distribution commands
-- Better feedback to UI
-
-## Known issues
-
-- You cannot install an already installed distribution, this is actually a restriction in WSL itself.
-    - To bypass this, you can export the current installed distribution and importing it with a unique name.
-- Status/state may not report correctly while executing tasks, to update status manually press F5 or the the "Refresh"
-  button.
-- UI may have some render issues.
-
 ## Requirements
 
 - Windows 10 build 19041 or later
@@ -79,3 +62,5 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 ![Import Status](./docs/images/screenshots/tb_9.png?raw=true "Import Status")
 
 ![Export Status](./docs/images/screenshots/tb_10.png?raw=true "Export Status")
+
+## Credits

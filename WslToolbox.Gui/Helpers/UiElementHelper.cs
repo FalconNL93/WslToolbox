@@ -160,7 +160,7 @@ namespace WslToolbox.Gui.Helpers
             };
         }
 
-        public static ItemsControl AddItemGroup(CompositeCollection items, bool itemEnableOverride = false,
+        public static ItemsControl ItemsControlGroup(CompositeCollection items, bool itemEnableOverride = false,
             bool enabled = true, object source = null, string requires = null)
         {
             var groupItems = new ItemsControl();
@@ -176,6 +176,24 @@ namespace WslToolbox.Gui.Helpers
 
             return groupItems;
         }
+
+        public static IEnumerable<Control> ItemsListGroup(CompositeCollection items, bool itemEnableOverride = false,
+            bool enabled = true, object source = null, string requires = null)
+        {
+            List<Control> controlItems = new();
+
+            foreach (Control item in items)
+            {
+                if (requires != null)
+                    item.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+                if (itemEnableOverride) item.IsEnabled = enabled;
+                controlItems.Add(item);
+            }
+
+            return controlItems;
+        }
+
 
         public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,
             string bind = null, CompositeCollection contextMenuItems = null)
@@ -213,6 +231,15 @@ namespace WslToolbox.Gui.Helpers
                 Margin = new Thickness(0, 5, 0, 5),
                 Visibility = Visibility.Hidden
             };
+        }
+
+        public static MenuFlyout MenuFlyoutItems(CompositeCollection items)
+        {
+            var menuFlyout = new MenuFlyout();
+            foreach (var menuItem in items)
+                menuFlyout.Items.Add(menuItem);
+
+            return menuFlyout;
         }
     }
 }

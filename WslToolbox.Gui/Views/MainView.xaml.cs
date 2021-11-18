@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ModernWpf;
-using ModernWpf.Controls;
 using Serilog.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Core.Commands.Service;
@@ -31,6 +30,7 @@ namespace WslToolbox.Gui.Views
             WslIsEnabledCheck();
             InitializeComponent();
             InitializeContextMenus();
+            InitializeTopMenu();
             HandleConfiguration();
 
             PopulateWsl();
@@ -52,25 +52,13 @@ namespace WslToolbox.Gui.Views
 
         private void InitializeContextMenus()
         {
-            var addControlMenuButtonFlyout = new MenuFlyout();
-            var controlMenuButtonFlyout = new MenuFlyout();
-            var serviceControlMenuButtonFlyout = new MenuFlyout();
-
-            foreach (var menuItem in AddMenuCollection.Items(_viewModel))
-                addControlMenuButtonFlyout.Items.Add(menuItem);
-
-            foreach (var menuItem in ServiceMenuCollection.Items(_viewModel))
-                serviceControlMenuButtonFlyout.Items.Add(menuItem);
-
-            foreach (var menuItem in ManageMenuCollection.Items(_viewModel))
-                controlMenuButtonFlyout.Items.Add(menuItem);
-
-            AddControlMenuButton.Flyout = addControlMenuButtonFlyout;
-            ControlMenuButton.Flyout = controlMenuButtonFlyout;
-            ServiceControlMenuButton.Flyout = serviceControlMenuButtonFlyout;
-
             DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
             DistributionDetails.MouseLeftButtonUp += DistributionDetailsOnMouseSingleClick;
+        }
+
+        private void InitializeTopMenu()
+        {
+            TopMenu.ItemsSource = UiElementHelper.ItemsListGroup(TopMenuCollection.Items(_viewModel));
         }
 
         private void DistributionDetailsOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -154,14 +142,16 @@ namespace WslToolbox.Gui.Views
         {
             SystemTray.Dispose();
 
-            if (!_viewModel.Config.Configuration.EnableSystemTray) return;
+            SystemTray.Initialize(_viewModel.Config.Configuration.EnableSystemTray
+                ? Visibility.Visible
+                : Visibility.Hidden);
+
             if (_viewModel.Config.Configuration.MinimizeOnStartup)
             {
                 WindowState = WindowState.Minimized;
                 Hide();
             }
 
-            SystemTray.Show();
             SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplication.Execute(null);
 
             SystemTray.Tray.ContextMenu = new ContextMenu

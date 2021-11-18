@@ -2,9 +2,9 @@
 using System.Windows.Data;
 using WslToolbox.Gui.ViewModels;
 
-namespace WslToolbox.Gui.Collections
+namespace WslToolbox.Gui.Collections.TopMenu
 {
-    public static class ManageMenuCollection
+    public static class MoreTopMenuCollection
     {
         public static CompositeCollection Items(MainViewModel viewModel)
         {

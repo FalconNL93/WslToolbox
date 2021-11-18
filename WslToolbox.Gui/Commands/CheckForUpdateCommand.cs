@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using AutoUpdaterDotNET;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 
@@ -30,7 +31,7 @@ namespace WslToolbox.Gui.Commands
 
             IsExecutable = _ => false;
             _updateHandler.CheckForUpdates(showPrompt);
-            IsExecutable = _ => true;
+            AutoUpdater.CheckForUpdateEvent += _ => { IsExecutable = _ => true; };
         }
     }
 }

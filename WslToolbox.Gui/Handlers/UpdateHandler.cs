@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using AutoUpdaterDotNET;
 using ModernWpf.Controls;
@@ -60,6 +63,7 @@ namespace WslToolbox.Gui.Handlers
 
         public void CheckForUpdates(bool showPrompt = true)
         {
+            LogHandler.Log().Information("Checking for updates");
             _showPrompt = showPrompt;
             if (!IsAvailable()) return;
 
@@ -71,6 +75,7 @@ namespace WslToolbox.Gui.Handlers
 
         private void OnAutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
         {
+            LogHandler.Log().Information("UpdateArgs received");
             _updateArgs = args;
 
             UpdateStatusReceived?.Invoke(null,
@@ -94,22 +99,22 @@ namespace WslToolbox.Gui.Handlers
 
             if (fileHttpCode != HttpStatusCode.OK)
             {
-                await UiHelperDialog.ShowMessageBoxSelectable("Error", "Could not download the update file.",
-                        $"URL: {_updateArgs.DownloadURL}\n" +
-                        $"Error: {fileHttpCode}\n" +
-                        $"New version: {_updateArgs.CurrentVersion}\n" +
-                        $"Update Available: {_updateArgs.IsUpdateAvailable}\n" +
-                        $"Mandatory: {_updateArgs.Mandatory.Value}")
+                LogHandler.Log().Error("Error downloading {DownloadUrl} (Http Error: {FileHttpCode})",
+                    _updateArgs.DownloadURL,
+                    fileHttpCode);
+                await UiHelperDialog.ShowMessageBoxInfo("Error", "Could not download the update file")
                     .ShowAsync();
                 return;
             }
 
             try
             {
+                LogHandler.Log().Information("Downloading {DownloadUrl}", _updateArgs.DownloadURL);
                 if (AutoUpdater.DownloadUpdate(_updateArgs)) Environment.Exit(0);
             }
             catch (Exception e)
             {
+                LogHandler.Log().Error(e, "Error downloading {DownloadUrl}", _updateArgs.DownloadURL);
                 await UiHelperDialog.ShowMessageBoxInfo("Error", "Could not update application.\n\n" +
                                                                  $"{e.Message}").ShowAsync();
             }
@@ -117,10 +122,13 @@ namespace WslToolbox.Gui.Handlers
 
         public async void ShowUpdatePrompt()
         {
+            var responseHeaders = await DownloadResponse(_updateArgs.DownloadURL);
+            var readableSize = (responseHeaders / 1024f / 1024f).ToString("F2");
+
             var updatePrompt = UiHelperDialog.ShowMessageBoxInfo(
                 $"Update available - {_updateArgs.CurrentVersion}",
                 $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}.\n\n" +
-                "Do you want to install this update now?",
+                $"Do you want to install this update now? (Size: {readableSize} MB)",
                 "Install update", closeButtonText: "Cancel update", dialogOwner: _view);
 
             var updatePromptResult = await updatePrompt.ShowAsync();
@@ -158,6 +166,24 @@ namespace WslToolbox.Gui.Handlers
             finally
             {
                 updateResponse?.Close();
+            }
+        }
+
+        private static async Task<long> DownloadResponse(string url)
+        {
+            try
+            {
+                var request = WebRequest.CreateHttp(url);
+                request.Method = "HEAD";
+
+                using var response = await request.GetResponseAsync();
+                var length = response.ContentLength;
+
+                return length;
+            }
+            catch
+            {
+                return 0;
             }
         }
     }

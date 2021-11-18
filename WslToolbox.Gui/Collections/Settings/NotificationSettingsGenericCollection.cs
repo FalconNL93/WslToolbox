@@ -20,7 +20,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Configuration.NotificationConfiguration.Enabled",
                     Source),
                 new Separator(),
-                UiElementHelper.AddItemGroup(NotificationControls(),
+                UiElementHelper.ItemsControlGroup(NotificationControls(),
                     source: Source,
                     requires: "Configuration.NotificationConfiguration.Enabled")
             };

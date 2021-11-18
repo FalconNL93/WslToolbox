@@ -158,4 +158,7 @@
     <data name="WARNING" xml:space="preserve">
         <value>Warning</value>
     </data>
+    <data name="ERROR_UPDATE_GENERIC" xml:space="preserve">
+        <value>Could not finish update</value>
+    </data>
 </root>

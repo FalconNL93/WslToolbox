@@ -16,7 +16,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddItemGroup(UpdateControls(), false, UpdateHandler.IsAvailable())
+                UiElementHelper.ItemsControlGroup(UpdateControls(), false, UpdateHandler.IsAvailable())
             };
         }
 
