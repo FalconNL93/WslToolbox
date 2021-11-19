@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
@@ -47,13 +46,10 @@ namespace WslToolbox.Gui.Helpers
             };
 
             var showDialog = await dialog.ShowAsync();
-            var dialogContents = (StackPanel) dialog.Content;
-            var userInputElement = dialogContents.Children.OfType<TextBox>().FirstOrDefault();
-            var userInputValue = userInputElement?.Text;
+            var dialogContents = (ScrollViewer) dialog.Content;
 
             return new UiDialog
             {
-                UserInput = userInputValue,
                 DialogResult = showDialog
             };
         }

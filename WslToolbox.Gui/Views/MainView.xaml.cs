@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -18,7 +19,7 @@ namespace WslToolbox.Gui.Views
     /// <summary>
     ///     Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class MainView
     {
         public readonly SystemTrayHelper SystemTray = new();
         private Logger _log;
@@ -29,11 +30,24 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
+            InitializeDataGrid();
             InitializeContextMenus();
             InitializeTopMenu();
             HandleConfiguration();
 
             PopulateWsl();
+        }
+
+        private void InitializeDataGrid()
+        {
+            var abc = new ObservableCollection<DataGridColumn>();
+
+            GridView.Children.Add(
+                UiElementHelper.AddDistributionDataGrid(
+                    nameof(_viewModel.GridList),
+                    _viewModel
+                )
+            );
         }
 
         private static void WslIsEnabledCheck()
@@ -44,16 +58,14 @@ namespace WslToolbox.Gui.Views
             var messageBoxResult =
                 MessageBox.Show("WSL does not appear to be installed on your system. Do you want to enable WSL?",
                     Properties.Resources.ERROR, MessageBoxButton.YesNo);
-
             if (messageBoxResult == MessageBoxResult.Yes) EnableServiceCommand.Execute();
-
             Environment.Exit(1);
         }
 
         private void InitializeContextMenus()
         {
-            DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
-            DistributionDetails.MouseLeftButtonUp += DistributionDetailsOnMouseSingleClick;
+            // DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
+            // DistributionDetails.MouseLeftButtonUp += DistributionDetailsOnMouseSingleClick;
         }
 
         private void InitializeTopMenu()
@@ -64,7 +76,6 @@ namespace WslToolbox.Gui.Views
         private void DistributionDetailsOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (_viewModel.SelectedDistribution == null) return;
-
             if (_viewModel.Config.Configuration.GridConfiguration.DoubleClick ==
                 GridConfiguration.GridConfigurationOpenTerminal)
                 OpenShellDistributionCommand.Execute(_viewModel.SelectedDistribution);
@@ -74,9 +85,9 @@ namespace WslToolbox.Gui.Views
         {
             if (_viewModel.SelectedDistribution == null) return;
 
-            if (_viewModel.Config.Configuration.GridConfiguration.SingleClick ==
-                GridConfiguration.GridConfigurationOpenContextMenu)
-                DistributionDetails.ContextMenu.IsOpen = true;
+            // if (_viewModel.Config.Configuration.GridConfiguration.SingleClick ==
+            //     GridConfiguration.GridConfigurationOpenContextMenu)
+            //     DistributionDetails.ContextMenu.IsOpen = true;
         }
 
         private void InitializeViewModel()
@@ -108,16 +119,6 @@ namespace WslToolbox.Gui.Views
             base.OnClosed(e);
 
             Application.Current.Shutdown();
-        }
-
-        private void DistributionDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DistributionDetails.ContextMenu = _viewModel.SelectedDistribution != null
-                ? new ContextMenu
-                {
-                    ItemsSource = _viewModel.DataGridMenuItems()
-                }
-                : null;
         }
 
         public void HandleConfiguration()
@@ -169,10 +170,6 @@ namespace WslToolbox.Gui.Views
             }
 
             _viewModel.RefreshDistributions();
-            var distributionList = _viewModel.DistributionList;
-
-            if (distributionList != null)
-                DistributionDetails.ItemsSource = distributionList.FindAll(x => x.IsInstalled);
         }
 
         private void Window_StateChanged(object sender, EventArgs e)

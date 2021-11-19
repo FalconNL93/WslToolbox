@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Timers;
@@ -34,7 +35,7 @@ namespace WslToolbox.Gui.ViewModels
         public bool DebugMode { get; set; }
     }
 
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         private readonly Timer _statusPoller = new();
         private readonly UpdateHandler _updateHandler;
@@ -44,7 +45,12 @@ namespace WslToolbox.Gui.ViewModels
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
         private readonly OsHandler OsHandler = new();
-        public List<DistributionClass> DistributionList = new();
+
+        private List<DistributionClass> _distributionList = new();
+
+        private BindingList<DistributionClass> _gridList = new();
+
+        private DistributionClass _selectedDistribution;
 
         public MainViewModel(MainView view)
         {
@@ -63,6 +69,39 @@ namespace WslToolbox.Gui.ViewModels
             InitializeEventHandlers();
             InitializeStatusPoller();
             InitializeUpdater();
+        }
+
+        public List<DistributionClass> DistributionList
+        {
+            get => _distributionList;
+            set
+            {
+                _distributionList = value;
+
+                OnPropertyChanged(nameof(DistributionList));
+            }
+        }
+
+        public BindingList<DistributionClass> GridList
+        {
+            get => _gridList;
+            set
+            {
+                _gridList = value;
+
+                OnPropertyChanged(nameof(GridList));
+            }
+        }
+
+        public DistributionClass SelectedDistribution
+        {
+            get => _selectedDistribution;
+            set
+            {
+                _selectedDistribution = value;
+
+                OnPropertyChanged(nameof(SelectedDistribution));
+            }
         }
 
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
@@ -87,7 +126,8 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
-        public DistributionClass SelectedDistribution { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void InitializeEventHandlers()
         {
@@ -117,11 +157,11 @@ namespace WslToolbox.Gui.ViewModels
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
         {
             if (e.UpdateError != null)
-                LogHandler.Log().Error(e.UpdateError, Resources.ERROR_UPDATE_GENERIC);
+                Log().Error(e.UpdateError, Resources.ERROR_UPDATE_GENERIC);
 
             if (!e.UpdateAvailable)
             {
-                LogHandler.Log().Information("No update available");
+                Log().Information("No update available");
                 if (e.ShowPrompt && e.UpdateError == null)
                     await UiHelperDialog.ShowMessageBoxInfo(
                         "Update",
@@ -131,7 +171,7 @@ namespace WslToolbox.Gui.ViewModels
                 return;
             }
 
-            LogHandler.Log().Information("Version {CurrentVersion} is available", e.CurrentVersion);
+            Log().Information("Version {CurrentVersion} is available", e.CurrentVersion);
             if (e.ShowPrompt)
                 _updateHandler.ShowUpdatePrompt();
             else if (_view.SystemTray.Tray != null &&
@@ -222,6 +262,16 @@ namespace WslToolbox.Gui.ViewModels
         {
             _view.HandleConfiguration();
             Refresh.Execute(_view);
+        }
+
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            if (propertyName == nameof(DistributionList))
+                GridList = new BindingList<DistributionClass>(DistributionList
+                    .FindAll(x => x.IsInstalled)
+                );
         }
     }
 }
