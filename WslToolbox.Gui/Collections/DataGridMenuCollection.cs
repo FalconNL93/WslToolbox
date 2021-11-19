@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.ViewModels;
 
@@ -115,7 +116,7 @@ namespace WslToolbox.Gui.Collections
                 new MenuItem
                 {
                     Header = "Convert to WSL2",
-                    IsEnabled = false
+                    Visibility = viewModel.SelectedDistribution.Version == 2 ? Visibility.Collapsed : Visibility.Visible
                 }
             };
         }

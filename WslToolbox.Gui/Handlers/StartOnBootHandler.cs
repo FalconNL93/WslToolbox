@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.Win32;
 using WslToolbox.Gui.Annotations;
 
 namespace WslToolbox.Gui.Handlers

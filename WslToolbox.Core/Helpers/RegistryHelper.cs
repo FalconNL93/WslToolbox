@@ -11,7 +11,7 @@ namespace WslToolbox.Core.Helpers
             if (!OperatingSystem.IsWindows()) return;
 
             var keyPath = @$"Software\Microsoft\Windows\CurrentVersion\Lxss\{distribution.Guid}";
-
+            
             try
             {
                 var openSubKey =

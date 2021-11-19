@@ -257,7 +257,7 @@ namespace WslToolbox.Gui.Helpers
                 AutoGenerateColumns = false,
                 RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed,
                 HeadersVisibility = DataGridHeadersVisibility.Column,
-                GridLinesVisibility = DataGridGridLinesVisibility.Horizontal,
+                GridLinesVisibility = DataGridGridLinesVisibility.None,
                 MinColumnWidth = 100,
                 Columns =
                 {
