@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:WslToolbox.Gui.Configurations"
-        xmlns:h="clr-namespace:WslToolbox.Gui.Helpers"
         mc:Ignorable="d"
         Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
         Height="341"

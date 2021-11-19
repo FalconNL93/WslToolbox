@@ -253,6 +253,7 @@ namespace WslToolbox.Gui.Helpers
             {
                 Name = "DistributionDetails",
                 SelectionMode = DataGridSelectionMode.Single,
+                SelectionUnit = DataGridSelectionUnit.FullRow,
                 IsReadOnly = true,
                 AutoGenerateColumns = false,
                 RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed,
@@ -265,8 +266,7 @@ namespace WslToolbox.Gui.Helpers
                     {
                         Header = "Def",
                         MaxWidth = 55,
-                        Binding = new Binding(nameof(DistributionClass.IsDefault)),
-                        IsReadOnly = true
+                        Binding = new Binding(nameof(DistributionClass.IsDefault))
                     },
                     new DataGridTextColumn
                     {
