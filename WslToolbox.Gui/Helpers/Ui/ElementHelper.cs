@@ -8,10 +8,8 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using ModernWpf.Controls;
-using WslToolbox.Core;
-using WslToolbox.Gui.ViewModels;
 
-namespace WslToolbox.Gui.Helpers
+namespace WslToolbox.Gui.Helpers.Ui
 {
     public static class UiElementHelper
     {
@@ -242,68 +240,6 @@ namespace WslToolbox.Gui.Helpers
                 menuFlyout.Items.Add(menuItem);
 
             return menuFlyout;
-        }
-
-        public static DataGrid AddDistributionDataGrid(string bind = null,
-            object source = null, string contextMenu = null)
-        {
-            var viewModelSource = (MainViewModel) source;
-
-            var dataGrid = new DataGrid
-            {
-                Name = "DistributionDetails",
-                SelectionMode = DataGridSelectionMode.Single,
-                SelectionUnit = DataGridSelectionUnit.FullRow,
-                IsReadOnly = true,
-                AutoGenerateColumns = false,
-                RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.Collapsed,
-                HeadersVisibility = DataGridHeadersVisibility.Column,
-                GridLinesVisibility = DataGridGridLinesVisibility.None,
-                MinColumnWidth = 100,
-                Columns =
-                {
-                    new DataGridCheckBoxColumn
-                    {
-                        Header = "Def",
-                        MaxWidth = 55,
-                        Binding = new Binding(nameof(DistributionClass.IsDefault))
-                    },
-                    new DataGridTextColumn
-                    {
-                        Header = "Name",
-                        Binding = new Binding(nameof(DistributionClass.Name))
-                    },
-                    new DataGridTextColumn
-                    {
-                        Header = "State",
-                        Binding = new Binding(nameof(DistributionClass.State))
-                    }
-                }
-            };
-
-            if (bind != null)
-                dataGrid.SetBinding(ItemsControl.ItemsSourceProperty, BindHelper.BindingObject(bind, source));
-
-            if (contextMenu != null)
-                dataGrid.SetBinding(FrameworkElement.ContextMenuProperty,
-                    BindHelper.BindingObject(contextMenu, source));
-
-            dataGrid.SetBinding(Selector.SelectedItemProperty,
-                BindHelper.BindingObject("SelectedDistribution", source, BindingMode.TwoWay));
-
-            dataGrid.SelectionChanged += (sender, args) =>
-            {
-                if (viewModelSource == null) return;
-
-                dataGrid.ContextMenu = viewModelSource.SelectedDistribution != null
-                    ? new ContextMenu
-                    {
-                        ItemsSource = viewModelSource.DataGridMenuItems()
-                    }
-                    : null;
-            };
-
-            return dataGrid;
         }
     }
 }

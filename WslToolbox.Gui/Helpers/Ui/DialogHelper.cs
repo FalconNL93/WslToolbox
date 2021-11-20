@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
 
-namespace WslToolbox.Gui.Helpers
+namespace WslToolbox.Gui.Helpers.Ui
 {
     public class UiDialog
     {
@@ -12,7 +12,7 @@ namespace WslToolbox.Gui.Helpers
         public ContentDialog Dialog { get; set; }
     }
 
-    public static class UiHelperDialog
+    public static class DialogHelper
     {
         public static async Task<UiDialog> ShowInputDialog(string title, string text,
             string primaryButtonText = "OK",

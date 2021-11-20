@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using WslToolbox.Gui.Properties;
 
-namespace WslToolbox.Gui.Helpers
+namespace WslToolbox.Gui.Converters
 {
     public class BoolToValueConverter : IValueConverter
     {
