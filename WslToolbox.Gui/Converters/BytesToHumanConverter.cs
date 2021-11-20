@@ -5,7 +5,7 @@ using static System.Decimal;
 
 namespace WslToolbox.Gui.Converters
 {
-    public class SizeToReadableConverter : IValueConverter
+    public class BytesToHumanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

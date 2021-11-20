@@ -30,7 +30,7 @@ namespace WslToolbox.Gui.Handlers
             var columnCollection = new Collection<DataGridBoundColumn>
             {
                 DistributionDataGridColumn(new DataGridCheckBoxColumn(),
-                    "", nameof(DistributionClass.IsDefault),
+                    "D", nameof(DistributionClass.IsDefault),
                     null,
                     50, 50, 50),
 
@@ -41,7 +41,7 @@ namespace WslToolbox.Gui.Handlers
                     "State", nameof(DistributionClass.State)),
 
                 DistributionDataGridColumn(new DataGridTextColumn(),
-                    "Size", nameof(DistributionClass.Size), new SizeToReadableConverter())
+                    "Size", nameof(DistributionClass.Size), new BytesToHumanConverter())
             };
 
             var dataGrid = new DataGrid
@@ -76,7 +76,8 @@ namespace WslToolbox.Gui.Handlers
             dataGrid.MouseLeftButtonUp += (_, _) => { };
 
             dataGrid.SetBinding(Selector.SelectedItemProperty,
-                BindHelper.BindingObject("SelectedDistribution", _mainViewModel, BindingMode.TwoWay));
+                BindHelper.BindingObject(nameof(_mainViewModel.SelectedDistribution), _mainViewModel,
+                    BindingMode.TwoWay));
 
             dataGrid.SelectionChanged += (_, _) =>
             {

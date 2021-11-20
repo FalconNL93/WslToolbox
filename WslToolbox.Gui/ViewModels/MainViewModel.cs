@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using CommandLine;
@@ -128,6 +130,20 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void SetStatus(string status)
+        {
+            var topMenuBar = (ItemsControl) _view.FindName("TopMenu");
+            if (topMenuBar == null) return;
+
+            foreach (var topMenuBarItem in topMenuBar.Items)
+            {
+                if (topMenuBarItem.GetType() != typeof(Label)) continue;
+                var topMenuBarItemLabel = (Label) topMenuBarItem;
+
+                topMenuBarItemLabel.Content = status;
+            }
+        }
 
         private void InitializeEventHandlers()
         {
@@ -269,9 +285,15 @@ namespace WslToolbox.Gui.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             if (propertyName == nameof(DistributionList))
+            {
                 GridList = new BindingList<DistributionClass>(DistributionList
                     .FindAll(x => x.IsInstalled)
                 );
+
+                _view.GridView.Visibility = GridList.Count == 0
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                await ImportDistributionCommand.Execute((DistributionClass) parameter,
+                await ImportDistributionCommand.Execute(importDistributionWindow.DistributionName,
                     importDistributionWindow.DistributionSelectedDirectory, fileName).ConfigureAwait(true);
             }
             catch (Exception ex)
