@@ -2,7 +2,7 @@
 using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -24,7 +24,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            var resetSettings = UiHelperDialog.ShowMessageBoxInfo("Delete distribution",
+            var resetSettings = DialogHelper.ShowMessageBoxInfo("Delete distribution",
                 "Are you sure you want to delete this distribution? All data on this distribution will be lost!",
                 "Delete", closeButtonText: "Cancel",
                 withConfirmationCheckbox: true,

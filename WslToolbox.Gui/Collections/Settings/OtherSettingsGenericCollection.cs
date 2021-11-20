@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Settings
@@ -25,12 +25,12 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Configuration path (right click to copy):"
                 },
-                UiElementHelper.AddHyperlink(
+                ElementHelper.AddHyperlink(
                     _viewModel.Configuration.ConfigurationFile,
                     tooltip: _viewModel.Configuration.ConfigurationFile,
                     contextMenuItems: GenericMenuCollection.CopyToClipboard(_viewModel.Configuration.ConfigurationFile)
                 ),
-                UiElementHelper.ItemExpander("Advanced", AdvancedControls())
+                ElementHelper.ItemExpander("Advanced", AdvancedControls())
             };
         }
 
@@ -43,13 +43,13 @@ namespace WslToolbox.Gui.Collections.Settings
                 {
                     Content = "Log level"
                 },
-                UiElementHelper.AddComboBox(
+                ElementHelper.AddComboBox(
                     "MinimumLogLevel",
                     LogConfiguration.GetValues(),
                     "Configuration.MinimumLogLevel",
                     Source
                 ),
-                UiElementHelper.AddCheckBox(
+                ElementHelper.AddCheckBox(
                     nameof(DefaultConfiguration.ExperimentalConfiguration.ShowExperimentalSettings),
                     "Show experimental configuration",
                     "Configuration.ExperimentalConfiguration.ShowExperimentalSettings",

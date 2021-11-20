@@ -11,7 +11,7 @@ using ModernWpf.Controls;
 
 namespace WslToolbox.Gui.Helpers.Ui
 {
-    public static class UiElementHelper
+    public static class ElementHelper
     {
         public static CheckBox AddCheckBox(string name, string content, string bind = null, object source = null,
             string requires = null, Visibility visibility = Visibility.Visible, bool enabled = true,

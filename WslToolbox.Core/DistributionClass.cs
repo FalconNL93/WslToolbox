@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WslToolbox.Core.Helpers;
 
 namespace WslToolbox.Core
@@ -17,6 +18,8 @@ namespace WslToolbox.Core
         public string Guid { get; set; }
         public string BasePath { get; set; }
         public string BasePathLocal { get; set; }
+
+        public long Size { get; set; }
 
         public static List<DistributionClass> FromAvailableOutput(string output)
         {
@@ -71,6 +74,11 @@ namespace WslToolbox.Core
                     distro.Guid = RegistryHelper.DistributionRegistryByName(tabbed[1]);
                     distro.BasePath = RegistryHelper.GetKey(distro, "BasePath");
                     distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
+
+                    var basePathDirectoryInfo = new DirectoryInfo(distro.BasePathLocal);
+                    var totalSize = basePathDirectoryInfo.EnumerateFiles().Sum(file => file.Length);
+
+                    distro.Size = totalSize;
 
                     distros.Add(distro);
                 }

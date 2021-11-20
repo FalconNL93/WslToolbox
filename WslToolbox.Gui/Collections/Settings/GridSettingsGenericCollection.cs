@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
@@ -16,11 +16,11 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.HideWslVersion),
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.HideWslVersion),
                     "Hide WSL version in Grid",
                     "Configuration.GridConfiguration.HideWslVersion",
                     Source, enabled: false),
-                UiElementHelper.ItemExpander("Mouse behaviour", MouseBehaviourControls(), true)
+                ElementHelper.ItemExpander("Mouse behaviour", MouseBehaviourControls(), true)
             };
         }
 
@@ -28,7 +28,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddComboBox(
+                ElementHelper.AddComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.DoubleClick),
                     GridConfiguration.DoubleClickValues(),
                     "Configuration.GridConfiguration.DoubleClick",
@@ -38,7 +38,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Single mouse click should"
                 },
-                UiElementHelper.AddComboBox(
+                ElementHelper.AddComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.SingleClick),
                     GridConfiguration.SingleClickValues(),
                     "Configuration.GridConfiguration.SingleClick",
@@ -48,7 +48,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Right mouse click should"
                 },
-                UiElementHelper.AddComboBox(
+                ElementHelper.AddComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.RightSingleClick),
                     GridConfiguration.RightSingleClickValues(),
                     "Configuration.GridConfiguration.RightSingleClick",

@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using ModernWpf;
 using Serilog.Core;
-using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
@@ -31,7 +30,6 @@ namespace WslToolbox.Gui.Views
             WslIsEnabledCheck();
             InitializeComponent();
             InitializeDataGrid();
-            InitializeContextMenus();
             InitializeTopMenu();
             HandleConfiguration();
 
@@ -40,14 +38,9 @@ namespace WslToolbox.Gui.Views
 
         private void InitializeDataGrid()
         {
-            var abc = new ObservableCollection<DataGridColumn>();
+            DistributionDataGridHandler dataGridHandler = new(_viewModel);
 
-            GridView.Children.Add(
-                UiElementHelper.AddDistributionDataGrid(
-                    nameof(_viewModel.GridList),
-                    _viewModel
-                )
-            );
+            GridView.Children.Add(dataGridHandler.DataGrid());
         }
 
         private static void WslIsEnabledCheck()
@@ -62,32 +55,9 @@ namespace WslToolbox.Gui.Views
             Environment.Exit(1);
         }
 
-        private void InitializeContextMenus()
-        {
-            // DistributionDetails.MouseDoubleClick += DistributionDetailsOnMouseDoubleClick;
-            // DistributionDetails.MouseLeftButtonUp += DistributionDetailsOnMouseSingleClick;
-        }
-
         private void InitializeTopMenu()
         {
-            TopMenu.ItemsSource = UiElementHelper.ItemsListGroup(TopMenuCollection.Items(_viewModel));
-        }
-
-        private void DistributionDetailsOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (_viewModel.SelectedDistribution == null) return;
-            if (_viewModel.Config.Configuration.GridConfiguration.DoubleClick ==
-                GridConfiguration.GridConfigurationOpenTerminal)
-                OpenShellDistributionCommand.Execute(_viewModel.SelectedDistribution);
-        }
-
-        private void DistributionDetailsOnMouseSingleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (_viewModel.SelectedDistribution == null) return;
-
-            // if (_viewModel.Config.Configuration.GridConfiguration.SingleClick ==
-            //     GridConfiguration.GridConfigurationOpenContextMenu)
-            //     DistributionDetails.ContextMenu.IsOpen = true;
+            TopMenu.ItemsSource = ElementHelper.ItemsListGroup(TopMenuCollection.Items(_viewModel));
         }
 
         private void InitializeViewModel()

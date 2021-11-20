@@ -4,7 +4,7 @@ using System.Windows.Data;
 using WslToolbox.Gui.Collections.Settings;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.ViewModels
@@ -70,7 +70,7 @@ namespace WslToolbox.Gui.ViewModels
             {
                 Content = new StackPanel
                 {
-                    Children = {UiElementHelper.AddItemsControl(bind, this)}
+                    Children = {ElementHelper.AddItemsControl(bind, this)}
                 }
             };
 

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Settings
@@ -25,8 +25,8 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Some functionality may or may not work as expected."
                 },
-                UiElementHelper.ItemExpander("Service polling", ServicePollingControls()),
-                UiElementHelper.ItemExpander("Shell backend", ShellBackendControls(), controlsEnabled: false)
+                ElementHelper.ItemExpander("Service polling", ServicePollingControls()),
+                ElementHelper.ItemExpander("Shell backend", ShellBackendControls(), controlsEnabled: false)
             };
         }
 
@@ -34,11 +34,11 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                UiElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableServicePolling),
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.EnableServicePolling),
                     "Enable service polling",
                     "Configuration.EnableServicePolling",
                     Source),
-                UiElementHelper.AddNumberBox(nameof(DefaultConfiguration.ServicePollingInterval),
+                ElementHelper.AddNumberBox(nameof(DefaultConfiguration.ServicePollingInterval),
                     "Interval",
                     _viewModel.Configuration.ServicePollingInterval / 1000,
                     "Configuration.ServicePollingInterval",
@@ -56,7 +56,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Normal,
                     Content = "Only installed backends will be shown in the dropdown menu"
                 },
-                UiElementHelper.AddComboBox(
+                ElementHelper.AddComboBox(
                     nameof(DefaultConfiguration.ExperimentalConfiguration.ShellBackend),
                     ExperimentalConfiguration.ShellBackendValues(),
                     "Configuration.ExperimentalConfiguration.ShellBackend",

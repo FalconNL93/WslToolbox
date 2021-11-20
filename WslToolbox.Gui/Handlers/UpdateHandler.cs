@@ -5,7 +5,7 @@ using System.Windows;
 using AutoUpdaterDotNET;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Handlers
 {
@@ -100,7 +100,7 @@ namespace WslToolbox.Gui.Handlers
                 LogHandler.Log().Error("Error downloading {DownloadUrl} (Http Error: {FileHttpCode})",
                     _updateArgs.DownloadURL,
                     fileHttpCode);
-                await UiHelperDialog.ShowMessageBoxInfo("Error", "Could not download the update file")
+                await DialogHelper.ShowMessageBoxInfo("Error", "Could not download the update file")
                     .ShowAsync();
                 return;
             }
@@ -113,8 +113,8 @@ namespace WslToolbox.Gui.Handlers
             catch (Exception e)
             {
                 LogHandler.Log().Error(e, "Error downloading {DownloadUrl}", _updateArgs.DownloadURL);
-                await UiHelperDialog.ShowMessageBoxInfo("Error", "Could not update application.\n\n" +
-                                                                 $"{e.Message}").ShowAsync();
+                await DialogHelper.ShowMessageBoxInfo("Error", "Could not update application.\n\n" +
+                                                               $"{e.Message}").ShowAsync();
             }
         }
 
@@ -123,7 +123,7 @@ namespace WslToolbox.Gui.Handlers
             var responseHeaders = await DownloadResponse(_updateArgs.DownloadURL);
             var readableSize = (responseHeaders / 1024f / 1024f).ToString("F2");
 
-            var updatePrompt = UiHelperDialog.ShowMessageBoxInfo(
+            var updatePrompt = DialogHelper.ShowMessageBoxInfo(
                 $"Update available - {_updateArgs.CurrentVersion}",
                 $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}.\n\n" +
                 $"Do you want to install this update now? (Size: {readableSize} MB)",

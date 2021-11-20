@@ -18,7 +18,7 @@ using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
 using static WslToolbox.Gui.Handlers.LogHandler;
@@ -163,7 +163,7 @@ namespace WslToolbox.Gui.ViewModels
             {
                 Log().Information("No update available");
                 if (e.ShowPrompt && e.UpdateError == null)
-                    await UiHelperDialog.ShowMessageBoxInfo(
+                    await DialogHelper.ShowMessageBoxInfo(
                         "Update",
                         "You are running the latest version.",
                         closeButtonText: "Close", dialogOwner: _view).ShowAsync();

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Data;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Collections.TopMenu;
-using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections
@@ -15,17 +15,17 @@ namespace WslToolbox.Gui.Collections
                 new DropDownButton
                 {
                     Content = "Add...",
-                    Flyout = UiElementHelper.MenuFlyoutItems(AddTopMenuCollection.Items(viewModel))
+                    Flyout = ElementHelper.MenuFlyoutItems(AddTopMenuCollection.Items(viewModel))
                 },
                 new DropDownButton
                 {
                     Content = "Service...",
-                    Flyout = UiElementHelper.MenuFlyoutItems(ServiceTopMenuCollection.Items(viewModel))
+                    Flyout = ElementHelper.MenuFlyoutItems(ServiceTopMenuCollection.Items(viewModel))
                 },
                 new DropDownButton
                 {
                     Content = "More...",
-                    Flyout = UiElementHelper.MenuFlyoutItems(MoreTopMenuCollection.Items(viewModel))
+                    Flyout = ElementHelper.MenuFlyoutItems(MoreTopMenuCollection.Items(viewModel))
                 }
             };
         }
