@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace WslToolbox.Core.Commands.Service
 {
@@ -6,11 +7,15 @@ namespace WslToolbox.Core.Commands.Service
     {
         private const string Command = "wsl --shutdown";
 
+        public static event EventHandler ServiceStopFinished;
+
         public static async Task Execute()
         {
             await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command
             ))).ConfigureAwait(true);
+
+            ServiceStopFinished?.Invoke(null, EventArgs.Empty);
         }
     }
 }

@@ -16,10 +16,6 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.HideWslVersion),
-                    "Hide WSL version in Grid",
-                    "Configuration.GridConfiguration.HideWslVersion",
-                    Source, enabled: false),
                 ElementHelper.ItemExpander("Mouse behaviour", MouseBehaviourControls(), true)
             };
         }

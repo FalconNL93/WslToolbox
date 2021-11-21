@@ -12,8 +12,6 @@ using CommandLine;
 using Serilog.Core;
 using Serilog.Events;
 using WslToolbox.Core;
-using WslToolbox.Core.Commands.Distribution;
-using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
@@ -23,18 +21,15 @@ using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
+using CoreCommands = WslToolbox.Core.Commands;
 using static WslToolbox.Gui.Handlers.LogHandler;
-using OpenShellDistributionCommand = WslToolbox.Gui.Commands.Distribution.OpenShellDistributionCommand;
-using RenameDistributionCommand = WslToolbox.Gui.Commands.Distribution.RenameDistributionCommand;
-using SetDefaultDistributionCommand = WslToolbox.Gui.Commands.Distribution.SetDefaultDistributionCommand;
-using StartDistributionCommand = WslToolbox.Gui.Commands.Distribution.StartDistributionCommand;
 
 namespace WslToolbox.Gui.ViewModels
 {
     public class Options
     {
-        [Option('d', "debug", Default = false, HelpText = "Enable debug mode")]
-        public bool DebugMode { get; set; }
+        [Option('r', "reset", Default = false, HelpText = "Reset configuration")]
+        public bool ResetConfiguration { get; set; }
     }
 
     public class MainViewModel : INotifyPropertyChanged
@@ -46,7 +41,7 @@ namespace WslToolbox.Gui.ViewModels
 
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
-        private readonly OsHandler OsHandler = new();
+        private readonly OsHandler _osHandler = new();
 
         private List<DistributionClass> _distributionList = new();
 
@@ -57,16 +52,17 @@ namespace WslToolbox.Gui.ViewModels
         public MainViewModel(MainView view)
         {
             var args = Environment.GetCommandLineArgs();
-            Log = Log();
-            _view = view;
-            _updateHandler = new UpdateHandler(_view);
-            CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(o =>
                 {
-                    if (o.DebugMode) DebugMode();
+                    if (o.ResetConfiguration) Config.Reset();
                 });
+
+            Log = Log();
+            _view = view;
+            _updateHandler = new UpdateHandler(_view);
+            CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
 
             InitializeEventHandlers();
             InitializeStatusPoller();
@@ -107,11 +103,9 @@ namespace WslToolbox.Gui.ViewModels
         }
 
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
-        public ICommand NotImplemented => new NotImplementedCommand();
-        public ICommand SaveConfigurationCommand => new SaveSettingsCommand(Config);
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
-        public ICommand ShowSettings => new ShowSettingsCommand(Config, OsHandler);
+        public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler);
         public ICommand ShowExportDialog => new ShowExportDialogDistributionCommand(SelectedDistribution);
         public ICommand ShowImportDialog => new ShowImportDialogCommand(SelectedDistribution);
         public ICommand StartWslService => new StartWslServiceCommand();
@@ -150,26 +144,30 @@ namespace WslToolbox.Gui.ViewModels
             _statusPoller.Elapsed += StatusPollerEventHandler;
             Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
 
-            Core.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished +=
+            CoreCommands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished +=
                 DistributionFinishedChangedEventHandler;
-            Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameStarted +=
+            CoreCommands.Distribution.RenameDistributionCommand.DistributionRenameStarted +=
                 DistributionFinishedChangedEventHandler;
-            Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSet +=
+            CoreCommands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSet +=
                 DistributionFinishedChangedEventHandler;
-            Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished +=
+            CoreCommands.Distribution.StartDistributionCommand.DistributionStartFinished +=
+                DistributionFinishedChangedEventHandler;
+            CoreCommands.Service.StartServiceCommand.ServiceStartFinished +=
+                DistributionFinishedChangedEventHandler;
+            CoreCommands.Service.StopServiceCommand.ServiceStopFinished +=
                 DistributionFinishedChangedEventHandler;
 
-            ExportDistributionCommand.DistributionExportStarted +=
+            CoreCommands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
                 DistributionFinishedChangedEventHandler;
-            ExportDistributionCommand.DistributionExportFinished +=
+            CoreCommands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
                 DistributionFinishedChangedEventHandler;
-            ImportDistributionCommand.DistributionImportStarted +=
+            CoreCommands.Distribution.ImportDistributionCommand.DistributionImportStarted +=
                 DistributionFinishedChangedEventHandler;
-            ImportDistributionCommand.DistributionImportFinished +=
+            CoreCommands.Distribution.ImportDistributionCommand.DistributionImportFinished +=
                 DistributionFinishedChangedEventHandler;
-            TerminateDistributionCommand.DistributionTerminateFinished +=
+            CoreCommands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished +=
                 DistributionFinishedChangedEventHandler;
-            UnregisterDistributionCommand.DistributionUnregisterFinished +=
+            CoreCommands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished +=
                 DistributionFinishedChangedEventHandler;
 
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
@@ -266,17 +264,17 @@ namespace WslToolbox.Gui.ViewModels
 
         public bool ShowUnsupportedOsMessage()
         {
-            return OsHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
+            return _osHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
         }
 
         public bool ShowMinimumOsMessage()
         {
-            return OsHandler.State == OsHandler.States.Minimum && Config.Configuration.ShowMinimumOsMessage;
+            return _osHandler.State == OsHandler.States.Minimum && Config.Configuration.ShowMinimumOsMessage;
         }
 
         public async void RefreshDistributions()
         {
-            DistributionList = await ListServiceCommand
+            DistributionList = await CoreCommands.Service.ListServiceCommand
                 .ListDistributions(Config.Configuration.HideDockerDistributions)
                 .ConfigureAwait(true);
         }
