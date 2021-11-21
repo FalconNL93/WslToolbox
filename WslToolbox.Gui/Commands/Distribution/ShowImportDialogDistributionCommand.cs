@@ -18,7 +18,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public static event EventHandler DistributionImported;
 
-        public override async void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             var openExportDialog = FileDialogHandler.OpenFileDialog();
 
@@ -34,8 +34,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                await ImportDistributionCommand.Execute(importDistributionWindow.DistributionName,
-                    importDistributionWindow.DistributionSelectedDirectory, fileName).ConfigureAwait(true);
+                ImportDistributionCommand.Execute(importDistributionWindow.DistributionName,
+                    importDistributionWindow.DistributionSelectedDirectory, fileName);
             }
             catch (Exception ex)
             {

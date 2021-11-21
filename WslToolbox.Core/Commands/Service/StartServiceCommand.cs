@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace WslToolbox.Core.Commands.Service
 {
@@ -6,11 +7,15 @@ namespace WslToolbox.Core.Commands.Service
     {
         private const string Command = "wsl --exec exit";
 
-        public static async Task<CommandClass> Execute()
+        public static event EventHandler ServiceStartFinished;
+
+        public static async Task Execute()
         {
-            return await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            var startServiceTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command
             ))).ConfigureAwait(true);
+
+            ServiceStartFinished?.Invoke(null, EventArgs.Empty);
         }
     }
 }

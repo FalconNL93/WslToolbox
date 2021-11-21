@@ -10,15 +10,30 @@ namespace WslToolbox.Core.Commands.Distribution
         public static event EventHandler DistributionImportStarted;
         public static event EventHandler DistributionImportFinished;
 
-        public static async Task<CommandClass> Execute(string name, string path, string file)
+        public static async void Execute(string name, string path, string file)
         {
-            DistributionImportStarted?.Invoke(name, EventArgs.Empty);
+            var fireImportEvent = FireImportEvent(name);
+            var importTask = ImportAsync(name, path, file);
+
+            await Task.WhenAll(importTask, fireImportEvent);
+            DistributionImportFinished?.Invoke(name, EventArgs.Empty);
+        }
+
+        private static async Task<CommandClass> ImportAsync(string name, string path, string file)
+        {
             var importTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command, name, path, file
             ))).ConfigureAwait(true);
-            DistributionImportFinished?.Invoke(name, EventArgs.Empty);
 
             return importTask;
+        }
+
+        private static async Task<bool> FireImportEvent(string name)
+        {
+            await Task.Delay(2000);
+            DistributionImportStarted?.Invoke(name, EventArgs.Empty);
+
+            return true;
         }
     }
 }

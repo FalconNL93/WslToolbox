@@ -24,15 +24,15 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            var resetSettings = DialogHelper.ShowMessageBoxInfo("Delete distribution",
+            var deleteDistributionWarning = DialogHelper.ShowMessageBoxInfo("Delete distribution",
                 "Are you sure you want to delete this distribution? All data on this distribution will be lost!",
                 "Delete", closeButtonText: "Cancel",
                 withConfirmationCheckbox: true,
                 confirmationCheckboxText: "I confirm i want do delete this distribution.");
 
-            var resetSettingsResult = await resetSettings.ShowAsync();
+            var deleteDistributionWarningResult = await deleteDistributionWarning.ShowAsync();
 
-            if (resetSettingsResult != ContentDialogResult.Primary) return;
+            if (deleteDistributionWarningResult != ContentDialogResult.Primary) return;
             var distribution = (DistributionClass) parameter;
 
             await UnregisterDistributionCommand.Execute(distribution);

@@ -11,17 +11,33 @@ namespace WslToolbox.Core.Commands.Distribution
         public static event EventHandler DistributionExportStarted;
         public static event EventHandler DistributionExportFinished;
 
-        public static async Task<CommandClass> Execute(DistributionClass distribution, string file)
+        public static async void Execute(DistributionClass distribution, string file)
         {
             var args = new DistributionEventArguments(nameof(ExportDistributionCommand), distribution);
 
-            DistributionExportStarted?.Invoke(typeof(ExportDistributionCommand), args);
+            var fireImportEvent = FireExportEvent(args);
+            var exportTask = ExportAsync(distribution, file);
+
+            await Task.WhenAll(exportTask, fireImportEvent);
+
+            DistributionExportFinished?.Invoke(typeof(ExportDistributionCommand), args);
+        }
+
+        private static async Task<CommandClass> ExportAsync(DistributionClass distribution, string file)
+        {
             var exportTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command, distribution.Name, file
             ))).ConfigureAwait(true);
-            DistributionExportFinished?.Invoke(typeof(ExportDistributionCommand), args);
 
             return exportTask;
+        }
+
+        private static async Task<bool> FireExportEvent(DistributionEventArguments args)
+        {
+            await Task.Delay(2000);
+            DistributionExportStarted?.Invoke(typeof(ExportDistributionCommand), args);
+
+            return true;
         }
     }
 }

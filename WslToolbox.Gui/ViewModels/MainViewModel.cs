@@ -150,20 +150,27 @@ namespace WslToolbox.Gui.ViewModels
             _statusPoller.Elapsed += StatusPollerEventHandler;
             Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
 
-            ExportDistributionCommand.DistributionExportStarted +=
-                DistributionChangedEventHandler;
-            ImportDistributionCommand.DistributionImportStarted +=
-                DistributionChangedEventHandler;
+            Core.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished +=
+                DistributionFinishedChangedEventHandler;
             Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameStarted +=
-                DistributionChangedEventHandler;
+                DistributionFinishedChangedEventHandler;
             Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSet +=
-                DistributionChangedEventHandler;
+                DistributionFinishedChangedEventHandler;
             Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished +=
-                DistributionChangedEventHandler;
+                DistributionFinishedChangedEventHandler;
+
+            ExportDistributionCommand.DistributionExportStarted +=
+                DistributionFinishedChangedEventHandler;
+            ExportDistributionCommand.DistributionExportFinished +=
+                DistributionFinishedChangedEventHandler;
+            ImportDistributionCommand.DistributionImportStarted +=
+                DistributionFinishedChangedEventHandler;
+            ImportDistributionCommand.DistributionImportFinished +=
+                DistributionFinishedChangedEventHandler;
             TerminateDistributionCommand.DistributionTerminateFinished +=
-                DistributionChangedEventHandler;
+                DistributionFinishedChangedEventHandler;
             UnregisterDistributionCommand.DistributionUnregisterFinished +=
-                DistributionChangedEventHandler;
+                DistributionFinishedChangedEventHandler;
 
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
 
@@ -215,7 +222,7 @@ namespace WslToolbox.Gui.ViewModels
             };
         }
 
-        private void DistributionChangedEventHandler(object sender, EventArgs e)
+        private void DistributionFinishedChangedEventHandler(object sender, EventArgs e)
         {
             Refresh.Execute(_view);
         }

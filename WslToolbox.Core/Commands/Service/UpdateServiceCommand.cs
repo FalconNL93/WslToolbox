@@ -6,9 +6,9 @@ namespace WslToolbox.Core.Commands.Service
     {
         private const string Command = "wsl --update";
 
-        public static async Task<CommandClass> Execute()
+        public static async Task Execute()
         {
-            return await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command
             ))).ConfigureAwait(true);
         }

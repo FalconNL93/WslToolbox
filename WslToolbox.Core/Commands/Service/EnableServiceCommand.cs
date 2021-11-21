@@ -7,9 +7,9 @@ namespace WslToolbox.Core.Commands.Service
         private const string Command =
             "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux";
 
-        public static async Task<CommandClass> Execute()
+        public static async Task Execute()
         {
-            return await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command
             ), elevated: true, executable: "powershell.exe")).ConfigureAwait(true);
         }

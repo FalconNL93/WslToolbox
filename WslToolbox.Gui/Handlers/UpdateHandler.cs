@@ -73,7 +73,8 @@ namespace WslToolbox.Gui.Handlers
 
         private void OnAutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
         {
-            LogHandler.Log().Information("UpdateArgs received");
+            LogHandler.Log().Information("UpdateArgs received from {AppConfigurationUpdateXml}",
+                AppConfiguration.AppConfigurationUpdateXml);
             _updateArgs = args;
 
             UpdateStatusReceived?.Invoke(null,
