@@ -16,6 +16,7 @@ namespace WslToolbox.Core.Commands.Distribution
             var importTask = ImportAsync(name, path, file);
 
             await Task.WhenAll(importTask, fireImportEvent);
+            ToolboxClass.OnRefreshRequired();
             DistributionImportFinished?.Invoke(name, EventArgs.Empty);
         }
 
@@ -31,6 +32,7 @@ namespace WslToolbox.Core.Commands.Distribution
         private static async Task<bool> FireImportEvent(string name)
         {
             await Task.Delay(2000);
+            ToolboxClass.OnRefreshRequired();
             DistributionImportStarted?.Invoke(name, EventArgs.Empty);
 
             return true;

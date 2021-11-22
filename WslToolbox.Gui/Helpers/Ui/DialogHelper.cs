@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
@@ -7,53 +7,12 @@ namespace WslToolbox.Gui.Helpers.Ui
 {
     public class UiDialog
     {
-        public object UserInput { get; set; }
-        public ContentDialogResult DialogResult { get; set; }
         public ContentDialog Dialog { get; set; }
+        public object Content { get; set; }
     }
 
     public static class DialogHelper
     {
-        public static async Task<UiDialog> ShowInputDialog(string title, string text,
-            string primaryButtonText = "OK",
-            string secondaryButtonText = null,
-            string closeButtonText = "Close")
-        {
-            var dialogContent = new StackPanel
-            {
-                Children =
-                {
-                    new TextBlock
-                    {
-                        Text = text
-                    },
-                    new TextBox
-                    {
-                        Name = "dialogInputField"
-                    }
-                }
-            };
-
-
-            var dialog = new ContentDialog
-            {
-                Title = title,
-                PrimaryButtonText = primaryButtonText,
-                PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
-                SecondaryButtonText = secondaryButtonText,
-                CloseButtonText = closeButtonText,
-                Content = new ScrollViewer {Content = dialogContent}
-            };
-
-            var showDialog = await dialog.ShowAsync();
-            var dialogContents = (ScrollViewer) dialog.Content;
-
-            return new UiDialog
-            {
-                DialogResult = showDialog
-            };
-        }
-
         public static ContentDialog ShowMessageBoxInfo(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
@@ -158,15 +117,15 @@ namespace WslToolbox.Gui.Helpers.Ui
             return dialog;
         }
 
-        public static ContentDialog ShowContentDialog(string title, UIElementCollection items,
+        public static UiDialog ShowContentDialog(string title, IEnumerable<Control> items,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",
             Window dialogOwner = null
         )
         {
-            var dialogContent = new StackPanel();
-            foreach (UIElement item in items) dialogContent.Children.Add(item);
+            var dialogContent = new StackPanel {Name = "ContentDialogStackPanel"};
+            foreach (var item in items) dialogContent.Children.Add(item);
 
             var dialog = new ContentDialog
             {
@@ -175,11 +134,15 @@ namespace WslToolbox.Gui.Helpers.Ui
                 PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,
-                Content = new ScrollViewer {Content = dialogContent},
+                Content = new ScrollViewer
+                {
+                    Name = "ScrollViewer",
+                    Content = dialogContent
+                },
                 Owner = dialogOwner
             };
 
-            return dialog;
+            return new UiDialog {Dialog = dialog, Content = dialogContent};
         }
     }
 }

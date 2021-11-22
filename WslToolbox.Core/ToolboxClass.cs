@@ -1,9 +1,12 @@
-﻿using WslToolbox.Core.Commands.Service;
+﻿using System;
+using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Core
 {
     public static class ToolboxClass
     {
+        public static event EventHandler RefreshRequired;
+
         public static DistributionClass DistributionByName(string name)
         {
             return ListServiceCommand.ListDistributions().Result
@@ -14,6 +17,11 @@ namespace WslToolbox.Core
         {
             return ListServiceCommand.ListDistributions().Result
                 .Find(distro => distro.IsDefault);
+        }
+
+        public static void OnRefreshRequired()
+        {
+            RefreshRequired?.Invoke(null, EventArgs.Empty);
         }
     }
 }

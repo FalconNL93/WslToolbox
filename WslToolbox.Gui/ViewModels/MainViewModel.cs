@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +11,7 @@ using CommandLine;
 using Serilog.Core;
 using Serilog.Events;
 using WslToolbox.Core;
+using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
@@ -34,14 +34,13 @@ namespace WslToolbox.Gui.ViewModels
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly Timer _statusPoller = new();
+        private readonly OsHandler _osHandler = new();
         private readonly UpdateHandler _updateHandler;
         private readonly MainView _view;
         public readonly ICommand CheckForUpdates;
 
         public readonly ConfigurationHandler Config = new();
         public readonly Logger Log;
-        private readonly OsHandler _osHandler = new();
 
         private List<DistributionClass> _distributionList = new();
 
@@ -65,7 +64,6 @@ namespace WslToolbox.Gui.ViewModels
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
 
             InitializeEventHandlers();
-            InitializeStatusPoller();
             InitializeUpdater();
         }
 
@@ -112,7 +110,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
-        public ICommand ShowSelectDialog => new ShowSelectDistributionDialogCommand();
+        public ICommand ShowSelectDialog => new ShowSelectDistributionDialogCommand(this);
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
@@ -141,35 +139,8 @@ namespace WslToolbox.Gui.ViewModels
 
         private void InitializeEventHandlers()
         {
-            _statusPoller.Elapsed += StatusPollerEventHandler;
-            Config.ConfigurationUpdatedSuccessfully += SaveSuccessfullyEvent;
-
-            CoreCommands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.RenameDistributionCommand.DistributionRenameStarted +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSet +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.StartDistributionCommand.DistributionStartFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Service.StartServiceCommand.ServiceStartFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Service.StopServiceCommand.ServiceStopFinished +=
-                DistributionFinishedChangedEventHandler;
-
-            CoreCommands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.ImportDistributionCommand.DistributionImportStarted +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.ImportDistributionCommand.DistributionImportFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished +=
-                DistributionFinishedChangedEventHandler;
-            CoreCommands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished +=
-                DistributionFinishedChangedEventHandler;
-
+            Config.ConfigurationUpdatedSuccessfully += OnSaveSuccessfully;
+            ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
 
             if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
@@ -220,15 +191,9 @@ namespace WslToolbox.Gui.ViewModels
             };
         }
 
-        private void DistributionFinishedChangedEventHandler(object sender, EventArgs e)
+        private void OnRefreshRequired(object sender, EventArgs e)
         {
             Refresh.Execute(_view);
-        }
-
-        private void InitializeStatusPoller()
-        {
-            _statusPoller.Enabled = Config.Configuration.EnableServicePolling;
-            _statusPoller.Interval = Config.Configuration.ServicePollingInterval;
         }
 
         private async void InitializeUpdater()
@@ -237,11 +202,6 @@ namespace WslToolbox.Gui.ViewModels
 
             await Task.Delay(5000);
             CheckForUpdates.Execute(false);
-        }
-
-        private void StatusPollerEventHandler(object sender, ElapsedEventArgs e)
-        {
-            Refresh.Execute(_view);
         }
 
         private void DebugMode()
@@ -274,12 +234,12 @@ namespace WslToolbox.Gui.ViewModels
 
         public async void RefreshDistributions()
         {
-            DistributionList = await CoreCommands.Service.ListServiceCommand
+            DistributionList = await ListServiceCommand
                 .ListDistributions(Config.Configuration.HideDockerDistributions)
                 .ConfigureAwait(true);
         }
 
-        private void SaveSuccessfullyEvent(object sender, EventArgs e)
+        private void OnSaveSuccessfully(object sender, EventArgs e)
         {
             _view.HandleConfiguration();
             Refresh.Execute(_view);

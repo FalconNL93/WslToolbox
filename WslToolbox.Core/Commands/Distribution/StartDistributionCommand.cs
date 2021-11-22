@@ -12,10 +12,12 @@ namespace WslToolbox.Core.Commands.Distribution
 
         public static async Task<CommandClass> Execute(DistributionClass distribution)
         {
+            ToolboxClass.OnRefreshRequired();
             DistributionStartStarted?.Invoke(distribution, EventArgs.Empty);
             var startTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command, distribution.Name
             ))).ConfigureAwait(true);
+            ToolboxClass.OnRefreshRequired();
             DistributionStartFinished?.Invoke(distribution, EventArgs.Empty);
 
             return startTask;

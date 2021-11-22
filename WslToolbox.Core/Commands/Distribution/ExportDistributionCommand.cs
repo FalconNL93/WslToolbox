@@ -20,6 +20,7 @@ namespace WslToolbox.Core.Commands.Distribution
 
             await Task.WhenAll(exportTask, fireImportEvent);
 
+            ToolboxClass.OnRefreshRequired();
             DistributionExportFinished?.Invoke(typeof(ExportDistributionCommand), args);
         }
 
@@ -35,6 +36,7 @@ namespace WslToolbox.Core.Commands.Distribution
         private static async Task<bool> FireExportEvent(DistributionEventArguments args)
         {
             await Task.Delay(2000);
+            ToolboxClass.OnRefreshRequired();
             DistributionExportStarted?.Invoke(typeof(ExportDistributionCommand), args);
 
             return true;

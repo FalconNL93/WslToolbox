@@ -15,6 +15,7 @@ namespace WslToolbox.Core.Commands.Distribution
                 Command, distribution.Name
             ))).ConfigureAwait(true);
 
+            ToolboxClass.OnRefreshRequired();
             DistributionDefaultSet?.Invoke(distribution, EventArgs.Empty);
 
             return defaultTask;

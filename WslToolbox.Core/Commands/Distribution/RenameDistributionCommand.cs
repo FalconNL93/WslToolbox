@@ -11,6 +11,7 @@ namespace WslToolbox.Core.Commands.Distribution
 
         public static async void Execute(DistributionClass distribution, string newName)
         {
+            ToolboxClass.OnRefreshRequired();
             DistributionRenameStarted?.Invoke(distribution, EventArgs.Empty);
             await TerminateDistributionCommand.Execute(distribution);
             await Task
@@ -18,6 +19,7 @@ namespace WslToolbox.Core.Commands.Distribution
                 .ConfigureAwait(true);
 
             await StartDistributionCommand.Execute(distribution);
+            ToolboxClass.OnRefreshRequired();
             DistributionRenameFinished?.Invoke(distribution, EventArgs.Empty);
         }
     }

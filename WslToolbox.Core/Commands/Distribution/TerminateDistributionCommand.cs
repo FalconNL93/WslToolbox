@@ -15,10 +15,12 @@ namespace WslToolbox.Core.Commands.Distribution
         {
             var args = new DistributionEventArguments(nameof(TerminateDistributionCommand), distribution);
 
+            ToolboxClass.OnRefreshRequired();
             DistributionTerminateStarted?.Invoke(nameof(TerminateDistributionCommand), args);
             var terminateTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command, distribution.Name
             ))).ConfigureAwait(true);
+            ToolboxClass.OnRefreshRequired();
             DistributionTerminateFinished?.Invoke(nameof(TerminateDistributionCommand), args);
 
             return terminateTask;

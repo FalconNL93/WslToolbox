@@ -15,6 +15,7 @@ namespace WslToolbox.Core.Commands.Service
                 Command
             ))).ConfigureAwait(true);
 
+            ToolboxClass.OnRefreshRequired();
             ServiceStartFinished?.Invoke(null, EventArgs.Empty);
         }
     }

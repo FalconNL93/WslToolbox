@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace WslToolbox.Core
 {
@@ -70,6 +71,25 @@ namespace WslToolbox.Core
             p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.Arguments = shellCommand;
             p.Start();
+        }
+
+        public static async Task<Process> StartShellAsync(DistributionClass distribution)
+        {
+            Process p = new();
+
+            if (distribution is null) return p;
+            var shellCommand = $"/c wsl -d {distribution.Name}";
+
+            if (!distribution.IsInstalled) shellCommand = $"/c wsl --install -d {distribution.Name}";
+            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled) return p;
+
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.Arguments = shellCommand;
+            p.Start();
+
+            await p.WaitForExitAsync();
+
+            return p;
         }
 
         private static string FormatOutput(string output)
