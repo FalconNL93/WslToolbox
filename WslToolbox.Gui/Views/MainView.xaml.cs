@@ -51,7 +51,7 @@ namespace WslToolbox.Gui.Views
             var messageBoxResult =
                 MessageBox.Show("WSL does not appear to be installed on your system. Do you want to enable WSL?",
                     Properties.Resources.ERROR, MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes) EnableServiceCommand.Execute();
+            if (messageBoxResult == MessageBoxResult.Yes) EnableWindowsComponentsCommand.Execute();
             Environment.Exit(1);
         }
 

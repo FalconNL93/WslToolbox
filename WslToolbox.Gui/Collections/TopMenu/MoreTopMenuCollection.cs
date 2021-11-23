@@ -17,6 +17,12 @@ namespace WslToolbox.Gui.Collections.TopMenu
                 },
                 new MenuItem
                 {
+                    Header = "Actions",
+                    ItemsSource = ActionItems(viewModel)
+                },
+                new Separator(),
+                new MenuItem
+                {
                     Header = "Check for updates",
                     Command = viewModel.CheckForUpdates,
                     CommandParameter = true
@@ -31,6 +37,18 @@ namespace WslToolbox.Gui.Collections.TopMenu
                 {
                     Header = "Exit application",
                     Command = viewModel.ExitApplication
+                }
+            };
+        }
+
+        private static CompositeCollection ActionItems(MainViewModel viewModel)
+        {
+            return new CompositeCollection
+            {
+                new MenuItem
+                {
+                    Header = "Enable required Windows components",
+                    Command = viewModel.EnableWindowsComponents
                 }
             };
         }

@@ -23,6 +23,7 @@ using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
 using CoreCommands = WslToolbox.Core.Commands;
 using static WslToolbox.Gui.Handlers.LogHandler;
+using EnableWindowsComponentsCommand = WslToolbox.Gui.Commands.Service.EnableWindowsComponentsCommand;
 
 namespace WslToolbox.Gui.ViewModels
 {
@@ -47,6 +48,7 @@ namespace WslToolbox.Gui.ViewModels
         private BindingList<DistributionClass> _gridList = new();
 
         private DistributionClass _selectedDistribution;
+        public ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
 
         public MainViewModel(MainView view)
         {
