@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
+using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.TopMenu
@@ -45,6 +46,12 @@ namespace WslToolbox.Gui.Collections.TopMenu
         {
             return new CompositeCollection
             {
+                new MenuItem
+                {
+                    Header = "Open WSL app in Windows Store",
+                    Command = new OpenUrlCommand(),
+                    CommandParameter = "https://aka.ms/wslstorepage"
+                },
                 new MenuItem
                 {
                     Header = "Enable required Windows components",
