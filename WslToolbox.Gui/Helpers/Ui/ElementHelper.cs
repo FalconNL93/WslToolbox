@@ -95,14 +95,15 @@ namespace WslToolbox.Gui.Helpers.Ui
             return comboBox;
         }
 
-        public static TextBox AddTextBox(string name, string content, string bind, object source,
+        public static TextBox AddTextBox(string name, string content, string bind = null, object source = null,
             string requires = null, bool enabled = false, int width = 170)
         {
             var textBox = new TextBox
             {
                 Name = name,
                 Text = content,
-                Width = width
+                Width = width,
+                HorizontalAlignment = HorizontalAlignment.Left
             };
 
             if (requires != null)
@@ -110,7 +111,8 @@ namespace WslToolbox.Gui.Helpers.Ui
             else
                 textBox.IsEnabled = enabled;
 
-            textBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
+            if (bind != null)
+                textBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
 
             return textBox;
         }

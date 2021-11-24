@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using WslToolbox.Core.Commands.Service;
 
 namespace WslToolbox.Core
@@ -19,8 +20,9 @@ namespace WslToolbox.Core
                 .Find(distro => distro.IsDefault);
         }
 
-        public static void OnRefreshRequired()
+        public static async void OnRefreshRequired(int delay = 0)
         {
+            await Task.Delay(delay);
             RefreshRequired?.Invoke(null, EventArgs.Empty);
         }
     }
