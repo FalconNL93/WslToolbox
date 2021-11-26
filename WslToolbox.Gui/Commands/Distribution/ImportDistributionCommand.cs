@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Windows;
 using ModernWpf.Controls;
 using WslToolbox.Core;
-using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Collections.Dialogs;
-using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
-using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowImportDialogCommand : GenericDistributionCommand
+    public class ImportDistributionCommand : GenericDistributionCommand
     {
-        public ShowImportDialogCommand(DistributionClass distributionClass) : base(
+        public ImportDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
             IsExecutableDefault = _ => true;
@@ -40,7 +35,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (result != ContentDialogResult.Primary) return;
             IsExecutable = _ => false;
             ToolboxClass.OnRefreshRequired(2000);
-            ImportDistributionCommand.Execute(importDistributionDialogCollection.DistributionName,
+            Core.Commands.Distribution.ImportDistributionCommand.Execute(
+                importDistributionDialogCollection.DistributionName,
                 importDistributionDialogCollection.SelectedBasePath,
                 importDistributionDialogCollection.SelectedFilePath);
 

@@ -13,13 +13,11 @@ namespace WslToolbox.Core.Commands.Distribution
 
         public static async void Execute(DistributionClass distribution)
         {
-            if (distribution.IsInstalled) return;
+            var openShell = await CommandClass.StartShellAsync(distribution);
 
-            var installShell = await CommandClass.StartShellAsync(distribution);
-
-            Debug.WriteLine($"Shell exited with code {installShell.ExitCode}");
             ToolboxClass.OnRefreshRequired();
-            if (installShell.ExitCode != 0) return;
+            if (openShell.ExitCode != 0) return;
+            if (distribution.IsInstalled) return;
 
             var installTries = 0;
             while (!ToolboxClass.DistributionByName(distribution.Name).IsInstalled)

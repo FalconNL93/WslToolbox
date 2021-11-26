@@ -1,15 +1,14 @@
 ﻿using System;
 using ModernWpf.Controls;
 using WslToolbox.Core;
-using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowExportDialogDistributionCommand : GenericDistributionCommand
+    public class ExportDistributionCommand : GenericDistributionCommand
     {
-        public ShowExportDialogDistributionCommand(DistributionClass distributionClass) : base(
+        public ExportDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
             IsExecutableDefault = _ => distributionClass != null;
@@ -28,7 +27,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                ExportDistributionCommand.Execute((DistributionClass) parameter, fileName);
+                Core.Commands.Distribution.ExportDistributionCommand.Execute((DistributionClass) parameter, fileName);
             }
             catch (Exception ex)
             {

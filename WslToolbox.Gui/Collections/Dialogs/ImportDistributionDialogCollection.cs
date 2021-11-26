@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using Microsoft.Win32;
-using ModernWpf.Controls;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
+using WslToolbox.Gui.Validators;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
@@ -20,10 +16,11 @@ namespace WslToolbox.Gui.Collections.Dialogs
     {
         private readonly Regex _validCharacters = new("^[a-zA-Z0-9]*$");
         private bool _distributionNameIsValid;
-        
-        public string SelectedFilePath;
-        public string SelectedBasePath;
         public string DistributionName;
+        public string SelectedBasePath;
+
+        public string SelectedFilePath;
+
         public bool DistributionNameIsValid
         {
             get => _distributionNameIsValid;
@@ -34,6 +31,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 OnPropertyChanged(nameof(DistributionNameIsValid));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public IEnumerable<Control> Items()
         {
@@ -112,10 +111,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
             return
                 distributionFile.Length >= 1 && distributionBasePath.Length >= 1 &&
                 File.Exists(distributionFile) && Directory.Exists(distributionBasePath) &&
-                _validCharacters.IsMatch(distributionName) && distributionName.Length >= 3;
+                DistributionNameValidator.ValidateName(distributionName);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

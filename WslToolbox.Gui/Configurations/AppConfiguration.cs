@@ -11,7 +11,8 @@ namespace WslToolbox.Gui.Configurations
         public static string AppConfigurationFileName => "settings.json";
         public static bool EnableUpdater => true;
 #if(DEBUG)
-        public static string AppConfigurationUpdateXml => "http://localhost/wsltoolbox.xml";
+        //public static string AppConfigurationUpdateXml => "http://localhost/wsltoolbox.xml";
+        public static string AppConfigurationUpdateXml => "https://falconnl93.github.io/wsltoolbox-docs/update.xml";
 #else
         public static string AppConfigurationUpdateXml => "https://falconnl93.github.io/wsltoolbox-docs/update.xml";
 #endif

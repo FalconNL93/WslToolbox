@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Configurations;
@@ -29,20 +30,24 @@ namespace WslToolbox.Gui.Handlers
         {
             var columnCollection = new Collection<DataGridBoundColumn>
             {
-                DistributionDataGridColumn(new DataGridCheckBoxColumn(),
-                    "D", nameof(DistributionClass.IsDefault),
-                    null,
-                    50, 50, 50),
-
                 DistributionDataGridColumn(new DataGridTextColumn(),
                     "Name", nameof(DistributionClass.Name)),
 
                 DistributionDataGridColumn(new DataGridTextColumn(),
-                    "State", nameof(DistributionClass.State)),
-
-                DistributionDataGridColumn(new DataGridTextColumn(),
-                    "Size", nameof(DistributionClass.Size), new BytesToHumanConverter())
+                    "State", nameof(DistributionClass.State))
             };
+
+            if (_mainViewModel.Config.Configuration.GridConfiguration.Size)
+                columnCollection.Add(DistributionDataGridColumn(new DataGridTextColumn(),
+                    "Size", nameof(DistributionClass.Size), new BytesToHumanConverter()));
+
+            if (_mainViewModel.Config.Configuration.GridConfiguration.BasePath)
+                columnCollection.Add(DistributionDataGridColumn(new DataGridTextColumn(),
+                    "Path", nameof(DistributionClass.BasePathLocal)));
+
+            if (_mainViewModel.Config.Configuration.GridConfiguration.Guid)
+                columnCollection.Add(DistributionDataGridColumn(new DataGridTextColumn(),
+                    "GUID", nameof(DistributionClass.Guid)));
 
             var dataGrid = new DataGrid
             {
@@ -91,7 +96,20 @@ namespace WslToolbox.Gui.Handlers
                     : null;
             };
 
+            if (!_mainViewModel.Config.Configuration.DisableShortcuts)
+                DataGridShortcutHandler(dataGrid, _mainViewModel);
+
             return dataGrid;
+        }
+
+        private static void DataGridShortcutHandler(IInputElement dataGrid, MainViewModel mainViewModel)
+        {
+            dataGrid.KeyUp += (_, args) =>
+            {
+                if (mainViewModel.SelectedDistribution == null) return;
+
+                if (args.Key == Key.F2) mainViewModel.RenameDistribution.Execute(mainViewModel.SelectedDistribution);
+            };
         }
 
         private static DataGridBoundColumn DistributionDataGridColumn(DataGridBoundColumn dataGridBoundColumn,

@@ -36,11 +36,11 @@ namespace WslToolbox.Gui.Views
             PopulateWsl();
         }
 
-        private void InitializeDataGrid()
+        public void InitializeDataGrid()
         {
-            DistributionDataGridHandler dataGridHandler = new(_viewModel);
+            if (GridView.Children.Count > 0) GridView.Children.Clear();
 
-            GridView.Children.Add(dataGridHandler.DataGrid());
+            GridView.Children.Add(new DistributionDataGridHandler(_viewModel).DataGrid());
         }
 
         private static void WslIsEnabledCheck()

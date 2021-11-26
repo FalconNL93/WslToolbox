@@ -16,7 +16,29 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
+                ElementHelper.ItemExpander("Columns", ColumnControls(), true),
                 ElementHelper.ItemExpander("Mouse behaviour", MouseBehaviourControls(), true)
+            };
+        }
+
+        private CompositeCollection ColumnControls()
+        {
+            return new CompositeCollection
+            {
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.BasePath),
+                    "Base path",
+                    "Configuration.GridConfiguration.BasePath",
+                    Source),
+
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.Size),
+                    "Size",
+                    "Configuration.GridConfiguration.Size",
+                    Source),
+
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.GridConfiguration.Guid),
+                    "Guid",
+                    "Configuration.GridConfiguration.Guid",
+                    Source)
             };
         }
 

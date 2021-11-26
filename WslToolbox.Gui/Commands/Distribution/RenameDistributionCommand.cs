@@ -1,5 +1,9 @@
 ﻿using System;
+using ModernWpf.Controls;
 using WslToolbox.Core;
+using WslToolbox.Gui.Collections.Dialogs;
+using WslToolbox.Gui.Helpers;
+using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -8,7 +12,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public RenameDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
-            IsExecutableDefault = _ => false;
+            IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
 
@@ -16,37 +20,22 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            IsExecutable = _ => false;
-            // var showDialog = await UiHelperDialog.ShowInputDialog("Rename",
-            //     "Enter a new name for this distribution. The distribution will be restarted after renaming.\n\n" +
-            //     "You can only use alphanumeric characters and must contain 3 characters or more. Spaces are not allowed.",
-            //     "Rename", closeButtonText: "Cancel");
+            var distribution = (DistributionClass) parameter;
 
-            // if (showDialog.DialogResult == ContentDialogResult.Primary)
-            // {
-            //     var newName = (string) showDialog.UserInput;
-            //
-            //     if (newName is not null)
-            //         try
-            //         {
-            //             if (newName.All(char.IsLetterOrDigit) && newName.Length >= 3)
-            //             {
-            //                 Core.Commands.Distribution.RenameDistributionCommand.Execute((DistributionClass) parameter,
-            //                     newName);
-            //                 await UiHelperDialog.ShowMessageBoxInfo("Rename",
-            //                     $"Distribution has been renamed to {newName}.").ShowAsync();
-            //             }
-            //             else
-            //             {
-            //                 await UiHelperDialog.ShowMessageBoxInfo(Resources.ERROR,
-            //                     Resources.ERROR_ONLY_ALPHANUMERIC).ShowAsync();
-            //             }
-            //         }
-            //         catch (Exception e)
-            //         {
-            //             await UiHelperDialog.ShowMessageBoxInfo(Resources.ERROR, e.Message).ShowAsync();
-            //         }
-            // }
+            IsExecutable = _ => false;
+            var renameDistributionDialogCollection = new RenameDistributionDialogCollection();
+            var renameDistribution = DialogHelper.ShowContentDialog(
+                "Rename distribution",
+                renameDistributionDialogCollection.Items(distribution),
+                "Rename", null, "Cancel");
+
+            renameDistribution.Dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty,
+                BindHelper.BindingObject("DistributionNameIsValid",
+                    renameDistributionDialogCollection));
+
+            var result = await renameDistribution.Dialog.ShowAsync();
+
+            if (result != ContentDialogResult.Primary) return;
 
             IsExecutable = _ => true;
             DistributionRenamed?.Invoke(this, EventArgs.Empty);

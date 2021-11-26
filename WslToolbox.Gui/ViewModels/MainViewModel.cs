@@ -48,6 +48,9 @@ namespace WslToolbox.Gui.ViewModels
         private BindingList<DistributionClass> _gridList = new();
 
         private DistributionClass _selectedDistribution;
+
+        private bool _updateAvailable;
+        private Visibility _updateAvailableVisibility = Visibility.Collapsed;
         public ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
 
         public MainViewModel(MainView view)
@@ -67,6 +70,28 @@ namespace WslToolbox.Gui.ViewModels
 
             InitializeEventHandlers();
             InitializeUpdater();
+        }
+
+        public bool UpdateAvailable
+        {
+            get => _updateAvailable;
+            set
+            {
+                if (_updateAvailable == value) return;
+                _updateAvailable = value;
+                UpdateAvailableVisibility = value ? Visibility.Visible : Visibility.Collapsed;
+                OnPropertyChanged(nameof(UpdateAvailable));
+            }
+        }
+
+        public Visibility UpdateAvailableVisibility
+        {
+            get => _updateAvailableVisibility;
+            set
+            {
+                _updateAvailableVisibility = value;
+                OnPropertyChanged(nameof(UpdateAvailableVisibility));
+            }
         }
 
         public List<DistributionClass> DistributionList
@@ -106,13 +131,13 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
         public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler);
-        public ICommand ShowExportDialog => new ShowExportDialogDistributionCommand(SelectedDistribution);
-        public ICommand ShowImportDialog => new ShowImportDialogCommand(SelectedDistribution);
+        public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution);
+        public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution);
         public ICommand StartWslService => new StartWslServiceCommand();
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
-        public ICommand ShowSelectDialog => new ShowSelectDistributionDialogCommand(this);
+        public ICommand ShowSelectDialog => new InstallDistributionCommand(this);
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
@@ -151,8 +176,12 @@ namespace WslToolbox.Gui.ViewModels
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
         {
             if (e.UpdateError != null)
+            {
+                UpdateAvailable = false;
                 Log().Error(e.UpdateError, Resources.ERROR_UPDATE_GENERIC);
+            }
 
+            UpdateAvailable = e.UpdateAvailable;
             if (!e.UpdateAvailable)
             {
                 Log().Information("No update available");
@@ -171,7 +200,7 @@ namespace WslToolbox.Gui.ViewModels
             else if (_view.SystemTray.Tray != null &&
                      Config.Configuration.NotificationConfiguration.NewVersionAvailable)
                 _view.SystemTray.ShowNotification("Update available",
-                    $"Version {e.CurrentVersion} now available to install.");
+                    $"Version {e.CurrentVersion} is now available.");
         }
 
         private void ShortcutHandler()
@@ -243,24 +272,25 @@ namespace WslToolbox.Gui.ViewModels
 
         private void OnSaveSuccessfully(object sender, EventArgs e)
         {
+            _view.InitializeDataGrid();
             _view.HandleConfiguration();
+
             Refresh.Execute(_view);
         }
 
         private void OnPropertyChanged(string propertyName = null)
         {
+            Debug.WriteLine($"Property changed {propertyName}");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-            if (propertyName == nameof(DistributionList))
-            {
-                GridList = new BindingList<DistributionClass>(DistributionList
-                    .FindAll(x => x.IsInstalled)
-                );
+            if (propertyName != nameof(DistributionList)) return;
+            GridList = new BindingList<DistributionClass>(DistributionList
+                .FindAll(x => x.IsInstalled)
+            );
 
-                _view.GridView.Visibility = GridList.Count == 0
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-            }
+            _view.GridView.Visibility = GridList.Count == 0
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
     }
 }

@@ -7,11 +7,11 @@ using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
-    public class ShowSelectDistributionDialogCommand : GenericCommand
+    public class InstallDistributionCommand : GenericCommand
     {
         private readonly MainViewModel _viewModel;
 
-        public ShowSelectDistributionDialogCommand(MainViewModel viewModel)
+        public InstallDistributionCommand(MainViewModel viewModel)
         {
             _viewModel = viewModel;
             IsExecutableDefault = _ => true;

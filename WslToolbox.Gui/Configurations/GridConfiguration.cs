@@ -12,6 +12,10 @@ namespace WslToolbox.Gui.Configurations
         private int _rightSingleClick = GridConfigurationOpenContextMenu;
         private int _singleClick = GridConfigurationDoNothing;
 
+        public bool BasePath { get; set; } = true;
+        public bool Size { get; set; } = true;
+        public bool Guid { get; set; }
+
         public int DoubleClick
         {
             get => _doubleClick;

@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Collections.TopMenu;
 using WslToolbox.Gui.Helpers.Ui;
@@ -28,11 +27,15 @@ namespace WslToolbox.Gui.Collections
                     Content = "More...",
                     Flyout = ElementHelper.MenuFlyoutItems(MoreTopMenuCollection.Items(viewModel))
                 },
-                new Label
-                {
-                    Name = "StatusLabel",
-                    Content = ""
-                }
+                GenericControls.Button(
+                    "InstallUpdate",
+                    "Update available",
+                    viewModel,
+                    command: viewModel.CheckForUpdates,
+                    commandParameter: true,
+                    requiresBindPath: nameof(viewModel.UpdateAvailable),
+                    visibilityBindPath: nameof(viewModel.UpdateAvailableVisibility)
+                )
             };
         }
     }

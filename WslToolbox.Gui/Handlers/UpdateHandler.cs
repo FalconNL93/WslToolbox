@@ -126,7 +126,8 @@ namespace WslToolbox.Gui.Handlers
 
             var updatePrompt = DialogHelper.ShowMessageBoxInfo(
                 $"Update available - {_updateArgs.CurrentVersion}",
-                $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}.\n\n" +
+                $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}. You have version {_updateArgs.InstalledVersion}.\n\n" +
+                "After the update file has downloaded, the application will restart to apply the update.\n\n" +
                 $"Do you want to install this update now? (Size: {readableSize} MB)",
                 "Install update", closeButtonText: "Cancel update", dialogOwner: _view);
 

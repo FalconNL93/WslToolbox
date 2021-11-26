@@ -1,6 +1,4 @@
-﻿using System.Net;
-using AutoUpdaterDotNET;
-using WslToolbox.Gui.Configurations;
+﻿using AutoUpdaterDotNET;
 using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands
@@ -16,20 +14,13 @@ namespace WslToolbox.Gui.Commands
             IsExecutable = _ => UpdateHandler.IsAvailable();
         }
 
-        private static bool ValidUpdateFile()
-        {
-            var statusCode = UpdateHandler.HttpResponseCode(AppConfiguration.AppConfigurationUpdateXml);
-
-            return statusCode == HttpStatusCode.OK;
-        }
-
         public override void Execute(object parameter)
         {
+            IsExecutable = _ => false;
             var showPrompt = (bool) parameter;
 
             if (!UpdateHandler.IsAvailable()) return;
 
-            IsExecutable = _ => false;
             _updateHandler.CheckForUpdates(showPrompt);
             AutoUpdater.CheckForUpdateEvent += _ => { IsExecutable = _ => true; };
         }

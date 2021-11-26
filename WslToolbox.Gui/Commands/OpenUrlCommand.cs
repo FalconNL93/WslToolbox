@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using WslToolbox.Gui.Configurations;
+﻿using System.Diagnostics;
 
 namespace WslToolbox.Gui.Commands
 {

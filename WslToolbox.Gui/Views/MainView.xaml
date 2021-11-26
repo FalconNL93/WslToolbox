@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="{Binding Source={x:Static local:AppConfiguration.AppName}}"
         Height="517"
-        Width="728"
-        MinWidth="470"
+        Width="633"
+        MinWidth="633"
         MinHeight="341"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
@@ -19,6 +19,10 @@
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>
         <Style TargetType="{x:Type ui:DropDownButton}" BasedOn="{StaticResource {x:Type ui:DropDownButton}}">
+            <Setter Property="Margin" Value="0,0,5,0" />
+            <Setter Property="MinWidth" Value="140" />
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Margin" Value="0,0,5,0" />
             <Setter Property="MinWidth" Value="140" />
         </Style>
