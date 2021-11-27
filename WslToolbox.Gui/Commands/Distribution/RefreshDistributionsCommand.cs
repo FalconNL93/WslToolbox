@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using WslToolbox.Gui.Views;
 
 namespace WslToolbox.Gui.Commands.Distribution
@@ -11,7 +12,8 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             _mainView = mainView;
             IsExecutableDefault = o => true;
-            IsExecutable = IsExecutableDefault;
+
+            IsExecutable = _ => Process.GetProcessesByName("wslhost").Length > 0;
         }
 
         public override async void Execute(object parameter)

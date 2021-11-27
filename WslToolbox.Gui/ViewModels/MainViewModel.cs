@@ -17,6 +17,7 @@ using WslToolbox.Gui.Commands;
 using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Properties;
@@ -38,36 +39,36 @@ namespace WslToolbox.Gui.ViewModels
         private readonly OsHandler _osHandler = new();
         private readonly UpdateHandler _updateHandler;
         private readonly MainView _view;
-        public readonly ICommand CheckForUpdates;
-
-        public readonly ConfigurationHandler Config = new();
-        public readonly Logger Log;
 
         private List<DistributionClass> _distributionList = new();
-
         private BindingList<DistributionClass> _gridList = new();
-
         private DistributionClass _selectedDistribution;
-
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
-        public ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
+
+        public readonly ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
+        public readonly ICommand CheckForUpdates;
+        public readonly ConfigurationHandler Config = new();
+        public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
+        public readonly Logger Log;
 
         public MainViewModel(MainView view)
         {
             var args = Environment.GetCommandLineArgs();
 
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(o =>
+                .WithParsed(commandLineArgument =>
                 {
-                    if (o.ResetConfiguration) Config.Reset();
+                    if (commandLineArgument.ResetConfiguration) Config.Reset();
                 });
 
             Log = Log();
             _view = view;
             _updateHandler = new UpdateHandler(_view);
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
-
+            KeyboardShortcutHandler = new KeyboardShortcutHandler(Config.Configuration.KeyboardShortcutConfiguration);
+            
+            if (AppConfiguration.DebugMode) InitializeDebugMode();
             InitializeEventHandlers();
             InitializeUpdater();
         }
@@ -170,7 +171,7 @@ namespace WslToolbox.Gui.ViewModels
             ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
 
-            if (!Config.Configuration.DisableShortcuts) ShortcutHandler();
+            if (!Config.Configuration.KeyboardShortcutConfiguration.Enabled) ShortcutHandler();
         }
 
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
@@ -217,8 +218,6 @@ namespace WslToolbox.Gui.ViewModels
                             ExitApplication.Execute(null);
                             break;
                     }
-
-                if (args.Key == Key.F5) Refresh.Execute(_view);
             };
         }
 
@@ -235,11 +234,9 @@ namespace WslToolbox.Gui.ViewModels
             CheckForUpdates.Execute(false);
         }
 
-        private void DebugMode()
+        private void InitializeDebugMode()
         {
             Debug.WriteLine("Debug mode enabled.");
-            _view.Title = $"{_view.Title} - Debug Mode";
-
             Config.Configuration.MinimumLogLevel = LogEventLevel.Verbose;
         }
 
@@ -280,7 +277,6 @@ namespace WslToolbox.Gui.ViewModels
 
         private void OnPropertyChanged(string propertyName = null)
         {
-            Debug.WriteLine($"Property changed {propertyName}");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             if (propertyName != nameof(DistributionList)) return;

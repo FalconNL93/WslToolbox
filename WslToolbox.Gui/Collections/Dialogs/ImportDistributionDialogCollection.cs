@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -12,9 +11,8 @@ using WslToolbox.Gui.Validators;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
-    public class ImportDistributionDialogCollection : INotifyPropertyChanged
+    public sealed class ImportDistributionDialogCollection : INotifyPropertyChanged
     {
-        private readonly Regex _validCharacters = new("^[a-zA-Z0-9]*$");
         private bool _distributionNameIsValid;
         public string DistributionName;
         public string SelectedBasePath;
@@ -106,7 +104,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
             return openLocation.ShowDialog() == null ? null : Path.GetDirectoryName(openLocation.FileName);
         }
 
-        private bool ValidateImportValues(string distributionFile, string distributionBasePath, string distributionName)
+        private static bool ValidateImportValues(string distributionFile, string distributionBasePath,
+            string distributionName)
         {
             return
                 distributionFile.Length >= 1 && distributionBasePath.Length >= 1 &&
@@ -114,7 +113,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 DistributionNameValidator.ValidateName(distributionName);
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

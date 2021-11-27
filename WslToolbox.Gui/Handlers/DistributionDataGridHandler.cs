@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -96,7 +97,7 @@ namespace WslToolbox.Gui.Handlers
                     : null;
             };
 
-            if (!_mainViewModel.Config.Configuration.DisableShortcuts)
+            if (_mainViewModel.Config.Configuration.KeyboardShortcutConfiguration.Enabled)
                 DataGridShortcutHandler(dataGrid, _mainViewModel);
 
             return dataGrid;
@@ -107,8 +108,16 @@ namespace WslToolbox.Gui.Handlers
             dataGrid.KeyUp += (_, args) =>
             {
                 if (mainViewModel.SelectedDistribution == null) return;
+                var config = mainViewModel.Config.Configuration.KeyboardShortcutConfiguration;
 
-                if (args.Key == Key.F2) mainViewModel.RenameDistribution.Execute(mainViewModel.SelectedDistribution);
+                if (args.Key == config.GridDeleteKey && config.GridDeleteEnabled)
+                    mainViewModel.DeleteDistribution.Execute(mainViewModel.SelectedDistribution);
+
+                if (args.Key == config.GridRenameKey && config.GridRenameEnabled)
+                    mainViewModel.RenameDistribution.Execute(mainViewModel.SelectedDistribution);
+
+                if (args.Key == config.GridRefreshKey && config.GridRefreshEnabled)
+                    mainViewModel.RefreshDistributions();
             };
         }
 

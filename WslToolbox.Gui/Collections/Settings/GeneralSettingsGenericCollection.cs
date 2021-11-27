@@ -31,11 +31,6 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Hide Docker Distributions",
                     "Configuration.HideDockerDistributions",
                     Source),
-
-                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.DisableShortcuts),
-                    "Disable keyboard shortcuts",
-                    "Configuration.DisableShortcuts",
-                    Source)
             };
         }
 

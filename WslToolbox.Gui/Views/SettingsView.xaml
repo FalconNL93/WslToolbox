@@ -6,7 +6,7 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
         Title="Settings"
-        Height="380"
+        Height="465"
         MinHeight="380"
         MinWidth="453"
         WindowStartupLocation="CenterScreen"

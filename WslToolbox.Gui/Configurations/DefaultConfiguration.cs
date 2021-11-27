@@ -22,12 +22,13 @@ namespace WslToolbox.Gui.Configurations
         public bool ShowMinimumOsMessage { get; set; }
         public bool EnableServicePolling { get; set; }
         public int ServicePollingInterval { get; set; } = 5000;
-        public bool DisableShortcuts { get; set; }
         public bool AutoCheckUpdates { get; set; }
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();
         public ExperimentalConfiguration ExperimentalConfiguration { get; set; } = new();
         public AppearanceConfiguration AppearanceConfiguration { get; set; } = new();
         public NotificationConfiguration NotificationConfiguration { get; set; } = new();
+        public KeyboardShortcutConfiguration KeyboardShortcutConfiguration { get; set; } = new();
+        
     }
 }
