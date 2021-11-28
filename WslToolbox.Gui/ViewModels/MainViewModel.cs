@@ -172,7 +172,7 @@ namespace WslToolbox.Gui.ViewModels
             ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
 
-            if (!Config.Configuration.KeyboardShortcutConfiguration.Enabled) ShortcutHandler();
+            if (Config.Configuration.KeyboardShortcutConfiguration.Enabled) ShortcutHandler();
         }
 
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
