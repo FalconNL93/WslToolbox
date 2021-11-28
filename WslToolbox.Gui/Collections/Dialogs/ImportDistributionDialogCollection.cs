@@ -4,10 +4,13 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Microsoft.Win32;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Validators;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
@@ -32,12 +35,14 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IEnumerable<Control> Items()
+        public IEnumerable<Control> Items(MainViewModel viewModel)
         {
             var distributionFile = new TextBox {IsReadOnly = true, Margin = new Thickness(0, 0, 0, 2)};
             var distributionFileBrowse = new Button {Content = "Browse...", Margin = new Thickness(0, 0, 0, 10)};
 
-            var distributionBasePath = new TextBox {IsReadOnly = true, Margin = new Thickness(0, 0, 0, 2)};
+            var distributionBasePath = ElementHelper.AddTextBox(nameof(DefaultConfiguration.UserBasePath),
+                null, "Configuration.UserBasePath", viewModel.Config, width: 400, bindingMode: BindingMode.OneWay);
+
             var distributionBasePathBrowse = new Button {Content = "Browse...", Margin = new Thickness(0, 0, 0, 10)};
             var distributionName = new TextBox {Margin = new Thickness(0, 0, 0, 5)};
 

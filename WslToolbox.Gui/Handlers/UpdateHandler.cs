@@ -5,6 +5,7 @@ using System.Windows;
 using AutoUpdaterDotNET;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Handlers
@@ -129,12 +130,24 @@ namespace WslToolbox.Gui.Handlers
                 $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}. You have version {_updateArgs.InstalledVersion}.\n\n" +
                 "After the update file has downloaded, the application will restart to apply the update.\n\n" +
                 $"Do you want to install this update now? (Size: {readableSize} MB)",
-                "Install update", closeButtonText: "Cancel update", dialogOwner: _view);
+                "Download and install", "Download manually", "Cancel update",
+                dialogOwner: _view);
 
             var updatePromptResult = await updatePrompt.ShowAsync();
 
-            if (updatePromptResult == ContentDialogResult.Primary)
-                InstallUpdate();
+            switch (updatePromptResult)
+            {
+                case ContentDialogResult.Primary:
+                    InstallUpdate();
+                    break;
+                case ContentDialogResult.Secondary:
+                    ExplorerHelper.OpenLocal(_updateArgs.DownloadURL);
+                    break;
+                case ContentDialogResult.None:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public static HttpStatusCode HttpResponseCode(string url)

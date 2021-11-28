@@ -73,23 +73,26 @@ namespace WslToolbox.Gui.Helpers.Ui
         }
 
         public static TextBox AddTextBox(string name, string content, string bind = null, object source = null,
-            string requires = null, bool enabled = false, int width = 170)
+            string requires = null, bool enabled = false, int width = 0, BindingMode bindingMode = BindingMode.Default)
         {
             var textBox = new TextBox
             {
                 Name = name,
                 Text = content,
-                Width = width,
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
+            if (width > 1)
+                textBox.Width = width;
+
             if (requires != null)
-                textBox.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+                textBox.SetBinding(UIElement.IsEnabledProperty,
+                    BindHelper.BindingObject(requires, source, bindingMode));
             else
                 textBox.IsEnabled = enabled;
 
             if (bind != null)
-                textBox.SetBinding(Selector.SelectedValueProperty, BindHelper.BindingObject(bind, source));
+                textBox.SetBinding(TextBox.TextProperty, BindHelper.BindingObject(bind, source, bindingMode));
 
             return textBox;
         }

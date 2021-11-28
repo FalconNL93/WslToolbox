@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using WslToolbox.Gui.ViewModels;
 
@@ -12,14 +13,17 @@ namespace WslToolbox.Gui.Collections.Dialogs
             {
                 new Label
                 {
-                    Content = "Select distribution to install"
+                    Content = "Distribution",
+                    Margin = new Thickness(0, 0, 0, 5),
+                    FontWeight = FontWeights.Bold
                 },
                 new ComboBox
                 {
                     Name = "InstallDistributionList",
                     ItemsSource = viewModel.DistributionList.FindAll(x => !x.IsInstalled),
                     DisplayMemberPath = "Name",
-                    SelectedIndex = 0
+                    SelectedIndex = 0,
+                    MinWidth = 200
                 }
             };
 

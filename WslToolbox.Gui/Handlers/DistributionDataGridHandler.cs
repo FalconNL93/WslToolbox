@@ -1,10 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Input;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Configurations;

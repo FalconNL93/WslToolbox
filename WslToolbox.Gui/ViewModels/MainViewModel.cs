@@ -39,18 +39,18 @@ namespace WslToolbox.Gui.ViewModels
         private readonly OsHandler _osHandler = new();
         private readonly UpdateHandler _updateHandler;
         private readonly MainView _view;
+        public readonly ICommand CheckForUpdates;
+        public readonly ConfigurationHandler Config = new();
+
+        public readonly ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
+        public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
+        public readonly Logger Log;
 
         private List<DistributionClass> _distributionList = new();
         private BindingList<DistributionClass> _gridList = new();
         private DistributionClass _selectedDistribution;
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
-
-        public readonly ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
-        public readonly ICommand CheckForUpdates;
-        public readonly ConfigurationHandler Config = new();
-        public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
-        public readonly Logger Log;
 
         public MainViewModel(MainView view)
         {
@@ -67,8 +67,9 @@ namespace WslToolbox.Gui.ViewModels
             _updateHandler = new UpdateHandler(_view);
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
             KeyboardShortcutHandler = new KeyboardShortcutHandler(Config.Configuration.KeyboardShortcutConfiguration);
-            
+
             if (AppConfiguration.DebugMode) InitializeDebugMode();
+
             InitializeEventHandlers();
             InitializeUpdater();
         }
@@ -133,7 +134,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
         public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler);
         public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution);
-        public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution);
+        public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution, this);
         public ICommand StartWslService => new StartWslServiceCommand();
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();

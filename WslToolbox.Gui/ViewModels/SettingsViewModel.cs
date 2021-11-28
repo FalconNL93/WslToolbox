@@ -73,7 +73,14 @@ namespace WslToolbox.Gui.ViewModels
             {
                 Content = new StackPanel
                 {
-                    Children = {ElementHelper.AddItemsControl(bind, this)}
+                    Children =
+                    {
+                        new Grid
+                        {
+                            Margin = new Thickness(0, 0, 15, 0),
+                            Children = {ElementHelper.AddItemsControl(bind, this)}
+                        }
+                    }
                 }
             };
 

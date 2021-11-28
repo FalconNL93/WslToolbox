@@ -4,14 +4,18 @@ using WslToolbox.Core;
 using WslToolbox.Gui.Collections.Dialogs;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
     public class ImportDistributionCommand : GenericDistributionCommand
     {
-        public ImportDistributionCommand(DistributionClass distributionClass) : base(
+        private readonly MainViewModel _viewModel;
+
+        public ImportDistributionCommand(DistributionClass distributionClass, MainViewModel viewModel) : base(
             distributionClass)
         {
+            _viewModel = viewModel;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
@@ -23,7 +27,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             var importDistributionDialogCollection = new ImportDistributionDialogCollection();
             var selectDistribution = DialogHelper.ShowContentDialog(
                 "Import distribution",
-                importDistributionDialogCollection.Items(),
+                importDistributionDialogCollection.Items(_viewModel),
                 "Import", null, "Cancel");
 
             selectDistribution.Dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty,

@@ -8,7 +8,7 @@
         Title="Settings"
         Height="465"
         MinHeight="380"
-        MinWidth="453"
+        MinWidth="465"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
@@ -20,7 +20,7 @@
             <TabControl Margin="4,10,4,40" x:Name="SettingsControl" VerticalAlignment="Top">
                 <TabControl.Resources>
                     <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
-                        <Setter Property="Margin" Value="0,0,10,0" />
+                        <Setter Property="Margin" Value="0,0,0,5" />
                     </Style>
                     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                         <Setter Property="Margin" Value="0,0,0,5" />

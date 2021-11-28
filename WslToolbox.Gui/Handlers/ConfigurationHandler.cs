@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using WslToolbox.Gui.Configurations;
@@ -25,6 +26,8 @@ namespace WslToolbox.Gui.Handlers
         {
             Configuration =
                 JsonSerializer.Deserialize<DefaultConfiguration>(File.ReadAllText(Configuration.ConfigurationFile));
+
+            Debug.WriteLine(Configuration.UserBasePath);
         }
 
         public void Save()

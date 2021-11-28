@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
@@ -22,7 +20,10 @@ namespace WslToolbox.Gui.Collections.Settings
             var shortcutHandler =
                 new KeyboardShortcutHandler(settingsViewModel.Configuration.KeyboardShortcutConfiguration);
 
-            _shortcuts = shortcutHandler.Shortcuts;
+            _shortcuts = new List<KeyboardShortcut>();
+
+            _shortcuts.AddRange(shortcutHandler.AppShortcuts);
+            _shortcuts.AddRange(shortcutHandler.GridShortcuts);
         }
 
         public CompositeCollection Items()
@@ -46,10 +47,17 @@ namespace WslToolbox.Gui.Collections.Settings
 
             foreach (var shortcut in _shortcuts)
             {
+                var shortCutKey = string.Empty;
+
+                if (shortcut.Modifier != ModifierKeys.None)
+                    shortCutKey = $"{shortcut.Modifier.ToString()} + ";
+
+                shortCutKey = $"{shortCutKey}{shortcut.Key}";
+
                 keyboardChecks.Add(ElementHelper.AddCheckBox(shortcut.Configuration,
-                    $"{shortcut.Name}\t\t\t\t[{shortcut.Key}] ",
+                    $"{shortcut.Name}\t\t[{shortCutKey}]",
                     $"Configuration.KeyboardShortcutConfiguration.{shortcut.Configuration}",
-                    Source)
+                    Source, enabled: shortcut.Modifiable)
                 );
             }
 

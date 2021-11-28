@@ -22,7 +22,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             DistributionClass selectedDistribution = null;
             var selectDistribution = DialogHelper.ShowContentDialog(
-                "Select Distribution",
+                "Install Distribution",
                 InstallDistributionDialogCollection.Items(_viewModel),
                 "Install", null, "Cancel");
 
