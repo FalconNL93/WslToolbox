@@ -43,7 +43,6 @@ namespace WslToolbox.Gui.ViewModels
         public readonly ConfigurationHandler Config = new();
 
         public readonly ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
-        public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
         public readonly Logger Log;
 
         private List<DistributionClass> _distributionList = new();
@@ -51,6 +50,7 @@ namespace WslToolbox.Gui.ViewModels
         private DistributionClass _selectedDistribution;
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
+        public KeyboardShortcutHandler KeyboardShortcutHandler;
 
         public MainViewModel(MainView view)
         {
@@ -66,10 +66,10 @@ namespace WslToolbox.Gui.ViewModels
             _view = view;
             _updateHandler = new UpdateHandler(_view);
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
-            KeyboardShortcutHandler = new KeyboardShortcutHandler(Config.Configuration.KeyboardShortcutConfiguration);
 
             if (AppConfiguration.DebugMode) InitializeDebugMode();
 
+            InitializeKeyboardShortcuts();
             InitializeEventHandlers();
             InitializeUpdater();
         }
@@ -132,7 +132,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
-        public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler);
+        public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler, KeyboardShortcutHandler);
         public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution);
         public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution, this);
         public ICommand StartWslService => new StartWslServiceCommand();
@@ -151,6 +151,12 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void InitializeKeyboardShortcuts()
+        {
+            KeyboardShortcutHandler =
+                new KeyboardShortcutHandler(Config.Configuration.KeyboardShortcutConfiguration, this);
+        }
 
         public void SetStatus(string status)
         {
@@ -171,8 +177,7 @@ namespace WslToolbox.Gui.ViewModels
             Config.ConfigurationUpdatedSuccessfully += OnSaveSuccessfully;
             ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
-
-            if (Config.Configuration.KeyboardShortcutConfiguration.Enabled) ShortcutHandler();
+            ShortcutHandler();
         }
 
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)
@@ -207,18 +212,27 @@ namespace WslToolbox.Gui.ViewModels
 
         private void ShortcutHandler()
         {
-            _view.KeyUp += (sender, args) =>
+            _view.KeyUp += (_, args) =>
             {
+                if (!Config.Configuration.KeyboardShortcutConfiguration.Enabled) return;
+
+                var modifierKey = ModifierKeys.None;
+
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                    switch (args.Key)
-                    {
-                        case Key.OemComma:
-                            ShowSettings.Execute(null);
-                            break;
-                        case Key.Q:
-                            ExitApplication.Execute(null);
-                            break;
-                    }
+                    modifierKey = ModifierKeys.Control;
+                if (Keyboard.IsKeyDown(Key.LeftAlt))
+                    modifierKey = ModifierKeys.Alt;
+                if (Keyboard.IsKeyDown(Key.LeftShift))
+                    modifierKey = ModifierKeys.Shift;
+
+                var shortcut = KeyboardShortcutHandler.ShortcutByKey(args.Key, modifierKey);
+
+                if (shortcut is not {Enabled: true}) return;
+
+                Debug.WriteLine(
+                    $"Executing shortcut {shortcut.Name} ({shortcut.Modifier} + {shortcut.Key})");
+
+                shortcut.Action?.Invoke();
             };
         }
 

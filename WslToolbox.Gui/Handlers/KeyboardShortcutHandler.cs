@@ -1,50 +1,72 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Handlers
 {
     public class KeyboardShortcut
     {
-        public KeyboardShortcut(Key key, string configuration, string name, bool modifiable = true,
-            ModifierKeys modifier = ModifierKeys.None)
+        public KeyboardShortcut(Key key, ModifierKeys modifier, string name, string configuration,
+            bool modifiable = true, Action action = null, bool enabled = true)
         {
             Key = key;
-            Configuration = configuration;
-            Name = name;
-            Modifiable = modifiable;
             Modifier = modifier;
+            Name = name;
+            Configuration = configuration;
+            Modifiable = modifiable;
+            Enabled = enabled;
+            Action = action;
         }
 
-        public Key Key { get; set; }
-        public string Configuration { get; set; }
-        public string Name { get; set; }
-        public bool Modifiable { get; set; }
-        public ModifierKeys Modifier { get; set; }
+        public Key Key { get; }
+        public ModifierKeys Modifier { get; }
+        public string Configuration { get; }
+        public string Name { get; }
+        public bool Modifiable { get; }
+        public Action Action { get; }
+        public bool Enabled { get; }
     }
 
     public class KeyboardShortcutHandler
     {
         private readonly KeyboardShortcutConfiguration _config;
+        private readonly MainViewModel _model;
+        public readonly List<KeyboardShortcut> KeyboardShortcuts = new();
 
-        public KeyboardShortcutHandler(KeyboardShortcutConfiguration config)
+        public KeyboardShortcutHandler(KeyboardShortcutConfiguration config, MainViewModel model)
         {
             _config = config;
+            _model = model;
+
+            KeyboardShortcuts.AddRange(AppShortcuts);
         }
 
-        public List<KeyboardShortcut> AppShortcuts => new()
+        private List<KeyboardShortcut> AppShortcuts => new()
         {
-            new KeyboardShortcut(_config.AppSettingsKey, nameof(_config.AppSettingsEnabled), "Show settings", false,
-                ModifierKeys.Control),
-            new KeyboardShortcut(_config.AppSettingsExit, nameof(_config.AppExitEnabled), "Exit application", false,
-                ModifierKeys.Control)
+            new KeyboardShortcut(_config.AppSettingsKey, ModifierKeys.Control, "Show settings",
+                nameof(_config.AppSettingsEnabled), false, () => _model.ShowSettings.Execute(null),
+                _config.AppSettingsEnabled),
+
+            new KeyboardShortcut(_config.AppSettingsExit, ModifierKeys.Control, "Exit application",
+                nameof(_config.AppExitEnabled), false, () => _model.ExitApplication.Execute(null),
+                _config.AppExitEnabled)
         };
 
-        public List<KeyboardShortcut> GridShortcuts => new()
+        public void Add(Key key, ModifierKeys modifierKey, string name, string configuration, bool modifiable,
+            Action action)
         {
-            new KeyboardShortcut(_config.GridRenameKey, nameof(_config.GridRenameEnabled), "Rename"),
-            new KeyboardShortcut(_config.GridDeleteKey, nameof(_config.GridDeleteEnabled), "Delete"),
-            new KeyboardShortcut(_config.GridRenameKey, nameof(_config.GridRefreshEnabled), "Refresh")
-        };
+            KeyboardShortcuts.Add(new KeyboardShortcut(key, modifierKey, name, configuration, modifiable, action));
+        }
+
+        public KeyboardShortcut ShortcutByKey(Key key, ModifierKeys modifierKey = ModifierKeys.None)
+        {
+            return KeyboardShortcuts
+                .Where(x => x.Key == key)
+                //.Where(x => x.Enabled)
+                .FirstOrDefault(x => x.Modifier == modifierKey);
+        }
     }
 }

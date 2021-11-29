@@ -95,6 +95,7 @@ namespace WslToolbox.Gui.Views
         {
             HandleTheme();
             HandleSystemTray();
+            _viewModel.InitializeKeyboardShortcuts();
         }
 
         private void HandleTheme()

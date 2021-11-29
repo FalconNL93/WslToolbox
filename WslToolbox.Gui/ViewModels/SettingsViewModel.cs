@@ -12,14 +12,16 @@ namespace WslToolbox.Gui.ViewModels
     public class SettingsViewModel
     {
         private readonly SettingsView _view;
+        public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
 
         public SettingsViewModel(SettingsView view, DefaultConfiguration configuration,
-            ConfigurationHandler configHandler, OsHandler osHandler)
+            ConfigurationHandler configHandler, OsHandler osHandler, KeyboardShortcutHandler keyboardShortcutHandler)
         {
             _view = view;
             ConfigHandler = configHandler;
             Configuration = configuration;
             OsHandler = osHandler;
+            KeyboardShortcutHandler = keyboardShortcutHandler;
 
             InitializeSettingsTabsElements();
             InitializeSettingsElement();

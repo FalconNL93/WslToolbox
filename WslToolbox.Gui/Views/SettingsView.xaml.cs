@@ -14,10 +14,11 @@ namespace WslToolbox.Gui.Views
     {
         private readonly SettingsViewModel _viewModel;
 
-        public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler, OsHandler osHandler)
+        public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler, OsHandler osHandler,
+            KeyboardShortcutHandler keyboardShortcutHandler)
         {
             InitializeComponent();
-            SettingsViewModel viewModel = new(this, configuration, configHandler, osHandler);
+            SettingsViewModel viewModel = new(this, configuration, configHandler, osHandler, keyboardShortcutHandler);
 
             DataContext = viewModel;
             _viewModel = viewModel;

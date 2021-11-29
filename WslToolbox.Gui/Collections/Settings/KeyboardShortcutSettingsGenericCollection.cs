@@ -17,13 +17,7 @@ namespace WslToolbox.Gui.Collections.Settings
         public KeyboardShortcutSettingsGenericCollection(object source) : base(source)
         {
             var settingsViewModel = (SettingsViewModel) source;
-            var shortcutHandler =
-                new KeyboardShortcutHandler(settingsViewModel.Configuration.KeyboardShortcutConfiguration);
-
-            _shortcuts = new List<KeyboardShortcut>();
-
-            _shortcuts.AddRange(shortcutHandler.AppShortcuts);
-            _shortcuts.AddRange(shortcutHandler.GridShortcuts);
+            _shortcuts = settingsViewModel.KeyboardShortcutHandler.KeyboardShortcuts;
         }
 
         public CompositeCollection Items()
