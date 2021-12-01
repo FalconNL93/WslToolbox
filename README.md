@@ -63,4 +63,4 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 
 ![Export Status](./docs/images/screenshots/tb_10.png?raw=true "Export Status")
 
-## Credits
+## Thanks

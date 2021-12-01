@@ -3,22 +3,29 @@ using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
     public class ExportDistributionCommand : GenericDistributionCommand
     {
-        public ExportDistributionCommand(DistributionClass distributionClass) : base(
+        private readonly MainViewModel _model;
+
+        public ExportDistributionCommand(DistributionClass distributionClass, MainViewModel model) : base(
             distributionClass)
         {
+            _model = model;
             IsExecutableDefault = _ => distributionClass != null;
             IsExecutable = IsExecutableDefault;
         }
 
         public override async void Execute(object parameter)
         {
-            var warningDialog = await ShowExportWarning().ShowAsync();
-            if (warningDialog != ContentDialogResult.Primary) return;
+            if (!_model.Config.Configuration.HideExportWarning)
+            {
+                var warningDialog = await ShowExportWarning().ShowAsync();
+                if (warningDialog != ContentDialogResult.Primary) return;
+            }
 
             var saveExportDialog = FileDialogHandler.SaveFileDialog();
             if (!(bool) saveExportDialog.ShowDialog()) return;

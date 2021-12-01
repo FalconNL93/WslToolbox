@@ -9,6 +9,9 @@ namespace WslToolbox.Gui.Configurations
         public static string AppLogsFileName => "logs.txt";
         public static string AppConfigurationFileName => "settings.json";
         public static bool EnableUpdater => true;
+        public static string GithubRepository => "https://github.com/FalconNL93/WslToolbox";
+        public static string GithubDocs => "https://falconnl93.github.io/wsltoolbox-docs";
+
 #if(DEBUG)
         //public static string AppConfigurationUpdateXml => "http://localhost/wsltoolbox.xml";
         public static string AppName => "WSL Toolbox (Dev)";

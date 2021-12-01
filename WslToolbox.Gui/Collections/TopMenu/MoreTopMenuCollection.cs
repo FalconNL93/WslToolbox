@@ -36,6 +36,11 @@ namespace WslToolbox.Gui.Collections.TopMenu
                 new Separator(),
                 new MenuItem
                 {
+                    Header = "About",
+                    Command = viewModel.ShowAboutDialog
+                },
+                new MenuItem
+                {
                     Header = "Exit application",
                     Command = viewModel.ExitApplication
                 }

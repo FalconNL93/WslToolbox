@@ -37,14 +37,15 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
         public IEnumerable<Control> Items(MainViewModel viewModel)
         {
-            var distributionFile = new TextBox {IsReadOnly = true, Margin = new Thickness(0, 0, 0, 2)};
+            var distributionFile = new TextBox
+                {IsEnabled = false, IsReadOnly = true, Margin = new Thickness(0, 0, 0, 2)};
             var distributionFileBrowse = new Button {Content = "Browse...", Margin = new Thickness(0, 0, 0, 10)};
 
             var distributionBasePath = ElementHelper.AddTextBox(nameof(DefaultConfiguration.UserBasePath),
                 null, "Configuration.UserBasePath", viewModel.Config, width: 400, bindingMode: BindingMode.OneWay);
 
             var distributionBasePathBrowse = new Button {Content = "Browse...", Margin = new Thickness(0, 0, 0, 10)};
-            var distributionName = new TextBox {Margin = new Thickness(0, 0, 0, 5)};
+            var distributionName = new TextBox {Margin = new Thickness(0, 0, 0, 10)};
 
             distributionFileBrowse.Click += (_, _) => { distributionFile.Text = SelectDistributionFile(); };
             distributionBasePathBrowse.Click += (_, _) => { distributionBasePath.Text = SelectDistributionBasePath(); };
@@ -61,7 +62,19 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
             Control[] items =
             {
+                new Label {Content = "Name:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
+                new Label
+                {
+                    Content = "- Only alphanumeric characters are allowed.\n" +
+                              "- Name must contain atleast 3 characters.",
+                    Margin = new Thickness(0, 0, 0, 5)
+                },
+                distributionName,
                 new Label {Content = "Filename:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
+                new Label
+                {
+                    Content = "Select the file which needs to be imported\n"
+                },
                 distributionFile,
                 ElementHelper.HiddenSeparator(),
                 distributionFileBrowse,
@@ -70,15 +83,6 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 distributionBasePath,
                 ElementHelper.HiddenSeparator(),
                 distributionBasePathBrowse,
-
-                new Label {Content = "Name:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
-                new Label
-                {
-                    Content = "- Only alphanumeric characters are allowed.\n" +
-                              "- Name must contain atleast 3 characters.",
-                    Margin = new Thickness(0, 0, 0, 5)
-                },
-                distributionName
             };
 
             return items;

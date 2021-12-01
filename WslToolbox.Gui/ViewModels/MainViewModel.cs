@@ -133,13 +133,14 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
         public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler, KeyboardShortcutHandler);
-        public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution);
+        public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution, this);
         public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution, this);
         public ICommand StartWslService => new StartWslServiceCommand();
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
         public ICommand ShowSelectDialog => new InstallDistributionCommand(this);
+        public ICommand ShowAboutDialog => new ShowAboutDialogCommand(this);
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
@@ -228,10 +229,6 @@ namespace WslToolbox.Gui.ViewModels
                 var shortcut = KeyboardShortcutHandler.ShortcutByKey(args.Key, modifierKey);
 
                 if (shortcut is not {Enabled: true}) return;
-
-                Debug.WriteLine(
-                    $"Executing shortcut {shortcut.Name} ({shortcut.Modifier} + {shortcut.Key})");
-
                 shortcut.Action?.Invoke();
             };
         }

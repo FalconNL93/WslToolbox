@@ -45,6 +45,11 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideDockerDistributions),
                     "Hide Docker Distributions",
                     "Configuration.HideDockerDistributions",
+                    Source),
+
+                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.HideExportWarning),
+                    "Hide export warning",
+                    "Configuration.HideExportWarning",
                     Source)
             };
         }
