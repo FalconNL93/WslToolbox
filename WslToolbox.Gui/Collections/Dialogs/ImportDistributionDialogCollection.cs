@@ -82,7 +82,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 new Label {Content = "Base path:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
                 distributionBasePath,
                 ElementHelper.HiddenSeparator(),
-                distributionBasePathBrowse,
+                distributionBasePathBrowse
             };
 
             return items;

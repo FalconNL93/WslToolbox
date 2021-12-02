@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Win32;
 
@@ -25,7 +26,7 @@ namespace WslToolbox.Core.Helpers
             }
         }
 
-        public static string GetKey(DistributionClass distribution, string key, string defaultValue = "")
+        public static object GetKey(DistributionClass distribution, string key, string defaultValue = "")
         {
             if (!OperatingSystem.IsWindows()) return defaultValue;
 
@@ -62,6 +63,15 @@ namespace WslToolbox.Core.Helpers
             }
 
             return string.Empty;
+        }
+
+        public static IEnumerable<string> ListDistributions()
+        {
+            if (!OperatingSystem.IsWindows()) return null;
+
+            var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+
+            return wslRegistry?.GetSubKeyNames();
         }
     }
 }

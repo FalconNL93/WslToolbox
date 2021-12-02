@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.Json;
 using WslToolbox.Core.Helpers;
 
 namespace WslToolbox.Core
@@ -10,6 +14,10 @@ namespace WslToolbox.Core
     {
         public const string StateRunning = "Running";
         public const string StateStopped = "Stopped";
+        public const string StateAvailable = "Stopped";
+
+        private readonly Dictionary<string, string> _stateCache = new();
+
         public bool IsDefault { get; set; }
         public bool IsInstalled { get; set; }
         public string Name { get; set; }
@@ -19,75 +27,72 @@ namespace WslToolbox.Core
         public string BasePath { get; set; }
         public string BasePathLocal { get; set; }
 
+        public int DefaultUid { get; set; }
+
         public long Size { get; set; }
 
-        public static List<DistributionClass> FromAvailableOutput(string output)
+        public static List<DistributionClass> ListAvailableDistributions()
+        {
+            return DistributionFetcherHelper.ReadOnlineDistributions();
+        }
+
+        public List<DistributionClass> ListDistributions(string output)
         {
             List<DistributionClass> distros = new();
+            var distributionGuids = RegistryHelper.ListDistributions();
 
-            using (StringReader reader = new(output))
+            foreach (var distributionGuid in distributionGuids)
             {
-                var headerLine = reader.ReadLine();
-                string line;
-
-                while ((line = reader.ReadLine()) != null)
+                DistributionClass distro = new()
                 {
-                    if (line?.Length == 0 || line.StartsWith("NAME") || line.StartsWith("Install")) continue;
+                    Guid = distributionGuid
+                };
 
-                    var tabbed = line.Split("\t");
-                    DistributionClass distro = new()
-                    {
-                        IsDefault = false,
-                        Name = tabbed[0],
-                        State = "Available",
-                        Version = 2,
-                        IsInstalled = false
-                    };
+                distro.Name = (string) RegistryHelper.GetKey(distro, "DistributionName");
+                distro.State = DistributionState(distro.Name, output);
+                distro.Version = int.Parse((string) RegistryHelper.GetKey(distro, "Version"));
+                distro.BasePath = (string) RegistryHelper.GetKey(distro, "BasePath");
+                distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
+                distro.IsDefault = false;
+                distro.IsInstalled = true;
+                distro.DefaultUid = int.Parse((string) RegistryHelper.GetKey(distro, "DefaultUid"));
 
-                    distros.Add(distro);
-                }
+                var basePathDirectoryInfo = new DirectoryInfo(distro.BasePathLocal);
+                var totalSize = basePathDirectoryInfo.EnumerateFiles().Sum(file => file.Length);
+
+                distro.Size = totalSize;
+
+                distros.Add(distro);
             }
 
             return distros;
         }
 
-        public static List<DistributionClass> FromOutput(string output)
+        private string DistributionState(string name, string output)
         {
-            List<DistributionClass> distros = new();
-
             try
             {
                 using StringReader reader = new(output);
-                var headerLine = reader.ReadLine();
                 string line;
 
                 while ((line = reader.ReadLine()) != null)
                 {
                     var tabbed = line.Split("\t");
-                    DistributionClass distro = new();
 
-                    distro.IsDefault = tabbed[0] == "*" ? distro.IsDefault = true : distro.IsDefault = false;
-                    distro.Name = tabbed[1];
-                    distro.State = tabbed[2];
-                    distro.Version = int.Parse(tabbed[3]);
-                    distro.IsInstalled = true;
-                    distro.Guid = RegistryHelper.DistributionRegistryByName(tabbed[1]);
-                    distro.BasePath = RegistryHelper.GetKey(distro, "BasePath");
-                    distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
+                    if (tabbed[1] != name) continue;
 
-                    var basePathDirectoryInfo = new DirectoryInfo(distro.BasePathLocal);
-                    var totalSize = basePathDirectoryInfo.EnumerateFiles().Sum(file => file.Length);
-
-                    distro.Size = totalSize;
-
-                    distros.Add(distro);
+                    if (_stateCache.ContainsKey(name))
+                        _stateCache[name] = tabbed[2];
+                    else
+                        _stateCache.Add(name, tabbed[2]);
                 }
             }
             catch (Exception e)
             {
+                // ignored
             }
 
-            return distros;
+            return _stateCache[name];
         }
     }
 }

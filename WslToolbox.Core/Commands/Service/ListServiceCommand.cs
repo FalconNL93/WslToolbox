@@ -11,12 +11,12 @@ namespace WslToolbox.Core.Commands.Service
 
         public static async Task<List<DistributionClass>> ListDistributions(bool withoutDocker = false)
         {
+            var distributionClass = new DistributionClass();
             var distributionListOutput = CommandClass.ExecuteCommand(Command);
-            var distributionAvailableListOutput = CommandClass.ExecuteCommand(CommandOnline);
 
-            var distributionList = DistributionClass.FromOutput(distributionListOutput.Output);
+            var distributionList = distributionClass.ListDistributions(distributionListOutput.Output);
             var distributionListAvailable =
-                DistributionClass.FromAvailableOutput(distributionAvailableListOutput.Output);
+                DistributionClass.ListAvailableDistributions();
 
             distributionList.AddRange(distributionListAvailable
                 .Where(dist1 => distributionList.All(dist2 => dist2.Name != dist1.Name)));
