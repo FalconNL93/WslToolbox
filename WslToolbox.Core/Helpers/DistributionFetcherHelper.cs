@@ -46,8 +46,11 @@ namespace WslToolbox.Core.Helpers
                 var onlineDistributions =
                     JsonSerializer.Deserialize<OnlineDistributions>(await jsonResponse.ReadToEndAsync());
 
-                OnFetchSuccessful();
-                if (onlineDistributions == null) return distros;
+                if (onlineDistributions == null)
+                {
+                    OnFetchSuccessful();
+                    return distros;
+                }
 
                 distros.AddRange(onlineDistributions.Distributions.Select(distribution => new DistributionClass
                 {
@@ -67,6 +70,7 @@ namespace WslToolbox.Core.Helpers
                 return distros;
             }
 
+            OnFetchSuccessful();
             return distros;
         }
 

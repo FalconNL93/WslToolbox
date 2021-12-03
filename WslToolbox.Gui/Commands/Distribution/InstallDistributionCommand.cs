@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Controls;
 using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Core.EventArguments;
@@ -12,46 +15,43 @@ namespace WslToolbox.Gui.Commands.Distribution
     public class InstallDistributionCommand : GenericCommand
     {
         private readonly MainViewModel _viewModel;
+        private readonly ContentDialog _waitDialog;
+        private List<DistributionClass> _installableDistributions;
+        private int _errors;
 
         public InstallDistributionCommand(MainViewModel viewModel)
         {
             _viewModel = viewModel;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
+
+            _waitDialog = DialogHelper.ShowMessageBoxInfo(
+                "Please wait",
+                "Fetching online distribution list...");
         }
 
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
 
-            var waitDialog = DialogHelper.ShowMessageBoxInfo(
-                "Please wait",
-                "Fetching online distribution list...");
-            var waitDialogAsync = waitDialog.ShowAsync();
+            DistributionFetcherHelper.FetchStarted += FetchStarted;
+            DistributionFetcherHelper.FetchFailed += FetchFailed;
+            DistributionFetcherHelper.FetchSuccessful += FetchSuccessful;
 
-            DistributionFetcherHelper.FetchSuccessful += (_, _) => { waitDialog.Hide(); };
-            DistributionFetcherHelper.FetchStarted += (_, _) =>
-            {
-                waitDialog.IsPrimaryButtonEnabled = false;
-                waitDialog.IsSecondaryButtonEnabled = false;
-                waitDialog.CloseButtonText = null;
-            };
+            _installableDistributions = await DistributionClass.ListAvailableDistributions();
 
-            DistributionFetcherHelper.FetchFailed += (_, e) =>
-            {
-                var args = (FetchEventArguments) e;
-                waitDialog.Hide();
-                DialogHelper.ShowMessageBoxInfo(
-                    "Error",
-                    $"Could not fetch online distribution list.\n\n{args.Message}").ShowAsync();
-            };
+            if (_installableDistributions != null && _errors == 0)
+                SelectDialog();
 
-            var installable = await DistributionClass.ListAvailableDistributions();
-  
+            IsExecutable = _ => true;
+        }
+
+        private async void SelectDialog()
+        {
             DistributionClass selectedDistribution = null;
             var selectDistribution = DialogHelper.ShowContentDialog(
                 "Install Distribution",
-                InstallDistributionDialogCollection.Items(installable),
+                InstallDistributionDialogCollection.Items(_installableDistributions),
                 "Install", null, "Cancel");
 
             var result = await selectDistribution.Dialog.ShowAsync();
@@ -72,7 +72,30 @@ namespace WslToolbox.Gui.Commands.Distribution
             }
 
             Core.Commands.Distribution.OpenShellDistributionCommand.Execute(selectedDistribution);
-            IsExecutable = _ => true;
+        }
+
+        private async void FetchSuccessful(object? sender, EventArgs e)
+        {
+            _waitDialog.Hide();
+        }
+
+        private async void FetchFailed(object? sender, EventArgs e)
+        {
+            _errors++;
+            var args = (FetchEventArguments) e;
+            _waitDialog.Hide();
+            var dialog = DialogHelper.ShowMessageBoxInfo(
+                "Error",
+                $"Could not fetch online distribution list.\n\n{args.Message}").ShowAsync();
+        }
+
+        private void FetchStarted(object? sender, EventArgs e)
+        {
+            _waitDialog.IsPrimaryButtonEnabled = false;
+            _waitDialog.IsSecondaryButtonEnabled = false;
+            _waitDialog.CloseButtonText = null;
+
+            _waitDialog.ShowAsync();
         }
     }
 }
