@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.Json;
+using System.Threading.Tasks;
 using WslToolbox.Core.Helpers;
 
 namespace WslToolbox.Core
@@ -31,9 +28,9 @@ namespace WslToolbox.Core
 
         public long Size { get; set; }
 
-        public static List<DistributionClass> ListAvailableDistributions()
+        public static async Task<List<DistributionClass>> ListAvailableDistributions()
         {
-            return DistributionFetcherHelper.ReadOnlineDistributions();
+            return await DistributionFetcherHelper.ReadOnlineDistributions();
         }
 
         public List<DistributionClass> ListDistributions(string output)

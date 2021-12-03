@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using WslToolbox.Core.EventArguments;
 
 namespace WslToolbox.Core.Helpers
 {
@@ -27,25 +28,25 @@ namespace WslToolbox.Core.Helpers
         private const string Url =
             "https://raw.githubusercontent.com/microsoft/WSL/master/distributions/DistributionInfo.json";
 
-        public static List<DistributionClass> ReadOnlineDistributions()
+        public static event EventHandler FetchStarted;
+        public static event EventHandler FetchFailed;
+        public static event EventHandler FetchSuccessful;
+
+        public static async Task<List<DistributionClass>> ReadOnlineDistributions()
         {
             var distros = new List<DistributionClass>();
+            OnFetchStarted();
 
             try
             {
                 if (WebRequest.Create(Url) is not HttpWebRequest request) return distros;
-                var response = (HttpWebResponse) request.GetResponse();
+                var response = await request.GetResponseAsync();
                 var encoding = Encoding.ASCII;
-                string jsonResponse;
-                using (var reader = new StreamReader(response.GetResponseStream(), encoding))
-                {
-                    jsonResponse = reader.ReadToEnd();
-                }
-
-                Debug.WriteLine(jsonResponse);
+                var jsonResponse = new StreamReader(response.GetResponseStream(), encoding);
                 var onlineDistributions =
-                    JsonSerializer.Deserialize<OnlineDistributions>(jsonResponse);
+                    JsonSerializer.Deserialize<OnlineDistributions>(await jsonResponse.ReadToEndAsync());
 
+                OnFetchSuccessful();
                 if (onlineDistributions == null) return distros;
 
                 distros.AddRange(onlineDistributions.Distributions.Select(distribution => new DistributionClass
@@ -57,16 +58,31 @@ namespace WslToolbox.Core.Helpers
                     BasePathLocal = null,
                     IsDefault = false,
                     IsInstalled = false,
-                    DefaultUid = 0,
+                    DefaultUid = 0
                 }));
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                OnFetchFailed(new FetchEventArguments(e.Message));
                 return distros;
             }
 
             return distros;
+        }
+
+        private static void OnFetchSuccessful()
+        {
+            FetchSuccessful?.Invoke(null, EventArgs.Empty);
+        }
+
+        private static void OnFetchStarted()
+        {
+            FetchStarted?.Invoke(null, EventArgs.Empty);
+        }
+
+        private static void OnFetchFailed(FetchEventArguments eventArgs = null)
+        {
+            FetchFailed?.Invoke(null, eventArgs ?? EventArgs.Empty);
         }
     }
 }
