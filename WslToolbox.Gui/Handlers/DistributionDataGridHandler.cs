@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Input;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Configurations;
@@ -24,8 +23,6 @@ namespace WslToolbox.Gui.Handlers
             _mainViewModel = mainViewModel;
             _bind = nameof(_mainViewModel.GridList);
             _contextMenu = null;
-
-            RegisterShortcuts();
         }
 
         public DataGrid DataGrid()
@@ -116,16 +113,6 @@ namespace WslToolbox.Gui.Handlers
             if (minWidth > 0) dataGridBoundColumn.MinWidth = minWidth;
 
             return dataGridBoundColumn;
-        }
-
-        private void RegisterShortcuts()
-        {
-            var shortcutConfig = _mainViewModel.Config.Configuration.KeyboardShortcutConfiguration;
-            var shortcutHandler = _mainViewModel.KeyboardShortcutHandler;
-
-            shortcutHandler.Add(shortcutConfig.GridRenameKey, ModifierKeys.None, "Rename",
-                nameof(shortcutConfig.GridRenameEnabled), true,
-                () => _mainViewModel.DeleteDistribution.Execute(_mainViewModel.SelectedDistribution));
         }
     }
 }

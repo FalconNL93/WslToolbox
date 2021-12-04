@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Controls;
 using ModernWpf.Controls;
 using WslToolbox.Core;
@@ -14,9 +12,13 @@ namespace WslToolbox.Gui.Commands.Distribution
 {
     public class InstallDistributionCommand : GenericCommand
     {
+        public enum Parameters
+        {
+            ClearCache
+        }
+
         private readonly MainViewModel _viewModel;
         private readonly ContentDialog _waitDialog;
-        private List<DistributionClass> _installableDistributions;
         private int _errors;
 
         public InstallDistributionCommand(MainViewModel viewModel)
@@ -30,20 +32,42 @@ namespace WslToolbox.Gui.Commands.Distribution
                 "Fetching online distribution list...");
         }
 
-        public override async void Execute(object parameter)
+        private void RegisterEventHandlers()
         {
-            IsExecutable = _ => false;
-
             DistributionFetcherHelper.FetchStarted += FetchStarted;
             DistributionFetcherHelper.FetchFailed += FetchFailed;
             DistributionFetcherHelper.FetchSuccessful += FetchSuccessful;
+        }
 
-            _installableDistributions = await DistributionClass.ListAvailableDistributions();
+        public override async void Execute(object parameter)
+        {
+            if (parameter != null)
+            {
+                ParameterHandler((Parameters) parameter);
+                return;
+            }
 
-            if (_installableDistributions != null && _errors == 0)
+            IsExecutable = _ => false;
+            RegisterEventHandlers();
+
+            _viewModel.InstallableDistributions ??= await DistributionClass.ListAvailableDistributions();
+
+            if (_viewModel.InstallableDistributions != null && _errors == 0)
                 SelectDialog();
 
             IsExecutable = _ => true;
+        }
+
+        private void ParameterHandler(Parameters parameter)
+        {
+            switch (parameter)
+            {
+                case Parameters.ClearCache:
+                    _viewModel.InstallableDistributions = null;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
+            }
         }
 
         private async void SelectDialog()
@@ -51,15 +75,11 @@ namespace WslToolbox.Gui.Commands.Distribution
             DistributionClass selectedDistribution = null;
             var selectDistribution = DialogHelper.ShowContentDialog(
                 "Install Distribution",
-                InstallDistributionDialogCollection.Items(_installableDistributions),
+                InstallDistributionDialogCollection.Items(_viewModel.InstallableDistributions),
                 "Install", null, "Cancel");
 
             var result = await selectDistribution.Dialog.ShowAsync();
-            if (result != ContentDialogResult.Primary)
-            {
-                IsExecutable = _ => false;
-                return;
-            }
+            if (result != ContentDialogResult.Primary) return;
 
             var stack = (StackPanel) selectDistribution.Content;
 
@@ -74,19 +94,18 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.OpenShellDistributionCommand.Execute(selectedDistribution);
         }
 
-        private async void FetchSuccessful(object? sender, EventArgs e)
+        private void FetchSuccessful(object? sender, EventArgs e)
         {
             _waitDialog.Hide();
         }
 
-        private async void FetchFailed(object? sender, EventArgs e)
+        private void FetchFailed(object? sender, EventArgs e)
         {
             _errors++;
             var args = (FetchEventArguments) e;
             _waitDialog.Hide();
-            var dialog = DialogHelper.ShowMessageBoxInfo(
-                "Error",
-                $"Could not fetch online distribution list.\n\n{args.Message}").ShowAsync();
+            DialogHelper.ShowMessageBoxInfo(
+                "Error", $"Could not fetch online distribution list.\n\n{args.Message}").ShowAsync();
         }
 
         private void FetchStarted(object? sender, EventArgs e)

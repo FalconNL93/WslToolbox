@@ -10,7 +10,7 @@ namespace WslToolbox.Gui.Handlers
         {
             return new OpenFileDialog
             {
-                Title = "Export",
+                Title = "Import",
                 Filter = Filter(),
                 AddExtension = FileDialogConfiguration.AddExtension,
                 DefaultExt = FileDialogConfiguration.DefaultExtension,

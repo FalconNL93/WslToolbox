@@ -11,6 +11,8 @@ namespace WslToolbox.Gui.Commands.Distribution
     public class ImportDistributionCommand : GenericDistributionCommand
     {
         private readonly MainViewModel _viewModel;
+        private readonly ContentDialog _waitDialog;
+        private readonly WaitHelper _waitHelper;
 
         public ImportDistributionCommand(DistributionClass distributionClass, MainViewModel viewModel) : base(
             distributionClass)
@@ -18,9 +20,37 @@ namespace WslToolbox.Gui.Commands.Distribution
             _viewModel = viewModel;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
+            RegisterEventHandlers();
+            _waitHelper = new WaitHelper
+            {
+                DialogTitle = "Importing",
+                DialogMessage = "Please wait while importing the distribution..."
+            };
+
+            _waitDialog = _waitHelper.WaitDialog();
         }
 
-        public static event EventHandler DistributionImported;
+        private void RegisterEventHandlers()
+        {
+            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += ImportStarted;
+            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += ImportFinished;
+        }
+
+        private void ImportStarted(object? sender, EventArgs e)
+        {
+            _waitDialog.IsPrimaryButtonEnabled = false;
+            _waitDialog.IsSecondaryButtonEnabled = false;
+            _waitDialog.CloseButtonText = "Hide";
+
+            if (!_waitDialog.IsVisible)
+                _waitDialog.ShowAsync();
+        }
+
+        private void ImportFinished(object? sender, EventArgs e)
+        {
+            if (_waitDialog.IsVisible)
+                _waitDialog.Hide();
+        }
 
         public override async void Execute(object parameter)
         {
@@ -38,13 +68,14 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (result != ContentDialogResult.Primary) return;
             IsExecutable = _ => false;
+            _waitDialog.CloseButtonText = null;
+            _waitDialog.ShowAsync();
             ToolboxClass.OnRefreshRequired(2000);
             Core.Commands.Distribution.ImportDistributionCommand.Execute(
                 importDistributionDialogCollection.DistributionName,
                 importDistributionDialogCollection.SelectedBasePath,
                 importDistributionDialogCollection.SelectedFilePath);
 
-            DistributionImported?.Invoke(this, EventArgs.Empty);
             IsExecutable = IsExecutableDefault;
         }
     }

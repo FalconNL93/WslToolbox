@@ -50,7 +50,9 @@ namespace WslToolbox.Gui.ViewModels
         private DistributionClass _selectedDistribution;
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
+        public List<DistributionClass> InstallableDistributions = null;
         public KeyboardShortcutHandler KeyboardShortcutHandler;
+
 
         public MainViewModel(MainView view)
         {
@@ -68,7 +70,6 @@ namespace WslToolbox.Gui.ViewModels
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
 
             if (AppConfiguration.DebugMode) InitializeDebugMode();
-
             InitializeKeyboardShortcuts();
             InitializeEventHandlers();
             InitializeUpdater();
@@ -139,7 +140,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopWslService => new StopWslServiceCommand();
         public ICommand RestartWslService => new RestartWslServiceCommand();
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
-        public ICommand ShowSelectDialog => new InstallDistributionCommand(this);
+        public ICommand ShowInstallDistributionDialog => new InstallDistributionCommand(this);
         public ICommand ShowAboutDialog => new ShowAboutDialogCommand(this);
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
@@ -225,6 +226,7 @@ namespace WslToolbox.Gui.ViewModels
                     modifierKey = ModifierKeys.Alt;
                 if (Keyboard.IsKeyDown(Key.LeftShift))
                     modifierKey = ModifierKeys.Shift;
+
 
                 var shortcut = KeyboardShortcutHandler.ShortcutByKey(args.Key, modifierKey);
 

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Commands;
+using WslToolbox.Gui.Commands.Distribution;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.TopMenu
@@ -51,6 +52,12 @@ namespace WslToolbox.Gui.Collections.TopMenu
         {
             return new CompositeCollection
             {
+                new MenuItem
+                {
+                    Header = "Clear online distribution list cache",
+                    Command = viewModel.ShowInstallDistributionDialog,
+                    CommandParameter = InstallDistributionCommand.Parameters.ClearCache
+                },
                 new MenuItem
                 {
                     Header = "Open WSL app in Windows Store",

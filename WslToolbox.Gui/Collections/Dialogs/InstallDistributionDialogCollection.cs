@@ -14,7 +14,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 new Label
                 {
                     Content = "Select an online distribution to install",
-                    Margin = new Thickness(0, 0, 0, 5),
+                    Margin = new Thickness(0, 0, 0, 5)
                 },
                 new ComboBox
                 {

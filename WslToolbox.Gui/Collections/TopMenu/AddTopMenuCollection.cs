@@ -13,7 +13,7 @@ namespace WslToolbox.Gui.Collections.TopMenu
                 new MenuItem
                 {
                     Header = "Install distribution",
-                    Command = viewModel.ShowSelectDialog
+                    Command = viewModel.ShowInstallDistributionDialog
                 },
                 new MenuItem
                 {

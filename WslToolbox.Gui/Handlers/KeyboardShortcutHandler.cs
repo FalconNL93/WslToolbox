@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using WslToolbox.Gui.Configurations;
@@ -63,10 +64,16 @@ namespace WslToolbox.Gui.Handlers
 
         public KeyboardShortcut ShortcutByKey(Key key, ModifierKeys modifierKey = ModifierKeys.None)
         {
-            return KeyboardShortcuts
+            var shortcut = KeyboardShortcuts
                 .Where(x => x.Key == key)
                 //.Where(x => x.Enabled)
                 .FirstOrDefault(x => x.Modifier == modifierKey);
+
+            Debug.WriteLine(shortcut != null
+                ? $"Shortcut handler for {modifierKey} + {key}: {shortcut.Action.Method}"
+                : $"Unbound shortcut {modifierKey} + {key}");
+
+            return shortcut;
         }
     }
 }
