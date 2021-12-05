@@ -49,12 +49,15 @@ namespace WslToolbox.Gui.Helpers
                 }
         }
 
-        public static Binding BindingObject(string path, object source, BindingMode mode = BindingMode.Default)
+        public static Binding BindingObject(string path, object source, BindingMode mode = BindingMode.Default,
+            IValueConverter converter = null, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
         {
             return new Binding(path)
             {
                 Mode = mode,
-                Source = source
+                Source = source,
+                Converter = converter,
+                UpdateSourceTrigger = trigger
             };
         }
     }

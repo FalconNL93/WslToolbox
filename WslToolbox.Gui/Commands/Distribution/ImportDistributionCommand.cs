@@ -23,10 +23,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             RegisterEventHandlers();
             _waitHelper = new WaitHelper
             {
-                DialogTitle = "Importing",
-                DialogMessage = "Please wait while importing the distribution..."
+                ProgressRingActive = true
             };
-
             _waitDialog = _waitHelper.WaitDialog();
         }
 
@@ -40,6 +38,8 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             _waitDialog.IsPrimaryButtonEnabled = false;
             _waitDialog.IsSecondaryButtonEnabled = false;
+            _waitHelper.DialogTitle = "Importing";
+            _waitHelper.DialogMessage = "Distribution is being imported, please wait...";
             _waitDialog.CloseButtonText = "Hide";
 
             if (!_waitDialog.IsVisible)
@@ -69,6 +69,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (result != ContentDialogResult.Primary) return;
             IsExecutable = _ => false;
             _waitDialog.CloseButtonText = null;
+            _waitHelper.DialogTitle = "Importing";
+            _waitHelper.DialogMessage = "Initialising...";
             _waitDialog.ShowAsync();
             ToolboxClass.OnRefreshRequired(2000);
             Core.Commands.Distribution.ImportDistributionCommand.Execute(

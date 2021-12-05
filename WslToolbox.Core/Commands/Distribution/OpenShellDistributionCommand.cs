@@ -15,9 +15,10 @@ namespace WslToolbox.Core.Commands.Distribution
         {
             var openShell = await CommandClass.StartShellAsync(distribution);
 
-            ToolboxClass.OnRefreshRequired();
             if (openShell.ExitCode != 0) return;
             if (distribution.IsInstalled) return;
+            ToolboxClass.OnRefreshRequired();
+            if (ToolboxClass.DistributionByName(distribution.Name) != null) return;
 
             var installTries = 0;
             while (!ToolboxClass.DistributionByName(distribution.Name).IsInstalled)
