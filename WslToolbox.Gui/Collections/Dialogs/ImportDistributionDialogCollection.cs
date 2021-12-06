@@ -76,12 +76,12 @@ namespace WslToolbox.Gui.Collections.Dialogs
                     Content = "Select the file which needs to be imported\n"
                 },
                 distributionFile,
-                ElementHelper.HiddenSeparator(),
+                ElementHelper.Separator(),
                 distributionFileBrowse,
 
                 new Label {Content = "Base path:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
                 distributionBasePath,
-                ElementHelper.HiddenSeparator(),
+                ElementHelper.Separator(),
                 distributionBasePathBrowse
             };
 

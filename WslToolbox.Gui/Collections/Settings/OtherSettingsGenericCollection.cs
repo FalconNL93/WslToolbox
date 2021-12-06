@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
@@ -16,6 +18,43 @@ namespace WslToolbox.Gui.Collections.Settings
             _viewModel = (SettingsViewModel) Source;
         }
 
+        private StackPanel ConfigurationItems()
+        {
+            var openConfiguration = new Button
+                {Content = "Open file", MinWidth = 95, Margin = new Thickness(0, 0, 5, 10)};
+            var resetConfiguration = new Button
+                {Content = "Reset configuration", MinWidth = 95, Margin = new Thickness(0, 0, 5, 10)};
+
+            openConfiguration.Click += (_, _) =>
+            {
+                ExplorerHelper.OpenLocal(_viewModel.Configuration.ConfigurationFile);
+            };
+
+            resetConfiguration.Click += OnResetConfiguration;
+
+            return new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    openConfiguration,
+                    resetConfiguration
+                }
+            };
+        }
+
+        private async void OnResetConfiguration(object o, RoutedEventArgs routedEventArgs)
+        {
+            var resetSettings = DialogHelper.ShowMessageBoxInfo("Reset configuration",
+                "Do you want to reset your configuration?", "Reset", closeButtonText: "Cancel");
+
+            var resetSettingsResult = await resetSettings.ShowAsync();
+
+            if (resetSettingsResult != ContentDialogResult.Primary) return;
+            _viewModel.ConfigHandler.Reset();
+            _viewModel.SaveConfigurationAndClose();
+        }
+
         public CompositeCollection Items()
         {
             return new CompositeCollection
@@ -23,36 +62,31 @@ namespace WslToolbox.Gui.Collections.Settings
                 new Label
                 {
                     FontWeight = FontWeights.Bold,
-                    Content = "Configuration path (right click to copy):"
+                    Content = "Configuration path"
                 },
-                ElementHelper.AddHyperlink(
-                    _viewModel.Configuration.ConfigurationFile,
-                    tooltip: _viewModel.Configuration.ConfigurationFile,
-                    contextMenuItems: GenericMenuCollection.CopyToClipboard(_viewModel.Configuration.ConfigurationFile)
+                ElementHelper.AddTextBox(nameof(DefaultConfiguration.ConfigurationFile), "Config",
+                    "Configuration.ConfigurationFile",
+                    Source,
+                    bindingMode: BindingMode.OneWay,
+                    width: 400,
+                    isEnabled: true,
+                    isReadonly: true
                 ),
-                ElementHelper.ItemExpander("Advanced", AdvancedControls())
+                ConfigurationItems(),
+                ElementHelper.Separator(),
+                ElementHelper.ItemsControlGroup(AdvancedControls(), header: "Advanced")
             };
         }
-
-
+        
         private CompositeCollection AdvancedControls()
         {
             return new CompositeCollection
             {
-                new Label
-                {
-                    Content = "Log level"
-                },
+                new Label {Content = "Log level"},
                 ElementHelper.AddComboBox(
                     "MinimumLogLevel",
                     LogConfiguration.GetValues(),
                     "Configuration.MinimumLogLevel",
-                    Source
-                ),
-                ElementHelper.AddCheckBox(
-                    nameof(DefaultConfiguration.ExperimentalConfiguration.ShowExperimentalSettings),
-                    "Show experimental configuration",
-                    "Configuration.ExperimentalConfiguration.ShowExperimentalSettings",
                     Source
                 )
             };

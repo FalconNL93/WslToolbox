@@ -1,8 +1,6 @@
 ﻿using System.Windows;
-using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Views
@@ -29,19 +27,7 @@ namespace WslToolbox.Gui.Views
             Close();
         }
 
-        private async void OpenConfiguration_Click(object sender, RoutedEventArgs e)
-        {
-            var resetSettings = DialogHelper.ShowMessageBoxInfo("Reset configuration",
-                "Do you want to reset your configuration?", "Reset", closeButtonText: "Cancel");
-
-            var resetSettingsResult = await resetSettings.ShowAsync();
-
-            if (resetSettingsResult != ContentDialogResult.Primary) return;
-            _viewModel.ConfigHandler.Reset();
-            SaveConfigurationAndClose();
-        }
-
-        private void SaveConfigurationAndClose()
+        public void SaveConfigurationAndClose()
         {
             DialogResult = true;
             Close();

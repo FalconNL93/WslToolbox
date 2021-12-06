@@ -24,10 +24,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.KeyboardShortcutConfiguration.Enabled),
-                    "Enable keyboard shortcuts",
-                    "Configuration.KeyboardShortcutConfiguration.Enabled",
-                    Source),
+                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.KeyboardShortcutConfiguration.Enabled),
+                    "Enable keyboard shortcuts", "Configuration.KeyboardShortcutConfiguration.Enabled", Source,
+                    header: null),
                 new Separator(),
                 ElementHelper.ItemsControlGroup(ShortcutControls(),
                     source: Source,
@@ -48,10 +47,10 @@ namespace WslToolbox.Gui.Collections.Settings
 
                 shortCutKey = $"{shortCutKey}{shortcut.Key}";
 
-                keyboardChecks.Add(ElementHelper.AddCheckBox(shortcut.Configuration,
+                keyboardChecks.Add(ElementHelper.AddToggleSwitch(shortcut.Configuration,
                     $"{shortcut.Name}\t\t[{shortCutKey}]",
-                    $"Configuration.KeyboardShortcutConfiguration.{shortcut.Configuration}",
-                    Source, enabled: shortcut.Modifiable)
+                    $"Configuration.KeyboardShortcutConfiguration.{shortcut.Configuration}", Source,
+                    enabled: shortcut.Modifiable, header: null)
                 );
             }
 

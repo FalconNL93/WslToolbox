@@ -34,6 +34,37 @@ namespace WslToolbox.Gui.Helpers.Ui
             return checkBox;
         }
 
+        public static ToggleSwitch AddToggleSwitch(string name,
+            string content = null,
+            string bind = null,
+            object source = null,
+            string requires = null, Visibility visibility = Visibility.Visible,
+            string offContent = null,
+            bool enabled = true,
+            string header = null,
+            bool isOn = false)
+        {
+            var toggleSwitch = new ToggleSwitch
+            {
+                Name = name,
+                Visibility = visibility,
+                IsEnabled = enabled,
+                OnContent = content,
+                OffContent = offContent ?? content,
+                Header = header,
+                IsOn = isOn
+            };
+
+            if (bind != null)
+                toggleSwitch.SetBinding(ToggleSwitch.IsOnProperty,
+                    BindHelper.BindingObject(bind, source));
+
+            if (requires != null)
+                toggleSwitch.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+            return toggleSwitch;
+        }
+
         public static ComboBox AddComboBox(string name, IEnumerable items, string bind, object source,
             string requires = null)
         {
@@ -73,13 +104,16 @@ namespace WslToolbox.Gui.Helpers.Ui
         }
 
         public static TextBox AddTextBox(string name, string content, string bind = null, object source = null,
-            string requires = null, bool enabled = false, int width = 0, BindingMode bindingMode = BindingMode.Default)
+            string requires = null, bool isEnabled = false, int width = 0,
+            BindingMode bindingMode = BindingMode.Default,
+            bool isReadonly = false)
         {
             var textBox = new TextBox
             {
                 Name = name,
                 Text = content,
-                HorizontalAlignment = HorizontalAlignment.Left
+                HorizontalAlignment = HorizontalAlignment.Left,
+                IsReadOnly = isReadonly
             };
 
             if (width > 1)
@@ -89,7 +123,7 @@ namespace WslToolbox.Gui.Helpers.Ui
                 textBox.SetBinding(UIElement.IsEnabledProperty,
                     BindHelper.BindingObject(requires, source, bindingMode));
             else
-                textBox.IsEnabled = enabled;
+                textBox.IsEnabled = isEnabled;
 
             if (bind != null)
                 textBox.SetBinding(TextBox.TextProperty, BindHelper.BindingObject(bind, source, bindingMode));
@@ -143,9 +177,16 @@ namespace WslToolbox.Gui.Helpers.Ui
         }
 
         public static ItemsControl ItemsControlGroup(CompositeCollection items, bool itemEnableOverride = false,
-            bool enabled = true, object source = null, string requires = null)
+            bool enabled = true, object source = null, string requires = null, string header = null, int tabIndex = 0)
         {
             var groupItems = new ItemsControl();
+
+            if (header != null)
+                groupItems.Items.Add(new Label
+                {
+                    Content = header,
+                    FontWeight = FontWeights.Bold
+                });
 
             foreach (Control item in items)
             {
@@ -154,6 +195,9 @@ namespace WslToolbox.Gui.Helpers.Ui
 
                 if (itemEnableOverride) item.IsEnabled = enabled;
                 groupItems.Items.Add(item);
+
+                if (tabIndex > 0)
+                    item.Margin = new Thickness(tabIndex * 10, 0, 0, 0);
             }
 
             return groupItems;
@@ -206,12 +250,13 @@ namespace WslToolbox.Gui.Helpers.Ui
             return textBlock;
         }
 
-        public static Separator HiddenSeparator()
+        public static Separator Separator(int marginTop = 5, int marginBottom = 10,
+            Visibility visibility = Visibility.Hidden)
         {
             return new Separator
             {
-                Margin = new Thickness(0, 5, 0, 5),
-                Visibility = Visibility.Hidden
+                Margin = new Thickness(0, marginTop, 0, marginBottom),
+                Visibility = visibility
             };
         }
 

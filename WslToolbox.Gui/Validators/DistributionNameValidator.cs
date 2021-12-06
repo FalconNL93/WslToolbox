@@ -7,6 +7,7 @@ namespace WslToolbox.Gui.Validators
         public static bool ValidateName(string name)
         {
             Regex validCharacters = new("^[a-zA-Z0-9]*$");
+
             return validCharacters.IsMatch(name) && name.Length >= 3;
         }
 

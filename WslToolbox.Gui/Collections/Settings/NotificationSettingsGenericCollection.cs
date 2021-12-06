@@ -15,10 +15,8 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.Enabled),
-                    "Enable notifications",
-                    "Configuration.NotificationConfiguration.Enabled",
-                    Source),
+                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.NotificationConfiguration.Enabled),
+                    "Enable notifications", "Configuration.NotificationConfiguration.Enabled", Source, header: null),
                 new Separator(),
                 ElementHelper.ItemsControlGroup(NotificationControls(),
                     source: Source,
@@ -30,12 +28,10 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddCheckBox(nameof(DefaultConfiguration.NotificationConfiguration.NewVersionAvailable),
-                    "New version available",
-                    "Configuration.NotificationConfiguration.NewVersionAvailable",
-                    Source,
-                    "Configuration.AutoCheckUpdates"
-                )
+                ElementHelper.AddToggleSwitch(
+                    nameof(DefaultConfiguration.NotificationConfiguration.NewVersionAvailable),
+                    "New version available", "Configuration.NotificationConfiguration.NewVersionAvailable", Source,
+                    "Configuration.AutoCheckUpdates", header: null)
             };
         }
     }

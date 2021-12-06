@@ -34,23 +34,22 @@ namespace WslToolbox.Gui.ViewModels
         public StartOnBootHandler StartOnBootHandler { get; } = new();
         public CompositeCollection GeneralSettings { get; set; }
         public CompositeCollection KeyboardShortcutSettings { get; set; }
-        public CompositeCollection UpdateSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }
-        public CompositeCollection AppearanceSettings { get; set; }
         public CompositeCollection NotificationSettings { get; set; }
-        public CompositeCollection ExperimentalSettings { get; set; }
         public CompositeCollection OtherSettings { get; set; }
 
         private void InitializeSettingsTabsElements()
         {
             GeneralSettings = new GeneralSettingsGenericCollection(this).Items();
             KeyboardShortcutSettings = new KeyboardShortcutSettingsGenericCollection(this).Items();
-            UpdateSettings = new UpdateSettingsGenericCollection(this).Items();
             GridSettings = new GridSettingsGenericCollection(this).Items();
-            AppearanceSettings = new AppearanceSettingsGenericCollection(this).Items();
             NotificationSettings = new NotificationSettingsGenericCollection(this).Items();
-            ExperimentalSettings = new ExperimentalSettingsGenericCollection(this).Items();
             OtherSettings = new OtherSettingsGenericCollection(this).Items();
+        }
+
+        public void SaveConfigurationAndClose()
+        {
+            _view.SaveConfigurationAndClose();
         }
 
         private void InitializeSettingsElement()
@@ -59,12 +58,8 @@ namespace WslToolbox.Gui.ViewModels
             {
                 AddTabItem("General", "GeneralSettings"),
                 AddTabItem("Shortcuts", "KeyboardShortcutSettings"),
-                AddTabItem("Update", "UpdateSettings", enabled: UpdateHandler.IsAvailable()),
                 AddTabItem("Grid", "GridSettings"),
-                AddTabItem("Appearance", "AppearanceSettings"),
                 AddTabItem("Notifications", "NotificationSettings"),
-                AddTabItem("Experimental", "ExperimentalSettings",
-                    Configuration.ExperimentalConfiguration.ShowExperimentalSettings),
                 AddTabItem("Other", "OtherSettings")
             };
         }
