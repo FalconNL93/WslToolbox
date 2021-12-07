@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace WslToolbox.Core
                 distro.Version = int.Parse((string) RegistryHelper.GetKey(distro, "Version"));
                 distro.BasePath = (string) RegistryHelper.GetKey(distro, "BasePath");
                 distro.BasePathLocal = distro.BasePath.Replace(@"\\?\", "");
-                distro.IsDefault = false;
+                distro.IsDefault = RegistryHelper.DefaultDistributionGuid() == distributionGuid;
                 distro.IsInstalled = true;
                 distro.DefaultUid = int.Parse((string) RegistryHelper.GetKey(distro, "DefaultUid"));
 

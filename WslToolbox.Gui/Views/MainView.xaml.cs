@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,8 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
+            ApplyTitle(AssemblyHelper.Version());
+            if(AppConfiguration.DebugMode) ApplyTitle("Dev Build");
             InitializeDataGrid();
             InitializeTopMenu();
             HandleConfiguration();
@@ -41,6 +44,13 @@ namespace WslToolbox.Gui.Views
             if (GridView.Children.Count > 0) GridView.Children.Clear();
 
             GridView.Children.Add(new DistributionDataGridHandler(_viewModel).DataGrid());
+        }
+
+        private void ApplyTitle(string text, bool append = true)
+        {
+            Title = append
+                ? $"{Title} - {text}"
+                : text;
         }
 
         private static void WslIsEnabledCheck()

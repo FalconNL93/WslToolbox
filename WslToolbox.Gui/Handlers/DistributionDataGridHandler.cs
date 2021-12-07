@@ -72,9 +72,16 @@ namespace WslToolbox.Gui.Handlers
             dataGrid.MouseDoubleClick += (_, _) =>
             {
                 if (_mainViewModel.SelectedDistribution == null) return;
-                if (_mainViewModel.Config.Configuration.GridConfiguration.DoubleClick ==
-                    GridConfiguration.GridConfigurationOpenTerminal)
-                    OpenShellDistributionCommand.Execute(_mainViewModel.SelectedDistribution);
+
+                switch (_mainViewModel.Config.Configuration.GridConfiguration.DoubleClick)
+                {
+                    case GridConfiguration.GridConfigurationOpenTerminal:
+                        OpenShellDistributionCommand.Execute(_mainViewModel.SelectedDistribution);
+                        break;
+                    case GridConfiguration.GridConfigurationOpenBasePath:
+                        ExplorerHelper.OpenLocal(_mainViewModel.SelectedDistribution.BasePathLocal);
+                        break;
+                }
             };
 
             dataGrid.MouseLeftButtonUp += (_, _) => { };

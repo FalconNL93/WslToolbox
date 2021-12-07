@@ -17,7 +17,6 @@ namespace WslToolbox.Gui.Collections
                     Header = "Terminal",
                     Command = viewModel.OpenDistributionShell,
                     CommandParameter = viewModel.SelectedDistribution,
-                    FontWeight = FontWeights.Bold
                 },
                 new Separator(),
                 new MenuItem
@@ -41,13 +40,6 @@ namespace WslToolbox.Gui.Collections
                 new Separator(),
                 new MenuItem
                 {
-                    Header = "Set as default",
-                    Command = viewModel.SetDefaultDistribution,
-                    CommandParameter = viewModel.SelectedDistribution,
-                    Visibility = viewModel.SelectedDistribution.IsDefault ? Visibility.Collapsed : Visibility.Visible
-                },
-                new MenuItem
-                {
                     Header = "Rename",
                     Command = viewModel.RenameDistribution,
                     CommandParameter = viewModel.SelectedDistribution
@@ -64,11 +56,6 @@ namespace WslToolbox.Gui.Collections
                     Command = viewModel.DeleteDistribution,
                     CommandParameter = viewModel.SelectedDistribution
                 },
-                new MenuItem
-                {
-                    Header = "Convert to WSL2",
-                    Visibility = viewModel.SelectedDistribution.Version == 2 ? Visibility.Collapsed : Visibility.Visible
-                },
                 new Separator(),
                 new MenuItem
                 {
@@ -82,6 +69,17 @@ namespace WslToolbox.Gui.Collections
         {
             return new CompositeCollection
             {
+                new MenuItem
+                {
+                    Header = "Set as default",
+                    Command = viewModel.SetDefaultDistribution,
+                    CommandParameter = viewModel.SelectedDistribution,
+                },
+                new MenuItem
+                {
+                    Header = "Convert to WSL2",
+                    Visibility = viewModel.SelectedDistribution.Version == 2 ? Visibility.Collapsed : Visibility.Visible
+                },
                 new MenuItem
                 {
                     Header = "Open base path",

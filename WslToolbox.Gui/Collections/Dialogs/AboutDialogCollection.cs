@@ -17,8 +17,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
             Control[] controls =
             {
                 new Label {Content = AppConfiguration.AppName},
-                new Label {Content = $"GUI Version: {AssemblyHelper.AssemblyVersionHuman}"},
-                new Label {Content = $"Core Version: {Core.Helpers.AssemblyHelper.AssemblyVersionHuman}"},
+                new Label {Content = $"GUI Version: {AssemblyHelper.Version()}"},
+                new Label {Content = $"Core Version: {Core.Helpers.AssemblyHelper.Version()}"},
                 new HyperlinkButton
                 {
                     Content = "Github",

@@ -35,7 +35,7 @@ namespace WslToolbox.Core.Helpers
         public static async Task<List<DistributionClass>> ReadOnlineDistributions()
         {
             var distros = new List<DistributionClass>();
-            OnFetchStarted();
+            OnFetchStarted(new FetchEventArguments(null, Url));
 
             try
             {
@@ -48,7 +48,7 @@ namespace WslToolbox.Core.Helpers
 
                 if (onlineDistributions == null)
                 {
-                    OnFetchSuccessful();
+                    OnFetchSuccessful(new FetchEventArguments(null, Url));
                     return distros;
                 }
 
@@ -66,25 +66,25 @@ namespace WslToolbox.Core.Helpers
             }
             catch (Exception e)
             {
-                OnFetchFailed(new FetchEventArguments(e.Message));
+                OnFetchFailed(new FetchEventArguments(e.Message, Url));
                 return distros;
             }
 
-            OnFetchSuccessful();
+            OnFetchSuccessful(new FetchEventArguments(null, Url));
             return distros;
         }
 
-        private static void OnFetchSuccessful()
+        private static void OnFetchSuccessful(EventArgs eventArgs)
         {
-            FetchSuccessful?.Invoke(null, EventArgs.Empty);
+            FetchSuccessful?.Invoke(null, eventArgs ?? EventArgs.Empty);
         }
 
-        private static void OnFetchStarted()
+        private static void OnFetchStarted(EventArgs eventArgs)
         {
-            FetchStarted?.Invoke(null, EventArgs.Empty);
+            FetchStarted?.Invoke(null, eventArgs ?? EventArgs.Empty);
         }
 
-        private static void OnFetchFailed(FetchEventArguments eventArgs = null)
+        private static void OnFetchFailed(EventArgs eventArgs)
         {
             FetchFailed?.Invoke(null, eventArgs ?? EventArgs.Empty);
         }

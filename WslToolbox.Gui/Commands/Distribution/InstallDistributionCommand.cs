@@ -5,6 +5,7 @@ using WslToolbox.Core;
 using WslToolbox.Core.EventArguments;
 using WslToolbox.Core.Helpers;
 using WslToolbox.Gui.Collections.Dialogs;
+using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
@@ -49,6 +50,9 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             IsExecutable = _ => false;
             RegisterEventHandlers();
+            
+            if(_viewModel.InstallableDistributions != null)
+                LogHandler.Log().Information("Using cache for online distribution list");
 
             _viewModel.InstallableDistributions ??= await DistributionClass.ListAvailableDistributions();
 
@@ -64,6 +68,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             {
                 case Parameters.ClearCache:
                     _viewModel.InstallableDistributions = null;
+                    LogHandler.Log().Information("Manually cleared cache for online distribution list");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
@@ -96,20 +101,26 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         private void FetchSuccessful(object? sender, EventArgs e)
         {
+            var fetchEvent = (FetchEventArguments) e;
+            LogHandler.Log().Information("Fetched distribution list from {Url}", fetchEvent.Url);
             _waitDialog.Hide();
         }
 
         private void FetchFailed(object? sender, EventArgs e)
         {
             _errors++;
-            var args = (FetchEventArguments) e;
+            var fetchEvent = (FetchEventArguments) e;
+            LogHandler.Log().Error("Error fetching distribution list from {Url}", fetchEvent.Url);
             _waitDialog.Hide();
             DialogHelper.ShowMessageBoxInfo(
-                "Error", $"Could not fetch online distribution list.\n\n{args.Message}").ShowAsync();
+                "Error", $"Could not fetch online distribution list.\n\n{fetchEvent.Message}").ShowAsync();
         }
 
         private void FetchStarted(object? sender, EventArgs e)
         {
+            var fetchEvent = (FetchEventArguments) e;
+            LogHandler.Log().Information("Fetching distribution list from {Url}", fetchEvent.Url);
+
             _waitDialog.IsPrimaryButtonEnabled = false;
             _waitDialog.IsSecondaryButtonEnabled = false;
             _waitDialog.CloseButtonText = null;

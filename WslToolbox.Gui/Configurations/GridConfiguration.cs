@@ -7,6 +7,7 @@ namespace WslToolbox.Gui.Configurations
         public const int GridConfigurationDoNothing = 0;
         public const int GridConfigurationOpenTerminal = 1;
         public const int GridConfigurationOpenContextMenu = 2;
+        public const int GridConfigurationOpenBasePath = 3;
 
         private int _doubleClick = GridConfigurationOpenTerminal;
         private int _rightSingleClick = GridConfigurationOpenContextMenu;
@@ -40,6 +41,7 @@ namespace WslToolbox.Gui.Configurations
             {
                 {GridConfigurationDoNothing, "Do nothing"},
                 {GridConfigurationOpenTerminal, "Open terminal"},
+                {GridConfigurationOpenBasePath, "Open base path"},
                 {GridConfigurationOpenContextMenu, "Open context menu"}
             };
         }
@@ -59,6 +61,7 @@ namespace WslToolbox.Gui.Configurations
 
             values.Remove(GridConfigurationOpenTerminal);
             values.Remove(GridConfigurationOpenContextMenu);
+            values.Remove(GridConfigurationOpenBasePath);
 
             return values;
         }
@@ -69,6 +72,7 @@ namespace WslToolbox.Gui.Configurations
 
             values.Remove(GridConfigurationDoNothing);
             values.Remove(GridConfigurationOpenTerminal);
+            values.Remove(GridConfigurationOpenBasePath);
 
             return values;
         }

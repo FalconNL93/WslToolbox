@@ -65,6 +65,18 @@ namespace WslToolbox.Core.Helpers
             return string.Empty;
         }
 
+        public static string DefaultDistributionGuid()
+        {
+            if (!OperatingSystem.IsWindows()) return string.Empty;
+
+            var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+
+            var subKey = wslRegistry.GetValue("DefaultDistribution");
+            if ((string) subKey != null) return (string) subKey;
+
+            return string.Empty;
+        }
+
         public static IEnumerable<string> ListDistributions()
         {
             if (!OperatingSystem.IsWindows()) return null;
