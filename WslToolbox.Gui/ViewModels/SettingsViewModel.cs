@@ -31,7 +31,6 @@ namespace WslToolbox.Gui.ViewModels
         public DefaultConfiguration Configuration { get; }
         public OsHandler OsHandler { get; }
 
-        public StartOnBootHandler StartOnBootHandler { get; } = new();
         public CompositeCollection GeneralSettings { get; set; }
         public CompositeCollection KeyboardShortcutSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }

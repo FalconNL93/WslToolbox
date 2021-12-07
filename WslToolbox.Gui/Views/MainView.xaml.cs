@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +30,7 @@ namespace WslToolbox.Gui.Views
             WslIsEnabledCheck();
             InitializeComponent();
             ApplyTitle(AssemblyHelper.Version());
-            if(AppConfiguration.DebugMode) ApplyTitle("Dev Build");
+            if (AppConfiguration.DebugMode) ApplyTitle("Dev Build");
             InitializeDataGrid();
             InitializeTopMenu();
             HandleConfiguration();

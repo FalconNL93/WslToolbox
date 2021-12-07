@@ -16,7 +16,7 @@ namespace WslToolbox.Gui.Collections
                 {
                     Header = "Terminal",
                     Command = viewModel.OpenDistributionShell,
-                    CommandParameter = viewModel.SelectedDistribution,
+                    CommandParameter = viewModel.SelectedDistribution
                 },
                 new Separator(),
                 new MenuItem
@@ -73,7 +73,7 @@ namespace WslToolbox.Gui.Collections
                 {
                     Header = "Set as default",
                     Command = viewModel.SetDefaultDistribution,
-                    CommandParameter = viewModel.SelectedDistribution,
+                    CommandParameter = viewModel.SelectedDistribution
                 },
                 new MenuItem
                 {

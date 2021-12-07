@@ -50,8 +50,8 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             IsExecutable = _ => false;
             RegisterEventHandlers();
-            
-            if(_viewModel.InstallableDistributions != null)
+
+            if (_viewModel.InstallableDistributions != null)
                 LogHandler.Log().Information("Using cache for online distribution list");
 
             _viewModel.InstallableDistributions ??= await DistributionClass.ListAvailableDistributions();

@@ -77,7 +77,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.ItemsControlGroup(AdvancedControls(), header: "Advanced")
             };
         }
-        
+
         private CompositeCollection AdvancedControls()
         {
             return new CompositeCollection

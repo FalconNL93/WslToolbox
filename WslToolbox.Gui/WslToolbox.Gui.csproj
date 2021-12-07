@@ -39,7 +39,6 @@
         <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5" />
         <PackageReference Include="ModernWpfUI" Version="0.9.4" />
         <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />

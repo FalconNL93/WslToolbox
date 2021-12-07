@@ -128,8 +128,6 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch("StartOnBoot",
-                    "Launch application on system startup", "StartOnBootHandler.IsEnabled", Source),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnClose),
                     "Minimize when pressing close button", "Configuration.MinimizeOnClose", Source),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.EnableSystemTray),
