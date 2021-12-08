@@ -1,0 +1,11 @@
+version: 1.5.0
+nuget:
+  project_feed: true
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+artifacts:
+- path: '**\bin\Debug\net5.0-windows10.0.19041.0\*'
+  name: Dev Build
+  type: zip
