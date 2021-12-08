@@ -7,7 +7,7 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 [![Build status](https://ci.appveyor.com/api/projects/status/hks2bqstbxs3asnt?svg=true)](https://ci.appveyor.com/project/FalconNL93/wsltoolbox)
 
 ## Install
-Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox), extract and run `WslToolbox.Gui.exe`.
+Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox/releases), extract and run `WslToolbox.Gui.exe`.
 
 ## Features
 
