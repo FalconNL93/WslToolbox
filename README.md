@@ -4,6 +4,11 @@ WSL Toolbox allows you to manage your WSL Distributions through an easy to use i
 
 WSL Toolbox is currently in development. Some features may not work as expected.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/hks2bqstbxs3asnt?svg=true)](https://ci.appveyor.com/project/FalconNL93/wsltoolbox)
+
+## Install
+Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox), extract and run `WslToolbox.Gui.exe`.
+
 ## Features
 
 - Grid overview of installed distributions
