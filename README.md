@@ -43,24 +43,23 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 
 ## Screenshots
 
-![Main Window](./docs/images/screenshots/tb_1.png?raw=true "Main Window")
+![Main Window](./docs/images/screenshots/tb1.png?raw=true "Main Window")
+![Main Window](./docs/images/screenshots/tb3.png?raw=true "Main Window")
+![Main Window](./docs/images/screenshots/tb2.png?raw=true "Settings Window")
+![Main Window](./docs/images/screenshots/tb4.png?raw=true "Settings Window")
 
-![Service Window](./docs/images/screenshots/tb_2.png?raw=true "Service Window")
+## Special thanks
 
-![Other Window](./docs/images/screenshots/tb_3.png?raw=true "Other Window")
+**Jetbrains:**
 
-![Context Menu](./docs/images/screenshots/tb_4.png?raw=true "Context Menu")
+I'm using [Jetbrains](https://www.jetbrains.com/) [Rider](https://www.jetbrains.com/rider/) to learn and develop C#,
+they provided me with an open source license.
 
-![Settings Window](./docs/images/screenshots/tb_5.png?raw=true "Settings Window")
+## Dependencies
 
-![Settings Grid Window](./docs/images/screenshots/tb_6.png?raw=true "Settings Grid Window")
+**WSL Toolbox is using the following packages:**
 
-![Settings Theme Window](./docs/images/screenshots/tb_7.png?raw=true "Settings Theme Window")
-
-![Settings Other Window](./docs/images/screenshots/tb_8.png?raw=true "Settings Other Window")
-
-![Import Status](./docs/images/screenshots/tb_9.png?raw=true "Import Status")
-
-![Export Status](./docs/images/screenshots/tb_10.png?raw=true "Export Status")
-
-## Thanks
+- ModernWPF UI Library - https://github.com/Kinnara/ModernWpf
+- Command Line Parser Library - https://github.com/commandlineparser/commandline
+- AutoUpdater.NET - https://github.com/ravibpatel/AutoUpdater.NET
+- Hardcodet NotifyIcon for WPF - https://github.com/hardcodet/wpf-notifyicon

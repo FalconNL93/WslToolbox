@@ -53,7 +53,7 @@ namespace WslToolbox.Gui.Configurations
 
         public bool HideUnsupportedOsMessage { get; set; }
         public bool ShowMinimumOsMessage { get; set; }
-        public bool AutoCheckUpdates { get; set; }
+        public bool AutoCheckUpdates { get; set; } = true;
         public bool HideExportWarning { get; set; }
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();

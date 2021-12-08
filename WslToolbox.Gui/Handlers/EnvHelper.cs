@@ -20,7 +20,7 @@ namespace WslToolbox.Gui.Handlers
                     ?.Split(';')
                     .Where(e => e.StartsWith(".")) ?? Array.Empty<string>());
 
-            var combinations = paths.SelectMany(x => extensions,
+            var combinations = paths.SelectMany(_ => extensions,
                 (path, extension) => Path.Combine(path, filename + extension));
 
             return combinations.FirstOrDefault(File.Exists);

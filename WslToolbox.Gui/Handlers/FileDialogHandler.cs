@@ -52,7 +52,6 @@ namespace WslToolbox.Gui.Handlers
             return string.Join("|", FileDialogConfiguration.Filter
                 .Select(x => x.Key + "|" + x.Value)
                 .ToArray());
-            ;
         }
     }
 }
