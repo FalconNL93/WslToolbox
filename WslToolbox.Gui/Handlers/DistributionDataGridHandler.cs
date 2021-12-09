@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using WslToolbox.Core;
-using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Converters;
 using WslToolbox.Gui.Helpers;
@@ -69,22 +69,7 @@ namespace WslToolbox.Gui.Handlers
                 dataGrid.SetBinding(FrameworkElement.ContextMenuProperty,
                     BindHelper.BindingObject(_contextMenu, _mainViewModel));
 
-            dataGrid.MouseDoubleClick += (_, _) =>
-            {
-                if (_mainViewModel.SelectedDistribution == null) return;
-
-                switch (_mainViewModel.Config.Configuration.GridConfiguration.DoubleClick)
-                {
-                    case GridConfiguration.GridConfigurationOpenTerminal:
-                        OpenShellDistributionCommand.Execute(_mainViewModel.SelectedDistribution);
-                        break;
-                    case GridConfiguration.GridConfigurationOpenBasePath:
-                        ExplorerHelper.OpenLocal(_mainViewModel.SelectedDistribution.BasePathLocal);
-                        break;
-                }
-            };
-
-            dataGrid.MouseLeftButtonUp += (_, _) => { };
+            dataGrid.MouseDoubleClick += DataGridOnMouseDoubleClick;
 
             dataGrid.SetBinding(Selector.SelectedItemProperty,
                 BindHelper.BindingObject(nameof(_mainViewModel.SelectedDistribution), _mainViewModel,
@@ -103,6 +88,21 @@ namespace WslToolbox.Gui.Handlers
             };
 
             return dataGrid;
+        }
+
+        private void DataGridOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (_mainViewModel.SelectedDistribution == null) return;
+
+            switch (_mainViewModel.Config.Configuration.GridConfiguration.DoubleClick)
+            {
+                case GridConfiguration.GridConfigurationOpenTerminal:
+                    _mainViewModel.OpenDistributionShell.Execute(_mainViewModel.SelectedDistribution);
+                    break;
+                case GridConfiguration.GridConfigurationOpenBasePath:
+                    ExplorerHelper.OpenLocal(_mainViewModel.SelectedDistribution.BasePathLocal);
+                    break;
+            }
         }
 
         private static DataGridBoundColumn DistributionDataGridColumn(DataGridBoundColumn dataGridBoundColumn,

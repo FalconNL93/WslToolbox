@@ -34,7 +34,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += ImportFinished;
         }
 
-        private void ImportStarted(object? sender, EventArgs e)
+        private void ImportStarted(object sender, EventArgs e)
         {
             _waitDialog.IsPrimaryButtonEnabled = false;
             _waitDialog.IsSecondaryButtonEnabled = false;
@@ -46,7 +46,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 _waitDialog.ShowAsync();
         }
 
-        private void ImportFinished(object? sender, EventArgs e)
+        private void ImportFinished(object sender, EventArgs e)
         {
             if (_waitDialog.IsVisible)
                 _waitDialog.Hide();

@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using ModernWpf;
-using Serilog.Core;
 using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
 using WslToolbox.Gui.Configurations;
@@ -21,7 +20,6 @@ namespace WslToolbox.Gui.Views
     public partial class MainView
     {
         public readonly SystemTrayHelper SystemTray = new();
-        private Logger _log;
         private MainViewModel _viewModel;
 
         public MainView()
@@ -29,7 +27,7 @@ namespace WslToolbox.Gui.Views
             InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
-            ApplyTitle(AssemblyHelper.Version());
+            ApplyTitle($"{AssemblyHelper.Version()} build {AssemblyHelper.Build()}");
             if (AppConfiguration.DebugMode) ApplyTitle("Dev Build");
             InitializeDataGrid();
             InitializeTopMenu();
@@ -75,7 +73,6 @@ namespace WslToolbox.Gui.Views
 
             DataContext = viewModel;
             _viewModel = viewModel;
-            _log = _viewModel.Log;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -133,7 +130,7 @@ namespace WslToolbox.Gui.Views
                 Hide();
             }
 
-            SystemTray.Tray.TrayMouseDoubleClick += (sender, args) => _viewModel.ShowApplication.Execute(null);
+            SystemTray.Tray.TrayMouseDoubleClick += (_, _) => _viewModel.ShowApplication.Execute(null);
 
             SystemTray.Tray.ContextMenu = new ContextMenu
             {

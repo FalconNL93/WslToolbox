@@ -34,7 +34,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished += ExportFinished;
         }
 
-        private void ExportStarted(object? sender, EventArgs e)
+        private void ExportStarted(object sender, EventArgs e)
         {
             _waitHelper.CloseButtonText = "Hide";
             _waitDialog.IsPrimaryButtonEnabled = false;
@@ -46,7 +46,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 _waitDialog.ShowAsync();
         }
 
-        private void ExportFinished(object? sender, EventArgs e)
+        private void ExportFinished(object sender, EventArgs e)
         {
             if (_waitDialog.IsVisible)
                 _waitDialog.Hide();
@@ -61,9 +61,8 @@ namespace WslToolbox.Gui.Commands.Distribution
                 if (warningDialog != ContentDialogResult.Primary) return;
             }
 
-            var saveExportDialog = FileDialogHandler.SaveFileDialog();
-            if (!(bool) saveExportDialog.ShowDialog()) return;
-            var fileName = saveExportDialog.FileName;
+            var exportDirectory = SelectExportDirectory();
+            if (exportDirectory == null) return;
 
             try
             {
@@ -73,14 +72,24 @@ namespace WslToolbox.Gui.Commands.Distribution
                 _waitHelper.DialogMessage = "Initialising...";
                 _waitDialog.ShowAsync();
                 ToolboxClass.OnRefreshRequired(2000);
-                Core.Commands.Distribution.ExportDistributionCommand.Execute((DistributionClass) parameter, fileName);
+                Core.Commands.Distribution.ExportDistributionCommand.Execute((DistributionClass) parameter,
+                    exportDirectory);
             }
             catch (Exception ex)
             {
-                LogHandler.Log().Error(ex.Message, ex);
+                LogHandler.Log().Error("{Message}", ex.Message);
             }
 
             IsExecutable = IsExecutableDefault;
+        }
+
+        private static string SelectExportDirectory()
+        {
+            var distributionPathDialog = FileDialogHandler.SaveFileDialog();
+
+            return distributionPathDialog.ShowDialog() == null
+                ? null
+                : distributionPathDialog.FileName;
         }
 
         private static ContentDialog ShowExportWarning()

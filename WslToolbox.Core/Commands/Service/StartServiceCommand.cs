@@ -11,7 +11,7 @@ namespace WslToolbox.Core.Commands.Service
 
         public static async Task Execute()
         {
-            var startServiceTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command
             ))).ConfigureAwait(true);
 

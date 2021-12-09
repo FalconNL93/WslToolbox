@@ -84,7 +84,7 @@ namespace WslToolbox.Core
                         _stateCache.Add(name, tabbed[2]);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }

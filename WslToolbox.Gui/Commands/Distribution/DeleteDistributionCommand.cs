@@ -8,12 +8,9 @@ namespace WslToolbox.Gui.Commands.Distribution
 {
     public class DeleteDistributionCommand : GenericDistributionCommand
     {
-        private readonly object _view;
-
-        public DeleteDistributionCommand(DistributionClass distributionClass, object view) : base(
+        public DeleteDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
-            _view = view;
             IsExecutableDefault = _ => true;
 
             IsExecutable = IsExecutable = _ =>

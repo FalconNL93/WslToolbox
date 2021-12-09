@@ -11,7 +11,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public RefreshDistributionsCommand(MainView mainView)
         {
             _mainView = mainView;
-            IsExecutableDefault = o => true;
+            IsExecutableDefault = _ => true;
 
             IsExecutable = _ => Process.GetProcessesByName("wslhost").Length > 0;
         }

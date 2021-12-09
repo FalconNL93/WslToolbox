@@ -6,7 +6,6 @@ namespace WslToolbox.Core.Commands.Service
     public static class ListServiceCommand
     {
         private const string Command = "wsl --list --verbose";
-        private const string CommandOnline = "wsl --list --online";
 
         public static async Task<List<DistributionClass>> ListDistributions(bool withoutDocker = false)
         {

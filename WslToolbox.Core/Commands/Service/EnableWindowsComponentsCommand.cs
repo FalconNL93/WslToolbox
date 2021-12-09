@@ -17,7 +17,7 @@ namespace WslToolbox.Core.Commands.Service
         {
             var enableCommand = string.Join(";", EnableCommands);
 
-            var task = await Task.Run(() => CommandClass.ExecuteCommand(
+            await Task.Run(() => CommandClass.ExecuteCommand(
                 enableCommand, elevated: true, executable: ShellBackend)).ConfigureAwait(true);
         }
     }

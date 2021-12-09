@@ -19,8 +19,8 @@ using WslToolbox.Gui.Commands.Service;
 using WslToolbox.Gui.Commands.Settings;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
-using WslToolbox.Gui.Properties;
 using WslToolbox.Gui.Views;
 using CoreCommands = WslToolbox.Core.Commands;
 using static WslToolbox.Gui.Handlers.LogHandler;
@@ -150,7 +150,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
-        public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution, _view);
+        public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -187,7 +187,7 @@ namespace WslToolbox.Gui.ViewModels
             if (e.UpdateError != null)
             {
                 UpdateAvailable = false;
-                Log().Error(e.UpdateError, Resources.ERROR_UPDATE_GENERIC);
+                Log().Error(e.UpdateError, "Could not update application");
             }
 
             UpdateAvailable = e.UpdateAvailable;
@@ -203,13 +203,14 @@ namespace WslToolbox.Gui.ViewModels
                 return;
             }
 
-            Log().Information("Version {CurrentVersion} is available", e.CurrentVersion);
+            var splitVersion = AssemblyHelper.ConvertUpdaterVersion(e.CurrentVersion);
+            Log().Information("Version {Version} Build {Build} is available", splitVersion.Version, splitVersion.Build);
             if (e.ShowPrompt)
                 _updateHandler.ShowUpdatePrompt();
             else if (_view.SystemTray.Tray != null &&
                      Config.Configuration.NotificationConfiguration.NewVersionAvailable)
                 _view.SystemTray.ShowNotification("Update available",
-                    $"Version {e.CurrentVersion} is now available.");
+                    $"Version {splitVersion.Version} Build {splitVersion.Build} is now available.");
         }
 
         private void ShortcutHandler()

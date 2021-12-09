@@ -99,14 +99,14 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.OpenShellDistributionCommand.Execute(selectedDistribution);
         }
 
-        private void FetchSuccessful(object? sender, EventArgs e)
+        private void FetchSuccessful(object sender, EventArgs e)
         {
             var fetchEvent = (FetchEventArguments) e;
             LogHandler.Log().Information("Fetched distribution list from {Url}", fetchEvent.Url);
             _waitDialog.Hide();
         }
 
-        private void FetchFailed(object? sender, EventArgs e)
+        private void FetchFailed(object sender, EventArgs e)
         {
             _errors++;
             var fetchEvent = (FetchEventArguments) e;
@@ -116,7 +116,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 "Error", $"Could not fetch online distribution list.\n\n{fetchEvent.Message}").ShowAsync();
         }
 
-        private void FetchStarted(object? sender, EventArgs e)
+        private void FetchStarted(object sender, EventArgs e)
         {
             var fetchEvent = (FetchEventArguments) e;
             LogHandler.Log().Information("Fetching distribution list from {Url}", fetchEvent.Url);

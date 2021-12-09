@@ -8,7 +8,7 @@ namespace WslToolbox.Gui.Handlers
 {
     public class ConfigurationHandler
     {
-        public ConfigurationHandler(bool useDefault = false)
+        public ConfigurationHandler()
         {
             Configuration = new DefaultConfiguration();
 

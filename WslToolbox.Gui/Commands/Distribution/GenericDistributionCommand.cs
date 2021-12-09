@@ -12,6 +12,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         protected GenericDistributionCommand(DistributionClass distributionClass)
         {
+            DistributionClass = distributionClass;
         }
 
         public abstract void Execute(object parameter);

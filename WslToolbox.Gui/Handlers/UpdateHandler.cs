@@ -124,10 +124,10 @@ namespace WslToolbox.Gui.Handlers
         {
             var responseHeaders = await DownloadResponse(_updateArgs.DownloadURL);
             var readableSize = (responseHeaders / 1024f / 1024f).ToString("F2");
-
+            var splitVersion = AssemblyHelper.ConvertUpdaterVersion(_updateArgs.CurrentVersion);
             var updatePrompt = DialogHelper.ShowMessageBoxInfo(
-                $"Update available - {_updateArgs.CurrentVersion}",
-                $"Version {_updateArgs.CurrentVersion} is available for {AppConfiguration.AppName}. You have version {_updateArgs.InstalledVersion}.\n\n" +
+                $"Update available - {splitVersion.Version} Build {splitVersion.Build}",
+                $"Version {splitVersion.Version} Build {splitVersion.Build} is available for {AppConfiguration.AppName}. You have version {AssemblyHelper.Version()} Build {AssemblyHelper.Build()}.\n\n" +
                 "After the update file has downloaded, the application will restart to apply the update.\n\n" +
                 $"Do you want to install this update now? (Size: {readableSize} MB)",
                 "Download and install", "Download manually", "Cancel update",

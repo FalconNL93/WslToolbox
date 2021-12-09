@@ -10,8 +10,6 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class SettingsView
     {
-        private readonly SettingsViewModel _viewModel;
-
         public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler, OsHandler osHandler,
             KeyboardShortcutHandler keyboardShortcutHandler)
         {
@@ -19,7 +17,6 @@ namespace WslToolbox.Gui.Views
             SettingsViewModel viewModel = new(this, configuration, configHandler, osHandler, keyboardShortcutHandler);
 
             DataContext = viewModel;
-            _viewModel = viewModel;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

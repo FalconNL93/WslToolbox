@@ -20,7 +20,7 @@ namespace WslToolbox.Gui.Helpers
                 }
                 catch (Exception ex)
                 {
-                    LogHandler.Log().Error(ex, ex.Message);
+                    LogHandler.Log().Error(ex, "Could not open URL");
                 }
             };
         }
@@ -36,7 +36,7 @@ namespace WslToolbox.Gui.Helpers
             }
             catch (Exception ex)
             {
-                LogHandler.Log().Error(ex, ex.Message);
+                LogHandler.Log().Error(ex, "Could not open URL");
             }
         }
     }

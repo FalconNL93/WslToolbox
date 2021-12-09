@@ -12,7 +12,8 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override void Execute(object parameter)
         {
-            Core.Commands.Distribution.OpenShellDistributionCommand.Execute((DistributionClass) parameter);
+            if (DistributionClass.State == DistributionClass.StateRunning)
+                Core.Commands.Distribution.OpenShellDistributionCommand.Execute((DistributionClass) parameter);
         }
     }
 }

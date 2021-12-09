@@ -21,7 +21,7 @@ namespace WslToolbox.Gui.Commands.Settings
             }
             catch (ConfigurationFileNotSavedException e)
             {
-                LogHandler.Log().Error(e.Message, e);
+                LogHandler.Log().Error(e, "Settings error");
             }
 
             IsExecutable = _ => true;
