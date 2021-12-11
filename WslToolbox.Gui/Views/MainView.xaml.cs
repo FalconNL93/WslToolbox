@@ -34,6 +34,7 @@ namespace WslToolbox.Gui.Views
             HandleConfiguration();
 
             PopulateWsl();
+            HandleSystemTray();
         }
 
         public void InitializeDataGrid()
@@ -100,7 +101,6 @@ namespace WslToolbox.Gui.Views
         public void HandleConfiguration()
         {
             HandleTheme();
-            HandleSystemTray();
             _viewModel.InitializeKeyboardShortcuts();
         }
 

@@ -20,8 +20,8 @@ namespace WslToolbox.Core.Commands.Distribution
 
             await Task.WhenAll(exportTask, fireImportEvent);
 
-            DistributionExportFinished?.Invoke(typeof(ExportDistributionCommand), args);
             ToolboxClass.OnRefreshRequired();
+            DistributionExportFinished?.Invoke(typeof(ExportDistributionCommand), args);
         }
 
         private static async Task<CommandClass> ExportAsync(DistributionClass distribution, string file)

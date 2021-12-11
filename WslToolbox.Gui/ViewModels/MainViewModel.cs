@@ -148,6 +148,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand RenameDistribution => new RenameDistributionCommand(SelectedDistribution);
         public ICommand StartDistribution => new StartDistributionCommand(SelectedDistribution);
         public ICommand StopDistribution => new StopDistributionCommand(SelectedDistribution);
+        public ICommand RestartDistribution => new RestartDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution);
@@ -280,6 +281,9 @@ namespace WslToolbox.Gui.ViewModels
             DistributionList = await ListServiceCommand
                 .ListDistributions(Config.Configuration.HideDockerDistributions)
                 .ConfigureAwait(true);
+
+            if (Config.Configuration.ShowDistributionsInSystemTray)
+                SystemTrayMenuItems();
         }
 
         private void OnSaveSuccessfully(object sender, EventArgs e)

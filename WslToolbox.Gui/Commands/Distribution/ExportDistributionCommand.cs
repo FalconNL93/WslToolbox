@@ -10,8 +10,6 @@ namespace WslToolbox.Gui.Commands.Distribution
     public class ExportDistributionCommand : GenericDistributionCommand
     {
         private readonly MainViewModel _model;
-        private readonly ContentDialog _waitDialog;
-        private readonly WaitHelper _waitHelper;
 
         public ExportDistributionCommand(DistributionClass distributionClass, MainViewModel model) : base(
             distributionClass)
@@ -20,36 +18,16 @@ namespace WslToolbox.Gui.Commands.Distribution
             _model = model;
             IsExecutableDefault = _ => distributionClass != null;
             IsExecutable = IsExecutableDefault;
-            _waitHelper = new WaitHelper
-            {
-                ProgressRingActive = true
-            };
-
-            _waitDialog = _waitHelper.WaitDialog();
+            DefaultInfoTitle = "Exporting";
+            DefaultInfoContent = $"Exporting distribution {distributionClass.Name}...";
         }
 
         private void RegisterEventHandlers()
         {
-            Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted += ExportStarted;
-            Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished += ExportFinished;
-        }
-
-        private void ExportStarted(object sender, EventArgs e)
-        {
-            _waitHelper.CloseButtonText = "Hide";
-            _waitDialog.IsPrimaryButtonEnabled = false;
-            _waitDialog.IsSecondaryButtonEnabled = false;
-            _waitHelper.DialogTitle = "Exporting";
-            _waitHelper.DialogMessage = "Exporting, please wait...";
-
-            if (!_waitDialog.IsVisible)
-                _waitDialog.ShowAsync();
-        }
-
-        private void ExportFinished(object sender, EventArgs e)
-        {
-            if (_waitDialog.IsVisible)
-                _waitDialog.Hide();
+            Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
+                (_, _) => { ShowInfo(); };
+            Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
+                (_, _) => { HideInfo(); };
         }
 
 
@@ -67,10 +45,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                _waitDialog.CloseButtonText = null;
-                _waitHelper.DialogTitle = "Exporting";
-                _waitHelper.DialogMessage = "Initialising...";
-                _waitDialog.ShowAsync();
+                ShowInfo();
                 ToolboxClass.OnRefreshRequired(2000);
                 Core.Commands.Distribution.ExportDistributionCommand.Execute((DistributionClass) parameter,
                     exportDirectory);

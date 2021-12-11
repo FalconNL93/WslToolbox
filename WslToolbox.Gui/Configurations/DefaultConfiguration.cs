@@ -37,6 +37,7 @@ namespace WslToolbox.Gui.Configurations
 
         public bool MinimizeToTray { get; set; }
         public bool MinimizeOnStartup { get; set; }
+        public bool ShowDistributionsInSystemTray { get; set; }
         public bool MinimizeOnClose { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
 

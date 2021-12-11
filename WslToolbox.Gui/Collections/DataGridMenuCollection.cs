@@ -34,7 +34,7 @@ namespace WslToolbox.Gui.Collections
                 new MenuItem
                 {
                     Header = "Restart",
-                    Command = viewModel.RestartWslService,
+                    Command = viewModel.RestartDistribution,
                     CommandParameter = viewModel.SelectedDistribution
                 },
                 new Separator(),

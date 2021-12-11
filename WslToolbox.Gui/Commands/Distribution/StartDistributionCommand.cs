@@ -1,5 +1,4 @@
-﻿using System;
-using WslToolbox.Core;
+﻿using WslToolbox.Core;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -8,18 +7,25 @@ namespace WslToolbox.Gui.Commands.Distribution
         public StartDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
+            RegisterEventHandlers();
             IsExecutable = _ => distributionClass.State != DistributionClass.StateRunning;
+            DefaultInfoTitle = "Starting";
+            DefaultInfoContent = $"Starting {distributionClass.Name}...";
         }
 
-        public static event EventHandler DistributionStarted;
+        private void RegisterEventHandlers()
+        {
+            Core.Commands.Distribution.StartDistributionCommand.DistributionStartStarted += (_, _) => { ShowInfo(); };
+            Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += (_, _) => { HideInfo(); };
+        }
 
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            _ = await Core.Commands.Distribution.StartDistributionCommand.Execute((DistributionClass) parameter);
+            ShowInfo();
+            _ = await Core.Commands.Distribution.StartDistributionCommand.Execute(
+                (DistributionClass) parameter ?? DistributionClass);
             IsExecutable = _ => true;
-
-            DistributionStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 }

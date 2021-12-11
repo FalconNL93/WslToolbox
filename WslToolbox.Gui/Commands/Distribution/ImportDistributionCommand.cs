@@ -1,5 +1,4 @@
-﻿using System;
-using ModernWpf.Controls;
+﻿using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections.Dialogs;
 using WslToolbox.Gui.Helpers;
@@ -11,45 +10,28 @@ namespace WslToolbox.Gui.Commands.Distribution
     public class ImportDistributionCommand : GenericDistributionCommand
     {
         private readonly MainViewModel _viewModel;
-        private readonly ContentDialog _waitDialog;
-        private readonly WaitHelper _waitHelper;
 
         public ImportDistributionCommand(DistributionClass distributionClass, MainViewModel viewModel) : base(
             distributionClass)
         {
+            RegisterEventHandlers();
             _viewModel = viewModel;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
-            RegisterEventHandlers();
-            _waitHelper = new WaitHelper
-            {
-                ProgressRingActive = true
-            };
-            _waitDialog = _waitHelper.WaitDialog();
+            DefaultInfoTitle = "Importing";
+            DefaultInfoContent = "Importing distribution, please wait...";
         }
 
         private void RegisterEventHandlers()
         {
-            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += ImportStarted;
-            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += ImportFinished;
-        }
-
-        private void ImportStarted(object sender, EventArgs e)
-        {
-            _waitDialog.IsPrimaryButtonEnabled = false;
-            _waitDialog.IsSecondaryButtonEnabled = false;
-            _waitHelper.DialogTitle = "Importing";
-            _waitHelper.DialogMessage = "Distribution is being imported, please wait...";
-            _waitDialog.CloseButtonText = "Hide";
-
-            if (!_waitDialog.IsVisible)
-                _waitDialog.ShowAsync();
-        }
-
-        private void ImportFinished(object sender, EventArgs e)
-        {
-            if (_waitDialog.IsVisible)
-                _waitDialog.Hide();
+            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += (_, _) =>
+            {
+                ShowInfo(showHideButton: true);
+            };
+            Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += (_, _) =>
+            {
+                HideInfo();
+            };
         }
 
         public override async void Execute(object parameter)
@@ -68,10 +50,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (result != ContentDialogResult.Primary) return;
             IsExecutable = _ => false;
-            _waitDialog.CloseButtonText = null;
-            _waitHelper.DialogTitle = "Importing";
-            _waitHelper.DialogMessage = "Initialising...";
-            _waitDialog.ShowAsync();
+            ShowInfo();
             ToolboxClass.OnRefreshRequired(2000);
             Core.Commands.Distribution.ImportDistributionCommand.Execute(
                 importDistributionDialogCollection.DistributionName,

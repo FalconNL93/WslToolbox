@@ -69,7 +69,9 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeToTray),
                     "Minimize to tray", "Configuration.MinimizeToTray", Source),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
-                    "Minimize on startup", "Configuration.MinimizeOnStartup", Source)
+                    "Minimize on startup", "Configuration.MinimizeOnStartup", Source),
+                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.ShowDistributionsInSystemTray),
+                    "Show distributions in system tray menu", "Configuration.ShowDistributionsInSystemTray", Source)
             };
         }
     }

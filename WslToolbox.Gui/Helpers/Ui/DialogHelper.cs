@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
@@ -62,12 +63,13 @@ namespace WslToolbox.Gui.Helpers.Ui
             return dialog;
         }
 
-        public static ContentDialog ShowMessageBoxSelectable(string title, string text, string selectableContent,
+        public static ContentDialog ShowUpdateDialog(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",
             bool withConfirmationCheckbox = false,
             string confirmationCheckboxText = null,
+            string changeLog = null,
             Window dialogOwner = null
         )
         {
@@ -80,15 +82,17 @@ namespace WslToolbox.Gui.Helpers.Ui
                         Text = text,
                         TextTrimming = TextTrimming.WordEllipsis,
                         TextWrapping = TextWrapping.Wrap
-                    },
-                    new TextBox
-                    {
-                        Text = selectableContent,
-                        IsReadOnly = true,
-                        MinHeight = 145
                     }
                 }
             };
+
+            if (changeLog != null)
+                dialogContent.Children.Add(new HyperlinkButton
+                {
+                    Content = "Show changelog",
+                    NavigateUri = new Uri(changeLog),
+                    Margin = new Thickness(0, 5, 0, 0)
+                });
 
             var dialog = new ContentDialog
             {
@@ -100,19 +104,6 @@ namespace WslToolbox.Gui.Helpers.Ui
                 Content = new ScrollViewer {Content = dialogContent},
                 Owner = dialogOwner
             };
-
-            if (withConfirmationCheckbox)
-            {
-                var consentCheckbox = new CheckBox
-                {
-                    Margin = new Thickness(0, 10, 0, 0),
-                    Content = confirmationCheckboxText
-                };
-
-                dialogContent.Children.Add(consentCheckbox);
-                dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty,
-                    BindHelper.BindingObject(nameof(consentCheckbox.IsChecked), consentCheckbox));
-            }
 
             return dialog;
         }

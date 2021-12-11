@@ -74,7 +74,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 ),
                 ConfigurationItems(),
                 ElementHelper.Separator(),
-                ElementHelper.ItemsControlGroup(AdvancedControls(), header: "Advanced")
+                ElementHelper.AddItemExpander("Advanced", AdvancedControls())
             };
         }
 

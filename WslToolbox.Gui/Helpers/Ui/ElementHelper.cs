@@ -163,7 +163,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return itemsControl;
         }
 
-        public static Expander ItemExpander(string header, CompositeCollection items, bool expanded = false,
+        public static Expander AddItemExpander(string header, CompositeCollection items, bool expanded = false,
             bool expanderEnabled = true,
             bool controlsEnabled = true)
         {

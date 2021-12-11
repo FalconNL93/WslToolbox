@@ -1,5 +1,4 @@
-﻿using System;
-using ModernWpf.Controls;
+﻿using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Gui.Helpers.Ui;
@@ -11,13 +10,23 @@ namespace WslToolbox.Gui.Commands.Distribution
         public DeleteDistributionCommand(DistributionClass distributionClass) : base(
             distributionClass)
         {
+            RegisterEventHandlers();
             IsExecutableDefault = _ => true;
 
             IsExecutable = IsExecutable = _ =>
                 distributionClass.State != DistributionClass.StateRunning;
+
+            DefaultInfoTitle = "Deleting";
+            DefaultInfoContent = $"Deleting {distributionClass.Name}...";
         }
 
-        public static event EventHandler DistributionDeleted;
+        private void RegisterEventHandlers()
+        {
+            UnregisterDistributionCommand.DistributionUnregisterStarted +=
+                (_, _) => { ShowInfo(); };
+            UnregisterDistributionCommand.DistributionUnregisterFinished +=
+                (_, _) => { HideInfo(); };
+        }
 
         public override async void Execute(object parameter)
         {
@@ -31,9 +40,8 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (deleteDistributionWarningResult != ContentDialogResult.Primary) return;
             var distribution = (DistributionClass) parameter;
-
+            ShowInfo();
             await UnregisterDistributionCommand.Execute(distribution);
-            DistributionDeleted?.Invoke(this, EventArgs.Empty);
         }
     }
 }
