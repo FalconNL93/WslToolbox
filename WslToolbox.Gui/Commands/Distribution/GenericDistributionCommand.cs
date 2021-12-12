@@ -41,13 +41,13 @@ namespace WslToolbox.Gui.Commands.Distribution
             return IsExecutable == null || IsExecutable(parameter);
         }
 
-        protected async void ShowInfo(string title = null, string content = null, bool showHideButton = false)
+        protected void ShowInfo(string title = null, string content = null, bool showHideButton = false)
         {
             HideInfo();
             _waitHelper.CloseButtonText = showHideButton ? "Hide" : null;
             _waitHelper.DialogTitle = title ?? DefaultInfoTitle;
             _waitHelper.DialogMessage = content ?? DefaultInfoContent;
-            await _waitDialog.ShowAsync();
+            _waitDialog.ShowAsync();
         }
 
         protected void HideInfo()

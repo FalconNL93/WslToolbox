@@ -50,7 +50,6 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (result != ContentDialogResult.Primary) return;
             IsExecutable = _ => false;
-            ShowInfo();
             ToolboxClass.OnRefreshRequired(2000);
             Core.Commands.Distribution.ImportDistributionCommand.Execute(
                 importDistributionDialogCollection.DistributionName,

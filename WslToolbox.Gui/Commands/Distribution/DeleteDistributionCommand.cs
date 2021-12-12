@@ -23,7 +23,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         private void RegisterEventHandlers()
         {
             UnregisterDistributionCommand.DistributionUnregisterStarted +=
-                (_, _) => { ShowInfo(); };
+                (_, _) => { ShowInfo(showHideButton: true); };
             UnregisterDistributionCommand.DistributionUnregisterFinished +=
                 (_, _) => { HideInfo(); };
         }

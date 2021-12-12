@@ -33,10 +33,6 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
                     header: null),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideActionWindows),
-                    "Hide please wait dialogs", "Configuration.HideActionWindows", Source,
-                    tooltipContent: "Hide the dialogs that are shown when i.e. exporting a distribution.",
-                    header: null)
             };
         }
 
@@ -73,8 +69,6 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Minimize to tray", "Configuration.MinimizeToTray", Source),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
                     "Minimize on startup", "Configuration.MinimizeOnStartup", Source),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.ShowDistributionsInSystemTray),
-                    "Show distributions in system tray menu", "Configuration.ShowDistributionsInSystemTray", Source)
             };
         }
     }

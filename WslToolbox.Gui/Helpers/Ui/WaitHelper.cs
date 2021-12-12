@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Converters;
+using ProgressBar = ModernWpf.Controls.ProgressBar;
 
 namespace WslToolbox.Gui.Helpers.Ui
 {
@@ -114,25 +115,25 @@ namespace WslToolbox.Gui.Helpers.Ui
             textBlock.SetBinding(TextBlock.TextProperty,
                 BindHelper.BindingObject(nameof(DialogMessage), this));
 
-            var progressRing = new ProgressRing
+            var progressBar = new ProgressBar
             {
                 Margin = new Thickness(0, 15, 0, 0),
-                Height = 40,
-                Width = 40
+                Width = 130,
+                IsIndeterminate = true,
             };
 
-            progressRing.SetBinding(ProgressRing.IsActiveProperty,
+            progressBar.SetBinding(ProgressRing.IsActiveProperty,
                 BindHelper.BindingObject(nameof(ProgressRingActive), this));
 
             StackPanel itemStack = new();
             itemStack.Children.Add(textBlock);
-            itemStack.Children.Add(progressRing);
+            itemStack.Children.Add(progressBar);
 
             var dialog = new ContentDialog
             {
                 PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 Content = new ScrollViewer {Content = itemStack},
-                Owner = Owner
+                Owner = Owner,
             };
 
             dialog.SetBinding(ContentDialog.TitleProperty,

@@ -26,11 +26,9 @@ namespace WslToolbox.Core.Commands.Distribution
 
         private static async Task<CommandClass> ExportAsync(DistributionClass distribution, string file)
         {
-            var exportTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            return await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
                 Command, distribution.Name, file
-            ))).ConfigureAwait(true);
-
-            return exportTask;
+            )));
         }
 
         private static async Task<bool> FireExportEvent(DistributionEventArguments args)

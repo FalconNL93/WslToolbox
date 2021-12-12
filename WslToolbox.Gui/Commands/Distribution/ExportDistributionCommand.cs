@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
@@ -25,7 +26,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
-                (_, _) => { ShowInfo(); };
+                (_, _) => { ShowInfo(showHideButton: true); };
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
                 (_, _) => { HideInfo(); };
         }
@@ -45,7 +46,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             try
             {
                 IsExecutable = _ => false;
-                ShowInfo();
+
                 ToolboxClass.OnRefreshRequired(2000);
                 Core.Commands.Distribution.ExportDistributionCommand.Execute((DistributionClass) parameter,
                     exportDirectory);
