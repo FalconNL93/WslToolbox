@@ -15,7 +15,7 @@ namespace WslToolbox.Core.Commands.Distribution
             var fireImportEvent = FireImportEvent(name);
             var importTask = ImportAsync(name, path, file);
 
-            await Task.WhenAll(importTask, fireImportEvent);
+            await Task.WhenAll(fireImportEvent, importTask);
             ToolboxClass.OnRefreshRequired();
             DistributionImportFinished?.Invoke(name, EventArgs.Empty);
         }

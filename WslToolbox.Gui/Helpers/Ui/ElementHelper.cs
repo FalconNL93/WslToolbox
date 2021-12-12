@@ -42,7 +42,8 @@ namespace WslToolbox.Gui.Helpers.Ui
             string offContent = null,
             bool enabled = true,
             string header = null,
-            bool isOn = false)
+            bool isOn = false,
+            string tooltipContent = null)
         {
             var toggleSwitch = new ToggleSwitch
             {
@@ -52,7 +53,8 @@ namespace WslToolbox.Gui.Helpers.Ui
                 OnContent = content,
                 OffContent = offContent ?? content,
                 Header = header,
-                IsOn = isOn
+                IsOn = isOn,
+                ToolTip = tooltipContent
             };
 
             if (bind != null)

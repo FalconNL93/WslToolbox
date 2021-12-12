@@ -69,10 +69,6 @@ namespace WslToolbox.Gui.Handlers
                 //.Where(x => x.Enabled)
                 .FirstOrDefault(x => x.Modifier == modifierKey);
 
-            Debug.WriteLine(shortcut != null
-                ? $"Shortcut handler for {modifierKey} + {key}: {shortcut.Action.Method}"
-                : $"Unbound shortcut {modifierKey} + {key}");
-
             return shortcut;
         }
     }

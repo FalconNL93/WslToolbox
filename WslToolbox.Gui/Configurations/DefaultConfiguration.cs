@@ -24,6 +24,8 @@ namespace WslToolbox.Gui.Configurations
 
         [JsonIgnore] public string ConfigurationFile { get; }
 
+        public bool HideActionWindows { get; set; }
+
         public bool EnableSystemTray
         {
             get => _enableSystemTray;

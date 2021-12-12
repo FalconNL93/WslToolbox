@@ -6,6 +6,7 @@ using WslToolbox.Core.EventArguments;
 using WslToolbox.Core.Helpers;
 using WslToolbox.Gui.Collections.Dialogs;
 using WslToolbox.Gui.Handlers;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
@@ -54,7 +55,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (_viewModel.InstallableDistributions != null)
                 LogHandler.Log().Information("Using cache for online distribution list");
 
-            _viewModel.InstallableDistributions ??= await DistributionClass.ListAvailableDistributions();
+            _viewModel.InstallableDistributions ??=
+                await DistributionClass.ListAvailableDistributions(_viewModel.DistributionList);
 
             if (_viewModel.InstallableDistributions != null && _errors == 0)
                 SelectDialog();
@@ -78,6 +80,8 @@ namespace WslToolbox.Gui.Commands.Distribution
         private async void SelectDialog()
         {
             DistributionClass selectedDistribution = null;
+            ComboBox combo = null;
+
             var selectDistribution = DialogHelper.ShowContentDialog(
                 "Install Distribution",
                 InstallDistributionDialogCollection.Items(_viewModel.InstallableDistributions),
@@ -92,8 +96,8 @@ namespace WslToolbox.Gui.Commands.Distribution
             {
                 if (item.Name != "InstallDistributionList") continue;
 
-                var comboBox = (ComboBox) item;
-                selectedDistribution = (DistributionClass) comboBox.SelectedItem;
+                combo = (ComboBox) item;
+                selectedDistribution = (DistributionClass) combo.SelectedItem;
             }
 
             Core.Commands.Distribution.OpenShellDistributionCommand.Execute(selectedDistribution);

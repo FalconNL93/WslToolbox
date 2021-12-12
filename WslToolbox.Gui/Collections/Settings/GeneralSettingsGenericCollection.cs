@@ -28,11 +28,14 @@ namespace WslToolbox.Gui.Collections.Settings
             {
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideDockerDistributions),
                     "Hide Docker Distributions", "Configuration.HideDockerDistributions", Source, header: null),
-
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideExportWarning),
                     "Hide export warning", "Configuration.HideExportWarning", Source, header: null),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
+                    header: null),
+                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideActionWindows),
+                    "Hide please wait dialogs", "Configuration.HideActionWindows", Source,
+                    tooltipContent: "Hide the dialogs that are shown when i.e. exporting a distribution.",
                     header: null)
             };
         }

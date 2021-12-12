@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using WslToolbox.Core;
+using ModernWpf.Controls.Primitives;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
@@ -11,22 +12,39 @@ namespace WslToolbox.Gui.Collections.Dialogs
         {
             Control[] items =
             {
+                DistributionListControl(distributionClass),
                 new Label
                 {
-                    Content = "Select an online distribution to install",
-                    Margin = new Thickness(0, 0, 0, 5)
+                    Content = "Note:",
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(0, 15, 0, 0)
                 },
-                new ComboBox
+                new Label
                 {
-                    Name = "InstallDistributionList",
-                    ItemsSource = distributionClass.FindAll(x => !x.IsInstalled),
-                    DisplayMemberPath = "Name",
-                    SelectedIndex = 0,
-                    MinWidth = 200
+                    Content =
+                        "Due to restrictions of WSL, you cannot install an already installed distribution. \n" +
+                        "Therefore installed distributions are excluded from the above dropdown menu.\n\n" +
+                        "A quick bypass would be to export an already installed distribution and import it \nwith a different name.\n"
                 }
             };
 
             return items;
+        }
+
+        private static ComboBox DistributionListControl(List<DistributionClass> distributionClass)
+        {
+            var installDistributionList = new ComboBox
+            {
+                Name = "InstallDistributionList",
+                ItemsSource = distributionClass.FindAll(x => !x.IsInstalled),
+                DisplayMemberPath = "Name",
+                MinWidth = 200,
+            };
+
+            ControlHelper.SetHeader(installDistributionList, "Select an online distribution to install");
+            ControlHelper.SetPlaceholderText(installDistributionList, "Select distribution");
+
+            return installDistributionList;
         }
     }
 }

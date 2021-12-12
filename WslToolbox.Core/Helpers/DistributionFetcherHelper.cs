@@ -32,7 +32,8 @@ namespace WslToolbox.Core.Helpers
         public static event EventHandler FetchFailed;
         public static event EventHandler FetchSuccessful;
 
-        public static async Task<List<DistributionClass>> ReadOnlineDistributions()
+        public static async Task<List<DistributionClass>> ReadOnlineDistributions(
+            List<DistributionClass> currentDistributions)
         {
             var distros = new List<DistributionClass>();
             OnFetchStarted(new FetchEventArguments(null, Url));
@@ -60,7 +61,7 @@ namespace WslToolbox.Core.Helpers
                     BasePath = null,
                     BasePathLocal = null,
                     IsDefault = false,
-                    IsInstalled = false,
+                    IsInstalled = currentDistributions?.Exists(x => x.Name == distribution.Name) ?? false,
                     DefaultUid = 0
                 }));
             }

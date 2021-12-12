@@ -28,9 +28,9 @@ namespace WslToolbox.Core
 
         public long Size { get; set; }
 
-        public static async Task<List<DistributionClass>> ListAvailableDistributions()
+        public static async Task<List<DistributionClass>> ListAvailableDistributions(List<DistributionClass> currentDistributions)
         {
-            return await DistributionFetcherHelper.ReadOnlineDistributions();
+            return await DistributionFetcherHelper.ReadOnlineDistributions(currentDistributions);
         }
 
         public List<DistributionClass> ListDistributions(string output)
