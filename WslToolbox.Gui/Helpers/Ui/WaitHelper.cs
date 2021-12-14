@@ -119,7 +119,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             {
                 Margin = new Thickness(0, 15, 0, 0),
                 Width = 130,
-                IsIndeterminate = true,
+                IsIndeterminate = true
             };
 
             progressBar.SetBinding(ProgressRing.IsActiveProperty,
@@ -133,7 +133,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             {
                 PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 Content = new ScrollViewer {Content = itemStack},
-                Owner = Owner,
+                Owner = Owner
             };
 
             dialog.SetBinding(ContentDialog.TitleProperty,

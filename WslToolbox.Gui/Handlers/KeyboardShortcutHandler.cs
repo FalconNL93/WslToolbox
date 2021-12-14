@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using WslToolbox.Gui.Configurations;
@@ -53,7 +52,15 @@ namespace WslToolbox.Gui.Handlers
 
             new KeyboardShortcut(_config.AppSettingsExit, ModifierKeys.Control, "Exit application",
                 nameof(_config.AppExitEnabled), false, () => _model.ExitApplication.Execute(null),
-                _config.AppExitEnabled)
+                _config.AppExitEnabled),
+
+            new KeyboardShortcut(_config.AppImportKey, ModifierKeys.Control, "Import distribution",
+                nameof(_config.AppImportEnabled), false, () => _model.ShowImportDialog.Execute(null),
+                _config.AppImportEnabled),
+
+            new KeyboardShortcut(_config.AppRefreshKey, ModifierKeys.None, "Refresh distributions",
+                nameof(_config.AppImportEnabled), false, () => _model.RefreshDistributions(),
+                _config.AppRefreshEnabled)
         };
 
         public void Add(Key key, ModifierKeys modifierKey, string name, string configuration, bool modifiable,

@@ -6,7 +6,6 @@ using WslToolbox.Core.EventArguments;
 using WslToolbox.Core.Helpers;
 using WslToolbox.Gui.Collections.Dialogs;
 using WslToolbox.Gui.Handlers;
-using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 

@@ -32,7 +32,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Hide export warning", "Configuration.HideExportWarning", Source, header: null),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
-                    header: null),
+                    header: null)
             };
         }
 
@@ -68,7 +68,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeToTray),
                     "Minimize to tray", "Configuration.MinimizeToTray", Source),
                 ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
-                    "Minimize on startup", "Configuration.MinimizeOnStartup", Source),
+                    "Minimize on startup", "Configuration.MinimizeOnStartup", Source)
             };
         }
     }

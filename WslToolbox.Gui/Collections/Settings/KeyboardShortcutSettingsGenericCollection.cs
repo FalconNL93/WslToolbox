@@ -28,8 +28,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     "Enable keyboard shortcuts", "Configuration.KeyboardShortcutConfiguration.Enabled", Source,
                     header: null),
                 new Separator(),
-                ElementHelper.ItemsControlGroup(ShortcutControls(),
-                    source: Source,
+                ElementHelper.ItemsControlGroup(ShortcutControls(), source: Source,
                     requires: "Configuration.KeyboardShortcutConfiguration.Enabled")
             };
         }
@@ -47,11 +46,20 @@ namespace WslToolbox.Gui.Collections.Settings
 
                 shortCutKey = $"{shortCutKey}{shortcut.Key}";
 
-                keyboardChecks.Add(ElementHelper.AddToggleSwitch(shortcut.Configuration,
-                    $"{shortcut.Name}\t\t[{shortCutKey}]",
+                var shortcutLine = new StackPanel {Orientation = Orientation.Horizontal};
+                shortcutLine.Children.Add(ElementHelper.AddToggleSwitch(shortcut.Configuration,
+                    $"{shortcut.Name}",
                     $"Configuration.KeyboardShortcutConfiguration.{shortcut.Configuration}", Source,
-                    enabled: shortcut.Modifiable, header: null)
-                );
+                    header: null));
+                shortcutLine.Children.Add(ElementHelper.Separator(marginLeft: 10));
+                shortcutLine.Children.Add(new TextBox
+                {
+                    Text = shortCutKey,
+                    IsReadOnly = true,
+                    IsEnabled = false
+                });
+
+                keyboardChecks.Add(shortcutLine);
             }
 
             return keyboardChecks;

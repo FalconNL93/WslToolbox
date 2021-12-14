@@ -43,7 +43,8 @@ namespace WslToolbox.Core.Helpers
                 if (WebRequest.Create(Url) is not HttpWebRequest request) return distros;
                 var response = await request.GetResponseAsync();
                 var encoding = Encoding.ASCII;
-                var jsonResponse = new StreamReader(response.GetResponseStream(), encoding);
+                var jsonResponse =
+                    new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException(), encoding);
                 var onlineDistributions =
                     JsonSerializer.Deserialize<OnlineDistributions>(await jsonResponse.ReadToEndAsync());
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using WslToolbox.Core;
 using ModernWpf.Controls.Primitives;
+using WslToolbox.Core;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
@@ -38,7 +38,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 Name = "InstallDistributionList",
                 ItemsSource = distributionClass.FindAll(x => !x.IsInstalled),
                 DisplayMemberPath = "Name",
-                MinWidth = 200,
+                MinWidth = 200
             };
 
             ControlHelper.SetHeader(installDistributionList, "Select an online distribution to install");

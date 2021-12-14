@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using ModernWpf.Controls;
@@ -88,7 +89,13 @@ namespace WslToolbox.Gui.Collections.Settings
                     LogConfiguration.GetValues(),
                     "Configuration.MinimumLogLevel",
                     Source
-                )
+                ),
+                new Label {Margin = new Thickness(0, 5, 0, 0), Content = "Update manifest:"},
+                new HyperlinkButton
+                {
+                    Content = AppConfiguration.AppConfigurationUpdateXml,
+                    NavigateUri = new Uri(AppConfiguration.AppConfigurationUpdateXml)
+                }
             };
         }
     }

@@ -43,7 +43,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 {"AutoUpdater.NET", "https://github.com/ravibpatel/AutoUpdater.NET"},
                 {"Command Line Parser Library", "https://github.com/commandlineparser/commandline"},
                 {"Hardcodet NotifyIcon for WPF", "https://github.com/hardcodet/wpf-notifyicon"},
-                {"ModernWPF UI Library", "https://github.com/Kinnara/ModernWpf"}
+                {"ModernWPF UI Library", "https://github.com/Kinnara/ModernWpf"},
+                {"Serilog", "https://github.com/serilog/serilog"}
             };
 
             return packages.Aggregate<KeyValuePair<string, string>, string>(null,

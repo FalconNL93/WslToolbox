@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using ModernWpf.Controls;
+using ModernWpf.Controls.Primitives;
 
 namespace WslToolbox.Gui.Helpers.Ui
 {
@@ -105,30 +106,34 @@ namespace WslToolbox.Gui.Helpers.Ui
             return comboBox;
         }
 
-        public static TextBox AddTextBox(string name, string content, string bind = null, object source = null,
+        public static TextBox AddTextBox(string name, string content = null, string bind = null, object source = null,
             string requires = null, bool isEnabled = false, int width = 0,
             BindingMode bindingMode = BindingMode.Default,
-            bool isReadonly = false)
+            bool isReadonly = false,
+            UpdateSourceTrigger updateSourceTrigger = UpdateSourceTrigger.Default, string placeholder = null)
         {
             var textBox = new TextBox
             {
                 Name = name,
-                Text = content,
+                Text = content ?? "",
                 HorizontalAlignment = HorizontalAlignment.Left,
                 IsReadOnly = isReadonly
             };
+
+            if (bind != null)
+                textBox.SetBinding(TextBox.TextProperty,
+                    BindHelper.BindingObject(bind, source, bindingMode, trigger: updateSourceTrigger));
 
             if (width > 1)
                 textBox.Width = width;
 
             if (requires != null)
                 textBox.SetBinding(UIElement.IsEnabledProperty,
-                    BindHelper.BindingObject(requires, source, bindingMode));
+                    BindHelper.BindingObject(requires, source, bindingMode, trigger: updateSourceTrigger));
             else
                 textBox.IsEnabled = isEnabled;
 
-            if (bind != null)
-                textBox.SetBinding(TextBox.TextProperty, BindHelper.BindingObject(bind, source, bindingMode));
+            ControlHelper.SetPlaceholderText(textBox, placeholder);
 
             return textBox;
         }
@@ -190,16 +195,23 @@ namespace WslToolbox.Gui.Helpers.Ui
                     FontWeight = FontWeights.Bold
                 });
 
-            foreach (Control item in items)
+            foreach (var item in items)
             {
-                if (requires != null)
-                    item.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+                if (!item.GetType().IsSubclassOf(typeof(Control)))
+                {
+                    groupItems.Items.Add(item);
+                    continue;
+                }
 
-                if (itemEnableOverride) item.IsEnabled = enabled;
+                var controlItem = (Control) item;
+                if (requires != null)
+                    controlItem.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+                if (itemEnableOverride) controlItem.IsEnabled = enabled;
                 groupItems.Items.Add(item);
 
                 if (tabIndex > 0)
-                    item.Margin = new Thickness(tabIndex * 10, 0, 0, 0);
+                    controlItem.Margin = new Thickness(tabIndex * 10, 0, 0, 0);
             }
 
             return groupItems;
@@ -252,12 +264,13 @@ namespace WslToolbox.Gui.Helpers.Ui
             return textBlock;
         }
 
-        public static Separator Separator(int marginTop = 5, int marginBottom = 10,
+        public static Separator Separator(int marginTop = 5, int marginBottom = 10, int marginLeft = 0,
+            int marginRight = 0,
             Visibility visibility = Visibility.Hidden)
         {
             return new Separator
             {
-                Margin = new Thickness(0, marginTop, 0, marginBottom),
+                Margin = new Thickness(marginLeft, marginTop, marginRight, marginBottom),
                 Visibility = visibility
             };
         }
