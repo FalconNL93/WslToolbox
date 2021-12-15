@@ -36,7 +36,6 @@ namespace WslToolbox.Gui.ViewModels
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly OsHandler _osHandler = new();
         private readonly UpdateHandler _updateHandler;
         private readonly MainView _view;
         public readonly ICommand CheckForUpdates;
@@ -133,7 +132,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
-        public ICommand ShowSettings => new ShowSettingsCommand(Config, _osHandler, KeyboardShortcutHandler);
+        public ICommand ShowSettings => new ShowSettingsCommand(Config, KeyboardShortcutHandler);
         public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution, this);
         public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution, this);
         public ICommand StartWslService => new StartWslServiceCommand();
@@ -264,16 +263,6 @@ namespace WslToolbox.Gui.ViewModels
         public CompositeCollection DataGridMenuItems()
         {
             return DataGridMenuCollection.Items(this);
-        }
-
-        public bool ShowUnsupportedOsMessage()
-        {
-            return _osHandler.State == OsHandler.States.Unsupported && !Config.Configuration.HideUnsupportedOsMessage;
-        }
-
-        public bool ShowMinimumOsMessage()
-        {
-            return _osHandler.State == OsHandler.States.Minimum && Config.Configuration.ShowMinimumOsMessage;
         }
 
         public async void RefreshDistributions()

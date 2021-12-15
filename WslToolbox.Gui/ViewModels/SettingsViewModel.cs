@@ -15,12 +15,11 @@ namespace WslToolbox.Gui.ViewModels
         public readonly KeyboardShortcutHandler KeyboardShortcutHandler;
 
         public SettingsViewModel(SettingsView view, DefaultConfiguration configuration,
-            ConfigurationHandler configHandler, OsHandler osHandler, KeyboardShortcutHandler keyboardShortcutHandler)
+            ConfigurationHandler configHandler, KeyboardShortcutHandler keyboardShortcutHandler)
         {
             _view = view;
             ConfigHandler = configHandler;
             Configuration = configuration;
-            OsHandler = osHandler;
             KeyboardShortcutHandler = keyboardShortcutHandler;
 
             InitializeSettingsTabsElements();
@@ -29,8 +28,6 @@ namespace WslToolbox.Gui.ViewModels
 
         public ConfigurationHandler ConfigHandler { get; }
         public DefaultConfiguration Configuration { get; }
-        public OsHandler OsHandler { get; }
-
         public CompositeCollection GeneralSettings { get; set; }
         public CompositeCollection KeyboardShortcutSettings { get; set; }
         public CompositeCollection GridSettings { get; set; }

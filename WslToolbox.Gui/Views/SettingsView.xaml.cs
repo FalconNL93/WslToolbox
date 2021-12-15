@@ -10,11 +10,11 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class SettingsView
     {
-        public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler, OsHandler osHandler,
+        public SettingsView(DefaultConfiguration configuration, ConfigurationHandler configHandler,
             KeyboardShortcutHandler keyboardShortcutHandler)
         {
             InitializeComponent();
-            SettingsViewModel viewModel = new(this, configuration, configHandler, osHandler, keyboardShortcutHandler);
+            SettingsViewModel viewModel = new(this, configuration, configHandler, keyboardShortcutHandler);
 
             DataContext = viewModel;
         }

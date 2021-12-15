@@ -7,19 +7,16 @@ namespace WslToolbox.Gui.Commands.Settings
     {
         private readonly ConfigurationHandler _config;
         private readonly KeyboardShortcutHandler _keyboardShortcutHandler;
-        private readonly OsHandler _osHandler;
 
-        public ShowSettingsCommand(ConfigurationHandler config, OsHandler osHandler,
-            KeyboardShortcutHandler keyboardShortcutHandler)
+        public ShowSettingsCommand(ConfigurationHandler config, KeyboardShortcutHandler keyboardShortcutHandler)
         {
             _config = config;
-            _osHandler = osHandler;
             _keyboardShortcutHandler = keyboardShortcutHandler;
         }
 
         public override void Execute(object parameter)
         {
-            SettingsView settingsWindow = new(_config.Configuration, _config, _osHandler, _keyboardShortcutHandler);
+            SettingsView settingsWindow = new(_config.Configuration, _config, _keyboardShortcutHandler);
             settingsWindow.ShowDialog();
 
             var saveSettingsCommand = new SaveSettingsCommand(_config);
