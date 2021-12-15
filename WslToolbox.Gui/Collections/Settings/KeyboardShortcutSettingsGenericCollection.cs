@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Converters;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
@@ -35,16 +36,18 @@ namespace WslToolbox.Gui.Collections.Settings
 
         private CompositeCollection ShortcutControls()
         {
+            var converter = new ShortcutConverter();
             var keyboardChecks = new CompositeCollection();
 
             foreach (var shortcut in _shortcuts)
             {
-                var shortCutKey = string.Empty;
+                var shortcutKey = string.Empty;
+                var shortcutKeyConverter = converter.Convert(shortcut.Key, null, null, null);
 
                 if (shortcut.Modifier != ModifierKeys.None)
-                    shortCutKey = $"{shortcut.Modifier.ToString()} + ";
+                    shortcutKey = $"{shortcut.Modifier.ToString()} + ";
 
-                shortCutKey = $"{shortCutKey}{shortcut.Key}";
+                shortcutKey = $"{shortcutKey}{shortcutKeyConverter}";
 
                 var shortcutLine = new StackPanel {Orientation = Orientation.Horizontal};
                 shortcutLine.Children.Add(ElementHelper.AddToggleSwitch(shortcut.Configuration,
@@ -54,7 +57,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 shortcutLine.Children.Add(ElementHelper.Separator(marginLeft: 10));
                 shortcutLine.Children.Add(new TextBox
                 {
-                    Text = shortCutKey,
+                    Text = shortcutKey,
                     IsReadOnly = true,
                     IsEnabled = false
                 });

@@ -16,7 +16,9 @@ namespace WslToolbox.Gui.Converters
             return keyboardShortcut switch
             {
                 Key.OemComma => ",",
-                _ => null
+                Key.OemPeriod => ".",
+                Key.OemSemicolon => ";",
+                _ => value
             };
         }
 
