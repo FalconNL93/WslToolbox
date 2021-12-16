@@ -28,7 +28,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
 
-            _waitDialog = DialogHelper.ShowMessageBoxInfo(
+            _waitDialog = DialogHelper.MessageBox(
                 "Please wait",
                 "Fetching online distribution list...");
         }
@@ -81,7 +81,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             DistributionClass selectedDistribution = null;
             ComboBox combo = null;
 
-            var selectDistribution = DialogHelper.ShowContentDialog(
+            var selectDistribution = DialogHelper.ContentDialog(
                 "Install Distribution",
                 InstallDistributionDialogCollection.Items(_viewModel.InstallableDistributions),
                 "Install", null, "Cancel");
@@ -115,7 +115,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             var fetchEvent = (FetchEventArguments) e;
             LogHandler.Log().Error("Error fetching distribution list from {Url}", fetchEvent.Url);
             _waitDialog.Hide();
-            DialogHelper.ShowMessageBoxInfo(
+            DialogHelper.MessageBox(
                 "Error", $"Could not fetch online distribution list.\n\n{fetchEvent.Message}").ShowAsync();
         }
 

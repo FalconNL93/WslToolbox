@@ -25,11 +25,11 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.BasePath),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.BasePath),
                     "Base path", "Configuration.GridConfiguration.BasePath", Source, header: null),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.Size),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.Size),
                     "Size", "Configuration.GridConfiguration.Size", Source, header: null),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.Guid),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GridConfiguration.Guid),
                     "GUID", "Configuration.GridConfiguration.Guid", Source, header: null)
             };
         }
@@ -39,19 +39,19 @@ namespace WslToolbox.Gui.Collections.Settings
             return new CompositeCollection
             {
                 new Label {Content = "Double click should"},
-                ElementHelper.AddComboBox(
+                ElementHelper.ComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.DoubleClick),
                     GridConfiguration.DoubleClickValues(),
                     "Configuration.GridConfiguration.DoubleClick",
                     Source),
                 new Label {Content = "Single mouse click should"},
-                ElementHelper.AddComboBox(
+                ElementHelper.ComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.SingleClick),
                     GridConfiguration.SingleClickValues(),
                     "Configuration.GridConfiguration.SingleClick",
                     Source),
                 new Label {Content = "Right mouse click should"},
-                ElementHelper.AddComboBox(
+                ElementHelper.ComboBox(
                     nameof(DefaultConfiguration.GridConfiguration.RightSingleClick),
                     GridConfiguration.RightSingleClickValues(),
                     "Configuration.GridConfiguration.RightSingleClick",

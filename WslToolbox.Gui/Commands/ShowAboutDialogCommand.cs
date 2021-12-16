@@ -17,7 +17,7 @@ namespace WslToolbox.Gui.Commands
 
         public override async void Execute(object parameter)
         {
-            var selectDistribution = DialogHelper.ShowContentDialog(
+            var selectDistribution = DialogHelper.ContentDialog(
                 "About",
                 AboutDialogCollection.Items(_viewModel),
                 null, null, "Close");

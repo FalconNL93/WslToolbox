@@ -46,7 +46,7 @@ namespace WslToolbox.Gui.Collections.Settings
 
         private async void OnResetConfiguration(object o, RoutedEventArgs routedEventArgs)
         {
-            var resetSettings = DialogHelper.ShowMessageBoxInfo("Reset configuration",
+            var resetSettings = DialogHelper.MessageBox("Reset configuration",
                 "Do you want to reset your configuration?", "Reset", closeButtonText: "Cancel");
 
             var resetSettingsResult = await resetSettings.ShowAsync();
@@ -65,7 +65,7 @@ namespace WslToolbox.Gui.Collections.Settings
                     FontWeight = FontWeights.Bold,
                     Content = "Configuration path"
                 },
-                ElementHelper.AddTextBox(nameof(DefaultConfiguration.ConfigurationFile), "Config",
+                ElementHelper.TextBox(nameof(DefaultConfiguration.ConfigurationFile), "Config",
                     "Configuration.ConfigurationFile",
                     Source,
                     bindingMode: BindingMode.OneWay,
@@ -75,7 +75,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 ),
                 ConfigurationItems(),
                 ElementHelper.Separator(),
-                ElementHelper.AddItemExpander("Advanced", AdvancedControls())
+                ElementHelper.Expander("Advanced", AdvancedControls())
             };
         }
 
@@ -84,7 +84,7 @@ namespace WslToolbox.Gui.Collections.Settings
             return new CompositeCollection
             {
                 new Label {Content = "Log level"},
-                ElementHelper.AddComboBox(
+                ElementHelper.ComboBox(
                     "MinimumLogLevel",
                     LogConfiguration.GetValues(),
                     "Configuration.MinimumLogLevel",

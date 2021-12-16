@@ -14,7 +14,7 @@ namespace WslToolbox.Gui.Helpers.Ui
 
     public static class DialogHelper
     {
-        public static ContentDialog ShowMessageBoxInfo(string title, string text,
+        public static ContentDialog MessageBox(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",
@@ -56,14 +56,14 @@ namespace WslToolbox.Gui.Helpers.Ui
                 };
 
                 dialogContent.Children.Add(consentCheckbox);
-                dialog.SetBinding(ContentDialog.IsPrimaryButtonEnabledProperty,
+                dialog.SetBinding(ModernWpf.Controls.ContentDialog.IsPrimaryButtonEnabledProperty,
                     BindHelper.BindingObject(nameof(consentCheckbox.IsChecked), consentCheckbox));
             }
 
             return dialog;
         }
 
-        public static ContentDialog ShowUpdateDialog(string title, string text,
+        public static ContentDialog UpdateDialog(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",
@@ -108,7 +108,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return dialog;
         }
 
-        public static UiDialog ShowContentDialog(string title, IEnumerable<Control> items,
+        public static UiDialog ContentDialog(string title, IEnumerable<Control> items,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",

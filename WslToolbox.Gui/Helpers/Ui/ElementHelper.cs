@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using ModernWpf.Controls;
 using ModernWpf.Controls.Primitives;
 
@@ -13,7 +14,7 @@ namespace WslToolbox.Gui.Helpers.Ui
 {
     public static class ElementHelper
     {
-        public static CheckBox AddCheckBox(string name, string content, string bind = null, object source = null,
+        public static CheckBox CheckBox(string name, string content, string bind = null, object source = null,
             string requires = null, Visibility visibility = Visibility.Visible, bool enabled = true,
             bool isChecked = false)
         {
@@ -35,7 +36,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return checkBox;
         }
 
-        public static ToggleSwitch AddToggleSwitch(string name,
+        public static ToggleSwitch ToggleSwitch(string name,
             string content = null,
             string bind = null,
             object source = null,
@@ -59,7 +60,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             };
 
             if (bind != null)
-                toggleSwitch.SetBinding(ToggleSwitch.IsOnProperty,
+                toggleSwitch.SetBinding(ModernWpf.Controls.ToggleSwitch.IsOnProperty,
                     BindHelper.BindingObject(bind, source));
 
             if (requires != null)
@@ -68,7 +69,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return toggleSwitch;
         }
 
-        public static ComboBox AddComboBox(string name, IEnumerable items, string bind, object source,
+        public static ComboBox ComboBox(string name, IEnumerable items, string bind, object source,
             string requires = null)
         {
             var comboBox = new ComboBox
@@ -85,7 +86,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return comboBox;
         }
 
-        public static ComboBox AddComboBox(string name, Dictionary<int, string> items, string bind, object source,
+        public static ComboBox ComboBox(string name, Dictionary<int, string> items, string bind, object source,
             string requires = null)
         {
             var comboBox = new ComboBox
@@ -106,7 +107,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return comboBox;
         }
 
-        public static TextBox AddTextBox(string name, string content = null, string bind = null, object source = null,
+        public static TextBox TextBox(string name, string content = null, string bind = null, object source = null,
             string requires = null, bool isEnabled = false, int width = 0,
             BindingMode bindingMode = BindingMode.Default,
             bool isReadonly = false,
@@ -121,7 +122,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             };
 
             if (bind != null)
-                textBox.SetBinding(TextBox.TextProperty,
+                textBox.SetBinding(System.Windows.Controls.TextBox.TextProperty,
                     BindHelper.BindingObject(bind, source, bindingMode, trigger: updateSourceTrigger));
 
             if (width > 1)
@@ -138,7 +139,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return textBox;
         }
 
-        public static NumberBox AddNumberBox(string name, string header, int value, string bind, object source,
+        public static NumberBox NumberBox(string name, string header, int value, string bind, object source,
             string requires = null, bool enabled = false, int width = 170)
         {
             var numberBox = new NumberBox
@@ -160,27 +161,15 @@ namespace WslToolbox.Gui.Helpers.Ui
             return numberBox;
         }
 
-        public static ItemsControl AddItemsControl(string bind = null, object source = null)
+        public static ItemsControl ItemsControl(string bind = null, object source = null)
         {
             var itemsControl = new ItemsControl();
 
             if (bind != null)
-                itemsControl.SetBinding(ItemsControl.ItemsSourceProperty, BindHelper.BindingObject(bind, source));
+                itemsControl.SetBinding(System.Windows.Controls.ItemsControl.ItemsSourceProperty,
+                    BindHelper.BindingObject(bind, source));
 
             return itemsControl;
-        }
-
-        public static Expander AddItemExpander(string header, CompositeCollection items, bool expanded = false,
-            bool expanderEnabled = true,
-            bool controlsEnabled = true)
-        {
-            return new Expander
-            {
-                Header = header,
-                Content = new ItemsControl {ItemsSource = items, IsEnabled = controlsEnabled},
-                IsExpanded = expanded,
-                IsEnabled = expanderEnabled
-            };
         }
 
         public static ItemsControl ItemsControlGroup(CompositeCollection items, bool itemEnableOverride = false,
@@ -217,6 +206,19 @@ namespace WslToolbox.Gui.Helpers.Ui
             return groupItems;
         }
 
+        public static Expander Expander(string header, CompositeCollection items, bool expanded = false,
+            bool expanderEnabled = true,
+            bool controlsEnabled = true)
+        {
+            return new Expander
+            {
+                Header = header,
+                Content = new ItemsControl {ItemsSource = items, IsEnabled = controlsEnabled},
+                IsExpanded = expanded,
+                IsEnabled = expanderEnabled
+            };
+        }
+
         public static IEnumerable<Control> ItemsListGroup(CompositeCollection items, bool itemEnableOverride = false,
             bool enabled = true, object source = null, string requires = null)
         {
@@ -235,7 +237,7 @@ namespace WslToolbox.Gui.Helpers.Ui
         }
 
 
-        public static TextBlock AddHyperlink(string url, string name = null, string tooltip = null,
+        public static TextBlock Hyperlink(string url, string name = null, string tooltip = null,
             string bind = null, CompositeCollection contextMenuItems = null)
         {
             var textBlock = new TextBlock
@@ -282,6 +284,39 @@ namespace WslToolbox.Gui.Helpers.Ui
                 menuFlyout.Items.Add(menuItem);
 
             return menuFlyout;
+        }
+
+        public static Button Button(
+            string name,
+            string content,
+            object bindingSource = null,
+            string bindingPath = null,
+            ICommand command = null,
+            object commandParameter = null,
+            string requiresBindPath = null,
+            string visibilityBindPath = null
+        )
+        {
+            var button = new Button
+            {
+                Name = name,
+                Content = content,
+                Command = command,
+                CommandParameter = commandParameter
+            };
+
+            if (bindingPath != null)
+                button.SetBinding(ButtonBase.CommandProperty, BindHelper.BindingObject(bindingPath, bindingSource));
+
+            if (requiresBindPath != null)
+                button.SetBinding(UIElement.IsEnabledProperty,
+                    BindHelper.BindingObject(requiresBindPath, bindingSource));
+
+            if (visibilityBindPath != null)
+                button.SetBinding(UIElement.VisibilityProperty,
+                    BindHelper.BindingObject(visibilityBindPath, bindingSource));
+
+            return button;
         }
     }
 }

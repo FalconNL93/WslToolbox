@@ -25,7 +25,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.KeyboardShortcutConfiguration.Enabled),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.KeyboardShortcutConfiguration.Enabled),
                     "Enable keyboard shortcuts", "Configuration.KeyboardShortcutConfiguration.Enabled", Source,
                     header: null),
                 new Separator(),
@@ -50,7 +50,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 shortcutKey = $"{shortcutKey}{shortcutKeyConverter}";
 
                 var shortcutLine = new StackPanel {Orientation = Orientation.Horizontal};
-                shortcutLine.Children.Add(ElementHelper.AddToggleSwitch(shortcut.Configuration,
+                shortcutLine.Children.Add(ElementHelper.ToggleSwitch(shortcut.Configuration,
                     $"{shortcut.Name}",
                     $"Configuration.KeyboardShortcutConfiguration.{shortcut.Configuration}", Source,
                     header: null));

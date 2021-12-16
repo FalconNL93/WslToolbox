@@ -26,11 +26,11 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideDockerDistributions),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideDockerDistributions),
                     "Hide Docker Distributions", "Configuration.HideDockerDistributions", Source, header: null),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.HideExportWarning),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideExportWarning),
                     "Hide export warning", "Configuration.HideExportWarning", Source, header: null),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
                     header: null)
             };
@@ -40,7 +40,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddComboBox(
+                ElementHelper.ComboBox(
                     nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
                     ThemeConfiguration.GetValues(),
                     "Configuration.AppearanceConfiguration.SelectedStyle",
@@ -52,9 +52,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnClose),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeOnClose),
                     "Minimize when pressing close button", "Configuration.MinimizeOnClose", Source),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.EnableSystemTray),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.EnableSystemTray),
                     "Enable system tray", "Configuration.EnableSystemTray", Source),
                 ElementHelper.ItemsControlGroup(EnableSystemTraySettings(), source: Source,
                     requires: "Configuration.EnableSystemTray", tabIndex: 1)
@@ -65,9 +65,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeToTray),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeToTray),
                     "Minimize to tray", "Configuration.MinimizeToTray", Source),
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
                     "Minimize on startup", "Configuration.MinimizeOnStartup", Source)
             };
         }

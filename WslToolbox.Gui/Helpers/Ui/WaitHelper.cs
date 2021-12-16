@@ -1,29 +1,25 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media.Effects;
 using ModernWpf.Controls;
-using WslToolbox.Gui.Converters;
 using ProgressBar = ModernWpf.Controls.ProgressBar;
 
 namespace WslToolbox.Gui.Helpers.Ui
 {
-    public class WaitHelper : INotifyPropertyChanged
+    public abstract class WaitHelper : INotifyPropertyChanged
     {
         private string _closeButtonText;
         private string _dialogMessage;
         private string _dialogTitle;
         private Window _owner;
         private string _primaryButtonText;
-        private bool _progressRingActive;
+        private ProgressBar _progressBar;
+        private bool _progressBarActive;
+        private int _progressValue;
         private string _secondaryButtonText;
-
-        public BoolToValueConverter Aa = new()
-        {
-            TrueValue = "Ja",
-            FalseValue = "Nee"
-        };
 
         public string DialogTitle
         {
@@ -91,20 +87,31 @@ namespace WslToolbox.Gui.Helpers.Ui
             }
         }
 
-        public bool ProgressRingActive
+        public bool ProgressBarActive
         {
-            get => _progressRingActive;
+            get => _progressBarActive;
             set
             {
-                if (_progressRingActive == value) return;
-                _progressRingActive = value;
-                OnPropertyChanged(nameof(ProgressRingActive));
+                if (_progressBarActive == value) return;
+                _progressBarActive = value;
+                OnPropertyChanged(nameof(ProgressBarActive));
+            }
+        }
+
+        public int ProgressValue
+        {
+            get => _progressValue;
+            set
+            {
+                if (_progressValue == value) return;
+                _progressValue = value;
+                OnPropertyChanged(nameof(ProgressValue));
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ContentDialog WaitDialog()
+        protected ContentDialog WaitDialog()
         {
             var textBlock = new TextBlock
             {
@@ -115,25 +122,25 @@ namespace WslToolbox.Gui.Helpers.Ui
             textBlock.SetBinding(TextBlock.TextProperty,
                 BindHelper.BindingObject(nameof(DialogMessage), this));
 
-            var progressBar = new ProgressBar
+            _progressBar = new ProgressBar
             {
                 Margin = new Thickness(0, 15, 0, 0),
                 Width = 130,
                 IsIndeterminate = true
             };
 
-            progressBar.SetBinding(ProgressRing.IsActiveProperty,
-                BindHelper.BindingObject(nameof(ProgressRingActive), this));
+            _progressBar.SetBinding(RangeBase.ValueProperty,
+                BindHelper.BindingObject(nameof(ProgressValue), this));
 
             StackPanel itemStack = new();
             itemStack.Children.Add(textBlock);
-            itemStack.Children.Add(progressBar);
+            itemStack.Children.Add(_progressBar);
 
             var dialog = new ContentDialog
             {
                 PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 Content = new ScrollViewer {Content = itemStack},
-                Owner = Owner
+                Owner = Owner,
             };
 
             dialog.SetBinding(ContentDialog.TitleProperty,
@@ -151,10 +158,19 @@ namespace WslToolbox.Gui.Helpers.Ui
             return dialog;
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void UpdateStatus(string title = null, string content = null, int value = 0)
         {
-            Debug.WriteLine($"{propertyName} changed to {CloseButtonText}");
+            DialogTitle = title ?? DialogTitle;
+            DialogMessage = content ?? DialogMessage;
+            ProgressValue = value;
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            
+            if (propertyName == nameof(ProgressValue))
+                _progressBar.IsIndeterminate = ProgressValue < 1;
         }
     }
 }

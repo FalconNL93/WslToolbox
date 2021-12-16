@@ -37,7 +37,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         public override async void Execute(object parameter)
         {
             var importDistributionDialogCollection = new ImportDistributionDialogCollection();
-            var selectDistribution = DialogHelper.ShowContentDialog(
+            var selectDistribution = DialogHelper.ContentDialog(
                 "Import distribution",
                 importDistributionDialogCollection.Items(_viewModel),
                 "Import", null, "Cancel");

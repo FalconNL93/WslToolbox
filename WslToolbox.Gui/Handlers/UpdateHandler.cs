@@ -102,7 +102,7 @@ namespace WslToolbox.Gui.Handlers
                 LogHandler.Log().Error("Error downloading {DownloadUrl} (Http Error: {FileHttpCode})",
                     _updateArgs.DownloadURL,
                     fileHttpCode);
-                await DialogHelper.ShowMessageBoxInfo("Error", "Could not download the update file")
+                await DialogHelper.MessageBox("Error", "Could not download the update file")
                     .ShowAsync();
                 return;
             }
@@ -115,8 +115,8 @@ namespace WslToolbox.Gui.Handlers
             catch (Exception e)
             {
                 LogHandler.Log().Error(e, "Error downloading {DownloadUrl}", _updateArgs.DownloadURL);
-                await DialogHelper.ShowMessageBoxInfo("Error", "Could not update application.\n\n" +
-                                                               $"{e.Message}").ShowAsync();
+                await DialogHelper.MessageBox("Error", "Could not update application.\n\n" +
+                                                       $"{e.Message}").ShowAsync();
             }
         }
 
@@ -125,7 +125,7 @@ namespace WslToolbox.Gui.Handlers
             var responseHeaders = await DownloadResponse(_updateArgs.DownloadURL);
             var readableSize = (responseHeaders / 1024f / 1024f).ToString("F2");
             var splitVersion = AssemblyHelper.ConvertUpdaterVersion(_updateArgs.CurrentVersion);
-            var updatePrompt = DialogHelper.ShowUpdateDialog(
+            var updatePrompt = DialogHelper.UpdateDialog(
                 $"Update available - {splitVersion.Version} Build {splitVersion.Build}",
                 $"Version {splitVersion.Version} Build {splitVersion.Build} is available for {AppConfiguration.AppName}. You have version {AssemblyHelper.Version()} Build {AssemblyHelper.Build()}.\n\n" +
                 "After the update file has downloaded, the application will restart to apply the update.\n\n" +

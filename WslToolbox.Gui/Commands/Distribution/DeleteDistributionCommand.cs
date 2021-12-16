@@ -30,7 +30,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            var deleteDistributionWarning = DialogHelper.ShowMessageBoxInfo("Delete distribution",
+            var deleteDistributionWarning = DialogHelper.MessageBox("Delete distribution",
                 "Are you sure you want to delete this distribution? All data on this distribution will be lost!",
                 "Delete", closeButtonText: "Cancel",
                 withConfirmationCheckbox: true,

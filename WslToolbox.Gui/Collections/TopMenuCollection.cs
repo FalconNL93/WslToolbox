@@ -1,6 +1,8 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Data;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Collections.TopMenu;
+using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
@@ -27,7 +29,13 @@ namespace WslToolbox.Gui.Collections
                     Content = "More...",
                     Flyout = ElementHelper.MenuFlyoutItems(MoreTopMenuCollection.Items(viewModel))
                 },
-                GenericControls.Button(
+                new DropDownButton
+                {
+                    Content = "Debug menu",
+                    Flyout = ElementHelper.MenuFlyoutItems(DebugTopMenuCollection.Items(viewModel)),
+                    Visibility = AppConfiguration.DebugMode ? Visibility.Visible : Visibility.Collapsed
+                },
+                ElementHelper.Button(
                     "InstallUpdate",
                     "Update available",
                     viewModel,

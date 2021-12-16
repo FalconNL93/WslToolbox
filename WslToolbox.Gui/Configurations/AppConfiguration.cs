@@ -8,7 +8,6 @@ namespace WslToolbox.Gui.Configurations
     {
         public static string AppName => "WSL Toolbox";
         public static string AppLogsFileName => "logs.txt";
-        public static string AppConfigurationFileName => "settings.json";
         public static bool EnableUpdater => true;
         public static string GithubRepository => "https://github.com/FalconNL93/WslToolbox";
         public static string GithubDocs => "https://falconnl93.github.io/wsltoolbox-docs";
@@ -17,9 +16,11 @@ namespace WslToolbox.Gui.Configurations
         //public static string AppConfigurationUpdateXml => "http://localhost/wsltoolbox.xml";
         public static string AppConfigurationUpdateXml => "https://falconnl93.github.io/wsltoolbox-docs/update.xml";
         public static bool DebugMode => true;
+        public static string AppConfigurationFileName => "appsettings-dev.json";
 #else
         public static bool DebugMode => false;
         public static string AppConfigurationUpdateXml => "https://falconnl93.github.io/wsltoolbox-docs/update.xml";
+        public static string AppConfigurationFileName => "appsettings.json";
 #endif
 
         public static string AppExecutableDirectory { get; } =

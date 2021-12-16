@@ -15,7 +15,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(nameof(DefaultConfiguration.NotificationConfiguration.Enabled),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.NotificationConfiguration.Enabled),
                     "Enable notifications", "Configuration.NotificationConfiguration.Enabled", Source, header: null),
                 new Separator(),
                 ElementHelper.ItemsControlGroup(NotificationControls(),
@@ -28,7 +28,7 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.AddToggleSwitch(
+                ElementHelper.ToggleSwitch(
                     nameof(DefaultConfiguration.NotificationConfiguration.NewVersionAvailable),
                     "New version available", "Configuration.NotificationConfiguration.NewVersionAvailable", Source,
                     "Configuration.AutoCheckUpdates", header: null)

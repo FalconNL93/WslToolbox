@@ -24,7 +24,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             IsExecutable = _ => false;
             var renameDistributionDialogCollection = new RenameDistributionDialogCollection();
-            var renameDistribution = DialogHelper.ShowContentDialog(
+            var renameDistribution = DialogHelper.ContentDialog(
                 "Rename distribution",
                 renameDistributionDialogCollection.Items(distribution),
                 "Rename", null, "Cancel");

@@ -11,7 +11,7 @@ namespace WslToolbox.Gui.Commands
 
         public override void Execute(object parameter)
         {
-            parameter = 1;
+            parameter ??= 1;
             Environment.Exit((int) parameter);
         }
     }

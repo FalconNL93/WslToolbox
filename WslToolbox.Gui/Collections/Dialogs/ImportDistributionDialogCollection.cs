@@ -102,13 +102,13 @@ namespace WslToolbox.Gui.Collections.Dialogs
                               "- Name must contain at least 3 characters.",
                     Margin = new Thickness(0, 0, 0, 10)
                 },
-                ElementHelper.AddTextBox(nameof(DistributionName), bind: "DistributionName", width: 400, source: this,
+                ElementHelper.TextBox(nameof(DistributionName), bind: "DistributionName", width: 400, source: this,
                     isReadonly: false, isEnabled: true, updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
                     placeholder: "Name your distribution"),
                 ElementHelper.Separator(),
 
                 new Label {Content = "Filename:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
-                ElementHelper.AddTextBox(nameof(SelectedFilePath),
+                ElementHelper.TextBox(nameof(SelectedFilePath),
                     null, "SelectedFilePath", this, width: 400,
                     bindingMode: BindingMode.TwoWay, updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
                     placeholder: "Select an exported distribution file."),
@@ -117,7 +117,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
                 ElementHelper.Separator(),
                 new Label {Content = "Base path:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
-                ElementHelper.AddTextBox(nameof(SelectedBasePath),
+                ElementHelper.TextBox(nameof(SelectedBasePath),
                     bind: "SelectedBasePath", source: this, width: 400, bindingMode: BindingMode.TwoWay,
                     updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
                     placeholder: "Select an installation directory"),

@@ -69,7 +69,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         private static ContentDialog ShowExportWarning()
         {
-            var exportDistributionWarning = DialogHelper.ShowMessageBoxInfo("Export distribution",
+            var exportDistributionWarning = DialogHelper.MessageBox("Export distribution",
                 "During the export the distribution will shutdown and all unsaved work will be lost.",
                 "Export", closeButtonText: "Cancel");
 

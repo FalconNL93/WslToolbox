@@ -71,7 +71,7 @@ namespace WslToolbox.Gui.ViewModels
                         new Grid
                         {
                             Margin = new Thickness(0, 0, 15, 0),
-                            Children = {ElementHelper.AddItemsControl(bind, this)}
+                            Children = {ElementHelper.ItemsControl(bind, this)}
                         }
                     }
                 }

@@ -141,6 +141,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
         public ICommand ShowInstallDistributionDialog => new InstallDistributionCommand(this);
         public ICommand ShowAboutDialog => new ShowAboutDialogCommand(this);
+        public ICommand TestDialog => new ShowTestDialogCommand(this);
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
@@ -195,7 +196,7 @@ namespace WslToolbox.Gui.ViewModels
             {
                 Log().Information("No update available");
                 if (e.ShowPrompt && e.UpdateError == null)
-                    await DialogHelper.ShowMessageBoxInfo(
+                    await DialogHelper.MessageBox(
                         "Update",
                         "You are running the latest version.",
                         closeButtonText: "Close", dialogOwner: _view).ShowAsync();
