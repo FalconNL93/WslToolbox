@@ -38,12 +38,12 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             HideInfo();
             _progressDialogHandler.CloseButtonText = showHideButton ? "Hide" : null;
-            _progressDialogHandler.ShowInfo(title ?? DefaultInfoTitle, content ?? DefaultInfoContent);
+            _progressDialogHandler.Show(title ?? DefaultInfoTitle, content ?? DefaultInfoContent);
         }
 
         protected void HideInfo()
         {
-            _progressDialogHandler.HideInfo();
+            _progressDialogHandler.Dispose();
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Media.Effects;
 using ModernWpf.Controls;
 using ProgressBar = ModernWpf.Controls.ProgressBar;
 
@@ -140,7 +139,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             {
                 PrimaryButtonStyle = ResourceHelper.FindResource("AccentButtonStyle"),
                 Content = new ScrollViewer {Content = itemStack},
-                Owner = Owner,
+                Owner = Owner
             };
 
             dialog.SetBinding(ContentDialog.TitleProperty,
@@ -168,7 +167,7 @@ namespace WslToolbox.Gui.Helpers.Ui
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            
+
             if (propertyName == nameof(ProgressValue))
                 _progressBar.IsIndeterminate = ProgressValue < 1;
         }

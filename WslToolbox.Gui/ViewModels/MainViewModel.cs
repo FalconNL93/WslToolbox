@@ -141,7 +141,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand UpdateWslService => new UpdateWslServiceCommand();
         public ICommand ShowInstallDistributionDialog => new InstallDistributionCommand(this);
         public ICommand ShowAboutDialog => new ShowAboutDialogCommand(this);
-        public ICommand TestDialog => new ShowTestDialogCommand(this);
+        public ICommand TestDialog => new ShowTestDialogCommand();
         public ICommand OpenLogFile => new OpenLogFileCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
