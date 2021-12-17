@@ -85,13 +85,17 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
         public IEnumerable<Control> Items(MainViewModel viewModel)
         {
+            var createFolder = viewModel.Config.Configuration.ImportCreateFolder;
             var userBasePath = viewModel.Config.Configuration.UserBasePath;
             var distributionFileBrowse = new Button {Content = "Browse..."};
             var distributionBasePathBrowse = new Button {Content = "Browse..."};
 
             SelectedBasePath = Directory.Exists(userBasePath) ? userBasePath : null;
             distributionFileBrowse.Click += (_, _) => { SelectDistributionFile(); };
-            distributionBasePathBrowse.Click += (_, _) => { SelectDistributionBasePath(); };
+            distributionBasePathBrowse.Click += (_, _) =>
+            {
+                SelectDistributionBasePath(createFolder, DistributionName);
+            };
 
             Control[] items =
             {
@@ -102,7 +106,8 @@ namespace WslToolbox.Gui.Collections.Dialogs
                               "- Name must contain at least 3 characters.",
                     Margin = new Thickness(0, 0, 0, 10)
                 },
-                ElementHelper.TextBox(nameof(DistributionName), bind: "DistributionName", width: 400, source: this,
+                ElementHelper.TextBox(nameof(DistributionName), bind: "DistributionName", width: 400,
+                    source: this,
                     isReadonly: false, isEnabled: true, updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
                     placeholder: "Name your distribution"),
                 ElementHelper.Separator(),
@@ -137,7 +142,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 : distributionFilePathDialog.FileName;
         }
 
-        private void SelectDistributionBasePath()
+        private void SelectDistributionBasePath(bool createFolder, string name = "distribution")
         {
             OpenFileDialog openLocation = new()
             {
@@ -150,7 +155,12 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 RestoreDirectory = true
             };
 
-            SelectedBasePath = openLocation.ShowDialog() == null ? null : Path.GetDirectoryName(openLocation.FileName);
+            var selectedBasePathDialog =
+                openLocation.ShowDialog() == null ? null : Path.GetDirectoryName(openLocation.FileName);
+
+            SelectedBasePath = createFolder
+                ? $"{selectedBasePathDialog}\\{name}"
+                : selectedBasePathDialog;
         }
 
         private bool ValidateImportValues()
@@ -159,14 +169,13 @@ namespace WslToolbox.Gui.Collections.Dialogs
                    && DistributionNameValidator.ValidateName(DistributionName)
                    && SelectedBasePath is {Length: > 1}
                    && SelectedFilePath is {Length: > 1}
-                   && Directory.Exists(SelectedBasePath)
                    && File.Exists(SelectedFilePath);
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            Debug.WriteLine($"{propertyName} changed.");
+
             try
             {
                 DistributionNameIsValid = ValidateImportValues();

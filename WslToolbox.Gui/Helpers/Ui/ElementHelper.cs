@@ -45,7 +45,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             bool enabled = true,
             string header = null,
             bool isOn = false,
-            string tooltipContent = null)
+            string tooltipContent = null, int tabIndex = 0)
         {
             var toggleSwitch = new ToggleSwitch
             {
@@ -65,6 +65,9 @@ namespace WslToolbox.Gui.Helpers.Ui
 
             if (requires != null)
                 toggleSwitch.SetBinding(UIElement.IsEnabledProperty, BindHelper.BindingObject(requires, source));
+
+            if (tabIndex > 0)
+                toggleSwitch.Margin = new Thickness(tabIndex * 10, 0, 0, 0);
 
             return toggleSwitch;
         }

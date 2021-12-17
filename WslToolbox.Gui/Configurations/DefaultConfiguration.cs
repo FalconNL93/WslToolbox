@@ -14,6 +14,8 @@ namespace WslToolbox.Gui.Configurations
 
         private bool _enableSystemTray;
 
+        private bool _importStartDistribution;
+
         private string _userBasePath;
 
         public DefaultConfiguration()
@@ -33,7 +35,7 @@ namespace WslToolbox.Gui.Configurations
             {
                 if (value == _enableSystemTray) return;
                 _enableSystemTray = value;
-                OnPropertyChanged(nameof(_enableSystemTray));
+                OnPropertyChanged(nameof(EnableSystemTray));
             }
         }
 
@@ -43,6 +45,21 @@ namespace WslToolbox.Gui.Configurations
         public bool MinimizeOnClose { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
 
+        public bool ImportCreateFolder { get; set; } = true;
+
+        public bool ImportStartDistribution
+        {
+            get => _importStartDistribution;
+            set
+            {
+                if (value == _importStartDistribution) return;
+                _importStartDistribution = value;
+                OnPropertyChanged(nameof(ImportStartDistribution));
+            }
+        }
+
+        public bool ImportStartTerminal { get; set; }
+
         public string UserBasePath
         {
             get => _userBasePath ?? _defaultBasePath;
@@ -50,7 +67,7 @@ namespace WslToolbox.Gui.Configurations
             {
                 if (value == _userBasePath) return;
                 _userBasePath = value;
-                OnPropertyChanged(nameof(_userBasePath));
+                OnPropertyChanged(nameof(UserBasePath));
             }
         }
 

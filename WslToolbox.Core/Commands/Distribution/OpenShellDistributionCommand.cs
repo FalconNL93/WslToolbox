@@ -17,11 +17,12 @@ namespace WslToolbox.Core.Commands.Distribution
 
             if (openShell.ExitCode != 0) return;
             if (distribution.IsInstalled) return;
-            ToolboxClass.OnRefreshRequired();
+            ToolboxClass.OnRefreshRequired(2000);
             if (ToolboxClass.DistributionByName(distribution.Name) != null) return;
 
             var installTries = 0;
-            while (!ToolboxClass.DistributionByName(distribution.Name).IsInstalled)
+            while (ToolboxClass.DistributionByName(distribution.Name) == null ||
+                   ToolboxClass.DistributionByName(distribution.Name).IsInstalled == false)
             {
                 Debug.WriteLine($"Checking install status attempt {installTries}/{MaximumInstallTries}");
                 if (installTries >= MaximumInstallTries) return;

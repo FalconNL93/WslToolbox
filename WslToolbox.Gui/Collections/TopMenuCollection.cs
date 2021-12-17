@@ -29,12 +29,6 @@ namespace WslToolbox.Gui.Collections
                     Content = "More...",
                     Flyout = ElementHelper.MenuFlyoutItems(MoreTopMenuCollection.Items(viewModel))
                 },
-                new DropDownButton
-                {
-                    Content = "Debug menu",
-                    Flyout = ElementHelper.MenuFlyoutItems(DebugTopMenuCollection.Items(viewModel)),
-                    Visibility = AppConfiguration.DebugMode ? Visibility.Visible : Visibility.Collapsed
-                },
                 ElementHelper.Button(
                     "InstallUpdate",
                     "Update available",
@@ -43,7 +37,13 @@ namespace WslToolbox.Gui.Collections
                     commandParameter: true,
                     requiresBindPath: nameof(viewModel.UpdateAvailable),
                     visibilityBindPath: nameof(viewModel.UpdateAvailableVisibility)
-                )
+                ),
+                new DropDownButton
+                {
+                    Content = "Debug menu",
+                    Flyout = ElementHelper.MenuFlyoutItems(DebugTopMenuCollection.Items(viewModel)),
+                    Visibility = AppConfiguration.DebugMode ? Visibility.Visible : Visibility.Collapsed
+                }
             };
         }
     }

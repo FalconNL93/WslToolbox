@@ -16,6 +16,8 @@ namespace WslToolbox.Gui.Collections.Settings
             {
                 ElementHelper.ItemsControlGroup(GenericControls()),
                 ElementHelper.Separator(),
+                ElementHelper.ItemsControlGroup(ImportControls(), header: "Import"),
+                ElementHelper.Separator(),
                 ElementHelper.ItemsControlGroup(AppearanceControls(), header: "Theme"),
                 ElementHelper.Separator(),
                 ElementHelper.ItemsControlGroup(BehaviourControls(), header: "System tray")
@@ -33,6 +35,21 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
                     "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
                     header: null)
+            };
+        }
+
+        private CompositeCollection ImportControls()
+        {
+            return new CompositeCollection
+            {
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportCreateFolder),
+                    "Create folder in base path", "Configuration.ImportCreateFolder", Source, header: null,
+                    tooltipContent: "Creates a folder in the selected base path"),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportStartDistribution),
+                    "Start distribution after import", "Configuration.ImportStartDistribution", Source, header: null),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportStartTerminal),
+                    "Launch terminal after import", "Configuration.ImportStartTerminal", Source, header: null,
+                    requires: "Configuration.ImportStartDistribution", tabIndex: 1)
             };
         }
 
