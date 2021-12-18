@@ -321,5 +321,23 @@ namespace WslToolbox.Gui.Helpers.Ui
 
             return button;
         }
+
+        public static Button FlyoutButton(Button button, string flyoutContent)
+        {
+            var flyoutItems = new CompositeCollection
+            {
+                new TextBlock
+                {
+                    Text = flyoutContent,
+                    TextTrimming = TextTrimming.WordEllipsis,
+                    TextWrapping = TextWrapping.Wrap,
+                    MaxWidth = 400
+                }
+            };
+
+            FlyoutService.SetFlyout(button, new Flyout {Content = new ItemsControl {ItemsSource = flyoutItems}});
+
+            return button;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ModernWpf.Controls.Primitives;
 using WslToolbox.Core;
+using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
@@ -21,11 +22,14 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 },
                 new Label
                 {
-                    Content =
-                        "Due to restrictions of WSL, you cannot install an already installed distribution. \n" +
-                        "Therefore installed distributions are excluded from the above dropdown menu.\n\n" +
-                        "A quick bypass would be to export an already installed distribution and import it \nwith a different name.\n"
-                }
+                    Content = "You cannot install an already installed distribution."
+                },
+                ElementHelper.FlyoutButton(
+                    new Button {Content = "More information", Margin = new Thickness(0, 5, 0, 0)},
+                    "Due to restrictions of WSL, you cannot install an already installed distribution. \n\n" +
+                    "Therefore installed distributions are excluded from the dropdown menu.\n\n" +
+                    "A quick bypass would be to export an already installed distribution and import it with a different name."
+                )
             };
 
             return items;
