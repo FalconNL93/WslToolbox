@@ -44,8 +44,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 DisplayMemberPath = "Name",
                 MinWidth = 200
             };
-
-            ControlHelper.SetHeader(installDistributionList, "Select an online distribution to install");
+            
             ControlHelper.SetPlaceholderText(installDistributionList, "Select distribution");
 
             return installDistributionList;
