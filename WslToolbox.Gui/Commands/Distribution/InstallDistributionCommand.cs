@@ -79,7 +79,6 @@ namespace WslToolbox.Gui.Commands.Distribution
         private async void SelectDialog()
         {
             DistributionClass selectedDistribution = null;
-            ComboBox combo = null;
 
             var selectDistribution = DialogHelper.ContentDialog(
                 "Install Distribution",
@@ -95,7 +94,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             {
                 if (item.Name != "InstallDistributionList") continue;
 
-                combo = (ComboBox) item;
+                var combo = (ComboBox) item;
                 selectedDistribution = (DistributionClass) combo.SelectedItem;
             }
 

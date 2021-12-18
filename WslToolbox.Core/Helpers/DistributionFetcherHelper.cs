@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Text;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WslToolbox.Core.EventArguments;
@@ -40,13 +39,12 @@ namespace WslToolbox.Core.Helpers
 
             try
             {
-                if (WebRequest.Create(Url) is not HttpWebRequest request) return distros;
-                var response = await request.GetResponseAsync();
-                var encoding = Encoding.ASCII;
-                var jsonResponse =
-                    new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException(), encoding);
+                var httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromMinutes(1);
+                var response = await httpClient.GetAsync(Url);
+                response.EnsureSuccessStatusCode();
                 var onlineDistributions =
-                    JsonSerializer.Deserialize<OnlineDistributions>(await jsonResponse.ReadToEndAsync());
+                    JsonSerializer.Deserialize<OnlineDistributions>(await response.Content.ReadAsStringAsync());
 
                 if (onlineDistributions == null)
                 {

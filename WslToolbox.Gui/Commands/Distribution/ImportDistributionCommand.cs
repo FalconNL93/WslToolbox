@@ -27,7 +27,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             DefaultInfoContent = "Importing distribution, please wait...";
         }
 
-        private async void RegisterEventHandlers()
+        private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += (_, _) =>
             {
