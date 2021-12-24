@@ -75,6 +75,8 @@ namespace WslToolbox.Gui.Configurations
         public bool ShowMinimumOsMessage { get; set; }
         public bool AutoCheckUpdates { get; set; } = true;
         public bool HideExportWarning { get; set; }
+        public bool HideMoveWarning { get; set; }
+        public bool CopyOnMove { get; set; } = true;
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();
         public AppearanceConfiguration AppearanceConfiguration { get; set; } = new();

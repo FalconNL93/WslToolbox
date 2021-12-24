@@ -37,10 +37,10 @@ run `WslToolbox.Gui.exe`.
 
 ## Shortcuts
 
-| Shortcut  |  Action
-|:----------|:--------:
-| F5        | Refresh distributions
-| CTRL + ,  | Open settings
+| Shortcut |        Action         |
+|:---------|:---------------------:|
+| F5       | Refresh distributions |
+| CTRL + , |     Open settings     |
 
 ## Requirements
 

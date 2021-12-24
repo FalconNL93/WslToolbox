@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Microsoft.Win32;
 using WslToolbox.Gui.Configurations;
 
@@ -52,6 +53,25 @@ namespace WslToolbox.Gui.Handlers
             return string.Join("|", FileDialogConfiguration.Filter
                 .Select(x => x.Key + "|" + x.Value)
                 .ToArray());
+        }
+
+        public static string SelectDistributionBasePath()
+        {
+            OpenFileDialog openLocation = new()
+            {
+                Title = "Select distribution base path",
+                ValidateNames = false,
+                CheckFileExists = false,
+                CheckPathExists = true,
+                FileName = "Select folder",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            var selectedBasePathDialog =
+                openLocation.ShowDialog() == null ? null : Path.GetDirectoryName(openLocation.FileName);
+
+            return selectedBasePathDialog;
         }
     }
 }

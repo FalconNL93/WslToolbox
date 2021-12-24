@@ -88,6 +88,12 @@ namespace WslToolbox.Gui.Collections
                 },
                 new MenuItem
                 {
+                    Header = "Move base path",
+                    Command = viewModel.MoveBasePathDistribution,
+                    CommandParameter = viewModel.SelectedDistribution
+                },
+                new MenuItem
+                {
                     Header = "GUID",
                     ItemsSource = new CompositeCollection
                     {

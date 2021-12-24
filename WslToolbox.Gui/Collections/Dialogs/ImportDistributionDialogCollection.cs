@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Microsoft.Win32;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Validators;
@@ -144,19 +143,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
         private void SelectDistributionBasePath(bool createFolder, string name = "distribution")
         {
-            OpenFileDialog openLocation = new()
-            {
-                Title = "Select distribution base path",
-                ValidateNames = false,
-                CheckFileExists = false,
-                CheckPathExists = true,
-                FileName = "Select folder",
-                FilterIndex = 1,
-                RestoreDirectory = true
-            };
-
-            var selectedBasePathDialog =
-                openLocation.ShowDialog() == null ? null : Path.GetDirectoryName(openLocation.FileName);
+            var selectedBasePathDialog = FileDialogHandler.SelectDistributionBasePath();
 
             SelectedBasePath = createFolder
                 ? $"{selectedBasePathDialog}\\{name}"

@@ -151,6 +151,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand RestartDistribution => new RestartDistributionCommand(SelectedDistribution);
         public ICommand SetDefaultDistribution => new SetDefaultDistributionCommand(SelectedDistribution);
         public ICommand OpenBasePathDistribution => new OpenBasePathDistribution(SelectedDistribution);
+        public ICommand MoveBasePathDistribution => new MoveBasePathDistribution(SelectedDistribution, this);
         public ICommand DeleteDistribution => new DeleteDistributionCommand(SelectedDistribution);
 
         public event PropertyChangedEventHandler PropertyChanged;

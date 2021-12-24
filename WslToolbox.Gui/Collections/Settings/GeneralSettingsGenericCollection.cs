@@ -18,6 +18,8 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.Separator(),
                 ElementHelper.ItemsControlGroup(ImportControls(), header: "Import"),
                 ElementHelper.Separator(),
+                ElementHelper.ItemsControlGroup(MoveControls(), header: "Move"),
+                ElementHelper.Separator(),
                 ElementHelper.ItemsControlGroup(AppearanceControls(), header: "Theme"),
                 ElementHelper.Separator(),
                 ElementHelper.ItemsControlGroup(BehaviourControls(), header: "System tray")
@@ -50,6 +52,19 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportStartTerminal),
                     "Launch terminal after import", "Configuration.ImportStartTerminal", Source, header: null,
                     requires: "Configuration.ImportStartDistribution", tabIndex: 1)
+            };
+        }
+
+        private CompositeCollection MoveControls()
+        {
+            return new CompositeCollection
+            {
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideMoveWarning),
+                    "Hide move warning", "Configuration.HideMoveWarning", Source, header: null),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.CopyOnMove),
+                    "Copy on move", "Configuration.CopyOnMove", Source, header: null, enabled: false,
+                    tooltipContent:
+                    "Copies the contents of the distribution and deletes the source after completion. More safe than regular move action.")
             };
         }
 
