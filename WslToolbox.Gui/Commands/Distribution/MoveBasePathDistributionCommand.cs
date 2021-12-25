@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ModernWpf.Controls;
 using WslToolbox.Core;
@@ -53,57 +54,69 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             _selectedBasePath = FileDialogHandler.SelectDistributionBasePath();
 
-            if (await Summary() != ContentDialogResult.Primary) return;
+            if (_selectedBasePath != "" && await Summary() != ContentDialogResult.Primary) return;
 
             _model.StopDistribution.Execute(distribution);
             MoveDistribution(_selectedBasePath);
         }
 
-        private static async Task RemoveDistribution(string file)
+        private static async Task RemoveDistributionFile(string file)
         {
-            try
+            const int maxTries = 3;
+            var deleteTries = 0;
+            await Task.Run(() =>
             {
-                await Task.Run(() => { File.Delete(file); });
-            }
-            catch (Exception e)
-            {
-                LogHandler.Log().Error("{Message}", e.Message);
-            }
+                while (File.Exists(file) && deleteTries <= maxTries)
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (Exception e)
+                    {
+                        LogHandler.Log().Error("{Message}", e.Message);
+                        Debug.WriteLine($"Cannot delete file... tries: {deleteTries}");
+                        deleteTries++;
+                        Task.Delay(5000);
+                    }
+            });
         }
 
         private async void MoveDistribution(string destination, bool copyMode = true)
         {
             var sourceDirectory = DistributionClass.BasePathLocal;
-            var destinationDirectory = destination;
+            var files = Directory.EnumerateFiles(sourceDirectory).ToList();
+            var amountOfFiles = files.Count;
+            var currentFile = 1;
+
             try
             {
-                foreach (var filename in Directory.EnumerateFiles(sourceDirectory))
+                foreach (var filename in files)
                 {
                     var length = new FileInfo(filename).Length;
                     var humanLength = new BytesToHumanConverter().Convert(length, null, null, null);
-                    ShowInfo("Copying",
-                        $"Copying file {Path.GetFileName(filename)} ({humanLength})...");
+                    ProgressDialogHandler.ShowDialog("Copying",
+                        $"Copying files ({currentFile}/{amountOfFiles})...\n\n{Path.GetFileName(filename)} ({humanLength})");
                     await using var sourceStream = File.Open(filename, FileMode.Open);
                     await using var destinationStream =
-                        File.Create(destinationDirectory + filename.Substring(filename.LastIndexOf('\\')));
+                        File.Create(destination + filename.Substring(filename.LastIndexOf('\\')));
                     await sourceStream.CopyToAsync(destinationStream);
-                    await RemoveDistribution(filename);
-
-                    HideInfo();
+                    currentFile++;
                 }
 
                 ChangeBasePathDistributionCommand.Execute(DistributionClass,
-                    destinationDirectory);
+                    destination);
+                await RemoveDistributionFile(sourceDirectory);
+                ProgressDialogHandler.HideDialog();
             }
             catch (IOException io)
             {
-                HideInfo();
+                ProgressDialogHandler.HideDialog();
                 Debug.WriteLine(io.Message);
                 LogHandler.Log().Error("{Message}", io.Message);
             }
             catch (Exception e)
             {
-                HideInfo();
+                ProgressDialogHandler.HideDialog();
                 LogHandler.Log().Error(e, "MoveBasePathError");
             }
         }

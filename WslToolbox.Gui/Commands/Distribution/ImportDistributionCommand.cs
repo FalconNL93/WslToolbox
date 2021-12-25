@@ -23,20 +23,17 @@ namespace WslToolbox.Gui.Commands.Distribution
             _viewModel = viewModel;
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
-            DefaultInfoTitle = "Importing";
-            DefaultInfoContent = "Importing distribution, please wait...";
         }
 
         private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += (_, _) =>
             {
-                ShowInfo(showHideButton: true);
+                ProgressDialogHandler.ShowDialog("Importing", "Importing distribution, please wait..");
             };
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += async (_, _) =>
             {
-                HideInfo();
-
+                ProgressDialogHandler.HideDialog();
                 if (!_viewModel.Config.Configuration.ImportStartDistribution) return;
 
                 await Core.Commands.Distribution.StartDistributionCommand.Execute(
@@ -69,12 +66,10 @@ namespace WslToolbox.Gui.Commands.Distribution
             if (!Directory.Exists(importDistributionDialogCollection.SelectedBasePath))
                 try
                 {
-                    ShowInfo(content: "Creating directory");
                     Directory.CreateDirectory(importDistributionDialogCollection.SelectedBasePath);
                 }
                 catch (Exception e)
                 {
-                    HideInfo();
                     LogHandler.Log().Error(e,
                         "There was an error installing the distribution in the selected directory");
                     await DialogHelper.MessageBox("Error",

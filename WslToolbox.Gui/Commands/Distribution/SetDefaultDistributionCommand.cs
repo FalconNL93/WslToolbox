@@ -1,4 +1,5 @@
 ﻿using WslToolbox.Core;
+using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -10,22 +11,23 @@ namespace WslToolbox.Gui.Commands.Distribution
             RegisterEventHandlers();
             IsExecutableDefault = _ => false;
             IsExecutable = _ => !distributionClass?.IsDefault ?? false;
-            DefaultInfoTitle = "Default distribution";
-            DefaultInfoContent = $"Changing default distribution to {distributionClass.Name}";
         }
 
         private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSetStarted +=
-                (_, _) => { ShowInfo(); };
+                (_, _) =>
+                {
+                    ProgressDialogHandler.ShowDialog("Changing default",
+                        $"Changing default to {DistributionClass.Name}...");
+                };
             Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSetFinished +=
-                (_, _) => { HideInfo(); };
+                (_, _) => { ProgressDialogHandler.HideDialog(); };
         }
 
         public override async void Execute(object parameter)
         {
             IsExecutable = _ => false;
-            ShowInfo();
             _ = await Core.Commands.Distribution.SetDefaultDistributionCommand.Execute((DistributionClass) parameter);
             IsExecutable = _ => true;
         }

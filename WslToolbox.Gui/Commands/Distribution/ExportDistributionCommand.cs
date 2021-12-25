@@ -18,16 +18,14 @@ namespace WslToolbox.Gui.Commands.Distribution
             _model = model;
             IsExecutableDefault = _ => distributionClass != null;
             IsExecutable = IsExecutableDefault;
-            DefaultInfoTitle = "Exporting";
-            DefaultInfoContent = $"Exporting distribution {distributionClass.Name}...";
         }
 
         private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
-                (_, _) => { ShowInfo(showHideButton: true); };
+                (_, _) => { ProgressDialogHandler.ShowDialog("Exporting", $"Exporting {DistributionClass.Name}..."); };
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
-                (_, _) => { HideInfo(); };
+                (_, _) => { ProgressDialogHandler.HideDialog(); };
         }
 
 

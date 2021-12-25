@@ -1,6 +1,7 @@
 ﻿using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
+using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Commands.Distribution
@@ -15,17 +16,14 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             IsExecutable = IsExecutable = _ =>
                 distributionClass.State != DistributionClass.StateRunning;
-
-            DefaultInfoTitle = "Deleting";
-            DefaultInfoContent = $"Deleting {distributionClass.Name}...";
         }
 
         private void RegisterEventHandlers()
         {
             UnregisterDistributionCommand.DistributionUnregisterStarted +=
-                (_, _) => { ShowInfo(showHideButton: true); };
+                (_, _) => { ProgressDialogHandler.ShowDialog("Deleting", $"Deleting {DistributionClass.Name}..."); };
             UnregisterDistributionCommand.DistributionUnregisterFinished +=
-                (_, _) => { HideInfo(); };
+                (_, _) => { ProgressDialogHandler.HideDialog(); };
         }
 
         public override async void Execute(object parameter)
@@ -40,7 +38,6 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (deleteDistributionWarningResult != ContentDialogResult.Primary) return;
             var distribution = (DistributionClass) parameter;
-            ShowInfo();
             await UnregisterDistributionCommand.Execute(distribution);
         }
     }

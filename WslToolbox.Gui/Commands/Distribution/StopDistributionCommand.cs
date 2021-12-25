@@ -1,5 +1,6 @@
 ﻿using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
+using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands.Distribution
 {
@@ -10,19 +11,22 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             RegisterEventHandlers();
             IsExecutable = _ => distributionClass.State == DistributionClass.StateRunning;
-            DefaultInfoTitle = "Stopping";
-            DefaultInfoContent = $"Stopping {distributionClass.Name}...";
         }
 
         private void RegisterEventHandlers()
         {
-            TerminateDistributionCommand.DistributionTerminateStarted += (_, _) => { ShowInfo(); };
-            TerminateDistributionCommand.DistributionTerminateFinished += (_, _) => { HideInfo(); };
+            TerminateDistributionCommand.DistributionTerminateStarted += (_, _) =>
+            {
+                ProgressDialogHandler.ShowDialog("Stopping", $"Stopping {DistributionClass.Name}...");
+            };
+            TerminateDistributionCommand.DistributionTerminateFinished += (_, _) =>
+            {
+                ProgressDialogHandler.HideDialog();
+            };
         }
 
         public override async void Execute(object parameter)
         {
-            ShowInfo();
             IsExecutable = _ => false;
             _ = await TerminateDistributionCommand.Execute((DistributionClass) parameter ?? DistributionClass);
             IsExecutable = _ => true;

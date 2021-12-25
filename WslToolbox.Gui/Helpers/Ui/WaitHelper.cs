@@ -16,7 +16,7 @@ namespace WslToolbox.Gui.Helpers.Ui
         private Window _owner;
         private string _primaryButtonText;
         private ProgressBar _progressBar;
-        private bool _progressBarActive;
+        private Visibility _progressBarVisibility = Visibility.Collapsed;
         private int _progressValue;
         private string _secondaryButtonText;
 
@@ -86,14 +86,14 @@ namespace WslToolbox.Gui.Helpers.Ui
             }
         }
 
-        public bool ProgressBarActive
+        public Visibility ProgressBarVisibility
         {
-            get => _progressBarActive;
+            get => _progressBarVisibility;
             set
             {
-                if (_progressBarActive == value) return;
-                _progressBarActive = value;
-                OnPropertyChanged(nameof(ProgressBarActive));
+                if (_progressBarVisibility == value) return;
+                _progressBarVisibility = value;
+                OnPropertyChanged(nameof(ProgressBarVisibility));
             }
         }
 
@@ -130,6 +130,9 @@ namespace WslToolbox.Gui.Helpers.Ui
 
             _progressBar.SetBinding(RangeBase.ValueProperty,
                 BindHelper.BindingObject(nameof(ProgressValue), this));
+
+            _progressBar.SetBinding(UIElement.VisibilityProperty,
+                BindHelper.BindingObject(nameof(ProgressBarVisibility), this));
 
             StackPanel itemStack = new();
             itemStack.Children.Add(textBlock);

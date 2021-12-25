@@ -51,6 +51,7 @@ namespace WslToolbox.Gui.ViewModels
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
         public List<DistributionClass> InstallableDistributions = null;
         public KeyboardShortcutHandler KeyboardShortcutHandler;
+        public ProgressDialogHandler ProgressDialogHandler = new();
 
 
         public MainViewModel(MainView view)
@@ -181,7 +182,36 @@ namespace WslToolbox.Gui.ViewModels
             Config.ConfigurationUpdatedSuccessfully += OnSaveSuccessfully;
             ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
+            ProgressDialogHandler.UpdateProgressDialogEvent += OnUpdateProgressDialogEvent;
+            ProgressDialogHandler.HideProgressDialogEvent += OnHideProgressDialogEvent;
             ShortcutHandler();
+        }
+
+        private async void OnHideProgressDialogEvent(object? sender, ProgressDialogEventArguments e)
+        {
+            if (ProgressDialogHandler.GetType() != typeof(ProgressDialogHandler)) return;
+            if ((string) e.Owner != nameof(MainViewModel)) return;
+
+            if (e.CloseDelay > 0)
+                await Task.Delay(e.CloseDelay);
+
+            ProgressDialogHandler.Dispose();
+        }
+
+        private void OnUpdateProgressDialogEvent(object? sender, ProgressDialogEventArguments e)
+        {
+            if (ProgressDialogHandler.GetType() != typeof(ProgressDialogHandler)) return;
+            if ((string) e.Owner != nameof(MainViewModel)) return;
+
+            ProgressDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
+            ProgressDialogHandler.ProgressValue = e.Progress;
+            ProgressDialogHandler.Show(
+                e.Title,
+                e.Content,
+                e.ProgressBarVisibility,
+                e.ShowCloseButton,
+                e.CloseButtonText
+            );
         }
 
         private async void OnUpdateStatusReceived(object sender, UpdateStatusArgs e)

@@ -8,8 +8,6 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutable = _ => distributionClass.State == DistributionClass.StateRunning;
-            DefaultInfoTitle = "Shell";
-            DefaultInfoContent = "Starting shell...";
         }
 
         public override void Execute(object parameter)
