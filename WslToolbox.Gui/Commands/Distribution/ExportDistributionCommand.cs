@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
@@ -38,7 +40,7 @@ namespace WslToolbox.Gui.Commands.Distribution
             }
 
             var exportDirectory = SelectExportDirectory();
-            if (exportDirectory == null) return;
+            if (exportDirectory == "") return;
 
             try
             {

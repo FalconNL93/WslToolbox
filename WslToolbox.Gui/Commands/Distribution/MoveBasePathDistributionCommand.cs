@@ -54,7 +54,12 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             _selectedBasePath = FileDialogHandler.SelectDistributionBasePath();
 
-            if (_selectedBasePath != "" && await Summary() != ContentDialogResult.Primary) return;
+            Debug.WriteLine($"Selected: {_selectedBasePath}");
+
+            if (_selectedBasePath == ""
+                || !Directory.Exists(_selectedBasePath)) return;
+
+            if (await Summary() != ContentDialogResult.Primary) return;
 
             _model.StopDistribution.Execute(distribution);
             MoveDistribution(_selectedBasePath);
