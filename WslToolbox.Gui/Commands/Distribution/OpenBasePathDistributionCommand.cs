@@ -19,7 +19,7 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             if (!Directory.Exists(distribution.BasePathLocal)) return;
 
-            ExplorerHelper.OpenLocal(distribution.BasePathLocal);
+            ShellHelper.OpenLocal(distribution.BasePathLocal);
         }
     }
 }

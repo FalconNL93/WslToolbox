@@ -49,9 +49,9 @@ namespace WslToolbox.Gui.ViewModels
         private DistributionClass _selectedDistribution;
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
+        public ContentDialogHandler ContentDialogHandler = new();
         public List<DistributionClass> InstallableDistributions = null;
         public KeyboardShortcutHandler KeyboardShortcutHandler;
-        public ProgressDialogHandler ProgressDialogHandler = new();
 
 
         public MainViewModel(MainView view)
@@ -182,30 +182,30 @@ namespace WslToolbox.Gui.ViewModels
             Config.ConfigurationUpdatedSuccessfully += OnSaveSuccessfully;
             ToolboxClass.RefreshRequired += OnRefreshRequired;
             UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
-            ProgressDialogHandler.UpdateProgressDialogEvent += OnUpdateProgressDialogEvent;
-            ProgressDialogHandler.HideProgressDialogEvent += OnHideProgressDialogEvent;
+            ContentDialogHandler.UpdateContentDialogEvent += OnUpdateContentDialogEvent;
+            ContentDialogHandler.HideContentDialogEvent += OnHideContentDialogEvent;
             ShortcutHandler();
         }
 
-        private async void OnHideProgressDialogEvent(object? sender, ProgressDialogEventArguments e)
+        private async void OnHideContentDialogEvent(object? sender, ContentDialogEventArguments e)
         {
-            if (ProgressDialogHandler.GetType() != typeof(ProgressDialogHandler)) return;
+            if (ContentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
             if ((string) e.Owner != nameof(MainViewModel)) return;
 
             if (e.CloseDelay > 0)
                 await Task.Delay(e.CloseDelay);
 
-            ProgressDialogHandler.Dispose();
+            ContentDialogHandler.Dispose();
         }
 
-        private void OnUpdateProgressDialogEvent(object? sender, ProgressDialogEventArguments e)
+        private void OnUpdateContentDialogEvent(object? sender, ContentDialogEventArguments e)
         {
-            if (ProgressDialogHandler.GetType() != typeof(ProgressDialogHandler)) return;
+            if (ContentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
             if ((string) e.Owner != nameof(MainViewModel)) return;
-            
-            ProgressDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
-            ProgressDialogHandler.ProgressValue = e.Progress;
-            ProgressDialogHandler.Show(
+
+            ContentDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
+            ContentDialogHandler.ProgressValue = e.Progress;
+            ContentDialogHandler.Show(
                 e.Title,
                 e.Content,
                 e.ProgressBarVisibility,

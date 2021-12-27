@@ -5,15 +5,17 @@ using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Helpers
 {
-    public static class ExplorerHelper
+    public static class ShellHelper
     {
+        private const string DefaultShell = "explorer";
+
         public static void OpenHyperlink(Hyperlink hyperlink)
         {
             hyperlink.RequestNavigate += (sender, e) =>
             {
                 try
                 {
-                    _ = Process.Start(new ProcessStartInfo("explorer")
+                    _ = Process.Start(new ProcessStartInfo(DefaultShell)
                     {
                         Arguments = e.Uri.ToString()
                     });
@@ -29,7 +31,7 @@ namespace WslToolbox.Gui.Helpers
         {
             try
             {
-                _ = Process.Start(new ProcessStartInfo("explorer")
+                _ = Process.Start(new ProcessStartInfo(DefaultShell)
                 {
                     Arguments = path
                 });

@@ -29,11 +29,11 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += (_, _) =>
             {
-                ProgressDialogHandler.ShowDialog("Importing", "Importing distribution, please wait..");
+                ContentDialogHandler.ShowDialog("Importing", "Importing distribution, please wait..");
             };
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += async (_, _) =>
             {
-                ProgressDialogHandler.HideDialog();
+                ContentDialogHandler.HideDialog();
                 if (!_viewModel.Config.Configuration.ImportStartDistribution) return;
 
                 await Core.Commands.Distribution.StartDistributionCommand.Execute(

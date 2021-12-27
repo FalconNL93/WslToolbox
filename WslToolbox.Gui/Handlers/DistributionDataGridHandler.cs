@@ -100,7 +100,7 @@ namespace WslToolbox.Gui.Handlers
                     _mainViewModel.OpenDistributionShell.Execute(_mainViewModel.SelectedDistribution);
                     break;
                 case GridConfiguration.GridConfigurationOpenBasePath:
-                    ExplorerHelper.OpenLocal(_mainViewModel.SelectedDistribution.BasePathLocal);
+                    ShellHelper.OpenLocal(_mainViewModel.SelectedDistribution.BasePathLocal);
                     break;
             }
         }

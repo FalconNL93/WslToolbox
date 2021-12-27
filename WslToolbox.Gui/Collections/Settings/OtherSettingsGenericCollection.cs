@@ -26,10 +26,7 @@ namespace WslToolbox.Gui.Collections.Settings
             var resetConfiguration = new Button
                 {Content = "Reset configuration", MinWidth = 95, Margin = new Thickness(0, 0, 5, 10)};
 
-            openConfiguration.Click += (_, _) =>
-            {
-                ExplorerHelper.OpenLocal(_viewModel.Configuration.ConfigurationFile);
-            };
+            openConfiguration.Click += (_, _) => { ShellHelper.OpenLocal(_viewModel.Configuration.ConfigurationFile); };
 
             resetConfiguration.Click += OnResetConfiguration;
 

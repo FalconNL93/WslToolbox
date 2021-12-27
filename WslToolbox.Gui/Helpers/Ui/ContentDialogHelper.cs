@@ -8,7 +8,7 @@ using ProgressBar = ModernWpf.Controls.ProgressBar;
 
 namespace WslToolbox.Gui.Helpers.Ui
 {
-    public abstract class WaitHelper : INotifyPropertyChanged
+    public abstract class ContentDialogHelper : INotifyPropertyChanged
     {
         private string _closeButtonText;
         private string _dialogMessage;
@@ -110,7 +110,7 @@ namespace WslToolbox.Gui.Helpers.Ui
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected ContentDialog WaitDialog()
+        protected ContentDialog ContentDialog()
         {
             var textBlock = new TextBlock
             {
@@ -145,16 +145,16 @@ namespace WslToolbox.Gui.Helpers.Ui
                 Owner = Owner
             };
 
-            dialog.SetBinding(ContentDialog.TitleProperty,
+            dialog.SetBinding(ModernWpf.Controls.ContentDialog.TitleProperty,
                 BindHelper.BindingObject(nameof(DialogTitle), this));
 
-            dialog.SetBinding(ContentDialog.PrimaryButtonTextProperty,
+            dialog.SetBinding(ModernWpf.Controls.ContentDialog.PrimaryButtonTextProperty,
                 BindHelper.BindingObject(nameof(PrimaryButtonText), this));
 
-            dialog.SetBinding(ContentDialog.SecondaryButtonTextProperty,
+            dialog.SetBinding(ModernWpf.Controls.ContentDialog.SecondaryButtonTextProperty,
                 BindHelper.BindingObject(nameof(SecondaryButtonText), this));
 
-            dialog.SetBinding(ContentDialog.CloseButtonTextProperty,
+            dialog.SetBinding(ModernWpf.Controls.ContentDialog.CloseButtonTextProperty,
                 BindHelper.BindingObject(nameof(CloseButtonText), this));
 
             return dialog;

@@ -74,7 +74,6 @@ namespace WslToolbox.Gui.Commands.Distribution
                 {
                     var deleteTries = 0;
                     while (File.Exists(file) && deleteTries <= maxTries)
-                    {
                         try
                         {
                             Debug.WriteLine($"Deleting file {file}");
@@ -86,7 +85,6 @@ namespace WslToolbox.Gui.Commands.Distribution
                             deleteTries++;
                             Task.Delay(retryWait);
                         }
-                    }
                 }
             });
         }
@@ -104,7 +102,7 @@ namespace WslToolbox.Gui.Commands.Distribution
                 {
                     var length = new FileInfo(filename).Length;
                     var humanLength = new BytesToHumanConverter().Convert(length, null, null, null);
-                    ProgressDialogHandler.ShowDialog("Copying",
+                    ContentDialogHandler.ShowDialog("Copying",
                         $"Copying files ({currentFile}/{amountOfFiles})...\n\n{Path.GetFileName(filename)} ({humanLength})");
                     await using var sourceStream = File.Open(filename, FileMode.Open);
                     await using var destinationStream =
@@ -116,28 +114,28 @@ namespace WslToolbox.Gui.Commands.Distribution
                 ChangeBasePathDistributionCommand.Execute(DistributionClass, destination);
 
                 await RemoveDistributionFiles(files);
-                ProgressDialogHandler.HideDialog();
+                ContentDialogHandler.HideDialog();
             }
             catch (IOException io)
             {
-                ProgressDialogHandler.HideDialog();
-                ProgressDialogHandler.ShowDialog("Error", $"A read/write error occurred\n\n{io.Message}",
+                ContentDialogHandler.HideDialog();
+                ContentDialogHandler.ShowDialog("Error", $"A read/write error occurred\n\n{io.Message}",
                     closeButtonText: "OK",
                     showCloseButton: true,
                     waitForUser: true
                 );
-                Debug.WriteLine($"io: {io.Message}");
+
                 LogHandler.Log().Error("{Message}", io.Message);
             }
             catch (Exception e)
             {
-                ProgressDialogHandler.HideDialog();
-                ProgressDialogHandler.ShowDialog("Error", $"An error occurred\n\n{e.Message}",
+                ContentDialogHandler.HideDialog();
+                ContentDialogHandler.ShowDialog("Error", $"An error occurred\n\n{e.Message}",
                     closeButtonText: "OK",
                     showCloseButton: true,
                     waitForUser: true
                 );
-                Debug.WriteLine($"ex: {e.Message}");
+
                 LogHandler.Log().Error(e, "MoveBasePathError");
             }
         }

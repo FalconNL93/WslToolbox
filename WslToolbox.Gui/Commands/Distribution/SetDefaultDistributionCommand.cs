@@ -18,11 +18,11 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSetStarted +=
                 (_, _) =>
                 {
-                    ProgressDialogHandler.ShowDialog("Changing default",
+                    ContentDialogHandler.ShowDialog("Changing default",
                         $"Changing default to {DistributionClass.Name}...");
                 };
             Core.Commands.Distribution.SetDefaultDistributionCommand.DistributionDefaultSetFinished +=
-                (_, _) => { ProgressDialogHandler.HideDialog(); };
+                (_, _) => { ContentDialogHandler.HideDialog(); };
         }
 
         public override async void Execute(object parameter)

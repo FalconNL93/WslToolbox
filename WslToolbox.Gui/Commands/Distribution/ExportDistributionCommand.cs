@@ -23,9 +23,9 @@ namespace WslToolbox.Gui.Commands.Distribution
         private void RegisterEventHandlers()
         {
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted +=
-                (_, _) => { ProgressDialogHandler.ShowDialog("Exporting", $"Exporting {DistributionClass.Name}..."); };
+                (_, _) => { ContentDialogHandler.ShowDialog("Exporting", $"Exporting {DistributionClass.Name}..."); };
             Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished +=
-                (_, _) => { ProgressDialogHandler.HideDialog(); };
+                (_, _) => { ContentDialogHandler.HideDialog(); };
         }
 
 

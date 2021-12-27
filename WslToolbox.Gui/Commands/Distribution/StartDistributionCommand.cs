@@ -16,11 +16,11 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             Core.Commands.Distribution.StartDistributionCommand.DistributionStartStarted += (_, _) =>
             {
-                ProgressDialogHandler.ShowDialog("Starting", $"Starting {DistributionClass.Name}...");
+                ContentDialogHandler.ShowDialog("Starting", $"Starting {DistributionClass.Name}...");
             };
             Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += (_, _) =>
             {
-                ProgressDialogHandler.HideDialog();
+                ContentDialogHandler.HideDialog();
             };
         }
 

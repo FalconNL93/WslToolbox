@@ -142,7 +142,7 @@ namespace WslToolbox.Gui.Handlers
                     InstallUpdate();
                     break;
                 case ContentDialogResult.Secondary:
-                    ExplorerHelper.OpenLocal(_updateArgs.DownloadURL);
+                    ShellHelper.OpenLocal(_updateArgs.DownloadURL);
                     break;
                 case ContentDialogResult.None:
                     break;

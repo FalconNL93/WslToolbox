@@ -17,11 +17,11 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             TerminateDistributionCommand.DistributionTerminateStarted += (_, _) =>
             {
-                ProgressDialogHandler.ShowDialog("Stopping", $"Stopping {DistributionClass.Name}...");
+                ContentDialogHandler.ShowDialog("Stopping", $"Stopping {DistributionClass.Name}...");
             };
             TerminateDistributionCommand.DistributionTerminateFinished += (_, _) =>
             {
-                ProgressDialogHandler.HideDialog();
+                ContentDialogHandler.HideDialog();
             };
         }
 

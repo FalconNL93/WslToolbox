@@ -21,9 +21,9 @@ namespace WslToolbox.Gui.Commands.Distribution
         private void RegisterEventHandlers()
         {
             UnregisterDistributionCommand.DistributionUnregisterStarted +=
-                (_, _) => { ProgressDialogHandler.ShowDialog("Deleting", $"Deleting {DistributionClass.Name}..."); };
+                (_, _) => { ContentDialogHandler.ShowDialog("Deleting", $"Deleting {DistributionClass.Name}..."); };
             UnregisterDistributionCommand.DistributionUnregisterFinished +=
-                (_, _) => { ProgressDialogHandler.HideDialog(); };
+                (_, _) => { ContentDialogHandler.HideDialog(); };
         }
 
         public override async void Execute(object parameter)

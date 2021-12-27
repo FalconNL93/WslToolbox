@@ -8,7 +8,7 @@ using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Handlers
 {
-    public class ProgressDialogEventArguments : EventArgs
+    public class ContentDialogEventArguments : EventArgs
     {
         public Visibility ProgressBarVisibility { get; set; }
         public bool ShowCloseButton { get; set; }
@@ -21,13 +21,13 @@ namespace WslToolbox.Gui.Handlers
         public bool WaitForUser { get; set; }
     }
 
-    public class ProgressDialogHandler : WaitHelper, IDisposable
+    public class ContentDialogHandler : ContentDialogHelper, IDisposable
     {
         private readonly ContentDialog _dialog;
 
-        public ProgressDialogHandler()
+        public ContentDialogHandler()
         {
-            _dialog = WaitDialog();
+            _dialog = ContentDialog();
         }
 
         public void Dispose()
@@ -36,8 +36,8 @@ namespace WslToolbox.Gui.Handlers
                 _dialog.Hide();
         }
 
-        public static event EventHandler<ProgressDialogEventArguments> UpdateProgressDialogEvent;
-        public static event EventHandler<ProgressDialogEventArguments> HideProgressDialogEvent;
+        public static event EventHandler<ContentDialogEventArguments> UpdateContentDialogEvent;
+        public static event EventHandler<ContentDialogEventArguments> HideContentDialogEvent;
 
         public async void Show(string title = null,
             string content = null,
@@ -61,13 +61,9 @@ namespace WslToolbox.Gui.Handlers
             }
 
             if (waitForUser)
-            {
                 await _dialog.ShowAsync();
-            }
             else
-            {
                 _dialog.ShowAsync();
-            }
         }
 
         public static async void ShowDialog(string title,
@@ -81,7 +77,7 @@ namespace WslToolbox.Gui.Handlers
             bool waitForUser = false
         )
         {
-            OnUpdateProgressDialogEvent(new ProgressDialogEventArguments
+            OnUpdateContentDialogEvent(new ContentDialogEventArguments
             {
                 Title = title,
                 Content = content,
@@ -100,20 +96,20 @@ namespace WslToolbox.Gui.Handlers
 
         public static void HideDialog(object owner = null)
         {
-            OnHideProgressDialogEvent(new ProgressDialogEventArguments
+            OnHideContentDialogEvent(new ContentDialogEventArguments
             {
                 Owner = owner ?? nameof(MainViewModel)
             });
         }
 
-        private static void OnUpdateProgressDialogEvent(ProgressDialogEventArguments e)
+        private static void OnUpdateContentDialogEvent(ContentDialogEventArguments e)
         {
-            UpdateProgressDialogEvent?.Invoke(null, e);
+            UpdateContentDialogEvent?.Invoke(null, e);
         }
 
-        private static void OnHideProgressDialogEvent(ProgressDialogEventArguments e)
+        private static void OnHideContentDialogEvent(ContentDialogEventArguments e)
         {
-            HideProgressDialogEvent?.Invoke(null, e);
+            HideContentDialogEvent?.Invoke(null, e);
         }
     }
 }

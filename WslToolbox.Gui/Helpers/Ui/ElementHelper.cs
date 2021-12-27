@@ -262,7 +262,7 @@ namespace WslToolbox.Gui.Helpers.Ui
 
             if (tooltip is not null) hyperlink.ToolTip = tooltip;
 
-            ExplorerHelper.OpenHyperlink(hyperlink);
+            ShellHelper.OpenHyperlink(hyperlink);
 
             hyperlink.Inlines.Add(textBlock.Inlines.FirstInline);
             textBlock.Inlines.Add(hyperlink);
