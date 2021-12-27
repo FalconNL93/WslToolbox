@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace WslToolbox.Gui.Commands.Distribution
         private async Task<ContentDialogResult> Summary()
         {
             var moveDistributionWarning = DialogHelper.MessageBox("Summary",
-                $"Move:\n{DistributionClass.BasePathLocal}\n\nTo:\n{_selectedBasePath}?",
+                $"Move all contents inside:\n{DistributionClass.BasePathLocal}\n\nTo:\n{_selectedBasePath}?",
                 "Move", closeButtonText: "Cancel");
 
             return await moveDistributionWarning.ShowAsync();
@@ -54,8 +55,6 @@ namespace WslToolbox.Gui.Commands.Distribution
 
             _selectedBasePath = FileDialogHandler.SelectDistributionBasePath();
 
-            Debug.WriteLine($"Selected: {_selectedBasePath}");
-
             if (_selectedBasePath == ""
                 || !Directory.Exists(_selectedBasePath)) return;
 
@@ -65,24 +64,30 @@ namespace WslToolbox.Gui.Commands.Distribution
             MoveDistribution(_selectedBasePath);
         }
 
-        private static async Task RemoveDistributionFile(string file)
+        private static async Task RemoveDistributionFiles(List<string> files)
         {
             const int maxTries = 3;
-            var deleteTries = 0;
+            const int retryWait = 5000;
             await Task.Run(() =>
             {
-                while (File.Exists(file) && deleteTries <= maxTries)
-                    try
+                foreach (var file in files)
+                {
+                    var deleteTries = 0;
+                    while (File.Exists(file) && deleteTries <= maxTries)
                     {
-                        File.Delete(file);
+                        try
+                        {
+                            Debug.WriteLine($"Deleting file {file}");
+                            File.Delete(file);
+                        }
+                        catch (Exception e)
+                        {
+                            LogHandler.Log().Error("{Message}", e.Message);
+                            deleteTries++;
+                            Task.Delay(retryWait);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        LogHandler.Log().Error("{Message}", e.Message);
-                        Debug.WriteLine($"Cannot delete file... tries: {deleteTries}");
-                        deleteTries++;
-                        Task.Delay(5000);
-                    }
+                }
             });
         }
 
@@ -108,20 +113,31 @@ namespace WslToolbox.Gui.Commands.Distribution
                     currentFile++;
                 }
 
-                ChangeBasePathDistributionCommand.Execute(DistributionClass,
-                    destination);
-                await RemoveDistributionFile(sourceDirectory);
+                ChangeBasePathDistributionCommand.Execute(DistributionClass, destination);
+
+                await RemoveDistributionFiles(files);
                 ProgressDialogHandler.HideDialog();
             }
             catch (IOException io)
             {
                 ProgressDialogHandler.HideDialog();
-                Debug.WriteLine(io.Message);
+                ProgressDialogHandler.ShowDialog("Error", $"A read/write error occurred\n\n{io.Message}",
+                    closeButtonText: "OK",
+                    showCloseButton: true,
+                    waitForUser: true
+                );
+                Debug.WriteLine($"io: {io.Message}");
                 LogHandler.Log().Error("{Message}", io.Message);
             }
             catch (Exception e)
             {
                 ProgressDialogHandler.HideDialog();
+                ProgressDialogHandler.ShowDialog("Error", $"An error occurred\n\n{e.Message}",
+                    closeButtonText: "OK",
+                    showCloseButton: true,
+                    waitForUser: true
+                );
+                Debug.WriteLine($"ex: {e.Message}");
                 LogHandler.Log().Error(e, "MoveBasePathError");
             }
         }

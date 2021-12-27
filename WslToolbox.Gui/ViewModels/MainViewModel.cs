@@ -202,7 +202,7 @@ namespace WslToolbox.Gui.ViewModels
         {
             if (ProgressDialogHandler.GetType() != typeof(ProgressDialogHandler)) return;
             if ((string) e.Owner != nameof(MainViewModel)) return;
-
+            
             ProgressDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
             ProgressDialogHandler.ProgressValue = e.Progress;
             ProgressDialogHandler.Show(
@@ -210,7 +210,8 @@ namespace WslToolbox.Gui.ViewModels
                 e.Content,
                 e.ProgressBarVisibility,
                 e.ShowCloseButton,
-                e.CloseButtonText
+                e.CloseButtonText,
+                e.WaitForUser
             );
         }
 

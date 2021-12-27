@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;

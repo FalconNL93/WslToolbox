@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using ModernWpf.Controls;
@@ -17,6 +18,7 @@ namespace WslToolbox.Gui.Handlers
         public object Owner { get; set; }
         public string CloseButtonText { get; set; }
         public int CloseDelay { get; set; }
+        public bool WaitForUser { get; set; }
     }
 
     public class ProgressDialogHandler : WaitHelper, IDisposable
@@ -37,19 +39,35 @@ namespace WslToolbox.Gui.Handlers
         public static event EventHandler<ProgressDialogEventArguments> UpdateProgressDialogEvent;
         public static event EventHandler<ProgressDialogEventArguments> HideProgressDialogEvent;
 
-        public void Show(string title = null,
+        public async void Show(string title = null,
             string content = null,
             Visibility progressBarVisibility = Visibility.Collapsed,
             bool showCloseButton = false,
-            string closeButtonText = null)
+            string closeButtonText = null,
+            bool waitForUser = false
+        )
         {
             CloseButtonText = showCloseButton ? closeButtonText : null;
             DialogTitle = title;
             DialogMessage = content;
             ProgressBarVisibility = progressBarVisibility;
 
-            if (!_dialog.IsVisible)
+            if (_dialog.IsVisible)
+            {
+                Debug.WriteLine("Queued dialog.");
+
+                while (_dialog.IsVisible)
+                    await Task.Delay(10);
+            }
+
+            if (waitForUser)
+            {
+                await _dialog.ShowAsync();
+            }
+            else
+            {
                 _dialog.ShowAsync();
+            }
         }
 
         public static async void ShowDialog(string title,
@@ -59,7 +77,8 @@ namespace WslToolbox.Gui.Handlers
             string closeButtonText = null,
             int progressValue = 0,
             object owner = null,
-            int closeDelay = 0
+            int closeDelay = 0,
+            bool waitForUser = false
         )
         {
             OnUpdateProgressDialogEvent(new ProgressDialogEventArguments
@@ -70,7 +89,8 @@ namespace WslToolbox.Gui.Handlers
                 ShowCloseButton = showCloseButton,
                 ProgressBarVisibility = progressBarVisibility,
                 CloseButtonText = closeButtonText,
-                Progress = progressValue
+                Progress = progressValue,
+                WaitForUser = waitForUser
             });
 
             if (closeDelay <= 0) return;
