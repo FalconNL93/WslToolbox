@@ -54,10 +54,13 @@ namespace WslToolbox.Gui.Handlers
 
             if (_dialog.IsVisible)
             {
-                Debug.WriteLine("Queued dialog.");
+                if (waitForUser)
+                {
+                    Debug.WriteLine("Queued dialog.");
 
-                while (_dialog.IsVisible)
-                    await Task.Delay(10);
+                    while (_dialog.IsVisible)
+                        await Task.Delay(10);
+                }
             }
 
             if (waitForUser)

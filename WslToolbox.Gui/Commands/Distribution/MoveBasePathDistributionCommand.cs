@@ -76,7 +76,6 @@ namespace WslToolbox.Gui.Commands.Distribution
                     while (File.Exists(file) && deleteTries <= maxTries)
                         try
                         {
-                            Debug.WriteLine($"Deleting file {file}");
                             File.Delete(file);
                         }
                         catch (Exception e)
