@@ -28,7 +28,7 @@ namespace WslToolbox.Gui.Views
             WslIsEnabledCheck();
             InitializeComponent();
             ApplyTitle($"{AssemblyHelper.Version()} build {AssemblyHelper.Build()}");
-            if (AppConfiguration.DebugMode) ApplyTitle("Dev Build");
+            if (_viewModel.IsDebug) ApplyTitle("Dev Build");
             InitializeDataGrid();
             InitializeTopMenu();
             HandleConfiguration();

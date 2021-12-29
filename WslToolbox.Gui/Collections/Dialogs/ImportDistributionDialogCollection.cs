@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using WslToolbox.Core;
 using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.Validators;
@@ -86,7 +87,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
         {
             var createFolder = viewModel.Config.Configuration.ImportCreateFolder;
             var userBasePath = viewModel.Config.Configuration.UserBasePath;
-            var distributionFileBrowse = new Button {Content = "Browse..."};
+            var distributionFileBrowse = new Button {Content = "Browse...", TabIndex = 0};
             var distributionBasePathBrowse = new Button {Content = "Browse..."};
 
             SelectedBasePath = Directory.Exists(userBasePath) ? userBasePath : null;
@@ -98,19 +99,6 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
             Control[] items =
             {
-                new Label {Content = "Name:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
-                new Label
-                {
-                    Content = "- Only alphanumeric characters are allowed.\n" +
-                              "- Name must contain at least 3 characters.",
-                    Margin = new Thickness(0, 0, 0, 10)
-                },
-                ElementHelper.TextBox(nameof(DistributionName), bind: "DistributionName", width: 400,
-                    source: this,
-                    isReadonly: false, isEnabled: true, updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
-                    placeholder: "Name your distribution"),
-                ElementHelper.Separator(),
-
                 new Label {Content = "Filename:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
                 ElementHelper.TextBox(nameof(SelectedFilePath),
                     null, "SelectedFilePath", this, width: 400,
@@ -126,7 +114,19 @@ namespace WslToolbox.Gui.Collections.Dialogs
                     updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
                     placeholder: "Select an installation directory"),
                 ElementHelper.Separator(0),
-                distributionBasePathBrowse
+                distributionBasePathBrowse,
+                new Label {Content = "Name:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
+                new Label
+                {
+                    Content = "- Only alphanumeric characters are allowed.\n" +
+                              "- Name must contain at least 3 characters.",
+                    Margin = new Thickness(0, 0, 0, 10)
+                },
+                ElementHelper.TextBox(nameof(DistributionName), bind: "DistributionName", width: 400,
+                    source: this,
+                    isReadonly: false, isEnabled: true, updateSourceTrigger: UpdateSourceTrigger.PropertyChanged,
+                    placeholder: "Name your distribution"),
+                ElementHelper.Separator()
             };
 
             return items;
@@ -171,6 +171,24 @@ namespace WslToolbox.Gui.Collections.Dialogs
             {
                 Debug.WriteLine(e);
             }
+
+            if (propertyName == nameof(SelectedFilePath) && SelectedFilePath != null)
+                OnSelectedFilePathChanged();
+        }
+
+        private void OnSelectedFilePathChanged()
+        {
+            var fileName = Path.GetFileNameWithoutExtension(SelectedFilePath);
+            var distroNameExists = ToolboxClass.DistributionByName(fileName) != null;
+            var distroNum = 0;
+
+            while (distroNameExists)
+            {
+                distroNum++;
+                distroNameExists = ToolboxClass.DistributionByName($"{fileName}{distroNum}") != null;
+            }
+
+            DistributionName = Path.GetFileNameWithoutExtension($"{fileName}{distroNum}");
         }
     }
 }

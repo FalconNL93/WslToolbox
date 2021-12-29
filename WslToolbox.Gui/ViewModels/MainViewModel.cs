@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using CommandLine;
@@ -32,44 +31,51 @@ namespace WslToolbox.Gui.ViewModels
     {
         [Option('r', "reset", Default = false, HelpText = "Reset configuration")]
         public bool ResetConfiguration { get; set; }
+
+        [Option('f', "release", Default = false, HelpText = "Force release version")]
+        public bool Release { get; set; }
     }
 
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly ContentDialogHandler _contentDialogHandler = new();
         private readonly UpdateHandler _updateHandler;
         private readonly MainView _view;
         public readonly ICommand CheckForUpdates;
         public readonly ConfigurationHandler Config = new();
 
         public readonly ICommand EnableWindowsComponents = new EnableWindowsComponentsCommand();
+        public readonly bool IsDebug;
         public readonly Logger Log;
 
         private List<DistributionClass> _distributionList = new();
         private BindingList<DistributionClass> _gridList = new();
+        private KeyboardShortcutHandler _keyboardShortcutHandler;
         private DistributionClass _selectedDistribution;
         private bool _updateAvailable;
         private Visibility _updateAvailableVisibility = Visibility.Collapsed;
-        public ContentDialogHandler ContentDialogHandler = new();
         public List<DistributionClass> InstallableDistributions = null;
-        public KeyboardShortcutHandler KeyboardShortcutHandler;
 
 
         public MainViewModel(MainView view)
         {
             var args = Environment.GetCommandLineArgs();
+            var disableDebug = false;
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(commandLineArgument =>
                 {
                     if (commandLineArgument.ResetConfiguration) Config.Reset();
+                    disableDebug = commandLineArgument.Release;
                 });
 
             Log = Log();
             _view = view;
             _updateHandler = new UpdateHandler(_view);
             CheckForUpdates = new CheckForUpdateCommand(_updateHandler);
+            IsDebug = AppConfiguration.DebugMode && !disableDebug;
 
-            if (AppConfiguration.DebugMode) InitializeDebugMode();
+            if (IsDebug) InitializeDebugMode();
             InitializeKeyboardShortcuts();
             InitializeEventHandlers();
             InitializeUpdater();
@@ -133,7 +139,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowApplication => new ShowApplicationCommand(_view);
         public ICommand ExitApplication => new ExitApplicationCommand();
         public ICommand Refresh => new RefreshDistributionsCommand(_view);
-        public ICommand ShowSettings => new ShowSettingsCommand(Config, KeyboardShortcutHandler);
+        public ICommand ShowSettings => new ShowSettingsCommand(Config, _keyboardShortcutHandler);
         public ICommand ShowExportDialog => new ExportDistributionCommand(SelectedDistribution, this);
         public ICommand ShowImportDialog => new ImportDistributionCommand(SelectedDistribution, this);
         public ICommand StartWslService => new StartWslServiceCommand();
@@ -159,22 +165,8 @@ namespace WslToolbox.Gui.ViewModels
 
         public void InitializeKeyboardShortcuts()
         {
-            KeyboardShortcutHandler =
+            _keyboardShortcutHandler =
                 new KeyboardShortcutHandler(Config.Configuration.KeyboardShortcutConfiguration, this);
-        }
-
-        public void SetStatus(string status)
-        {
-            var topMenuBar = (ItemsControl) _view.FindName("TopMenu");
-            if (topMenuBar == null) return;
-
-            foreach (var topMenuBarItem in topMenuBar.Items)
-            {
-                if (topMenuBarItem.GetType() != typeof(Label)) continue;
-                var topMenuBarItemLabel = (Label) topMenuBarItem;
-
-                topMenuBarItemLabel.Content = status;
-            }
         }
 
         private void InitializeEventHandlers()
@@ -189,23 +181,23 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void OnHideContentDialogEvent(object? sender, ContentDialogEventArguments e)
         {
-            if (ContentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
+            if (_contentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
             if ((string) e.Owner != nameof(MainViewModel)) return;
 
             if (e.CloseDelay > 0)
                 await Task.Delay(e.CloseDelay);
 
-            ContentDialogHandler.Dispose();
+            _contentDialogHandler.Dispose();
         }
 
         private void OnUpdateContentDialogEvent(object? sender, ContentDialogEventArguments e)
         {
-            if (ContentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
+            if (_contentDialogHandler.GetType() != typeof(ContentDialogHandler)) return;
             if ((string) e.Owner != nameof(MainViewModel)) return;
 
-            ContentDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
-            ContentDialogHandler.ProgressValue = e.Progress;
-            ContentDialogHandler.Show(
+            _contentDialogHandler.ProgressBarVisibility = e.ProgressBarVisibility;
+            _contentDialogHandler.ProgressValue = e.Progress;
+            _contentDialogHandler.Show(
                 e.Title,
                 e.Content,
                 e.ProgressBarVisibility,
@@ -262,7 +254,7 @@ namespace WslToolbox.Gui.ViewModels
                     modifierKey = ModifierKeys.Shift;
 
 
-                var shortcut = KeyboardShortcutHandler.ShortcutByKey(args.Key, modifierKey);
+                var shortcut = _keyboardShortcutHandler.ShortcutByKey(args.Key, modifierKey);
 
                 if (shortcut is not {Enabled: true}) return;
                 shortcut.Action?.Invoke();

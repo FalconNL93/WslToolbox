@@ -4,12 +4,14 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using WslToolbox.Core;
+using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Validators;
 
 namespace WslToolbox.Gui.Collections.Dialogs
 {
     public class RenameDistributionDialogCollection : INotifyPropertyChanged
     {
+        private string _distributionName;
         private bool _distributionNameIsValid;
 
         public bool DistributionNameIsValid
@@ -23,12 +25,26 @@ namespace WslToolbox.Gui.Collections.Dialogs
             }
         }
 
+        public string DistributionName
+        {
+            get => _distributionName;
+            set
+            {
+                if (value == _distributionName) return;
+                _distributionName = value;
+                OnPropertyChanged(nameof(DistributionName));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IEnumerable<Control> Items(DistributionClass distributionClass)
         {
-            var distributionName = new TextBox {Text = distributionClass.Name};
+            var distributionName = new TextBox();
+            distributionName.SetBinding(TextBox.TextProperty,
+                BindHelper.BindingObject(nameof(DistributionName), this));
 
+            DistributionName = distributionClass.Name;
             distributionName.TextChanged += (_, _) =>
             {
                 DistributionNameIsValid = DistributionNameValidator.ValidateRename(
@@ -41,7 +57,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 new Label
                 {
                     Content = "- Only alphanumeric characters are allowed.\n" +
-                              "- Name must contain atleast 3 characters.",
+                              "- Name must contain at least 3 characters.",
                     Margin = new Thickness(0, 0, 0, 5)
                 },
                 distributionName

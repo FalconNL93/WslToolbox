@@ -53,7 +53,6 @@ namespace WslToolbox.Gui.Handlers
             ProgressBarVisibility = progressBarVisibility;
 
             if (_dialog.IsVisible)
-            {
                 if (waitForUser)
                 {
                     Debug.WriteLine("Queued dialog.");
@@ -61,7 +60,6 @@ namespace WslToolbox.Gui.Handlers
                     while (_dialog.IsVisible)
                         await Task.Delay(10);
                 }
-            }
 
             if (waitForUser)
                 await _dialog.ShowAsync();

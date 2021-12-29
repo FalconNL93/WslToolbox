@@ -2,7 +2,6 @@
 using System.Windows.Data;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Collections.TopMenu;
-using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Helpers.Ui;
 using WslToolbox.Gui.ViewModels;
 
@@ -42,7 +41,7 @@ namespace WslToolbox.Gui.Collections
                 {
                     Content = "Debug menu",
                     Flyout = ElementHelper.MenuFlyoutItems(DebugTopMenuCollection.Items(viewModel)),
-                    Visibility = AppConfiguration.DebugMode ? Visibility.Visible : Visibility.Collapsed
+                    Visibility = viewModel.IsDebug ? Visibility.Visible : Visibility.Collapsed
                 }
             };
         }

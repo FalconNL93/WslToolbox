@@ -1,7 +1,7 @@
-﻿using System;
-using ModernWpf.Controls;
+﻿using ModernWpf.Controls;
 using WslToolbox.Core;
 using WslToolbox.Gui.Collections.Dialogs;
+using WslToolbox.Gui.Handlers;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 
@@ -15,8 +15,6 @@ namespace WslToolbox.Gui.Commands.Distribution
             IsExecutableDefault = _ => true;
             IsExecutable = IsExecutableDefault;
         }
-
-        public static event EventHandler DistributionRenamed;
 
         public override async void Execute(object parameter)
         {
@@ -36,9 +34,21 @@ namespace WslToolbox.Gui.Commands.Distribution
             var result = await renameDistribution.Dialog.ShowAsync();
 
             if (result != ContentDialogResult.Primary) return;
+            var newName = renameDistributionDialogCollection.DistributionName;
 
+            if (ToolboxClass.DistributionByName(newName) != null)
+            {
+                ContentDialogHandler.ShowDialog(
+                    "Error",
+                    $"Renaming failed. The name {newName} already exists.",
+                    showCloseButton: true,
+                    closeButtonText: "Close",
+                    waitForUser: true);
+                return;
+            }
+
+            Core.Commands.Distribution.RenameDistributionCommand.Execute(distribution, newName);
             IsExecutable = _ => true;
-            DistributionRenamed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
