@@ -1,6 +1,6 @@
-﻿namespace WslToolbox.Gui.Configurations
+﻿namespace WslToolbox.Gui.Configurations.Sections
 {
-    public class AppearanceConfiguration
+    public sealed class AppearanceConfiguration
     {
         public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
     }

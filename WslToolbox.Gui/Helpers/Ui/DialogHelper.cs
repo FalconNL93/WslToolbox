@@ -14,13 +14,36 @@ namespace WslToolbox.Gui.Helpers.Ui
 
     public static class DialogHelper
     {
+        private static Expander DialogExpander(string header, string content)
+        {
+            var expander = new Expander
+            {
+                Margin = new Thickness(0, 10, 0, 0),
+                Header = header ?? "More information",
+                Content = new TextBox
+                {
+                    Text = content,
+                    TextWrapping = TextWrapping.Wrap,
+                    Width = 280,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    IsReadOnly = true,
+                    Margin = new Thickness(0, 10, 0, 0)
+                }
+            };
+
+            return expander;
+        }
+
         public static ContentDialog MessageBox(string title, string text,
             string primaryButtonText = null,
             string secondaryButtonText = null,
             string closeButtonText = "OK",
             bool withConfirmationCheckbox = false,
             string confirmationCheckboxText = null,
-            Window dialogOwner = null
+            Window dialogOwner = null,
+            string expandHeader = null,
+            string expandContent = null
         )
         {
             var dialogContent = new StackPanel
@@ -35,6 +58,9 @@ namespace WslToolbox.Gui.Helpers.Ui
                     }
                 }
             };
+
+            if (!string.IsNullOrEmpty(expandContent))
+                dialogContent.Children.Add(DialogExpander(expandHeader, expandContent));
 
             var dialog = new ContentDialog
             {

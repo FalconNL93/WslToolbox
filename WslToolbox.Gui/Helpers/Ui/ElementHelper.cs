@@ -36,7 +36,7 @@ namespace WslToolbox.Gui.Helpers.Ui
             return checkBox;
         }
 
-        public static ToggleSwitch ToggleSwitch(string name,
+        public static ToggleSwitch ToggleSwitch(string name = null,
             string content = null,
             string bind = null,
             object source = null,
@@ -59,7 +59,13 @@ namespace WslToolbox.Gui.Helpers.Ui
                 ToolTip = tooltipContent
             };
 
-            if (bind != null)
+            if (string.IsNullOrEmpty(name))
+                name = bind;
+
+            if (bind == null && source != null)
+                bind = name;
+
+            if (source != null)
                 toggleSwitch.SetBinding(ModernWpf.Controls.ToggleSwitch.IsOnProperty,
                     BindHelper.BindingObject(bind, source));
 

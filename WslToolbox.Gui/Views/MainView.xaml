@@ -14,7 +14,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
-        Icon="/Resources/Images/AppIcon.png"
+        Icon="/Resources/Images/WslToolbox.png"
         StateChanged="Window_StateChanged"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>

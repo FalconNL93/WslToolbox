@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
 
-namespace WslToolbox.Gui.Configurations
+namespace WslToolbox.Gui.Configurations.Sections
 {
-    public class KeyboardShortcutConfiguration
+    public sealed class KeyboardShortcutConfiguration
     {
         public readonly Key AppImportKey = Key.I;
         public readonly Key AppRefreshKey = Key.F5;

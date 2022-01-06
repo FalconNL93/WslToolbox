@@ -3,10 +3,11 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
+using WslToolbox.Gui.Configurations;
 
-namespace WslToolbox.Gui.Helpers
+namespace WslToolbox.Gui.Handlers
 {
-    public class SystemTrayHelper : IDisposable
+    public class SystemTrayHandler : IDisposable
     {
         public TaskbarIcon Tray { get; private set; }
 
@@ -22,7 +23,7 @@ namespace WslToolbox.Gui.Helpers
         public void Initialize(Visibility visibility)
         {
             TaskbarIcon toolboxIcon = new();
-            toolboxIcon.ToolTipText = Assembly.GetExecutingAssembly().GetName().Name;
+            toolboxIcon.ToolTipText = AppConfiguration.AppName;
             toolboxIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             Tray = toolboxIcon;
             Tray.Visibility = visibility;

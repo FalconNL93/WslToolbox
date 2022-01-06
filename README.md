@@ -50,10 +50,11 @@ run `WslToolbox.Gui.exe`.
 
 ## Screenshots
 
-![Main Window](./docs/images/screenshots/tb1.png?raw=true "Main Window")
-![Main Window](./docs/images/screenshots/tb3.png?raw=true "Main Window")
-![Main Window](./docs/images/screenshots/tb2.png?raw=true "Settings Window")
-![Main Window](./docs/images/screenshots/tb4.png?raw=true "Settings Window")
+![Main Window](./docs/images/screenshots/mw1.png?raw=true "Main Window")
+![Main Window 2](./docs/images/screenshots/mw2.png?raw=true "Main Window 2")
+![Main Window 3](./docs/images/screenshots/mw3.png?raw=true "Main Window 3")
+![Main Window 4](./docs/images/screenshots/mw4.png?raw=true "Main Window 4")
+![Settings Window 4](./docs/images/screenshots/sw1.png?raw=true "Settings Window")
 
 ## Special thanks
 

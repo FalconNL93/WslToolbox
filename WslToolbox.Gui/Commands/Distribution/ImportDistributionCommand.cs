@@ -34,12 +34,12 @@ namespace WslToolbox.Gui.Commands.Distribution
             Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += async (_, _) =>
             {
                 ContentDialogHandler.HideDialog();
-                if (!_viewModel.Config.Configuration.ImportStartDistribution) return;
+                if (!_viewModel.Config.Configuration.GeneralConfiguration.ImportStartDistribution) return;
 
                 await Core.Commands.Distribution.StartDistributionCommand.Execute(
                     _viewModel.DistributionList.First(x => x.Name == _distributionName));
 
-                if (!_viewModel.Config.Configuration.ImportStartTerminal) return;
+                if (!_viewModel.Config.Configuration.GeneralConfiguration.ImportStartTerminal) return;
                 Core.Commands.Distribution.OpenShellDistributionCommand.Execute(
                     _viewModel.DistributionList.First(x => x.Name == _distributionName));
             };

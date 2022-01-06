@@ -31,14 +31,14 @@ namespace WslToolbox.Gui.Commands.Distribution
 
         public override async void Execute(object parameter)
         {
-            if (!_model.Config.Configuration.HideExportWarning)
+            if (!_model.Config.Configuration.GeneralConfiguration.HideExportWarning)
             {
                 var warningDialog = await ShowExportWarning().ShowAsync();
                 if (warningDialog != ContentDialogResult.Primary) return;
             }
 
             var exportDirectory = SelectExportDirectory();
-            if (exportDirectory == "") return;
+            if (string.IsNullOrEmpty(exportDirectory)) return;
 
             try
             {

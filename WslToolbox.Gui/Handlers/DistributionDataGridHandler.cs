@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using WslToolbox.Core;
-using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.Converters;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.ViewModels;

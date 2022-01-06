@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WslToolbox.Gui.Configurations
+namespace WslToolbox.Gui.Configurations.Sections
 {
-    public class GridConfiguration
+    public sealed class GridConfiguration
     {
         public const int GridConfigurationDoNothing = 0;
         public const int GridConfigurationOpenTerminal = 1;

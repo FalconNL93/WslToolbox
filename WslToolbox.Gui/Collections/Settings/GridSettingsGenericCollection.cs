@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.Helpers.Ui;
 
 namespace WslToolbox.Gui.Collections.Settings

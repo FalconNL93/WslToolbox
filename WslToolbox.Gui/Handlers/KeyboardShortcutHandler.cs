@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Handlers

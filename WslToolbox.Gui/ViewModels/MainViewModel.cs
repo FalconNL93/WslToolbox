@@ -213,6 +213,12 @@ namespace WslToolbox.Gui.ViewModels
             {
                 UpdateAvailable = false;
                 Log().Error(e.UpdateError, "Could not update application");
+                await DialogHelper.MessageBox(
+                        "Error",
+                        $"An error occurred while checking for updates.", 
+                        expandContent: e.UpdateError.Message)
+                    .ShowAsync();
+                return;
             }
 
             UpdateAvailable = e.UpdateAvailable;
@@ -268,7 +274,7 @@ namespace WslToolbox.Gui.ViewModels
 
         private async void InitializeUpdater()
         {
-            if (!Config.Configuration.AutoCheckUpdates) return;
+            if (!Config.Configuration.GeneralConfiguration.AutoCheckUpdates) return;
 
             await Task.Delay(5000);
             CheckForUpdates.Execute(false);
@@ -293,10 +299,10 @@ namespace WslToolbox.Gui.ViewModels
         public async void RefreshDistributions()
         {
             DistributionList = await ListServiceCommand
-                .ListDistributions(Config.Configuration.HideDockerDistributions)
+                .ListDistributions(Config.Configuration.GeneralConfiguration.HideDockerDistributions)
                 .ConfigureAwait(true);
 
-            if (Config.Configuration.ShowDistributionsInSystemTray)
+            if (Config.Configuration.GeneralConfiguration.ShowDistributionsInSystemTray)
                 SystemTrayMenuItems();
         }
 

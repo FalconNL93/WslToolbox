@@ -13,7 +13,7 @@
         <Authors>FalconNL93</Authors>
         <Company>FalconNL93</Company>
         <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
-        <ApplicationIcon>Resources\Images\AppIcon.ico</ApplicationIcon>
+        <ApplicationIcon>Resources\Images\WslToolbox.ico</ApplicationIcon>
         <AssemblyVersion>0.5</AssemblyVersion>
         <FileVersion>0.5</FileVersion>
         <Configurations>Debug;Release</Configurations>
@@ -50,7 +50,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Resource Include="Resources\Images\AppIcon.png"/>
+        <Resource Include="Resources\Images\WslToolbox.png"/>
     </ItemGroup>
 
     <ItemGroup>

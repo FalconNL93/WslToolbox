@@ -48,13 +48,13 @@ namespace WslToolbox.Gui.Commands.Distribution
         {
             var distribution = (DistributionClass) parameter;
 
-            if (!_model.Config.Configuration.HideExportWarning)
+            if (!_model.Config.Configuration.GeneralConfiguration.HideExportWarning)
                 if (await Warning() != ContentDialogResult.Primary)
                     return;
 
             _selectedBasePath = FileDialogHandler.SelectDistributionBasePath();
 
-            if (_selectedBasePath == ""
+            if (string.IsNullOrEmpty(_selectedBasePath)
                 || !Directory.Exists(_selectedBasePath)) return;
 
             if (await Summary() != ContentDialogResult.Primary) return;

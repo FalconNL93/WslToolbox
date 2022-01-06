@@ -1,8 +1,8 @@
 ﻿using AutoUpdaterDotNET;
 
-namespace WslToolbox.Gui.Configurations
+namespace WslToolbox.Gui.Configurations.Sections
 {
-    public class UpdateConfiguration
+    public sealed class UpdateConfiguration
     {
         public readonly string Url = AppConfiguration.AppConfigurationUpdateXml;
         public bool ShowSkipButton { get; } = AutoUpdater.ShowSkipButton;

@@ -19,7 +19,7 @@ namespace WslToolbox.Gui.Views
     /// </summary>
     public partial class MainView
     {
-        public readonly SystemTrayHelper SystemTray = new();
+        public readonly SystemTrayHandler SystemTray = new();
         private MainViewModel _viewModel;
 
         public MainView()
@@ -78,7 +78,7 @@ namespace WslToolbox.Gui.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (_viewModel.Config.Configuration.MinimizeOnClose)
+            if (_viewModel.Config.Configuration.GeneralConfiguration.MinimizeOnClose)
             {
                 e.Cancel = true;
                 WindowState = WindowState.Minimized;
@@ -120,11 +120,11 @@ namespace WslToolbox.Gui.Views
         {
             SystemTray.Dispose();
 
-            SystemTray.Initialize(_viewModel.Config.Configuration.EnableSystemTray
+            SystemTray.Initialize(_viewModel.Config.Configuration.GeneralConfiguration.EnableSystemTray
                 ? Visibility.Visible
                 : Visibility.Hidden);
 
-            if (_viewModel.Config.Configuration.MinimizeOnStartup)
+            if (_viewModel.Config.Configuration.GeneralConfiguration.MinimizeOnStartup)
             {
                 WindowState = WindowState.Minimized;
                 Hide();
@@ -151,7 +151,8 @@ namespace WslToolbox.Gui.Views
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (_viewModel.Config.Configuration.MinimizeToTray && _viewModel.Config.Configuration.EnableSystemTray)
+            if (_viewModel.Config.Configuration.GeneralConfiguration.MinimizeToTray &&
+                _viewModel.Config.Configuration.GeneralConfiguration.EnableSystemTray)
                 ShowInTaskbar = WindowState != WindowState.Minimized;
         }
     }

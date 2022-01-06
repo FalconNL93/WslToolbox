@@ -5,6 +5,7 @@ using System.Windows;
 using AutoUpdaterDotNET;
 using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.Helpers;
 using WslToolbox.Gui.Helpers.Ui;
 

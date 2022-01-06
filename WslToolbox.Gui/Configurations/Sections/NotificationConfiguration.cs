@@ -1,6 +1,6 @@
-﻿namespace WslToolbox.Gui.Configurations
+﻿namespace WslToolbox.Gui.Configurations.Sections
 {
-    public class NotificationConfiguration
+    public sealed class NotificationConfiguration
     {
         public bool Enabled { get; set; } = true;
         public bool NewVersionAvailable { get; set; } = true;

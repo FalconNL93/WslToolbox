@@ -1,13 +1,27 @@
-﻿using System.Windows.Data;
+﻿using System.Collections.Generic;
+using System.Windows.Data;
+using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
+using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.Helpers.Ui;
+using WslToolbox.Gui.ViewModels;
 
 namespace WslToolbox.Gui.Collections.Settings
 {
+    public class SettingsItem
+    {
+        public string Content { get; set; }
+        public System.Windows.Controls.Control Control { get; set; }
+    }
+
     public class GeneralSettingsGenericCollection : GenericCollection
     {
+        private readonly GeneralConfiguration _generalConfiguration;
+
         public GeneralSettingsGenericCollection(object source) : base(source)
         {
+            var sourceConfiguration = (SettingsViewModel) source;
+            _generalConfiguration = sourceConfiguration.Configuration.GeneralConfiguration;
         }
 
         public CompositeCollection Items()
@@ -30,13 +44,20 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideDockerDistributions),
-                    "Hide Docker Distributions", "Configuration.HideDockerDistributions", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideExportWarning),
-                    "Hide export warning", "Configuration.HideExportWarning", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.AutoCheckUpdates),
-                    "Automatically check for updates on startup", "Configuration.AutoCheckUpdates", Source,
-                    header: null)
+                ElementHelper.ToggleSwitch(
+                    content: "Hide Docker Distributions",
+                    bind: nameof(_generalConfiguration.HideDockerDistributions),
+                    source: _generalConfiguration),
+
+                ElementHelper.ToggleSwitch(
+                    content: "Hide export warning",
+                    bind: nameof(_generalConfiguration.HideExportWarning),
+                    source: _generalConfiguration),
+
+                ElementHelper.ToggleSwitch(
+                    content: "Automatically check for updates on startup",
+                    bind: nameof(_generalConfiguration.AutoCheckUpdates),
+                    source: _generalConfiguration)
             };
         }
 
@@ -44,12 +65,12 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportCreateFolder),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportCreateFolder),
                     "Create folder in base path", "Configuration.ImportCreateFolder", Source, header: null,
                     tooltipContent: "Creates a folder in the selected base path"),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportStartDistribution),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportStartDistribution),
                     "Start distribution after import", "Configuration.ImportStartDistribution", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.ImportStartTerminal),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportStartTerminal),
                     "Launch terminal after import", "Configuration.ImportStartTerminal", Source, header: null,
                     requires: "Configuration.ImportStartDistribution", tabIndex: 1)
             };
@@ -59,9 +80,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.HideMoveWarning),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.HideMoveWarning),
                     "Hide move warning", "Configuration.HideMoveWarning", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.CopyOnMove),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.CopyOnMove),
                     "Copy on move", "Configuration.CopyOnMove", Source, header: null, enabled: false,
                     tooltipContent:
                     "Copies the contents of the distribution and deletes the source after completion. More safe than regular move action.")
@@ -84,9 +105,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeOnClose),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeOnClose),
                     "Minimize when pressing close button", "Configuration.MinimizeOnClose", Source),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.EnableSystemTray),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.EnableSystemTray),
                     "Enable system tray", "Configuration.EnableSystemTray", Source),
                 ElementHelper.ItemsControlGroup(EnableSystemTraySettings(), source: Source,
                     requires: "Configuration.EnableSystemTray", tabIndex: 1)
@@ -97,9 +118,9 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeToTray),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeToTray),
                     "Minimize to tray", "Configuration.MinimizeToTray", Source),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.MinimizeOnStartup),
+                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeOnStartup),
                     "Minimize on startup", "Configuration.MinimizeOnStartup", Source)
             };
         }

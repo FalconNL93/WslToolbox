@@ -20,29 +20,29 @@ namespace WslToolbox.Gui.Collections
                 },
                 new MenuItem
                 {
-                    Header = "WSL Service",
+                    Header = "Service",
                     ItemsSource = new CompositeCollection
                     {
                         new MenuItem
                         {
-                            Header = "Start WSL Service",
+                            Header = "Start",
                             Command = viewModel.StartWslService
                         },
                         new MenuItem
                         {
-                            Header = "Stop WSL Service",
+                            Header = "Stop",
                             Command = viewModel.StopWslService
                         },
                         new MenuItem
                         {
-                            Header = "Restart WSL Service",
+                            Header = "Restart",
                             Command = viewModel.RestartWslService
                         }
                     }
                 }
             };
 
-            if (viewModel.Config.Configuration.ShowDistributionsInSystemTray)
+            if (viewModel.Config.Configuration.GeneralConfiguration.ShowDistributionsInSystemTray)
             {
                 systemTrayMenuItems.Add(new Separator());
 

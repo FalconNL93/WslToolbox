@@ -85,7 +85,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
 
         public IEnumerable<Control> Items(MainViewModel viewModel)
         {
-            var createFolder = viewModel.Config.Configuration.ImportCreateFolder;
+            var createFolder = viewModel.Config.Configuration.GeneralConfiguration.ImportCreateFolder;
             var userBasePath = viewModel.Config.Configuration.UserBasePath;
             var distributionFileBrowse = new Button {Content = "Browse...", TabIndex = 0};
             var distributionBasePathBrowse = new Button {Content = "Browse..."};
@@ -115,6 +115,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                     placeholder: "Select an installation directory"),
                 ElementHelper.Separator(0),
                 distributionBasePathBrowse,
+                ElementHelper.Separator(),
                 new Label {Content = "Name:", Margin = new Thickness(0, 0, 0, 2), FontWeight = FontWeights.Bold},
                 new Label
                 {
@@ -172,7 +173,7 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 Debug.WriteLine(e);
             }
 
-            if (propertyName == nameof(SelectedFilePath) && SelectedFilePath != null)
+            if (propertyName == nameof(SelectedFilePath) && !string.IsNullOrEmpty(SelectedFilePath))
                 OnSelectedFilePathChanged();
         }
 
@@ -188,7 +189,9 @@ namespace WslToolbox.Gui.Collections.Dialogs
                 distroNameExists = ToolboxClass.DistributionByName($"{fileName}{distroNum}") != null;
             }
 
-            DistributionName = Path.GetFileNameWithoutExtension($"{fileName}{distroNum}");
+            DistributionName = distroNum > 0
+                ? Path.GetFileNameWithoutExtension($"{fileName}{distroNum}")
+                : Path.GetFileNameWithoutExtension($"{fileName}");
         }
     }
 }

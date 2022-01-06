@@ -13,7 +13,7 @@
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
         SizeToContent="Width"
-        Icon="/Resources/Images/AppIcon.png"
+        Icon="/Resources/Images/WslToolbox.png"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Margin="10,0,10,10">
         <Grid>
