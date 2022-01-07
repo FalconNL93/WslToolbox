@@ -14,7 +14,7 @@
 ;-------------------------------------------------------------------------------
 ; Attributes
 Name "${PRODUCT_NAME}"
-OutFile "wsltoolbox-v${PRODUCT_VERSION}.exe"
+OutFile "${EXECUTABLE_NAME}.exe"
 InstallDir "$APPDATA\${PRODUCT_NAME}"
 InstallDirRegKey HKCU "Software\FalconNL93\${PRODUCT_NAME}" ""
 RequestExecutionLevel user
