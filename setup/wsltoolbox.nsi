@@ -62,7 +62,7 @@ LangString component_desktop_shortcut ${LANG_ENGLISH} "Create a shortcut on the 
 ; Installer Sections
 Section "WSL Toolbox" WslToolbox
     SetOutPath $INSTDIR
-    File /r "..\WslToolbox.Gui\bin\Debug\net5.0-windows10.0.19041.0"
+    File /r "..\WslToolbox.Gui\bin\Release\net5.0-windows10.0.19041.0"
     WriteUninstaller "$INSTDIR\uninstall.exe"
 SectionEnd
 
