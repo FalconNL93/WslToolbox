@@ -22,8 +22,3 @@ C:\Program' Files (x86)'\NSIS\makensis.exe `
     /DDISPLAY_VERSION="${env:APPVEYOR_BUILD_VERSION}" `
     /DUUID="${env:PRODUCT_UUID}" `
     ${PSScriptRoot}\${NsisFile}
-
-Remove-Item Env:\APPVEYOR_BUILD_VERSION
-Remove-Item Env:\APPVEYOR_REPO_BRANCH
-Remove-Item Env:\PRODUCT_ENVIRONMENT
-Remove-Item Env:\PRODUCT_UUID
