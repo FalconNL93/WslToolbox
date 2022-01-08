@@ -8,8 +8,7 @@ WSL Toolbox is currently in development. Some features may not work as expected.
 
 ## Install
 
-Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox/releases), extract and
-run `WslToolbox.Gui.exe`.
+Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox/releases). Either choose the ZIP-file or the setup file.
 
 ## Features
 
