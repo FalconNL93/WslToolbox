@@ -8,6 +8,7 @@
 
 ;-------------------------------------------------------------------------------
 ; Constants
+!define ROOTDIR "${ROOT_FOLDER}"
 !define COPYRIGHT "Copyright © 2021 FalconNL93"
 !define SETUP_VERSION ${PRODUCT_VERSION}
 !define EXECUTABLE "WslToolbox.Gui.exe"
@@ -64,7 +65,7 @@ VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 ;-------------------------------------------------------------------------------
 ; Localization
 !insertmacro MUI_LANGUAGE "English"
-!include "lang.nsh"
+!include "${ROOTDIR}\lang.nsh"
 
 ;-------------------------------------------------------------------------------
 ; Installer Sections

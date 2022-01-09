@@ -28,6 +28,7 @@ if (!(test-Path $MakeNsis)) {
 }
 
 & ${MakeNsis} `
+    /DROOT_FOLDER="${PSScriptRoot}" `
     /DPRODUCT_NAME="${ProductName}" `
     /DDIALOG_CAPTION="${DialogCaption}" `
     /DEXECUTABLE_NAME="${ExecutableName}" `
