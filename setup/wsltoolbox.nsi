@@ -16,13 +16,15 @@
 ;-------------------------------------------------------------------------------
 ; Attributes
 Name "${PRODUCT_NAME}"
+Caption "${DIALOG_CAPTION}"
 OutFile "${EXECUTABLE_NAME}.exe"
 InstallDir "$APPDATA\${PRODUCT_NAME}"
 RequestExecutionLevel user
+BrandingText "${BRANDING}"
 
 ;-------------------------------------------------------------------------------
 ; Version Info
-VIProductVersion "${PRODUCT_VERSION}"
+VIProductVersion "${PRODUCT_VERSION}.0"
 VIAddVersionKey "ProductName" "${PRODUCT_NAME}"
 VIAddVersionKey "ProductVersion" "${PRODUCT_VERSION}"
 VIAddVersionKey "FileDescription" "${PRODUCT_DESCRIPTION}"
@@ -35,15 +37,14 @@ VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\nsis3-grey.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\nsis3-grey.bmp"
+
+;-------------------------------------------------------------------------------
+; Finish page
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_NOTCHECKED
 !define MUI_FINISHPAGE_RUN_TEXT "Launch ${PRODUCT_NAME}"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchApp"
-!define MUI_FINISHPAGE_SHOWREADME
-!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create desktop shortcut"
-!define MUI_FINISHPAGE_SHOWREADME_FUNCTION "CreateAppShortcut"
 
 ;-------------------------------------------------------------------------------
 ; Installer Pages
@@ -61,14 +62,14 @@ VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 !insertmacro MUI_UNPAGE_FINISH
 
 ;-------------------------------------------------------------------------------
-; Languages
+; Localization
 !insertmacro MUI_LANGUAGE "English"
-LangString component_default ${LANG_ENGLISH} "Required files for WSL Toolbox"
-LangString component_default_start ${LANG_ENGLISH} "Create a start menu shortcut"
+!include "lang.nsh"
 
 ;-------------------------------------------------------------------------------
 ; Installer Sections
-Section "WSL Toolbox" WslToolbox
+Section "!${PRODUCT_NAME}" DefaultSection
+    ; Attributes
     SectionIn RO
     SetOutPath $INSTDIR
     File /r "..\WslToolbox.Gui\bin\${PRODUCT_ENVIRONMENT}\${TARGET_DIRECTORY}\"
@@ -76,7 +77,7 @@ Section "WSL Toolbox" WslToolbox
     ; Registry
     WriteRegStr HKCU "${APR}" "DisplayName" "${PRODUCT_NAME}"
     WriteRegStr HKCU "${APR}" "DisplayIcon" "$\"$INSTDIR\${EXECUTABLE}$\""
-    WriteRegStr HKCU "${APR}" "DisplayVersion" "${DISPLAY_VERSION}"
+    WriteRegStr HKCU "${APR}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr HKCU "${APR}" "Publisher" "FalconNL93"
     WriteRegStr HKCU "${APR}" "NoRepair" "1"
     WriteRegStr HKCU "${APR}" "NoModify" "1"
@@ -84,41 +85,43 @@ Section "WSL Toolbox" WslToolbox
     WriteRegStr HKCU "${APR}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
     WriteRegStr HKCU "${APR}" "URLInfoAbout" "https://github.com/FalconNL93/WslToolbox"
 
+    ; Write uninstaller
+    WriteUninstaller "$INSTDIR\uninstall.exe"
+
     ; Calculate size
     ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD HKCU "${APR}" "EstimatedSize" "$0"
+SectionEnd
 
-    WriteUninstaller "$INSTDIR\uninstall.exe"
+;-------------------------------------------------------------------------------
+; Desktop shortcut Section
+Section /o "Desktop shortcut" DesktopShortcut
+    CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
+SectionEnd
+
+;-------------------------------------------------------------------------------
+; Start menu Section
+Section /o "Start menu shortcut" StartShortcut
+    CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
 SectionEnd
 
 ;-------------------------------------------------------------------------------
 ; Uninstaller Section
 Section "Uninstall"  
-    ; Shortcuts
+    ; Remove shortcuts
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
     Delete "$SMPROGRAMS\${PRODUCT_NAME}.lnk"
 
-    ; Installation directory
+    ; Remove installation directory
     RmDir /r "$INSTDIR"
 
-    ; Uninstaller
+    ; Remove uninstaller
     Delete $INSTDIR\uninstall.exe
 
     ; Registry
     DeleteRegKey HKCU "${APR}"
 SectionEnd
-
-Section /o "Create start menu Shortcut" StartShortcuts
-    CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
-SectionEnd
-
-;-------------------------------------------------------------------------------
-; Section localization
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${WslToolbox} $(component_default)
-!insertmacro MUI_DESCRIPTION_TEXT ${StartShortcuts} $(component_default_start)
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-------------------------------------------------------------------------------
 ; Custom functions
@@ -126,7 +129,16 @@ Function LaunchApp
     ExecShell "" "$INSTDIR\${EXECUTABLE}"
 FunctionEnd
 
-Function CreateAppShortcut
-    CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
+Function .onInit
+    ${IfNot} ${AtleastWin10}
+        MessageBox MB_ICONEXCLAMATION "$(StrWarningOperatingSystem)" /SD IDOK
+    ${EndIf}
 FunctionEnd
 
+;-------------------------------------------------------------------------------
+; Section localization
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+!insertmacro MUI_DESCRIPTION_TEXT ${DefaultSection} $(StrDefaultSection)
+!insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(StrDesktopShortcut)
+!insertmacro MUI_DESCRIPTION_TEXT ${StartShortcut} $(StrStartShortcut)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
