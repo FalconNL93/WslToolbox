@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Windows.Controls;
 using System.Windows.Data;
-using ModernWpf.Controls;
 using WslToolbox.Gui.Configurations;
 using WslToolbox.Gui.Configurations.Sections;
 using WslToolbox.Gui.Helpers.Ui;
@@ -11,7 +10,7 @@ namespace WslToolbox.Gui.Collections.Settings
     public class SettingsItem
     {
         public string Content { get; set; }
-        public System.Windows.Controls.Control Control { get; set; }
+        public Control Control { get; set; }
     }
 
     public class GeneralSettingsGenericCollection : GenericCollection

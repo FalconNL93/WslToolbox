@@ -15,6 +15,7 @@ if (!${env:PRODUCT_UUID}) {
 }
 
 $ProductName = "WSL Toolbox"
+$ProductDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
 $DialogCaption = "${ProductName} ${env:APPVEYOR_BUILD_VERSION}"
 $ExecutableName = "wsltoolbox-${env:APPVEYOR_REPO_BRANCH}-v${env:APPVEYOR_BUILD_VERSION}-setup"
 $ProductEnvironment = "${env:PRODUCT_ENVIRONMENT}"
@@ -30,6 +31,7 @@ if (!(test-Path $MakeNsis)) {
 & ${MakeNsis} `
     /DROOT_FOLDER="${PSScriptRoot}" `
     /DPRODUCT_NAME="${ProductName}" `
+    /DPRODUCT_DESCRIPTION="${ProductDescription}" `
     /DDIALOG_CAPTION="${DialogCaption}" `
     /DEXECUTABLE_NAME="${ExecutableName}" `
     /DPRODUCT_ENVIRONMENT="${ProductEnvironment}" `

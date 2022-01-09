@@ -215,7 +215,7 @@ namespace WslToolbox.Gui.ViewModels
                 Log().Error(e.UpdateError, "Could not update application");
                 await DialogHelper.MessageBox(
                         "Error",
-                        $"An error occurred while checking for updates.", 
+                        "An error occurred while checking for updates.",
                         expandContent: e.UpdateError.Message)
                     .ShowAsync();
                 return;
