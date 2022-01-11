@@ -8,17 +8,17 @@
 
 ;-------------------------------------------------------------------------------
 ; Constants
-!define ROOTDIR "${ROOT_FOLDER}"
 !define COPYRIGHT "Copyright © 2021 FalconNL93"
 !define SETUP_VERSION ${PRODUCT_VERSION}
 !define EXECUTABLE "WslToolbox.Gui.exe"
 !define APR "Software\Microsoft\Windows\CurrentVersion\Uninstall\{${Uuid}}"
+!define ROOTDIR ".\"
 
 ;-------------------------------------------------------------------------------
 ; Attributes
 Name "${PRODUCT_NAME}"
 Caption "${DIALOG_CAPTION}"
-OutFile "${EXECUTABLE_NAME}.exe"
+OutFile "bin\${EXECUTABLE_NAME}.exe"
 InstallDir "$APPDATA\${PRODUCT_NAME}"
 RequestExecutionLevel user
 BrandingText "${BRANDING}"
@@ -33,7 +33,7 @@ VIAddVersionKey "LegalCopyright" "${COPYRIGHT}"
 VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 
 ;-------------------------------------------------------------------------------
-; Modern UI Appearance
+; Interface
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\nsis3-install.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\nsis3-grey.bmp"
@@ -64,26 +64,18 @@ VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 ;-------------------------------------------------------------------------------
 ; Localization
 !insertmacro MUI_LANGUAGE "English"
-!include "${ROOTDIR}\lang.nsh"
+!include "${ROOTDIR}\Lang\English.nsh"
 
 ;-------------------------------------------------------------------------------
-; Installer Sections
+; Default install section
 Section "!${PRODUCT_NAME}" DefaultSection
     ; Attributes
     SectionIn RO
     SetOutPath $INSTDIR
     File /r "..\WslToolbox.Gui\bin\${PRODUCT_ENVIRONMENT}\${TARGET_DIRECTORY}\"
 
-    ; Registry
-    WriteRegStr HKCU "${APR}" "DisplayName" "${PRODUCT_NAME}"
-    WriteRegStr HKCU "${APR}" "DisplayIcon" "$\"$INSTDIR\${EXECUTABLE}$\""
-    WriteRegStr HKCU "${APR}" "DisplayVersion" "${PRODUCT_VERSION}"
-    WriteRegStr HKCU "${APR}" "Publisher" "FalconNL93"
-    WriteRegStr HKCU "${APR}" "NoRepair" "1"
-    WriteRegStr HKCU "${APR}" "NoModify" "1"
-    WriteRegStr HKCU "${APR}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-    WriteRegStr HKCU "${APR}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-    WriteRegStr HKCU "${APR}" "URLInfoAbout" "https://github.com/FalconNL93/WslToolbox"
+    ; Register app to Windows
+    Call RegisterWindowsApp
 
     ; Write uninstaller
     WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -95,19 +87,21 @@ Section "!${PRODUCT_NAME}" DefaultSection
 SectionEnd
 
 ;-------------------------------------------------------------------------------
-; Desktop shortcut Section
+; Shortcut sections
 Section /o "Desktop shortcut" DesktopShortcut
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
 SectionEnd
 
-;-------------------------------------------------------------------------------
-; Start menu Section
 Section /o "Start menu shortcut" StartShortcut
     CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXECUTABLE}"
 SectionEnd
 
 ;-------------------------------------------------------------------------------
-; Uninstaller Section
+; .NET 5 Section
+!include "${ROOTDIR}\components\DotNet5.nsh"
+
+;-------------------------------------------------------------------------------
+; Default uninstall section
 Section "Uninstall"  
     ; Remove shortcuts
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
@@ -116,11 +110,11 @@ Section "Uninstall"
     ; Remove installation directory
     RmDir /r "$INSTDIR"
 
+    ; Unregister app from Windows
+    Call un.RegisterWindowsApp
+
     ; Remove uninstaller
     Delete $INSTDIR\uninstall.exe
-
-    ; Registry
-    DeleteRegKey HKCU "${APR}"
 SectionEnd
 
 ;-------------------------------------------------------------------------------
@@ -136,9 +130,28 @@ Function .onInit
 FunctionEnd
 
 ;-------------------------------------------------------------------------------
+; Windows Program handler
+Function RegisterWindowsApp
+    WriteRegStr HKCU "${APR}" "DisplayName" "${PRODUCT_NAME}"
+    WriteRegStr HKCU "${APR}" "DisplayIcon" "$\"$INSTDIR\${EXECUTABLE}$\""
+    WriteRegStr HKCU "${APR}" "DisplayVersion" "${PRODUCT_VERSION}"
+    WriteRegStr HKCU "${APR}" "Publisher" "FalconNL93"
+    WriteRegStr HKCU "${APR}" "NoRepair" "1"
+    WriteRegStr HKCU "${APR}" "NoModify" "1"
+    WriteRegStr HKCU "${APR}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+    WriteRegStr HKCU "${APR}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
+    WriteRegStr HKCU "${APR}" "URLInfoAbout" "https://github.com/FalconNL93/WslToolbox"
+FunctionEnd
+
+Function un.RegisterWindowsApp
+    DeleteRegKey HKCU "${APR}"
+FunctionEnd
+
+;-------------------------------------------------------------------------------
 ; Section localization
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${DefaultSection} $(StrDefaultSection)
 !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(StrDesktopShortcut)
 !insertmacro MUI_DESCRIPTION_TEXT ${StartShortcut} $(StrStartShortcut)
+!insertmacro MUI_DESCRIPTION_TEXT ${DotNetFive} $(StrDotNetFive)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

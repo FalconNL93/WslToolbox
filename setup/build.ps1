@@ -1,10 +1,13 @@
 Param(
     [Parameter(Mandatory=$false)]
-    [Switch]$Run
+    [Switch]$Run,
+
+    [Parameter(Mandatory=$false)]
+    [Switch]$Silent
 )
 
-$MakeNsis = "C:\Program Files (x86)\NSIS\makensis.exe"
-$NsisFile = "wsltoolbox.nsi"
+$MakeNsis = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
+$NsisFile = "WslToolbox.Setup"
 
 if (!${env:APPVEYOR_BUILD_VERSION}) { $env:APPVEYOR_BUILD_VERSION = "1.0.0" }
 if (!${env:APPVEYOR_REPO_BRANCH}) { $env:APPVEYOR_REPO_BRANCH = "develop" }
@@ -17,6 +20,7 @@ if (!${env:PRODUCT_UUID}) {
 $ProductName = "WSL Toolbox"
 $ProductDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
 $DialogCaption = "${ProductName} ${env:APPVEYOR_BUILD_VERSION}"
+$OutputDirectory = "${PSScriptRoot}\bin"
 $ExecutableName = "wsltoolbox-${env:APPVEYOR_REPO_BRANCH}-v${env:APPVEYOR_BUILD_VERSION}-setup"
 $ProductEnvironment = "${env:PRODUCT_ENVIRONMENT}"
 $ProductVersion = "${env:APPVEYOR_BUILD_VERSION}"
@@ -26,6 +30,10 @@ $Branding = "${ProductName} ${ProductVersion}"
 if (!(test-Path $MakeNsis)) {
     Write-Output "${MakeNsis} not found."
     exit 1
+}
+
+if (!(test-Path $OutputDirectory)) {
+    New-Item "$OutputDirectory" -itemType Directory
 }
 
 & ${MakeNsis} `
@@ -49,12 +57,17 @@ if(!($?))
 
 if($Run) {
     $SetupFile = "${PSScriptRoot}\${ExecutableName}.exe"
+    $Parameters;
 
     if (!(test-Path $SetupFile)) {
         Write-Output "${SetupFile} not found."
         exit 1
     }
 
-    Write-Output "Launching ${SetupFile}"
-    & ${SetupFile}
+    if($Silent) {
+        $Parameters = $Parameters + "/S"
+    }
+
+    Write-Output "Launching ${SetupFile} ${Parameters}"
+    & ${SetupFile} ${Parameters}
 }

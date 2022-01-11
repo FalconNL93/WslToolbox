@@ -64,14 +64,23 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportCreateFolder),
-                    "Create folder in base path", "Configuration.ImportCreateFolder", Source, header: null,
+                ElementHelper.ToggleSwitch(
+                    content: "Create folder in base path",
+                    bind: nameof(_generalConfiguration.ImportCreateFolder),
+                    source: _generalConfiguration,
                     tooltipContent: "Creates a folder in the selected base path"),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportStartDistribution),
-                    "Start distribution after import", "Configuration.ImportStartDistribution", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.ImportStartTerminal),
-                    "Launch terminal after import", "Configuration.ImportStartTerminal", Source, header: null,
-                    requires: "Configuration.ImportStartDistribution", tabIndex: 1)
+
+                ElementHelper.ToggleSwitch(
+                    content: "Start distribution after import",
+                    bind: nameof(_generalConfiguration.ImportStartDistribution),
+                    source: _generalConfiguration),
+
+                ElementHelper.ToggleSwitch(
+                    content: "Launch terminal after import",
+                    bind: nameof(_generalConfiguration.ImportStartTerminal),
+                    source: _generalConfiguration,
+                    requires: nameof(_generalConfiguration.ImportStartDistribution),
+                    tabIndex: 1)
             };
         }
 
@@ -79,10 +88,17 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.HideMoveWarning),
-                    "Hide move warning", "Configuration.HideMoveWarning", Source, header: null),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.CopyOnMove),
-                    "Copy on move", "Configuration.CopyOnMove", Source, header: null, enabled: false,
+                ElementHelper.ToggleSwitch(
+                    content: "Hide move warning",
+                    bind: nameof(_generalConfiguration.HideMoveWarning),
+                    source: _generalConfiguration),
+
+
+                ElementHelper.ToggleSwitch(
+                    content: "Copy on move",
+                    bind: nameof(_generalConfiguration.CopyOnMove),
+                    source: _generalConfiguration,
+                    enabled: false,
                     tooltipContent:
                     "Copies the contents of the distribution and deletes the source after completion. More safe than regular move action.")
             };
@@ -95,7 +111,7 @@ namespace WslToolbox.Gui.Collections.Settings
                 ElementHelper.ComboBox(
                     nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
                     ThemeConfiguration.GetValues(),
-                    "Configuration.AppearanceConfiguration.SelectedStyle",
+                    nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
                     Source)
             };
         }
@@ -104,12 +120,20 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeOnClose),
-                    "Minimize when pressing close button", "Configuration.MinimizeOnClose", Source),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.EnableSystemTray),
-                    "Enable system tray", "Configuration.EnableSystemTray", Source),
-                ElementHelper.ItemsControlGroup(EnableSystemTraySettings(), source: Source,
-                    requires: "Configuration.EnableSystemTray", tabIndex: 1)
+                ElementHelper.ToggleSwitch(
+                    content: "Minimize when pressing close button",
+                    bind: nameof(_generalConfiguration.MinimizeOnClose),
+                    source: _generalConfiguration),
+
+                ElementHelper.ToggleSwitch(
+                    content: "Enable system tray",
+                    bind: nameof(_generalConfiguration.EnableSystemTray),
+                    source: _generalConfiguration),
+
+                ElementHelper.ItemsControlGroup(EnableSystemTraySettings(),
+                    source: _generalConfiguration,
+                    requires: nameof(_generalConfiguration.EnableSystemTray),
+                    tabIndex: 1)
             };
         }
 
@@ -117,10 +141,15 @@ namespace WslToolbox.Gui.Collections.Settings
         {
             return new CompositeCollection
             {
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeToTray),
-                    "Minimize to tray", "Configuration.MinimizeToTray", Source),
-                ElementHelper.ToggleSwitch(nameof(DefaultConfiguration.GeneralConfiguration.MinimizeOnStartup),
-                    "Minimize on startup", "Configuration.MinimizeOnStartup", Source)
+                ElementHelper.ToggleSwitch(
+                    content: "Minimize to tray",
+                    bind: nameof(_generalConfiguration.MinimizeToTray),
+                    source: _generalConfiguration),
+
+                ElementHelper.ToggleSwitch(
+                    content: "Minimize on startup",
+                    bind: nameof(_generalConfiguration.MinimizeOnStartup),
+                    source: _generalConfiguration)
             };
         }
     }

@@ -365,13 +365,6 @@ FodyWeavers.xsd
 # idea
 .idea/
 
-# NSIS
-setup/*
-!setup/*.nsi
-!setup/build.ps1
-!setup/*.nsh
-!setup/*.nsi
-
 # VSCode
 .vscode/
 *.code-workspace
