@@ -3,7 +3,7 @@
 #define DefaultExecutable "WslToolbox.Gui.exe"
 
 [Setup]
-AppId={{{#ProductUuid}}
+AppId={#ProductUuid}
 AppName={#ProductName}
 AppVersion={#ProductVersion}
 AppVerName={#ProductName} {#ProductVersion}
@@ -30,11 +30,6 @@ OutputBaseFilename={#OutputFile}
 DisableWelcomePage=no
 DisableProgramGroupPage=yes
 
-; Style
-WizardStyle=classic
-WizardImageFile=compiler:WizClassicImage.bmp
-WizardSmallImageFile=compiler:WizClassicSmallImage.bmp
-
 ; Settings
 DefaultDirName={userappdata}\{#ProductName}
 SetupIconFile=compiler:SetupClassicIcon.ico
@@ -46,7 +41,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "startmenuicon"; Description: "{cm:CreateStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "startmenuicon"; Description: "{cm:CreateStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 Source: "..\WslToolbox.Gui\bin\{#ProductEnvironment}\{#TargetFramework}\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
@@ -66,3 +61,23 @@ BeveledLabel = {#ProductVersion}
 [CustomMessages]
 CreateDesktopIcon=Create a &desktop icon
 CreateStartMenuIcon=Create a start menu icon
+
+[Code]
+const
+  UninstallKey = 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{#SetupSetting("AppId")}_is1';
+
+function IsUpgrade: Boolean;
+var
+    Value: string;
+begin
+    Result := (RegQueryStringValue(HKLM, UninstallKey, 'UninstallString', Value) or
+        RegQueryStringValue(HKCU, UninstallKey, 'UninstallString', Value)) and (Value <> '');
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+    if IsUpgrade then
+        if PageID = wpSelectTasks then
+            Result := true;
+            
+end;
