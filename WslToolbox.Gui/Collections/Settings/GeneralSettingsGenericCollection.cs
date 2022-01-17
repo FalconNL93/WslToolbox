@@ -109,10 +109,10 @@ namespace WslToolbox.Gui.Collections.Settings
             return new CompositeCollection
             {
                 ElementHelper.ComboBox(
-                    nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
+                    nameof(_generalConfiguration.SelectedStyle),
                     ThemeConfiguration.GetValues(),
-                    nameof(DefaultConfiguration.AppearanceConfiguration.SelectedStyle),
-                    Source)
+                    nameof(_generalConfiguration.SelectedStyle),
+                    _generalConfiguration)
             };
         }
 

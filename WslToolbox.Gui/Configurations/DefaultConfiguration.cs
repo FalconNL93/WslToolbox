@@ -24,7 +24,6 @@ namespace WslToolbox.Gui.Configurations
         public GeneralConfiguration GeneralConfiguration { get; set; } = new();
         public LogEventLevel MinimumLogLevel { get; set; } = LogConfiguration.MinimumLevel;
         public GridConfiguration GridConfiguration { get; set; } = new();
-        public AppearanceConfiguration AppearanceConfiguration { get; set; } = new();
         public NotificationConfiguration NotificationConfiguration { get; set; } = new();
         public KeyboardShortcutConfiguration KeyboardShortcutConfiguration { get; set; } = new();
     }

@@ -106,7 +106,7 @@ namespace WslToolbox.Gui.Views
 
         private void HandleTheme()
         {
-            var selectedStyle = _viewModel.Config.Configuration.AppearanceConfiguration.SelectedStyle;
+            var selectedStyle = _viewModel.Config.Configuration.GeneralConfiguration.SelectedStyle;
 
             ThemeManager.Current.ApplicationTheme = selectedStyle switch
             {

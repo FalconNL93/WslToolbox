@@ -26,6 +26,7 @@ namespace WslToolbox.Gui.Configurations.Sections
         public bool MinimizeOnClose { get; set; }
         public bool HideDockerDistributions { get; set; } = true;
 
+        public ThemeConfiguration.Styles SelectedStyle { get; set; } = ThemeConfiguration.Styles.Auto;
         public bool ImportCreateFolder { get; set; } = true;
 
         public bool ImportStartDistribution
