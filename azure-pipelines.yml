@@ -7,10 +7,10 @@ trigger:
 - develop
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2022'
 
 variables:
-  solution: '**/*.sln'
+  solution: 'WslToolbox.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
