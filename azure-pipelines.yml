@@ -10,12 +10,18 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  solution: 'WslToolbox.sln'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
 - task: NuGetToolInstaller@1
+
+- task: PowerShell@2
+  displayName: 'Inno Setup'
+  inputs:
+    targetType: 'inline'
+    script: 'choco install innosetup'
 
 - task: NuGetCommand@2
   inputs:
@@ -31,3 +37,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
+- task: PowerShell@2
+  displayName: 'Build Setup'
+  inputs:
+    targetType: 'inline'
+    script: 'WslToolbox.Setup\\build.ps1'
