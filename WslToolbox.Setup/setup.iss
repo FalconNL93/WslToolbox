@@ -44,7 +44,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startmenuicon"; Description: "{cm:CreateStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "..\WslToolbox.Gui\bin\{#ProductEnvironment}\{#TargetFramework}\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "{#BinariesDirectory}\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{autodesktop}\{#ProductName}"; Filename: "{app}\{#DefaultExecutable}"; Tasks: desktopicon

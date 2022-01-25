@@ -1,4 +1,7 @@
 Param(
+    [Parameter(Mandatory = $true)]
+    [String]$BinariesDirectory,
+
     [Parameter(Mandatory = $false)]
     [Switch]$Run,
 
@@ -10,17 +13,22 @@ Param(
 )
 
 $Compiler = ${env:INNO_COMPILER_PATH} ? ${env:INNO_COMPILER_PATH} : "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe"
-$InnoFile = "${PSScriptRoot}\wsltoolbox-inno.iss"
-
-$ProductName = "WSL Toolbox"
-$ProductDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
+$InnoFile = "${PSScriptRoot}\setup.iss"
 $OutputDirectory = "${PSScriptRoot}\bin"
-$ProductUuid = ${env:PRODUCT_UUID} ? ${env:PRODUCT_UUID} : "FalconNL93.WSLToolbox"
-$ProductVersion = ${env:APPVEYOR_BUILD_VERSION} ? ${env:APPVEYOR_BUILD_VERSION} : "0.5.7"
-$ProductBranch = $env:APPVEYOR_REPO_BRANCH ? $env:APPVEYOR_REPO_BRANCH : "develop"
-$ProductEnvironment = $env:PRODUCT_ENVIRONMENT ? $env:PRODUCT_ENVIRONMENT : "Debug"
-$ExecutableName = "wsltoolbox-${ProductBranch}-v${ProductVersion}-setup"
-$TargetFramework = $env:TARGET_FRAMEWORK ? $env:TARGET_FRAMEWORK : "net5.0-windows10.0.19041.0"
+
+$ProductName = ${env:ProductName}
+$ProductDescription = ${env:ProductDescription}
+$ProductUuid = ${env:ProductUuid}
+$ProductVersion = ${env:ProductVersion}
+$ProductEnvironment = ${env:ProductEnvironment}
+$OutputFile = ${env:OutputFile}
+$TargetFramework = ${env:ProductTargetFramework}
+
+if (!(test-Path ${BinariesDirectory}))
+{
+    Write-Output "${BinariesDirectory} does not exist."
+    exit 1
+}
 
 if (!(test-Path $Compiler))
 {
@@ -39,11 +47,12 @@ if (!(test-Path $OutputDirectory))
     New-Item "$OutputDirectory" -itemType Directory
 }
 
-"{0} {1} - {2}`r`n{3}`r`n{4}`r`n{5}" -f `
+"{0} {1} - {2}`r`n{3}`r`n{4}`r`n{5}`r`n{6}\*.*" -f `
     ${ProductName}, ${ProductVersion}, ${ProductEnvironment},   `
       ${ProductUuid},   `
-      "${OutputDirectory}\${ExecutableName}.exe",   `
-      $Compiler
+      "${OutputDirectory}\${OutputFile}.exe",   `
+      $Compiler,   `
+      $BinariesDirectory
 
 if ($Info)
 {
@@ -56,9 +65,10 @@ if ($Info)
     /DProductDescription="${ProductDescription}" `
     /DProductEnvironment="${ProductEnvironment}" `
     /DProductUuid="${ProductUuid}" `
-    /DOutputFile="${ExecutableName}" `
+    /DOutputFile="${OutputFile}" `
     /DOutputDirectory="${OutputDirectory}" `
     /DTargetFramework="${TargetFramework}" `
+    /DBinariesDirectory="${BinariesDirectory}" `
     ${InnoFile}
 
 if (!($?))
@@ -68,7 +78,7 @@ if (!($?))
 
 if ($Run)
 {
-    $SetupFile = "${OutputDirectory}\${ExecutableName}.exe"
+    $SetupFile = "${OutputDirectory}\${OutputFile}.exe"
     $Parameters;
 
     if (!(test-Path $SetupFile))

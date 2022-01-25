@@ -2,9 +2,9 @@
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
+name: '$(ProductMajorVersion).$(ProductMinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)'
 trigger:
-- develop
+  - develop
 
 pool:
   vmImage: 'windows-2022'
@@ -13,33 +13,148 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  binariesDirectory: "$(Build.BinariesDirectory)"
+  
+  # Product Information
+  ProductName: 'WSL Toolbox'
+  ProductMajorVersion: '0'
+  ProductMinorVersion: '5'
+  ProductTargetFramework: 'net5.0-windows10.0.19041.0'
+  ProductDescription: 'WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.'
+  ProductUuid: 'FalconNL93.WSLToolbox'
+  ProductVersion: $(Build.BuildNumber)
+  ProductEnvironment: $(buildConfiguration)
+  ProductUrl: $(Build.Repository.Uri)
+  OutputFile: 'wsltoolbox-$(Build.BuildNumber)'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+  - stage: Build
+    jobs:
+      - job: NuGet
+        steps:
+          - task: NuGetToolInstaller@1
+          - task: NuGetCommand@2
+            inputs:
+              restoreSolution: '$(solution)'
+          - task: VSBuild@1
+            inputs:
+              solution: '$(solution)'
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
+              msbuildArgs: '/p:OutputPath=$(binariesDirectory)'
 
-- task: PowerShell@2
-  displayName: 'Inno Setup'
-  inputs:
-    targetType: 'inline'
-    script: 'choco install innosetup'
+          - task: VSTest@2
+            inputs:
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathtoPublish: '$(binariesDirectory)'
+              artifactName: Binaries
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - stage: Package
+    dependsOn: Build
+    jobs:
+      - job: CreateInnoSetup
+        displayName: "Inno Setup"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download Build Artifacts'
+            inputs:
+              artifactName: Binaries
+              downloadPath: '$(binariesDirectory)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    
-- task: PowerShell@2
-  displayName: 'Build Setup'
-  inputs:
-    targetType: 'inline'
-    script: 'WslToolbox.Setup\\build.ps1'
+          - task: PowerShell@2
+            displayName: 'Install InnoSetup'
+            inputs:
+              targetType: 'inline'
+              script: 'choco install innosetup'
+
+          - task: PowerShell@2
+            displayName: 'Build Setup'
+            inputs:
+              pwsh: true
+              filePath: 'WslToolbox.Setup\\build.ps1'
+              arguments: '-BinariesDirectory "$(binariesDirectory)/Binaries"'
+            env:
+              ProductName: $(ProductName)
+              ProductDescription: $(ProductDescription)
+              ProductVersion: $(Build.BuildNumber)
+              ProductUuid: $(ProductUuid)
+              OutputFile: "$(OutputFile)-setup"
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathtoPublish: 'WslToolbox.Setup\\bin'
+              artifactName: Setup
+
+      - job: CreateZipArchive
+        displayName: "ZIP-archive"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download Build Artifacts'
+            inputs:
+              artifactName: Binaries
+              downloadPath: $(binariesDirectory)
+
+          - task: ArchiveFiles@2
+            displayName: 'ZIP-archive'
+            inputs:
+              rootFolderOrFile: '$(binariesDirectory)/Binaries'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(OutputFile).zip'
+              replaceExistingArchive: true
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: ZIP
+
+  - stage: Publish
+    dependsOn: Package
+    jobs:
+      - job: Publish
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download Release Artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'specific'
+              itemPattern: |
+                **/$(OutputFile).zip
+                **/$(OutputFile)-setup.exe
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: drop
+              publishLocation: 'Container'
+
+  - stage: Release
+    dependsOn: Publish
+    jobs:
+      - job: GitHub
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Download Setup Artifact'
+            inputs:
+              artifactName: drop
+              downloadPath: '$(Build.ArtifactStagingDirectory)'
+
+          - task: GitHubRelease@1
+            inputs:
+              gitHubConnection: 'PAT'
+              repositoryName: '$(Build.Repository.Name)'
+              action: 'create'
+              target: '$(Build.SourceVersion)'
+              tagSource: 'userSpecifiedTag'
+              tag: '$(Build.BuildNumber)'
+              title: '$(Build.BuildNumber)'
+              releaseNotesSource: 'inline'
+              isDraft: true
+              isPreRelease: true
+              changeLogCompareToRelease: 'lastNonDraftRelease'
+              changeLogType: 'commitBased'
+              assets: | 
+                $(Build.ArtifactStagingDirectory)/Setup/*
+                $(Build.ArtifactStagingDirectory)/ZIP/*
