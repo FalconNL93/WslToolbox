@@ -124,7 +124,7 @@ stages:
               downloadType: 'specific'
               itemPattern: |
                 **/$(OutputFile).zip
-                **/$(OutputFile).exe
+                **/$(OutputFile)-setup.exe
               downloadPath: '$(Build.ArtifactStagingDirectory)'
 
           - task: PublishBuildArtifacts@1
