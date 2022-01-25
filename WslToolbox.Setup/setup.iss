@@ -24,7 +24,7 @@ PrivilegesRequiredOverridesAllowed=commandline
 
 ; Compiler
 OutputDir="{#OutputDirectory}"
-OutputBaseFilename={#OutputFile}
+OutputBaseFilename="{#OutputFile}-setup"
 
 ; Pages
 DisableWelcomePage=no
