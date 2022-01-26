@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 name: '$(ProductMajorVersion).$(ProductMinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)'
 trigger:
-  - develop
+  - beta
 
 pool:
   vmImage: 'windows-2022'
