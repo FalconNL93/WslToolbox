@@ -4,6 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 name: '$(ProductMajorVersion).$(ProductMinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)'
 trigger:
+  - develop
   - beta
 
 pool:
@@ -135,6 +136,7 @@ stages:
 
   - stage: Release
     dependsOn: Publish
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/beta'))
     jobs:
       - job: GitHub
         steps:

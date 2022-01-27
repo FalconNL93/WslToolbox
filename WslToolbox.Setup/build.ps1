@@ -48,11 +48,11 @@ if (!(test-Path $OutputDirectory))
 }
 
 "{0} {1} - {2}`r`n{3}`r`n{4}`r`n{5}`r`n{6}\*.*" -f `
-    ${ProductName}, ${ProductVersion}, ${ProductEnvironment},    `
-       ${ProductUuid},    `
-       "${OutputDirectory}\${OutputFile}.exe",    `
-       $Compiler,    `
-       $BinariesDirectory
+    ${ProductName}, ${ProductVersion}, ${ProductEnvironment},     `
+        ${ProductUuid},     `
+        "${OutputDirectory}\${OutputFile}.exe",     `
+        $Compiler,     `
+        $BinariesDirectory
 
 if ($Info)
 {

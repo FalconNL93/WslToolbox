@@ -4,12 +4,16 @@ WSL Toolbox allows you to manage your WSL Distributions through an easy to use i
 
 WSL Toolbox is currently in development. Some features may not work as expected.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/hks2bqstbxs3asnt?svg=true)](https://ci.appveyor.com/project/FalconNL93/wsltoolbox)
-
 ## Install
 
 Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox/releases). Either choose the
 ZIP-file or the setup file.
+
+## Build
+
+| Branch   |                                                                                                      Build Status                                                                                                       |
+|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| Beta     | [![Build Status](https://dev.azure.com/FalconNL93/WSL%20Toolbox/_apis/build/status/FalconNL93.WslToolbox?branchName=beta)](https://dev.azure.com/FalconNL93/WSL%20Toolbox/_build/latest?definitionId=1&branchName=beta) |
 
 ## Features
 
