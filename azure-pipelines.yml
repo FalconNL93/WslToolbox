@@ -42,13 +42,13 @@ stages:
               solution: '$(solution)'
               vsVersion: '17.0'
               msbuildArgs: '/p:OutputPath=$(binariesDirectory)'
-              platform: 'win-x64'
+              platform: 'Any CPU'
               configuration: 'Release'
               msbuildArchitecture: 'x64'
 
           - task: VSTest@2
             inputs:
-              platform: 'win-x64'
+              platform: 'Any CPU'
               configuration: 'Release'
 
           - task: PublishBuildArtifacts@1
