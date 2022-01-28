@@ -14,7 +14,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  binariesDirectory: "$(Build.BinariesDirectory)"
+  binariesDirectory: "$(Build.BinariesDirectory)/publish"
   
   # Product Information
   ProductName: 'WSL Toolbox'
@@ -40,14 +40,17 @@ stages:
           - task: VSBuild@1
             inputs:
               solution: '$(solution)'
-              platform: '$(buildPlatform)'
-              configuration: '$(buildConfiguration)'
               msbuildArgs: '/p:OutputPath=$(binariesDirectory)'
+              platform: 'Any CPU'
+              configuration: 'Release'
+              msbuildArchitecture: 'x64'
+              logProjectEvents: false
+              enableDefaultLogger: false
 
           - task: VSTest@2
             inputs:
-              platform: '$(buildPlatform)'
-              configuration: '$(buildConfiguration)'
+              platform: 'Any CPU'
+              configuration: 'Release'
 
           - task: PublishBuildArtifacts@1
             inputs:
@@ -56,6 +59,7 @@ stages:
 
   - stage: Package
     dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/beta'))
     jobs:
       - job: CreateInnoSetup
         displayName: "Inno Setup"
@@ -115,6 +119,7 @@ stages:
 
   - stage: Publish
     dependsOn: Package
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/beta'))
     jobs:
       - job: Publish
         steps:
