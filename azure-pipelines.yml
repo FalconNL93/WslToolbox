@@ -83,7 +83,7 @@ stages:
               ProductDescription: $(ProductDescription)
               ProductVersion: $(Build.BuildNumber)
               ProductUuid: $(ProductUuid)
-              ProductOutputFile: $(OutputFile)
+              SetupOutputFile: $(OutputFile)
 
           - task: PublishBuildArtifacts@1
             inputs:

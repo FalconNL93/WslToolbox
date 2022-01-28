@@ -14,14 +14,14 @@ Param(
 
 $Compiler = ${env:INNO_COMPILER_PATH} ? ${env:INNO_COMPILER_PATH} : "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe"
 $InnoFile = "${PSScriptRoot}\setup.iss"
-$OutputDirectory = "${PSScriptRoot}\bin"
+$OutputDirectory = ${env:SetupOutputDirectory} ? ${env:SetupOutputDirectory} : "${PSScriptRoot}\bin"
 
 $ProductName = ${env:ProductName}
 $ProductDescription = ${env:ProductDescription}
 $ProductUuid = ${env:ProductUuid}
 $ProductVersion = ${env:ProductVersion}
 $ProductEnvironment = ${env:ProductEnvironment}
-$OutputFile = ${env:OutputFile}
+$OutputFile = ${env:SetupOutputFile}
 $TargetFramework = ${env:ProductTargetFramework}
 
 if (!(test-Path ${BinariesDirectory}))
