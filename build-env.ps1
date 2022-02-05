@@ -1,0 +1,8 @@
+$Env:ProductName = "WSL Toolbox"
+$Env:ProductAuthor = "FalconNL93"
+$Env:ProductId = "WSLToolbox"
+$Env:ProductVersion = "0.5.999.9"
+$Env:ProductDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
+$Env:ProductEnvironment = "Debug"
+$Env:ProductTargetFramework = "net5.0-windows10.0.19041.0"
+$Env:ProductPlatform = "Any CPU"

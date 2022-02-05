@@ -1,5 +1,4 @@
-﻿using AutoUpdaterDotNET;
-using WslToolbox.Gui.Handlers;
+﻿using WslToolbox.Gui.Handlers;
 
 namespace WslToolbox.Gui.Commands
 {
@@ -22,7 +21,7 @@ namespace WslToolbox.Gui.Commands
             if (!UpdateHandler.IsAvailable()) return;
 
             _updateHandler.CheckForUpdates(showPrompt);
-            AutoUpdater.CheckForUpdateEvent += _ => { IsExecutable = _ => true; };
+            IsExecutable = _ => true;
         }
     }
 }

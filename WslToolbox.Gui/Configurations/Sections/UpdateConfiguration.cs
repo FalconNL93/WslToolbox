@@ -1,15 +1,13 @@
-﻿using AutoUpdaterDotNET;
-
-namespace WslToolbox.Gui.Configurations.Sections
+﻿namespace WslToolbox.Gui.Configurations.Sections
 {
     public sealed class UpdateConfiguration
     {
         public readonly string Url = AppConfiguration.AppConfigurationUpdateXml;
-        public bool ShowSkipButton { get; } = AutoUpdater.ShowSkipButton;
-        public bool Mandatory { get; } = AutoUpdater.Mandatory;
-        public bool ShowRemindLaterButton { get; } = AutoUpdater.ShowRemindLaterButton;
-        public Mode UpdateMode { get; } = AutoUpdater.UpdateMode;
+        public bool ShowSkipButton { get; } = true;
+        public bool Mandatory { get; } = false;
+        public bool ShowRemindLaterButton { get; } = false;
+        public object UpdateMode { get; } = null;
         public string AppTitle { get; } = AppConfiguration.AppName;
-        public bool OpenDownloadPage { get; } = AutoUpdater.OpenDownloadPage;
+        public bool OpenDownloadPage { get; } = false;
     }
 }

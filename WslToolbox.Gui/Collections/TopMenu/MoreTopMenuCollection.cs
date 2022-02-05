@@ -34,6 +34,11 @@ namespace WslToolbox.Gui.Collections.TopMenu
                     Header = "Open application log",
                     Command = viewModel.OpenLogFile
                 },
+                new MenuItem
+                {
+                    Header = "Open application directory",
+                    Command = viewModel.OpenAppFolder
+                },
                 new Separator(),
                 new MenuItem
                 {

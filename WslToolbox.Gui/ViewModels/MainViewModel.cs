@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using CommandLine;
+using Microsoft.EntityFrameworkCore;
 using Serilog.Core;
 using Serilog.Events;
 using WslToolbox.Core;
@@ -150,6 +152,7 @@ namespace WslToolbox.Gui.ViewModels
         public ICommand ShowAboutDialog => new ShowAboutDialogCommand(this);
         public ICommand TestDialog => new ShowTestDialogCommand();
         public ICommand OpenLogFile => new OpenLogFileCommand();
+        public ICommand OpenAppFolder => new OpenAppFolderCommand();
         public ICommand CopyToClipboard => new CopyToClipboardCommand();
         public ICommand OpenDistributionShell => new OpenShellDistributionCommand(SelectedDistribution);
         public ICommand RenameDistribution => new RenameDistributionCommand(SelectedDistribution);
@@ -173,7 +176,6 @@ namespace WslToolbox.Gui.ViewModels
         {
             Config.ConfigurationUpdatedSuccessfully += OnSaveSuccessfully;
             ToolboxClass.RefreshRequired += OnRefreshRequired;
-            UpdateHandler.UpdateStatusReceived += OnUpdateStatusReceived;
             ContentDialogHandler.UpdateContentDialogEvent += OnUpdateContentDialogEvent;
             ContentDialogHandler.HideContentDialogEvent += OnHideContentDialogEvent;
             ShortcutHandler();
@@ -304,6 +306,17 @@ namespace WslToolbox.Gui.ViewModels
 
             if (Config.Configuration.GeneralConfiguration.ShowDistributionsInSystemTray)
                 SystemTrayMenuItems();
+
+            await using var db = new WslToolboxDbContext();
+
+            foreach (var distribution in DistributionList)
+            {
+                var current = await db.Distributions.CountAsync(d => d.DistributionGuid == distribution.Guid);
+
+                if (current > 0) continue;
+                await db.AddAsync(new Distribution {DistributionGuid = distribution.Guid});
+                await db.SaveChangesAsync();
+            }
         }
 
         private void OnSaveSuccessfully(object sender, EventArgs e)

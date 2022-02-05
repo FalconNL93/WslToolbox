@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.EntityFrameworkCore;
 using ModernWpf;
 using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui.Collections;
@@ -24,6 +25,7 @@ namespace WslToolbox.Gui.Views
 
         public MainView()
         {
+            InitializeQuickActions();
             InitializeViewModel();
             WslIsEnabledCheck();
             InitializeComponent();
@@ -66,6 +68,12 @@ namespace WslToolbox.Gui.Views
         private void InitializeTopMenu()
         {
             TopMenu.ItemsSource = ElementHelper.ItemsListGroup(TopMenuCollection.Items(_viewModel));
+        }
+        
+        private void InitializeQuickActions()
+        {
+            using var quickActionsDatabase = new WslToolboxDbContext();
+            quickActionsDatabase.Database.Migrate();
         }
 
         private void InitializeViewModel()
