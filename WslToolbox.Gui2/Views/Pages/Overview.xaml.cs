@@ -2,9 +2,9 @@
 
 namespace WslToolbox.Gui2.Views.Pages;
 
-public partial class Dashboard : Page
+public partial class Overview : Page
 {
-    public Dashboard()
+    public Overview()
     {
         InitializeComponent();
     }

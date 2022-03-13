@@ -1,0 +1,19 @@
+﻿<Window x:Class="WslToolbox.Gui2.Views.AppContainer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:wpfui="clr-namespace:WPFUI.Controls;assembly=WPFUI"
+        xmlns:wpfuiCommon="clr-namespace:WPFUI.Common;assembly=WPFUI"
+        xmlns:pages="clr-namespace:WslToolbox.Gui2.Views.Pages"
+        Style="{StaticResource UiWindow}"
+        mc:Ignorable="d"
+        Title="Container" Height="450" Width="800">
+    <Grid>
+        <wpfui:TitleBar
+            Title="WSL Toolbox"
+            Grid.Row="0" />
+        
+        
+    </Grid>
+</Window>
