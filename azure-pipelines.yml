@@ -37,15 +37,15 @@ stages:
           - task: NuGetCommand@2
             inputs:
               restoreSolution: '$(solution)'
-          - task: VSBuild@1
+          - task: MSBuild@1
             inputs:
               solution: '$(solution)'
-              msbuildArgs: '/p:OutputPath=$(binariesDirectory)'
-              platform: 'Any CPU'
-              configuration: 'Release'
               msbuildArchitecture: 'x64'
-              logProjectEvents: false
-              enableDefaultLogger: false
+              platform: 'Any CPU'
+              configuration: 'Debug'
+              msbuildArguments: '/p:OutputPath=$(binariesDirectory)'
+              clean: true
+              restoreNugetPackages: true
 
           - task: VSTest@2
             inputs:
