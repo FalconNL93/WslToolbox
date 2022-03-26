@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using WPFUI.Appearance;
 using WPFUI.Controls;
+using WPFUI.Controls.Interfaces;
 
 namespace WslToolbox.Gui2.Views;
 
@@ -45,11 +46,7 @@ public partial class SettingsContainer : Window
     {
         RootDialog.Show = false;
     }
-
-    private void RootNavigation_OnNavigated(object sender, RoutedEventArgs e)
-    {
-    }
-
+    
     private void TitleBar_OnMinimizeClicked(object sender, RoutedEventArgs e)
     {
     }
@@ -71,5 +68,10 @@ public partial class SettingsContainer : Window
 
     private void RootNavigation_OnNavigatedBackward(object sender, RoutedEventArgs e)
     {
+    }
+
+    private void RootNavigation_OnNavigated(INavigation navigation, INavigationItem current)
+    {
+        throw new System.NotImplementedException();
     }
 }
