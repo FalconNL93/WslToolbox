@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Gui", "WslToolbo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Core", "WslToolbox.Core\WslToolbox.Core.csproj", "{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.Gui2", "WslToolbox.Gui2\WslToolbox.Gui2.csproj", "{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
