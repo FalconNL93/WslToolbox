@@ -19,8 +19,7 @@ public class ApplicationHostService : IHostedService
     private readonly IServiceProvider _serviceProvider;
     private readonly ITaskBarService _taskBarService;
     private readonly IThemeService _themeService;
-
-    private INavigationWindow _navigationWindow;
+    private INavigationWindow? _navigationWindow;
 
     public ApplicationHostService(IServiceProvider serviceProvider,
         INavigationService navigationService,
@@ -28,7 +27,6 @@ public class ApplicationHostService : IHostedService
         IThemeService themeService,
         ITaskBarService taskBarService)
     {
-        // If you want, you can do something with these services at the beginning of loading the application.
         _serviceProvider = serviceProvider;
         _navigationService = navigationService;
         _pageService = pageService;

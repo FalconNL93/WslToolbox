@@ -22,19 +22,21 @@ public partial class App
         {
             c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
         })
-        .ConfigureServices((context, services) =>
+        .ConfigureServices((_, service) =>
         {
-            services.AddHostedService<ApplicationHostService>();
-            services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<ITaskBarService, TaskBarService>();
-            services.AddSingleton<ISnackbarService, SnackbarService>();
-            services.AddSingleton<IDialogService, DialogService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
-            services.AddScoped<INavigationWindow, Container>();
-            services.AddScoped<ContainerViewModel>();
-            services.AddScoped<Dashboard>();
-            services.AddScoped<DashboardViewModel>();
+            service.AddHostedService<ApplicationHostService>();
+
+            service.AddSingleton<IThemeService, ThemeService>();
+            service.AddSingleton<ITaskBarService, TaskBarService>();
+            service.AddSingleton<ISnackbarService, SnackbarService>();
+            service.AddSingleton<IDialogService, DialogService>();
+            service.AddSingleton<IPageService, PageService>();
+            service.AddSingleton<INavigationService, NavigationService>();
+
+            service.AddScoped<INavigationWindow, Container>();
+            service.AddScoped<ContainerViewModel>();
+            service.AddScoped<Dashboard>();
+            service.AddScoped<DashboardViewModel>();
         }).Build();
 
     public static T? GetService<T>()
@@ -43,17 +45,11 @@ public partial class App
         return Host.Services.GetService(typeof(T)) as T;
     }
 
-    /// <summary>
-    ///     Occurs when the application is loading.
-    /// </summary>
     private async void OnStartup(object sender, StartupEventArgs e)
     {
         await Host.StartAsync();
     }
 
-    /// <summary>
-    ///     Occurs when the application is closing.
-    /// </summary>
     private async void OnExit(object sender, ExitEventArgs e)
     {
         await Host.StopAsync();
@@ -61,9 +57,6 @@ public partial class App
         Host.Dispose();
     }
 
-    /// <summary>
-    ///     Occurs when an exception is thrown by an application but not handled.
-    /// </summary>
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
     }

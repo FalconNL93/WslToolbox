@@ -12,7 +12,9 @@ namespace WslToolbox.Core
         public int ExitCode { get; set; }
         public string Output { get; set; }
 
-        public static CommandClass ExecuteCommand(string command, int timeout = 2000, bool elevated = false,
+        public static CommandClass ExecuteCommand(string command,
+            int timeout = 2000,
+            bool elevated = false,
             string executable = "cmd.exe")
         {
             CommandClass wslProcess = new()
@@ -27,7 +29,10 @@ namespace WslToolbox.Core
 
             p.Start();
 
-            if (elevated) return wslProcess;
+            if (elevated)
+            {
+                return wslProcess;
+            }
 
             var reader = p.StandardOutput;
             var output = reader.ReadToEnd();
@@ -38,7 +43,8 @@ namespace WslToolbox.Core
             return wslProcess;
         }
 
-        private static ProcessStartInfo ProcessStartInfo(string arguments, bool elevated = false,
+        private static ProcessStartInfo ProcessStartInfo(string arguments,
+            bool elevated = false,
             string executable = "cmd.exe")
         {
             arguments = elevated
@@ -59,13 +65,22 @@ namespace WslToolbox.Core
 
         public static void StartShell(DistributionClass distribution)
         {
-            if (distribution is null) return;
+            if (distribution is null)
+            {
+                return;
+            }
 
             var shellCommand = $"/c wsl -d {distribution.Name}";
 
-            if (!distribution.IsInstalled) shellCommand = $"/c wsl --install -d {distribution.Name}";
+            if (!distribution.IsInstalled)
+            {
+                shellCommand = $"/c wsl --install -d {distribution.Name}";
+            }
 
-            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled) return;
+            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled)
+            {
+                return;
+            }
 
             Process p = new();
             p.StartInfo.FileName = "cmd.exe";
@@ -77,11 +92,22 @@ namespace WslToolbox.Core
         {
             Process p = new();
 
-            if (distribution is null) return p;
+            if (distribution is null)
+            {
+                return p;
+            }
+
             var shellCommand = $"/c wsl -d {distribution.Name}";
 
-            if (!distribution.IsInstalled) shellCommand = $"/c wsl --install -d {distribution.Name}";
-            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled) return p;
+            if (!distribution.IsInstalled)
+            {
+                shellCommand = $"/c wsl --install -d {distribution.Name}";
+            }
+
+            if (distribution.State != DistributionClass.StateRunning && distribution.IsInstalled)
+            {
+                return p;
+            }
 
             p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.Arguments = shellCommand;
