@@ -4,5 +4,4 @@ namespace WslToolbox.Gui2.ViewModels;
 
 public class ContainerViewModel : ObservableObject
 {
-    
 }

@@ -3,14 +3,14 @@ using WslToolbox.Gui2.ViewModels;
 
 namespace WslToolbox.Gui2.Views.Pages;
 
-public class Dashboard : INavigableView<DashboardViewModel>
+public partial class Dashboard : INavigableView<DashboardViewModel>
 {
-    public DashboardViewModel ViewModel { get; }
-
     public Dashboard(DashboardViewModel viewModel)
     {
         ViewModel = viewModel;
 
         InitializeComponent();
     }
+
+    public DashboardViewModel ViewModel { get; }
 }
