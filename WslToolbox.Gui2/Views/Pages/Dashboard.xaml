@@ -66,15 +66,28 @@
                                 Padding="30,6"
                                 VerticalAlignment="Center"
                                 Appearance="Secondary"
-                                Content="Stop" />
+                                Content="Stop" 
+                                Command="{Binding ViewModel.StopDistribution}"
+                                CommandParameter="hallo"
+                                />
                         </StackPanel>
                     </Grid>
                 </ui:CardExpander.Header>
-                <TextBlock
-                    MaxWidth="300"
-                    Text="Test"
-                    TextAlignment="Justify"
-                    TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button
+                        Margin="0,0,10,0"
+                        Padding="30,6"
+                        VerticalAlignment="Center"
+                        Appearance="Secondary"
+                        Content="Blabla" 
+                    />
+                    <ui:Button
+                        Margin="0,0,10,0"
+                        Padding="30,6"
+                        VerticalAlignment="Center"
+                        Appearance="Secondary"
+                        Content="Blabla" />
+                </StackPanel>
             </ui:CardExpander>
         </Grid>
     </Grid>

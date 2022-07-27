@@ -5,6 +5,8 @@ using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
 using WslToolbox.Gui2.Services;
@@ -18,10 +20,7 @@ public partial class App
 {
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()
-        .ConfigureAppConfiguration(c =>
-        {
-            c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
-        })
+        .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
         .ConfigureServices((_, service) =>
         {
             service.AddHostedService<ApplicationHostService>();
@@ -33,11 +32,15 @@ public partial class App
             service.AddSingleton<IPageService, PageService>();
             service.AddSingleton<INavigationService, NavigationService>();
 
+            service.AddSingleton<DistributionService>();
+
             service.AddScoped<INavigationWindow, Container>();
             service.AddScoped<ContainerViewModel>();
             service.AddScoped<Dashboard>();
             service.AddScoped<DashboardViewModel>();
-        }).Build();
+        })
+        .UseSerilog()
+        .Build();
 
     public static T? GetService<T>()
         where T : class
@@ -47,6 +50,13 @@ public partial class App
 
     private async void OnStartup(object sender, StartupEventArgs e)
     {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.File(System.AppDomain.CurrentDomain.FriendlyName)
+            .CreateLogger();
+
         await Host.StartAsync();
     }
 

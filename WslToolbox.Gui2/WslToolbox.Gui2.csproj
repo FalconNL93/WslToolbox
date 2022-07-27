@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.7"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
-        <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2"/>
-        <PackageReference Include="WPF-UI" Version="2.0.2"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Models"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.7" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+        <PackageReference Include="WPF-UI" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,7 +36,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj"/>
+        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
     </ItemGroup>
 
 </Project>
