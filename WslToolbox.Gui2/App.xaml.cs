@@ -9,6 +9,7 @@ using Serilog;
 using Serilog.Events;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
+using WslToolbox.Gui2.Configurations;
 using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
@@ -21,23 +22,25 @@ public partial class App
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
-        .ConfigureServices((_, service) =>
+        .ConfigureServices((_, services) =>
         {
-            service.AddHostedService<ApplicationHostService>();
+            services.AddHostedService<ApplicationHostService>();
 
-            service.AddSingleton<IThemeService, ThemeService>();
-            service.AddSingleton<ITaskBarService, TaskBarService>();
-            service.AddSingleton<ISnackbarService, SnackbarService>();
-            service.AddSingleton<IDialogService, DialogService>();
-            service.AddSingleton<IPageService, PageService>();
-            service.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IThemeService, ThemeService>();
+            services.AddSingleton<ITaskBarService, TaskBarService>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
+            services.AddSingleton<IDialogService, DialogService>();
+            services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<INavigationService, NavigationService>();
 
-            service.AddSingleton<DistributionService>();
+            services.AddSingleton<DistributionService>();
 
-            service.AddScoped<INavigationWindow, Container>();
-            service.AddScoped<ContainerViewModel>();
-            service.AddScoped<Dashboard>();
-            service.AddScoped<DashboardViewModel>();
+            services.AddScoped<INavigationWindow, Container>();
+            services.AddScoped<ContainerViewModel>();
+            services.AddScoped<Dashboard>();
+            services.AddScoped<DashboardViewModel>();
+            
+            services.AddAutoMapper(typeof(App));
         })
         .UseSerilog()
         .Build();

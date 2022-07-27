@@ -10,4 +10,11 @@ public class DistributionService
     {
         _logger = logger;
     }
+
+    public async void ListDistributions()
+    {
+        var distr = await Core.Commands.Service.ListServiceCommand.ListDistributions();
+        
+        
+    }
 }

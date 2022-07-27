@@ -48,11 +48,11 @@
                             <TextBlock
                                 FontSize="13"
                                 FontWeight="Medium"
-                                Text="Collapsable card with an additional controls" />
+                                Text="Ubuntu 22.04" />
                             <TextBlock
                                 FontSize="12"
                                 Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                Text="Useful if, for example, you want to add a button for copying the contents of the card." />
+                                Text="Distribution is running" />
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <ui:Button
