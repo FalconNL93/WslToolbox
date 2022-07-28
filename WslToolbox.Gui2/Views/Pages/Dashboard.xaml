@@ -22,73 +22,75 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Margin" Value="0,0,5,0" />
-                    </Style>
-                </StackPanel.Resources>
-                <Button Content="{x:Static p:localization.Add}" />
+                <Button Content="{x:Static p:localization.Add}" 
+                        Command="{Binding ViewModel.AddDistribution}" />
+                <Button Content="{x:Static p:localization.Add}" Command="{Binding ViewModel.RefreshDistributions}" />
             </StackPanel>
 
         </Grid>
         <Grid Grid.Row="1">
-            <ui:CardExpander
-                Margin="0,8,0,0"
-                HorizontalContentAlignment="Center"
-                Icon="Server24"
-                IsEnabled="True"
-                IsExpanded="False">
-                <ui:CardExpander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock
-                                FontSize="13"
-                                FontWeight="Medium"
-                                Text="Ubuntu 22.04" />
-                            <TextBlock
-                                FontSize="12"
-                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                Text="Distribution is running" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <ui:Button
-                                Margin="0,0,5,0"
-                                Padding="30,6"
-                                VerticalAlignment="Center"
-                                Appearance="Secondary"
-                                Content="Start" />
-                            <ui:Button
-                                Margin="0,0,10,0"
-                                Padding="30,6"
-                                VerticalAlignment="Center"
-                                Appearance="Secondary"
-                                Content="Stop" 
-                                Command="{Binding ViewModel.StopDistribution}"
-                                CommandParameter="hallo"
-                                />
-                        </StackPanel>
-                    </Grid>
-                </ui:CardExpander.Header>
-                <StackPanel Orientation="Horizontal">
-                    <ui:Button
-                        Margin="0,0,10,0"
-                        Padding="30,6"
-                        VerticalAlignment="Center"
-                        Appearance="Secondary"
-                        Content="Blabla" 
-                    />
-                    <ui:Button
-                        Margin="0,0,10,0"
-                        Padding="30,6"
-                        VerticalAlignment="Center"
-                        Appearance="Secondary"
-                        Content="Blabla" />
-                </StackPanel>
-            </ui:CardExpander>
+            <ItemsControl ItemsSource="{Binding ViewModel.Distributions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:CardExpander
+                            Margin="0,8,0,0"
+                            HorizontalContentAlignment="Center"
+                            Icon="Server24"
+                            IsEnabled="True"
+                            IsExpanded="False">
+                            <ui:CardExpander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontSize="13"
+                                            FontWeight="Medium"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                            Text="Distribution is running" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <ui:Button
+                                            Margin="0,0,5,0"
+                                            Padding="30,6"
+                                            VerticalAlignment="Center"
+                                            Appearance="Secondary"
+                                            Content="Start" />
+                                        <ui:Button
+                                            Margin="0,0,10,0"
+                                            Padding="30,6"
+                                            VerticalAlignment="Center"
+                                            Appearance="Secondary"
+                                            Content="Stop"
+                                            Command="{Binding ViewModel.StopDistribution}"
+                                            CommandParameter="hallo" />
+                                    </StackPanel>
+                                </Grid>
+                            </ui:CardExpander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:Button
+                                    Margin="0,0,10,0"
+                                    Padding="30,6"
+                                    VerticalAlignment="Center"
+                                    Appearance="Secondary"
+                                    Content="Blabla" />
+                                <ui:Button
+                                    Margin="0,0,10,0"
+                                    Padding="30,6"
+                                    VerticalAlignment="Center"
+                                    Appearance="Secondary"
+                                    Content="Blabla" />
+                            </StackPanel>
+                        </ui:CardExpander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </Grid>
     </Grid>
 </ui:UiPage>

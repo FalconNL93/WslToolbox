@@ -1,12 +1,14 @@
-﻿using System;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Input;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
-using WslToolbox.Core.Commands.Service;
+using WslToolbox.Gui2.Models;
+using WslToolbox.Gui2.Services;
 
 namespace WslToolbox.Gui2.ViewModels;
 
@@ -14,22 +16,43 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly ILogger<DashboardViewModel> _logger;
-    public ICommand StopDistribution => new RelayCommand<string>(OnStopDistribution);
+    private readonly DistributionService _distributionService;
 
-    public DashboardViewModel(INavigationService navigationService, ILogger<DashboardViewModel> logger)
+    public RelayCommand AddDistribution => new(OnAddDistribution);
+
+    public AsyncRelayCommand RefreshDistributions => new(OnRefreshDistributions, CanEdit);
+    public ObservableCollection<DistributionModel> Distributions { get; set; } = new();
+
+    public DashboardViewModel(
+        INavigationService navigationService,
+        ILogger<DashboardViewModel> logger,
+        DistributionService distributionService)
     {
         _navigationService = navigationService;
         _logger = logger;
+        _distributionService = distributionService;
     }
 
     private async void OnStopDistribution(string? parameter)
     {
-        var list = await ListServiceCommand.ListDistributions();
-        
-        foreach (var dist in list)
+    }
+
+    private void OnAddDistribution()
+    {
+    }
+
+    private bool CanEdit()
+    {
+        return Distributions.Count <= 2;
+    }
+
+    private async Task OnRefreshDistributions()
+    {
+        Distributions.Clear();
+        (await _distributionService.ListDistributions()).ToList().ForEach(distribution =>
         {
-            Debug.WriteLine(dist.Name);
-        }
+            Distributions.Add(distribution);
+        });
     }
 
     public void OnNavigatedTo()

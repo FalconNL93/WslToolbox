@@ -6,8 +6,6 @@ using System.Windows;
 using AutoMapper;
 using Microsoft.Extensions.Hosting;
 using Wpf.Ui.Mvvm.Contracts;
-using WslToolbox.Core;
-using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Views;
 
 namespace WslToolbox.Gui2.Services;
@@ -57,24 +55,6 @@ public class ApplicationHostService : IHostedService
     private async Task HandleActivationAsync()
     {
         await Task.CompletedTask;
-
-        var test = new DistributionClass
-        {
-            IsDefault = false,
-            IsInstalled = false,
-            Name = null,
-            State = null,
-            Version = 0,
-            Guid = null,
-            BasePath = null,
-            BasePathLocal = null,
-            DefaultUid = 0,
-            Size = 0
-        };
-        
-        var distribution = _mapper.Map<DistributionModel>(test);
-
-        var bb = distribution;
 
         if (!Application.Current.Windows.OfType<Container>().Any())
         {
