@@ -18,10 +18,20 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly DistributionService _distributionService;
 
-    public RelayCommand AddDistribution => new(OnAddDistribution);
+    public RelayCommand AddDistribution { get; }
+    public AsyncRelayCommand RefreshDistributions { get; }
+    public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
-    public AsyncRelayCommand RefreshDistributions => new(OnRefreshDistributions, CanEdit);
-    public ObservableCollection<DistributionModel> Distributions { get; set; } = new();
+    private bool _canRefresh = true;
+    private bool CanRefresh
+    {
+        get => _canRefresh;
+        set
+        {
+            SetProperty(ref _canRefresh, value);
+            RefreshDistributions.NotifyCanExecuteChanged();
+        }
+    }
 
     public DashboardViewModel(
         INavigationService navigationService,
@@ -31,28 +41,19 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         _navigationService = navigationService;
         _logger = logger;
         _distributionService = distributionService;
-    }
 
-    private async void OnStopDistribution(string? parameter)
-    {
+        RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions, () => CanRefresh);
+        AddDistribution = new RelayCommand(OnAddDistribution, () => CanRefresh);
     }
 
     private void OnAddDistribution()
     {
     }
 
-    private bool CanEdit()
-    {
-        return Distributions.Count <= 2;
-    }
-
     private async Task OnRefreshDistributions()
     {
         Distributions.Clear();
-        (await _distributionService.ListDistributions()).ToList().ForEach(distribution =>
-        {
-            Distributions.Add(distribution);
-        });
+        (await _distributionService.ListDistributions()).ToList().ForEach(distribution => { Distributions.Add(distribution); });
     }
 
     public void OnNavigatedTo()

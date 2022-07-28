@@ -22,9 +22,8 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button Content="{x:Static p:localization.Add}" 
-                        Command="{Binding ViewModel.AddDistribution}" />
-                <Button Content="{x:Static p:localization.Add}" Command="{Binding ViewModel.RefreshDistributions}" />
+                <Button Content="{x:Static p:localization.Add}" Command="{Binding ViewModel.AddDistribution}" />
+                <Button Content="Refresh" Command="{Binding ViewModel.RefreshDistributions}" />
             </StackPanel>
 
         </Grid>
@@ -66,9 +65,7 @@
                                             Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
-                                            Content="Stop"
-                                            Command="{Binding ViewModel.StopDistribution}"
-                                            CommandParameter="hallo" />
+                                            Content="Stop" />
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>
