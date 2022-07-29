@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using WslToolbox.Core;
 using WslToolbox.Core.Commands.Service;
 using WslToolbox.Gui2.Models;
 
@@ -23,5 +24,17 @@ public class DistributionService
         var distributions = await ListServiceCommand.ListDistributions();
 
         return _mapper.Map<IEnumerable<DistributionModel>>(distributions);
+    }
+
+    public async Task StartDistribution(DistributionModel distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        await Core.Commands.Distribution.StartDistributionCommand.Execute(distributionClass);
+    }
+    
+    public async Task StopDistribution(DistributionModel distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        await Core.Commands.Distribution.TerminateDistributionCommand.Execute(distributionClass);
     }
 }

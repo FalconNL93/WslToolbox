@@ -3,10 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:WslToolbox.Gui2.Views.Pages"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:p="clr-namespace:WslToolbox.Gui2.Resources"
+    xmlns:local="clr-namespace:WslToolbox.Gui2.Views.Pages"
     Title="Dashboard"
     d:DataContext="{d:DesignInstance local:Dashboard,
                                      IsDesignTimeCreatable=False}"
@@ -14,6 +15,11 @@
     d:DesignWidth="800"
     Scrollable="True"
     mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ViewModel.RefreshDistributions}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Margin="18,0,18,18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,9 +29,8 @@
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
                 <Button Content="{x:Static p:localization.Add}" Command="{Binding ViewModel.AddDistribution}" />
-                <Button Content="Refresh" Command="{Binding ViewModel.RefreshDistributions}" />
+                <Button Content="{x:Static p:localization.Refresh}" Command="{Binding ViewModel.RefreshDistributions}" />
             </StackPanel>
-
         </Grid>
         <Grid Grid.Row="1">
             <ItemsControl ItemsSource="{Binding ViewModel.Distributions}">
@@ -59,13 +64,19 @@
                                             Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
-                                            Content="Start" />
+                                            Content="{x:Static p:localization.Start}"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.StartDistribution}"
+                                            CommandParameter="{Binding}" />
                                         <ui:Button
                                             Margin="0,0,10,0"
                                             Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
-                                            Content="Stop" />
+                                            Content="{x:Static p:localization.Stop}"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.StopDistribution}"
+                                            CommandParameter="{Binding}" />
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>

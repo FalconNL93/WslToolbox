@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -20,9 +19,12 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 
     public RelayCommand AddDistribution { get; }
     public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
     public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
     private bool _canRefresh = true;
+
     private bool CanRefresh
     {
         get => _canRefresh;
@@ -43,17 +45,41 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         _distributionService = distributionService;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions, () => CanRefresh);
-        AddDistribution = new RelayCommand(OnAddDistribution, () => CanRefresh);
+        AddDistribution = new RelayCommand(OnAddDistribution, () => false);
+
+        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution);
+        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution);
     }
 
     private void OnAddDistribution()
     {
     }
 
+    private async Task OnStartDistribution(DistributionModel? distribution)
+    {
+        if (distribution == null)
+        {
+            return;
+        }
+
+        await _distributionService.StartDistribution(distribution);
+    }
+
+    private async Task OnStopDistribution(DistributionModel? distribution)
+    {
+        if (distribution == null)
+        {
+            return;
+        }
+
+        await _distributionService.StopDistribution(distribution);
+    }
+
     private async Task OnRefreshDistributions()
     {
         Distributions.Clear();
-        (await _distributionService.ListDistributions()).ToList().ForEach(distribution => { Distributions.Add(distribution); });
+        (await _distributionService.ListDistributions()).ToList()
+            .ForEach(distribution => { Distributions.Add(distribution); });
     }
 
     public void OnNavigatedTo()

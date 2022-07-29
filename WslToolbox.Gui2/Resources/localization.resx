@@ -27,6 +27,9 @@
     <data name="Add" xml:space="preserve">
         <value>Add</value>
     </data>
+    <data name="Refresh" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
     <data name="Start" xml:space="preserve">
         <value>Start</value>
     </data>
