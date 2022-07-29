@@ -55,8 +55,18 @@
                                             Text="{Binding Name}" />
                                         <TextBlock
                                             FontSize="12"
-                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                            Text="Distribution is running" />
+                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Text" Value="Distribution is stopped" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding State}" Value="Running">
+                                                            <Setter Property="Text" Value="Distribution is running" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <ui:Button
@@ -80,25 +90,11 @@
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <ui:Button
-                                    Margin="0,0,10,0"
-                                    Padding="30,6"
-                                    VerticalAlignment="Center"
-                                    Appearance="Secondary"
-                                    Content="Blabla" />
-                                <ui:Button
-                                    Margin="0,0,10,0"
-                                    Padding="30,6"
-                                    VerticalAlignment="Center"
-                                    Appearance="Secondary"
-                                    Content="Blabla" />
-                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" />
                         </ui:CardExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
         </Grid>
     </Grid>
 </ui:UiPage>

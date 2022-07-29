@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
@@ -9,7 +10,6 @@ using Serilog;
 using Serilog.Events;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
-using WslToolbox.Gui2.Configurations;
 using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
@@ -39,7 +39,7 @@ public partial class App
             services.AddScoped<ContainerViewModel>();
             services.AddScoped<Dashboard>();
             services.AddScoped<DashboardViewModel>();
-            
+
             services.AddAutoMapper(typeof(App));
         })
         .UseSerilog()
@@ -57,7 +57,7 @@ public partial class App
             .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
-            .WriteTo.File(System.AppDomain.CurrentDomain.FriendlyName)
+            .WriteTo.File(AppDomain.CurrentDomain.FriendlyName)
             .CreateLogger();
 
         await Host.StartAsync();

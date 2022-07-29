@@ -13,27 +13,11 @@ namespace WslToolbox.Gui2.ViewModels;
 
 public class DashboardViewModel : ObservableObject, INavigationAware
 {
-    private readonly INavigationService _navigationService;
-    private readonly ILogger<DashboardViewModel> _logger;
     private readonly DistributionService _distributionService;
-
-    public RelayCommand AddDistribution { get; }
-    public AsyncRelayCommand RefreshDistributions { get; }
-    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
-    public ObservableCollection<DistributionModel> Distributions { get; } = new();
+    private readonly ILogger<DashboardViewModel> _logger;
+    private readonly INavigationService _navigationService;
 
     private bool _canRefresh = true;
-
-    private bool CanRefresh
-    {
-        get => _canRefresh;
-        set
-        {
-            SetProperty(ref _canRefresh, value);
-            RefreshDistributions.NotifyCanExecuteChanged();
-        }
-    }
 
     public DashboardViewModel(
         INavigationService navigationService,
@@ -49,6 +33,30 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 
         StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution);
         StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution);
+    }
+
+    public RelayCommand AddDistribution { get; }
+    public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
+    public ObservableCollection<DistributionModel> Distributions { get; } = new();
+
+    private bool CanRefresh
+    {
+        get => _canRefresh;
+        set
+        {
+            SetProperty(ref _canRefresh, value);
+            RefreshDistributions.NotifyCanExecuteChanged();
+        }
+    }
+
+    public void OnNavigatedTo()
+    {
+    }
+
+    public void OnNavigatedFrom()
+    {
     }
 
     private void OnAddDistribution()
@@ -80,13 +88,5 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         Distributions.Clear();
         (await _distributionService.ListDistributions()).ToList()
             .ForEach(distribution => { Distributions.Add(distribution); });
-    }
-
-    public void OnNavigatedTo()
-    {
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 }

@@ -15,11 +15,11 @@ namespace WslToolbox.Gui2.Services;
 /// </summary>
 public class ApplicationHostService : IHostedService
 {
+    private readonly IMapper _mapper;
     private readonly INavigationService _navigationService;
     private readonly IPageService _pageService;
     private readonly IServiceProvider _serviceProvider;
     private readonly ITaskBarService _taskBarService;
-    private readonly IMapper _mapper;
     private readonly IThemeService _themeService;
     private INavigationWindow? _navigationWindow;
 

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Wpf.Ui.Common.Interfaces;
+﻿using Wpf.Ui.Common.Interfaces;
 using WslToolbox.Gui2.ViewModels;
 
 namespace WslToolbox.Gui2.Views.Pages;
@@ -14,5 +13,4 @@ public partial class Dashboard : INavigableView<DashboardViewModel>
     }
 
     public DashboardViewModel ViewModel { get; }
-    
 }
