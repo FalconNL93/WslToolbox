@@ -11,6 +11,7 @@
     Height="654"
     d:DesignHeight="650"
     d:DesignWidth="900"
+
     Background="{ui:ThemeResource ApplicationBackgroundBrush}"
     ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica"
@@ -19,10 +20,21 @@
     mc:Ignorable="d">
 
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <ui:TitleBar
+            Title="WSL Toolbox"
+            Grid.Row="0"
+            ForceShutdown="False"
+            MinimizeToTray="False"
+            ShowHelp="False"
+            ShowMaximize="True"
+            ShowMinimize="True"
+            UseSnapLayout="True" />
 
         <Grid
             Grid.Row="1"
@@ -51,6 +63,14 @@
                         PageType="{x:Type pages:Dashboard}" />
                     <ui:NavigationSeparator />
                 </ui:NavigationStore.Items>
+                <ui:NavigationStore.Footer>
+                    <ui:NavigationItem
+                        Cache="True"
+                        Content="Settings"
+                        Icon="Settings24"
+                        PageTag="settings"
+                        PageType="{x:Type pages:Settings}" />
+                </ui:NavigationStore.Footer>
             </ui:NavigationStore>
 
             <Border
@@ -73,15 +93,5 @@
                 </Grid>
             </Border>
         </Grid>
-
-        <ui:TitleBar
-            Title="WSL Toolbox"
-            Grid.Row="0"
-            ForceShutdown="False"
-            MinimizeToTray="False"
-            ShowHelp="False"
-            ShowMaximize="True"
-            ShowMinimize="True"
-            UseSnapLayout="True" />
     </Grid>
 </ui:UiWindow>

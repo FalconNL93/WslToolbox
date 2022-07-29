@@ -31,8 +31,8 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions, () => CanRefresh);
         AddDistribution = new RelayCommand(OnAddDistribution, () => false);
 
-        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution);
-        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution);
+        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution, model => model?.State != "Running");
+        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution, model => model?.State == "Running");
     }
 
     public RelayCommand AddDistribution { get; }

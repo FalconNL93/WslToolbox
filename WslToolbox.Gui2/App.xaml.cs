@@ -37,9 +37,12 @@ public partial class App
 
             services.AddScoped<INavigationWindow, Container>();
             services.AddScoped<ContainerViewModel>();
+            
             services.AddScoped<Dashboard>();
             services.AddScoped<DashboardViewModel>();
-
+            services.AddScoped<Settings>();
+            services.AddScoped<SettingsViewModel>();
+            
             services.AddAutoMapper(typeof(App));
         })
         .UseSerilog()
