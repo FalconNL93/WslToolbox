@@ -61,9 +61,9 @@
                         Icon="Home24"
                         PageTag="dashboard"
                         PageType="{x:Type pages:Dashboard}" />
-                    <ui:NavigationSeparator />
                 </ui:NavigationStore.Items>
                 <ui:NavigationStore.Footer>
+                    <ui:NavigationSeparator />
                     <ui:NavigationItem
                         Cache="True"
                         Content="Settings"

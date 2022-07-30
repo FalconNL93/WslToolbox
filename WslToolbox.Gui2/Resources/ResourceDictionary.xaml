@@ -6,6 +6,10 @@
                 <Setter Property="Margin" Value="0,0,5,0" />
                 <Setter Property="MinWidth" Value="120" />
             </Style>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Margin" Value="0,0,0,15" />
+            </Style>
         </Style.Resources>
     </Style>
 </ResourceDictionary>

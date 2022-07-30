@@ -6,9 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:local="clr-namespace:WslToolbox.Gui2.Views.Pages"
+    xmlns:userControls="clr-namespace:WslToolbox.Gui2.UserControls"
     Title="Settings"
-    d:DataContext="{d:DesignInstance local:Settings,
-                                     IsDesignTimeCreatable=False}"
+    d:DataContext="{d:DesignInstance local:Settings, IsDesignTimeCreatable=False}"
     d:DesignHeight="750"
     d:DesignWidth="800"
     Scrollable="True"
@@ -17,19 +17,12 @@
     <Grid Margin="18,0,18,18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ui:CardControl Grid.Column="0">
-            <ui:CardControl.Header>
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock
-                        FontSize="13"
-                        FontWeight="Medium"
-                        Text="Show docker distributions" />
-                </StackPanel>
-            </ui:CardControl.Header>
-            <ui:ToggleSwitch />
-        </ui:CardControl>
+        <StackPanel Orientation="Vertical">
+            <userControls:CardOption
+                HeaderContent="Docker distributions"
+                DescriptionContent="Show docker distributions in overview"
+                Enabled="{Binding ViewModel.Options.HideDockerDist, Mode=TwoWay}" />
+        </StackPanel>
     </Grid>
 </ui:UiPage>

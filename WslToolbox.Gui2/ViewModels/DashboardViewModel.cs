@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Wpf.Ui.Common.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
 using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Services;
 
@@ -13,53 +12,32 @@ namespace WslToolbox.Gui2.ViewModels;
 
 public class DashboardViewModel : ObservableObject, INavigationAware
 {
-    private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
-    private readonly INavigationService _navigationService;
-
-    private bool _canRefresh = true;
+    private readonly DistributionService _service;
 
     public DashboardViewModel(
-        INavigationService navigationService,
         ILogger<DashboardViewModel> logger,
-        DistributionService distributionService)
+        DistributionService service)
     {
-        _navigationService = navigationService;
         _logger = logger;
-        _distributionService = distributionService;
+        _service = service;
 
-        RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions, () => CanRefresh);
-        AddDistribution = new RelayCommand(OnAddDistribution, () => false);
-
-        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution, model => model?.State != "Running");
-        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution, model => model?.State == "Running");
+        RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
+        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution, model => model?.State != DistributionService.StateRunning);
+        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution, model => model?.State == DistributionService.StateRunning);
     }
 
-    public RelayCommand AddDistribution { get; }
     public AsyncRelayCommand RefreshDistributions { get; }
     public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
     public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
     public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
-    private bool CanRefresh
+    public async void OnNavigatedTo()
     {
-        get => _canRefresh;
-        set
-        {
-            SetProperty(ref _canRefresh, value);
-            RefreshDistributions.NotifyCanExecuteChanged();
-        }
-    }
-
-    public void OnNavigatedTo()
-    {
+        await RefreshDistributions.ExecuteAsync(null);
     }
 
     public void OnNavigatedFrom()
-    {
-    }
-
-    private void OnAddDistribution()
     {
     }
 
@@ -70,7 +48,7 @@ public class DashboardViewModel : ObservableObject, INavigationAware
             return;
         }
 
-        await _distributionService.StartDistribution(distribution);
+        await _service.StartDistribution(distribution);
     }
 
     private async Task OnStopDistribution(DistributionModel? distribution)
@@ -80,13 +58,16 @@ public class DashboardViewModel : ObservableObject, INavigationAware
             return;
         }
 
-        await _distributionService.StopDistribution(distribution);
+        await _service.StopDistribution(distribution);
     }
 
     private async Task OnRefreshDistributions()
     {
         Distributions.Clear();
-        (await _distributionService.ListDistributions()).ToList()
-            .ForEach(distribution => { Distributions.Add(distribution); });
+        (await _service.ListDistributions()).ToList()
+            .ForEach(distribution =>
+            {
+                Distributions.Add(distribution);
+            });
     }
 }

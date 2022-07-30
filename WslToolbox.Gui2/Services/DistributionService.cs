@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Core.Commands.Service;
@@ -11,18 +12,24 @@ namespace WslToolbox.Gui2.Services;
 
 public class DistributionService
 {
+    public const string StateRunning = "Running";
+    public const string StateStopped = "Stopped";
+    public const string StateAvailable = "Stopped";
+
     private readonly ILogger<DistributionService> _logger;
     private readonly IMapper _mapper;
+    private readonly AppConfig _options;
 
-    public DistributionService(ILogger<DistributionService> logger, IMapper mapper)
+    public DistributionService(ILogger<DistributionService> logger, IMapper mapper, IOptions<AppConfig> options)
     {
         _logger = logger;
         _mapper = mapper;
+        _options = options.Value;
     }
 
     public async Task<IEnumerable<DistributionModel>> ListDistributions()
     {
-        var distributions = await ListServiceCommand.ListDistributions();
+        var distributions = await ListServiceCommand.ListDistributions(_options.HideDockerDist);
 
         return _mapper.Map<IEnumerable<DistributionModel>>(distributions);
     }

@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Events;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
+using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
@@ -21,8 +22,11 @@ public partial class App
 {
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()
-        .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
-        .ConfigureServices((_, services) =>
+        .ConfigureAppConfiguration(c =>
+        {
+            c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
+        })
+        .ConfigureServices((context, services) =>
         {
             services.AddHostedService<ApplicationHostService>();
 
@@ -37,13 +41,15 @@ public partial class App
 
             services.AddScoped<INavigationWindow, Container>();
             services.AddScoped<ContainerViewModel>();
-            
+
             services.AddScoped<Dashboard>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<Settings>();
             services.AddScoped<SettingsViewModel>();
-            
+
             services.AddAutoMapper(typeof(App));
+
+            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         })
         .UseSerilog()
         .Build();
@@ -60,7 +66,7 @@ public partial class App
             .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
-            .WriteTo.File(AppDomain.CurrentDomain.FriendlyName)
+            .WriteTo.File($"{AppDomain.CurrentDomain.FriendlyName}.log")
             .CreateLogger();
 
         await Host.StartAsync();
