@@ -26,7 +26,7 @@ public partial class App
         .ConfigureAppConfiguration(c =>
         {
             c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
-            c.AddJsonFile(SaveConfigurationExtension.FileName, true);
+            c.AddJsonFile(SaveConfigurationExtension.FileName, true, true);
         })
         .ConfigureServices((context, services) =>
         {

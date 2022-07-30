@@ -14,11 +14,12 @@ public class SettingsViewModel : ObservableObject
     public RelayCommand SaveConfiguration { get; }
     public RelayCommand RevertConfiguration { get; }
 
-    public AppConfig AppConfig
+    private AppConfig AppConfig
     {
-        get => _appConfig ?? new AppConfig();
-        private set => SetProperty(ref _appConfig, value);
+        set => SetProperty(ref _appConfig, value);
     }
+
+    public AppConfig ModifiedAppConfig { get; }
 
     public SettingsViewModel(
         ILogger<SettingsViewModel> logger,
@@ -26,8 +27,14 @@ public class SettingsViewModel : ObservableObject
     {
         _logger = logger;
         AppConfig = options.Value;
+        ModifiedAppConfig = options.Value.Clone();
 
-        SaveConfiguration = new RelayCommand(options.Save);
+        SaveConfiguration = new RelayCommand(() =>
+        {
+            AppConfig = ModifiedAppConfig;
+            options.Save(ModifiedAppConfig);
+        });
+
         RevertConfiguration = new RelayCommand(() => { AppConfig = new AppConfig(); });
     }
 }

@@ -16,10 +16,11 @@ public static class SaveConfigurationExtension
         WriteIndented = true
     };
 
-    public static void Save<T>(this IOptions<T> options) where T : class
+    public static void Save<T>(this IOptions<T> options, T? config = null) where T : class
     {
+        var source = config ?? options.Value;
         var jsonString = JsonSerializer.Serialize(
-            new Dictionary<string, T> {{typeof(T).Name, options.Value}},
+            new Dictionary<string, T> {{typeof(T).Name, source}},
             Options);
 
         File.WriteAllText(FileName, jsonString);

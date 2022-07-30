@@ -23,7 +23,7 @@
             <userControls:CardOption
                 HeaderContent="Docker distributions"
                 DescriptionContent="Hide docker distributions in overview"
-                Enabled="{Binding ViewModel.AppConfig.HideDockerDist, Mode=TwoWay}" />
+                Enabled="{Binding ViewModel.ModifiedAppConfig.HideDockerDist, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <ui:Button
