@@ -1,8 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
     <Style TargetType="StackPanel">
         <Style.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+
+
+            <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
                 <Setter Property="Margin" Value="0,0,5,0" />
                 <Setter Property="MinWidth" Value="120" />
             </Style>

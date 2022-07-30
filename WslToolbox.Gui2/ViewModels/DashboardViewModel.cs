@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
 using Wpf.Ui.Common.Interfaces;
 using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Services;
@@ -65,9 +65,6 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     {
         Distributions.Clear();
         (await _service.ListDistributions()).ToList()
-            .ForEach(distribution =>
-            {
-                Distributions.Add(distribution);
-            });
+            .ForEach(distribution => { Distributions.Add(distribution); });
     }
 }

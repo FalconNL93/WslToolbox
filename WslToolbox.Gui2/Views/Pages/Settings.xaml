@@ -16,13 +16,26 @@
 
     <Grid Margin="18,0,18,18">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
             <userControls:CardOption
                 HeaderContent="Docker distributions"
-                DescriptionContent="Show docker distributions in overview"
-                Enabled="{Binding ViewModel.Options.HideDockerDist, Mode=TwoWay}" />
+                DescriptionContent="Hide docker distributions in overview"
+                Enabled="{Binding ViewModel.AppConfig.HideDockerDist, Mode=TwoWay}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <ui:Button
+                VerticalAlignment="Center"
+                Appearance="Primary"
+                Content="Save"
+                Command="{Binding ViewModel.SaveConfiguration}" />
+            <ui:Button
+                VerticalAlignment="Center"
+                Appearance="Secondary"
+                Content="Revert to defaults"
+                Command="{Binding ViewModel.RevertConfiguration}" />
         </StackPanel>
     </Grid>
 </ui:UiPage>

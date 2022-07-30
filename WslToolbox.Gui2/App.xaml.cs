@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Events;
 using Wpf.Ui.Mvvm.Contracts;
 using Wpf.Ui.Mvvm.Services;
+using WslToolbox.Gui2.Extensions;
 using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
@@ -25,6 +26,7 @@ public partial class App
         .ConfigureAppConfiguration(c =>
         {
             c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
+            c.AddJsonFile(SaveConfigurationExtension.FileName, true);
         })
         .ConfigureServices((context, services) =>
         {
