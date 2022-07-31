@@ -16,6 +16,7 @@ using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
 using WslToolbox.Gui2.Views.Pages;
+using DialogService = WslToolbox.Gui2.Services.DialogService;
 
 namespace WslToolbox.Gui2;
 
@@ -39,10 +40,10 @@ public partial class App
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
 
-            services.AddSingleton<DistributionService>();
-
             services.AddScoped<INavigationWindow, Container>();
             services.AddScoped<ContainerViewModel>();
+
+            services.AddSingleton<DistributionService>();
 
             services.AddScoped<Dashboard>();
             services.AddScoped<DashboardViewModel>();

@@ -11,15 +11,6 @@ public class SettingsViewModel : ObservableObject
 {
     private readonly ILogger<SettingsViewModel> _logger;
     private AppConfig? _appConfig;
-    public RelayCommand SaveConfiguration { get; }
-    public RelayCommand RevertConfiguration { get; }
-
-    private AppConfig AppConfig
-    {
-        set => SetProperty(ref _appConfig, value);
-    }
-
-    public AppConfig ModifiedAppConfig { get; }
 
     public SettingsViewModel(
         ILogger<SettingsViewModel> logger,
@@ -35,6 +26,19 @@ public class SettingsViewModel : ObservableObject
             options.Save(ModifiedAppConfig);
         });
 
-        RevertConfiguration = new RelayCommand(() => { AppConfig = new AppConfig(); });
+        RevertConfiguration = new RelayCommand(() =>
+        {
+            AppConfig = new AppConfig();
+        });
     }
+
+    public RelayCommand SaveConfiguration { get; }
+    public RelayCommand RevertConfiguration { get; }
+
+    private AppConfig AppConfig
+    {
+        set => SetProperty(ref _appConfig, value);
+    }
+
+    public AppConfig ModifiedAppConfig { get; }
 }

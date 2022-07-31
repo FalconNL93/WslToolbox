@@ -12,4 +12,9 @@ public class DistributionModel
     public string BasePathLocal { get; set; }
     public int DefaultUid { get; set; }
     public long Size { get; set; }
+
+    public DistributionModel Clone()
+    {
+        return (DistributionModel) MemberwiseClone();
+    }
 }

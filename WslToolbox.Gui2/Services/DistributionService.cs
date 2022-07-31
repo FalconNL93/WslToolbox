@@ -34,6 +34,13 @@ public class DistributionService
         return _mapper.Map<IEnumerable<DistributionModel>>(distributions);
     }
 
+    public async Task RenameDistributions(UpdateModel<DistributionModel> distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution.CurrentModel);
+
+        RenameDistributionCommand.Execute(distributionClass, distribution.NewModel.Name);
+    }
+
     public async Task StartDistribution(DistributionModel distribution)
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);

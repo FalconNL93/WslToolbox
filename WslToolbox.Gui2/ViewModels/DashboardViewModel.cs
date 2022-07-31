@@ -17,7 +17,8 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 
     public DashboardViewModel(
         ILogger<DashboardViewModel> logger,
-        DistributionService service)
+        DistributionService service
+    )
     {
         _logger = logger;
         _service = service;
@@ -25,11 +26,13 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
         StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution, model => model?.State != DistributionService.StateRunning);
         StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution, model => model?.State == DistributionService.StateRunning);
+        EditDistribution = new AsyncRelayCommand<UpdateModel<DistributionModel>>(OnEditDistribution);
     }
 
     public AsyncRelayCommand RefreshDistributions { get; }
     public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
     public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
+    public AsyncRelayCommand<UpdateModel<DistributionModel>> EditDistribution { get; }
     public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
     public async void OnNavigatedTo()
@@ -39,6 +42,16 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 
     public void OnNavigatedFrom()
     {
+    }
+
+    private async Task OnEditDistribution(UpdateModel<DistributionModel>? distribution)
+    {
+        if (distribution == null)
+        {
+            return;
+        }
+
+        await _service.RenameDistributions(distribution);
     }
 
     private async Task OnStartDistribution(DistributionModel? distribution)
@@ -65,6 +78,9 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     {
         Distributions.Clear();
         (await _service.ListDistributions()).ToList()
-            .ForEach(distribution => { Distributions.Add(distribution); });
+            .ForEach(distribution =>
+            {
+                Distributions.Add(distribution);
+            });
     }
 }

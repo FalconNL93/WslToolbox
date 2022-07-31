@@ -3,15 +3,18 @@
                     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
     <Style TargetType="StackPanel">
         <Style.Resources>
-
-
             <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
                 <Setter Property="Margin" Value="0,0,5,0" />
                 <Setter Property="MinWidth" Value="120" />
+                <Setter Property="Padding" Value="30,6"/>
             </Style>
 
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Margin" Value="0,0,0,15" />
+            </Style>
+
+            <Style TargetType="{x:Type ui:TextBox}" BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                <Setter Property="Margin" Value="0,15,0,0" />
             </Style>
         </Style.Resources>
     </Style>

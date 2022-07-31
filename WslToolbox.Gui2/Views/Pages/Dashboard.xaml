@@ -62,7 +62,6 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <ui:Button
-                                            Margin="0,0,5,0"
                                             Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
@@ -71,7 +70,6 @@
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.StartDistribution}"
                                             CommandParameter="{Binding}" />
                                         <ui:Button
-                                            Margin="0,0,10,0"
                                             Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
@@ -79,10 +77,17 @@
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.StopDistribution}"
                                             CommandParameter="{Binding}" />
+                                        <ui:Button
+                                            Padding="30,6"
+                                            VerticalAlignment="Center"
+                                            Appearance="Secondary"
+                                            Content="Edit"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ShowEditDistribution}"
+                                            CommandParameter="{Binding}" />
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>
-                            <StackPanel Orientation="Horizontal" />
                         </ui:CardExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
