@@ -92,9 +92,8 @@
                         Navigation="{Binding ElementName=RootNavigation}" />
                 </Grid>
             </Border>
-
         </Grid>
 
-        <ui:Dialog x:Name="EditDistributionDialog" Grid.Row="0" Grid.RowSpan="2" DialogHeight="230" />
+        <ui:Dialog x:Name="EditDistributionDialog" Grid.Row="0" Grid.RowSpan="2" DialogHeight="280" />
     </Grid>
 </ui:UiWindow>

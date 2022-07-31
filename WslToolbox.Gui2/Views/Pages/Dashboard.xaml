@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:p="clr-namespace:WslToolbox.Gui2.Resources"
+    xmlns:cv="clr-namespace:WslToolbox.Gui2.Converters"
     xmlns:local="clr-namespace:WslToolbox.Gui2.Views.Pages"
     Title="Dashboard"
     d:DataContext="{d:DesignInstance local:Dashboard,
@@ -30,7 +31,6 @@
                     <DataTemplate>
                         <ui:CardExpander
                             Margin="0,8,0,0"
-                            HorizontalContentAlignment="Center"
                             Icon="Server24"
                             IsEnabled="True"
                             IsExpanded="False">
@@ -45,20 +45,27 @@
                                             FontSize="13"
                                             FontWeight="Medium"
                                             Text="{Binding Name}" />
-                                        <TextBlock
-                                            FontSize="12"
-                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="Text" Value="Distribution is stopped" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding State}" Value="Running">
-                                                            <Setter Property="Text" Value="Distribution is running" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value="Distribution is stopped" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding State}" Value="Running">
+                                                                <Setter Property="Text" Value="Distribution is running" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <Separator Margin="5,8" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                Text="{Binding Size, Converter={cv:BytesToReadableConverter}}" />
+                                        </StackPanel>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <ui:Button
@@ -88,6 +95,13 @@
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>
+                            <StackPanel>
+                                <TextBlock
+                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding Size, Converter={cv:BytesToReadableConverter}}"
+                                    TextWrapping="WrapWithOverflow" />
+                                <ui:Hyperlink NavigateUri="{Binding BasePathLocal}" Icon="Folder48" Content="{Binding BasePathLocal}" />
+                            </StackPanel>
                         </ui:CardExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
