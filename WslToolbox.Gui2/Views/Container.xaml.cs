@@ -32,7 +32,8 @@ public partial class Container : INavigationWindow
         _taskBarService = taskBarService;
         InitializeComponent();
         SetPageService(pageService);
-        dialogService.SetDialogControl(EditDistributionDialog);
+        dialogService.SetDialogControl(FormDialog);
+        snackbarService.SetSnackbarControl(MessageSnackbar);
         navigationService.SetNavigationControl(RootNavigation);
 
         Loaded += (_, _) => LoadDefaultPage();

@@ -14,7 +14,8 @@ public class SettingsViewModel : ObservableObject
 
     public SettingsViewModel(
         ILogger<SettingsViewModel> logger,
-        IOptions<AppConfig> options)
+        IOptions<AppConfig> options
+    )
     {
         _logger = logger;
         AppConfig = options.Value;
@@ -26,10 +27,7 @@ public class SettingsViewModel : ObservableObject
             options.Save(ModifiedAppConfig);
         });
 
-        RevertConfiguration = new RelayCommand(() =>
-        {
-            AppConfig = new AppConfig();
-        });
+        RevertConfiguration = new RelayCommand(() => { AppConfig = new AppConfig(); });
     }
 
     public RelayCommand SaveConfiguration { get; }

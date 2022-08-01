@@ -16,17 +16,18 @@ using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
 using WslToolbox.Gui2.Views.Pages;
-using DialogService = WslToolbox.Gui2.Services.DialogService;
 
 namespace WslToolbox.Gui2;
 
 public partial class App
 {
+    private static readonly string? AppDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()
         .ConfigureAppConfiguration(c =>
         {
-            c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location));
+            c.SetBasePath(AppDirectory);
             c.AddJsonFile(SaveConfigurationExtension.FileName, true, true);
         })
         .ConfigureServices((context, services) =>
@@ -57,22 +58,20 @@ public partial class App
         .UseSerilog()
         .Build();
 
-    public static T? GetService<T>()
-        where T : class
+    private async void OnStartup(object sender, StartupEventArgs e)
     {
-        return Host.Services.GetService(typeof(T)) as T;
+        ConfigureLogger();
+        await Host.StartAsync();
     }
 
-    private async void OnStartup(object sender, StartupEventArgs e)
+    private static void ConfigureLogger()
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
-            .WriteTo.File($"{AppDomain.CurrentDomain.FriendlyName}.log")
+            .WriteTo.File($"{AppDirectory}/logs/{AppDomain.CurrentDomain.FriendlyName}.log")
             .CreateLogger();
-
-        await Host.StartAsync();
     }
 
     private async void OnExit(object sender, ExitEventArgs e)

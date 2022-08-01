@@ -12,12 +12,12 @@ namespace WslToolbox.Gui2.Views.Pages;
 public partial class Dashboard : INavigableView<DashboardViewModel>
 {
     private readonly IDialogControl _dialogControl;
-    private readonly ISnackbarService _snackbarService;
+    private readonly ISnackbarControl _snackbarService;
 
     public Dashboard(DashboardViewModel viewModel, IDialogService dialogService, ISnackbarService snackbarService)
     {
-        _snackbarService = snackbarService;
         _dialogControl = dialogService.GetDialogControl();
+        _snackbarService = snackbarService.GetSnackbarControl();
         ViewModel = viewModel;
 
         ShowEditDistribution = new AsyncRelayCommand<DistributionModel>(OnEditShowDistribution);
