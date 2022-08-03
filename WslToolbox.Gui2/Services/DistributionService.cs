@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -27,18 +28,18 @@ public class DistributionService
         _options = options.Value;
     }
 
+    public void RenameDistributions(UpdateModel<DistributionModel> distribution) => RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
+
+    public async Task ExportDistribution(DistributionModel distribution)
+    {
+        await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution), "C:\\Users\\Peter\\Downloads\\export\\blabla.tar.gz");
+    }
+
     public async Task<IEnumerable<DistributionModel>> ListDistributions()
     {
         var distributions = await ListServiceCommand.ListDistributions(_options.HideDockerDist);
 
         return _mapper.Map<IEnumerable<DistributionModel>>(distributions);
-    }
-
-    public async Task RenameDistributions(UpdateModel<DistributionModel> distribution)
-    {
-        var distributionClass = _mapper.Map<DistributionClass>(distribution.CurrentModel);
-
-        RenameDistributionCommand.Execute(distributionClass, distribution.NewModel.Name);
     }
 
     public async Task StartDistribution(DistributionModel distribution)
@@ -51,5 +52,11 @@ public class DistributionService
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await TerminateDistributionCommand.Execute(distributionClass);
+    }
+
+    public async Task DeleteDistribution(DistributionModel distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        await UnregisterDistributionCommand.Execute(distributionClass);
     }
 }

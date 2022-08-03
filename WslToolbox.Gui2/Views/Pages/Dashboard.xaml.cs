@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
+using Wpf.Ui.Common;
 using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
 using WslToolbox.Gui2.Forms;
@@ -21,12 +23,34 @@ public partial class Dashboard : INavigableView<DashboardViewModel>
         ViewModel = viewModel;
 
         ShowEditDistribution = new AsyncRelayCommand<DistributionModel>(OnEditShowDistribution);
+        ShowExportDistribution = new AsyncRelayCommand<DistributionModel>(OnExportDistribution);
+        ShowDeleteDistribution = new RelayCommand<DistributionModel>(OnDeleteDistribution);
 
         InitializeComponent();
     }
 
     public AsyncRelayCommand<DistributionModel> ShowEditDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> ShowExportDistribution { get; }
+    public RelayCommand<DistributionModel> ShowDeleteDistribution { get; }
+
     public DashboardViewModel ViewModel { get; }
+
+    private async Task OnExportDistribution(DistributionModel? model) => await ViewModel.ExportDistribution.ExecuteAsync(model);
+
+    private void OnDeleteDistribution(DistributionModel? model)
+    {
+        var messageBox = new MessageBox
+        {
+            ButtonLeftName = "Delete",
+            ButtonRightName = "Cancel",
+            ButtonLeftAppearance = ControlAppearance.Danger,
+        };
+
+        messageBox.ButtonLeftClick += async (_, _) => await ViewModel.DeleteDistribution.ExecuteAsync(model);
+        messageBox.ButtonRightClick += (_, _) => messageBox.Close();
+
+        messageBox.Show("Delete", $"Are you sure you want to delete {model.Name}?");
+    }
 
     private async Task OnEditShowDistribution(DistributionModel? arg)
     {
@@ -50,7 +74,7 @@ public partial class Dashboard : INavigableView<DashboardViewModel>
         switch (dialogResult)
         {
             case IDialogControl.ButtonPressed.Left:
-                await ViewModel.EditDistribution.ExecuteAsync(model);
+                ViewModel.EditDistribution.Execute(model);
                 _dialogControl.Hide();
                 break;
             case IDialogControl.ButtonPressed.Right:

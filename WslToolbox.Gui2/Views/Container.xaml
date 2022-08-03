@@ -7,9 +7,9 @@
     xmlns:pages="clr-namespace:WslToolbox.Gui2.Views.Pages"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="WSL Toolbox"
-    Width="1200"
-    Height="654"
-    d:DesignHeight="650"
+    Width="900"
+    Height="530"
+    d:DesignHeight="530"
     d:DesignWidth="900"
 
     Background="{ui:ThemeResource ApplicationBackgroundBrush}"

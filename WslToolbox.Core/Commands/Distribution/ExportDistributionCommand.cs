@@ -11,7 +11,7 @@ namespace WslToolbox.Core.Commands.Distribution
         public static event EventHandler DistributionExportStarted;
         public static event EventHandler DistributionExportFinished;
 
-        public static async void Execute(DistributionClass distribution, string file)
+        public static async Task Execute(DistributionClass distribution, string file)
         {
             var args = new DistributionEventArguments(nameof(ExportDistributionCommand), distribution);
 

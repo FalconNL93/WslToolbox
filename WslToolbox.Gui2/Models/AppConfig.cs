@@ -2,7 +2,7 @@
 
 public class AppConfig
 {
-    public bool HideDockerDist { get; set; }
+    public bool HideDockerDist { get; set; } = true;
 
     public AppConfig Clone()
     {

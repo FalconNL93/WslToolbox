@@ -69,7 +69,6 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <ui:Button
-                                            Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
                                             Content="{x:Static p:localization.Start}"
@@ -77,7 +76,6 @@
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.StartDistribution}"
                                             CommandParameter="{Binding}" />
                                         <ui:Button
-                                            Padding="30,6"
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
                                             Content="{x:Static p:localization.Stop}"
@@ -95,13 +93,31 @@
                                     </StackPanel>
                                 </Grid>
                             </ui:CardExpander.Header>
-                            <StackPanel>
-                                <TextBlock
-                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding Size, Converter={cv:BytesToReadableConverter}}"
-                                    TextWrapping="WrapWithOverflow" />
-                                <ui:Hyperlink NavigateUri="{Binding BasePathLocal}" Icon="Folder48" Content="{Binding BasePathLocal}" />
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock
+                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                        Text="{Binding Size, Converter={cv:BytesToReadableConverter}}"
+                                        TextWrapping="WrapWithOverflow"
+                                        TextTrimming="CharacterEllipsis" />
+                                    <ui:Hyperlink NavigateUri="{Binding BasePathLocal}" Icon="Folder48" Content="{Binding BasePathLocal}" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <ui:Button Content="Delete"
+                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ShowDeleteDistribution}"
+                                               CommandParameter="{Binding}" />
+                                    <ui:Button Content="Export"
+                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ShowExportDistribution}"
+                                               CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </Grid>
                         </ui:CardExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
