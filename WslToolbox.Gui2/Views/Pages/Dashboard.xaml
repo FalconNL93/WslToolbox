@@ -88,7 +88,7 @@
                                             Appearance="Secondary"
                                             Content="Edit"
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type Page}}, Path=DataContext.ShowEditDistribution}"
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.EditDistribution}"
                                             CommandParameter="{Binding}" />
                                     </StackPanel>
                                 </Grid>
@@ -110,11 +110,11 @@
                                 <StackPanel Grid.Column="1">
                                     <ui:Button Content="Delete"
                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type Page}}, Path=DataContext.ShowDeleteDistribution}"
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.DeleteDistribution}"
                                                CommandParameter="{Binding}" />
                                     <ui:Button Content="Export"
                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                AncestorType={x:Type Page}}, Path=DataContext.ShowExportDistribution}"
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.ExportDistribution}"
                                                CommandParameter="{Binding}" />
                                 </StackPanel>
                             </Grid>
