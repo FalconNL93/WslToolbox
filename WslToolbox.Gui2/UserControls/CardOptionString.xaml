@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WslToolbox.Gui2.UserControls.CardOption"
+﻿<UserControl x:Class="WslToolbox.Gui2.UserControls.CardOptionString"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,6 +19,6 @@
                     Text="{Binding DescriptionContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             </StackPanel>
         </ui:CardControl.Header>
-        <ui:ToggleSwitch IsChecked="{Binding Enabled, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        <TextBox Text="{Binding Value, RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </ui:CardControl>
 </UserControl>

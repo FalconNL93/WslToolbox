@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -28,7 +27,10 @@ public class DistributionService
         _options = options.Value;
     }
 
-    public void RenameDistributions(UpdateModel<DistributionModel> distribution) => RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
+    public void RenameDistributions(UpdateModel<DistributionModel> distribution)
+    {
+        RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
+    }
 
     public async Task ExportDistribution(DistributionModel distribution)
     {

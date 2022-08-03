@@ -107,7 +107,7 @@
                                     <ui:Hyperlink NavigateUri="{Binding BasePathLocal}" Icon="Folder48" Content="{Binding BasePathLocal}" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="1">
+                                <StackPanel Grid.Column="1" Style="{StaticResource Vertical}">
                                     <ui:Button Content="Delete"
                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.DeleteDistribution}"

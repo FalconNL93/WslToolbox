@@ -20,10 +20,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <userControls:CardOption
+            <userControls:CardOptionToggle
                 HeaderContent="Docker distributions"
                 DescriptionContent="Hide docker distributions in overview"
-                Enabled="{Binding ViewModel.ModifiedAppConfig.HideDockerDist, Mode=TwoWay}" />
+                Value="{Binding ViewModel.ModifiedAppConfig.HideDockerDist, Mode=TwoWay}" />
+            <userControls:CardOptionString
+                HeaderContent="Default export folder"
+                DescriptionContent="Default path for exporting distributions"
+                Value="{Binding ViewModel.ModifiedAppConfig.DefaultExportFolder, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <ui:Button

@@ -32,7 +32,7 @@ public partial class Container : INavigationWindow
         _taskBarService = taskBarService;
         InitializeComponent();
         SetPageService(pageService);
-        
+
         dialogService.SetDialogControl(FormDialog);
         snackbarService.SetSnackbarControl(MessageSnackbar);
         navigationService.SetNavigationControl(RootNavigation);
@@ -74,10 +74,7 @@ public partial class Container : INavigationWindow
 
     private async void LoadDefaultPage()
     {
-        await Dispatcher.InvokeAsync(() =>
-        {
-            Navigate(typeof(Dashboard));
-        });
+        await Dispatcher.InvokeAsync(() => { Navigate(typeof(Dashboard)); });
     }
 
     private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)

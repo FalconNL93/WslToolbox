@@ -1,5 +1,4 @@
 ﻿using Wpf.Ui.Common.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
 using WslToolbox.Gui2.ViewModels;
 
 namespace WslToolbox.Gui2.Views.Pages;

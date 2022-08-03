@@ -1,9 +1,4 @@
-﻿using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Input;
-using Wpf.Ui.Common.Interfaces;
-using Wpf.Ui.Controls.Interfaces;
-using WslToolbox.Gui2.Forms;
-using WslToolbox.Gui2.Models;
+﻿using Wpf.Ui.Common.Interfaces;
 using WslToolbox.Gui2.ViewModels;
 
 namespace WslToolbox.Gui2.Views.Pages;
@@ -16,6 +11,6 @@ public partial class Dashboard : INavigableView<DashboardViewModel>
 
         InitializeComponent();
     }
-    
+
     public DashboardViewModel ViewModel { get; }
 }
