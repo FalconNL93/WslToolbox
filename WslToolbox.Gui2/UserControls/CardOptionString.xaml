@@ -19,6 +19,9 @@
                     Text="{Binding DescriptionContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             </StackPanel>
         </ui:CardControl.Header>
-        <TextBox Text="{Binding Value, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="{Binding Value, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <ui:Button Appearance="Secondary" Content="Browse..." />
+        </StackPanel>
     </ui:CardControl>
 </UserControl>

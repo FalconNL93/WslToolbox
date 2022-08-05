@@ -10,7 +10,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:ControlsDictionary />
                 <ui:ThemesDictionary Theme="Dark" />
-                <ResourceDictionary Source="pack://application:,,,/WslToolbox.Gui2;component/Resources/ResourceDictionary.xaml" />
+
+                <!-- Generic -->
+                <ResourceDictionary
+                    Source="pack://application:,,,/WslToolbox.Gui2;component/Resources/ResourceDictionary.xaml" />
+
+                <!-- Page resources -->
+                <ResourceDictionary
+                    Source="pack://application:,,,/WslToolbox.Gui2;component/Resources/SettingsResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
