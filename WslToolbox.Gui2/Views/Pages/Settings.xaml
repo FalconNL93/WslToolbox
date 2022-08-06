@@ -28,6 +28,11 @@
                 HeaderContent="Default export folder"
                 DescriptionContent="Default path for exporting distributions"
                 Value="{Binding ViewModel.ModifiedAppConfig.DefaultExportFolder, Mode=TwoWay}" />
+            <userControls:CardOptionCombo
+                HeaderContent="Default export folder"
+                Options="{Binding ViewModel.ThemeOptions, Mode=OneWay}"
+                Value="{Binding ViewModel.ModifiedAppConfig.Theme, Mode=OneWay}"
+                DescriptionContent="Default path for exporting distributions" />
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <ui:Button

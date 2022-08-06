@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
@@ -38,6 +39,7 @@ public partial class Container : INavigationWindow
         navigationService.SetNavigationControl(RootNavigation);
 
         Loaded += (_, _) => LoadDefaultPage();
+        Watcher.Watch(this);
     }
 
     public ContainerViewModel ViewModel { get; }
@@ -74,7 +76,10 @@ public partial class Container : INavigationWindow
 
     private async void LoadDefaultPage()
     {
-        await Dispatcher.InvokeAsync(() => { Navigate(typeof(Dashboard)); });
+        await Dispatcher.InvokeAsync(() =>
+        {
+            Navigate(typeof(Dashboard));
+        });
     }
 
     private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)

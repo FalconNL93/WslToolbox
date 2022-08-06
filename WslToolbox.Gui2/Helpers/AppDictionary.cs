@@ -10,15 +10,16 @@ public class AppDictionary : ResourceDictionary
     private readonly List<string> _dictionaries = new()
     {
         "DefaultDictionary.xaml",
-        "SettingsDictionary.xaml",
+        "SettingsDictionary.xaml"
     };
-    
+
     public AppDictionary()
     {
         foreach (var dictionary in _dictionaries)
         {
             try
             {
+                Debug.Write($"Adding dictionary {dictionary}");
                 MergedDictionaries.Add(new ResourceDictionary
                 {
                     Source = new Uri($"pack://application:,,,/WslToolbox.Gui2;component/Resources/Dictionaries/{dictionary}", UriKind.Absolute)
