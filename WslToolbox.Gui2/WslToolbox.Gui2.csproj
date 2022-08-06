@@ -42,6 +42,7 @@
 
     <ItemGroup>
         <Folder Include="Resources\Icons" />
+        <Folder Include="Resources\Pages" />
     </ItemGroup>
 
 </Project>
