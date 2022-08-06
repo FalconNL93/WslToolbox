@@ -23,7 +23,7 @@
             <ComboBox
                 Margin="0,8,0,0"
                 ItemsSource="{Binding Options, Mode = OneWay,RelativeSource={RelativeSource AncestorType=UserControl}}"
-                SelectedItem="{Binding .Value, Mode = OneWay,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                SelectedItem="{Binding .Value, Mode = TwoWay,RelativeSource={RelativeSource AncestorType=UserControl}}" />
         </StackPanel>
     </ui:CardControl>
 </UserControl>
