@@ -13,7 +13,7 @@ public class SettingsViewModel : ObservableObject
 {
     private readonly ILogger<SettingsViewModel> _logger;
     private AppConfig? _appConfig;
-    private IEnumerable<string>? _themeOptions = Array.Empty<string>();
+    private readonly IEnumerable<string>? _themeOptions = Array.Empty<string>();
 
     public SettingsViewModel(
         ILogger<SettingsViewModel> logger,
@@ -55,6 +55,6 @@ public class SettingsViewModel : ObservableObject
     public IEnumerable<string>? ThemeOptions
     {
         get => _themeOptions;
-        private set => SetProperty(ref _themeOptions, value);
+        private init => SetProperty(ref _themeOptions, value);
     }
 }
