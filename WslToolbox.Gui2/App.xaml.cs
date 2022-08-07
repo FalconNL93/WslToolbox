@@ -21,7 +21,7 @@ namespace WslToolbox.Gui2;
 
 public partial class App
 {
-    private static readonly string? AppDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+    public static readonly string? AppDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()

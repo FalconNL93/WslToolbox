@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -60,5 +63,24 @@ public class DistributionService
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await UnregisterDistributionCommand.Execute(distributionClass);
+    }
+    
+    public async Task<string> OptimizeDistribution(DistributionModel distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        
+        _logger.LogInformation("Searching for VHDX files in {BasePath}", distribution.BasePath);
+        var virtualFileSystem = Directory.GetFiles(distribution.BasePath, "*.vhdx", SearchOption.TopDirectoryOnly);
+        _logger.LogInformation("Found virtual filesystems: {FileSystems}", virtualFileSystem.ToList());
+        _logger.LogInformation("Stopping WSL Services");
+        
+        _logger.LogInformation("Optimizing {FileSystem}.vhdx", virtualFileSystem.FirstOrDefault());
+        await StopServiceCommand.Execute();
+        await OptimizeDistributionCommand.Execute(
+            distributionClass, 
+            virtualFileSystem.FirstOrDefault(),
+            $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log");
+
+        return $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log";
     }
 }

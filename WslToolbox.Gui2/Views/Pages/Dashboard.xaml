@@ -118,6 +118,10 @@
                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.ExportDistribution}"
                                                CommandParameter="{Binding}" />
+                                    <ui:Button Content="Optimize"
+                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                AncestorType={x:Type Page}}, Path=DataContext.ViewModel.OptimizeDistribution}"
+                                               CommandParameter="{Binding}" />
                                 </StackPanel>
                             </Grid>
                         </ui:CardExpander>

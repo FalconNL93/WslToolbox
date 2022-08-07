@@ -12,8 +12,8 @@ namespace WslToolbox.Gui2.ViewModels;
 public class SettingsViewModel : ObservableObject
 {
     private readonly ILogger<SettingsViewModel> _logger;
-    private AppConfig? _appConfig;
     private readonly IEnumerable<string>? _themeOptions = Array.Empty<string>();
+    private AppConfig? _appConfig;
 
     public SettingsViewModel(
         ILogger<SettingsViewModel> logger,

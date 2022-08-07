@@ -15,7 +15,9 @@ namespace WslToolbox.Core
         public static CommandClass ExecuteCommand(string command,
             int timeout = 2000,
             bool elevated = false,
-            string executable = "cmd.exe")
+            string executable = "cmd.exe",
+            bool hidden = true
+        )
         {
             CommandClass wslProcess = new()
             {
@@ -24,13 +26,14 @@ namespace WslToolbox.Core
 
             Process p = new()
             {
-                StartInfo = ProcessStartInfo(command, elevated, executable)
+                StartInfo = ProcessStartInfo(command, elevated, executable, hidden)
             };
 
             p.Start();
 
             if (elevated)
             {
+                p.WaitForExit();
                 return wslProcess;
             }
 
@@ -45,21 +48,24 @@ namespace WslToolbox.Core
 
         private static ProcessStartInfo ProcessStartInfo(string arguments,
             bool elevated = false,
-            string executable = "cmd.exe")
+            string executable = "cmd.exe",
+            bool hidden = true)
         {
-            arguments = elevated
-                ? $"-NoExit {arguments}"
-                : $"/c {arguments}";
+            arguments = hidden
+                ? $"/c {arguments}"
+                : $"/k {arguments}";
+            
+            Debug.WriteLine(arguments);
 
             return new ProcessStartInfo
             {
                 UseShellExecute = elevated,
-                WindowStyle = elevated ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden,
+                WindowStyle = ProcessWindowStyle.Normal,
                 FileName = executable,
                 Arguments = $"{arguments}",
                 CreateNoWindow = !elevated,
                 RedirectStandardOutput = !elevated,
-                Verb = elevated ? "runas" : string.Empty
+                Verb = elevated ? "runas" : string.Empty,
             };
         }
 

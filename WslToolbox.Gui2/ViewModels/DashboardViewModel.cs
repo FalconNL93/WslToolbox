@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -22,6 +23,15 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     private readonly DistributionService _service;
     private readonly ISnackbarService _snackbarService;
 
+    public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
+    public RelayCommand<DistributionModel> DeleteDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> EditDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> ExportDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> OptimizeDistribution { get; }
+    public ObservableCollection<DistributionModel> Distributions { get; } = new();
+
     public DashboardViewModel(
         ILogger<DashboardViewModel> logger,
         DistributionService service,
@@ -40,15 +50,8 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         DeleteDistribution = new RelayCommand<DistributionModel>(OnDeleteDistribution);
         ExportDistribution = new AsyncRelayCommand<DistributionModel>(OnExportDistribution);
         EditDistribution = new AsyncRelayCommand<DistributionModel>(OnEditDistribution);
+        OptimizeDistribution = new AsyncRelayCommand<DistributionModel>(OnOptimizeDistribution);
     }
-
-    public AsyncRelayCommand RefreshDistributions { get; }
-    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
-    public RelayCommand<DistributionModel> DeleteDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> EditDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> ExportDistribution { get; }
-    public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
     public async void OnNavigatedTo()
     {
@@ -72,6 +75,31 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     private async Task OnExportDistribution(DistributionModel distribution)
     {
         await _service.ExportDistribution(distribution);
+    }
+
+    private async Task OnOptimizeDistribution(DistributionModel distribution)
+    {
+        var logFile = await _service.OptimizeDistribution(distribution);
+        var log = await File.ReadAllTextAsync(@"C:\Users\pvand\Dev\WslToolbox\WslToolbox.Gui2\bin\Debug\net6.0-windows\logs\diskpart-Ubuntu.log");
+        _dialogControl.ButtonRightName = "Close";
+        _dialogControl.ButtonLeftName = "Close";
+        _dialogControl.Content = new LogViewerForm
+        {
+            Distribution = distribution,
+            Log = log
+        };
+
+        var dialogResult = await _dialogControl.ShowAndWaitAsync();
+
+        switch (dialogResult)
+        {
+            case IDialogControl.ButtonPressed.Left:
+            case IDialogControl.ButtonPressed.Right:
+            case IDialogControl.ButtonPressed.None:
+            default:
+                _dialogControl.Hide();
+                break;
+        }
     }
 
     private async Task OnEditDistribution(DistributionModel? distribution)
