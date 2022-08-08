@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +11,10 @@ using Wpf.Ui.Common.Interfaces;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm.Contracts;
-using WslToolbox.Gui2.Forms;
+using WslToolbox.Gui2.Extensions;
 using WslToolbox.Gui2.Models;
 using WslToolbox.Gui2.Services;
+using WslToolbox.Gui2.Views.Forms;
 
 namespace WslToolbox.Gui2.ViewModels;
 
@@ -45,8 +47,10 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         _dialogControl = dialogService.GetDialogControl();
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
-        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution, model => model?.State != DistributionService.StateRunning);
-        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution, model => model?.State == DistributionService.StateRunning);
+        StartDistribution = new AsyncRelayCommand<DistributionModel>(OnStartDistribution,
+            model => model?.State != DistributionService.StateRunning);
+        StopDistribution = new AsyncRelayCommand<DistributionModel>(OnStopDistribution,
+            model => model?.State == DistributionService.StateRunning);
         DeleteDistribution = new RelayCommand<DistributionModel>(OnDeleteDistribution);
         ExportDistribution = new AsyncRelayCommand<DistributionModel>(OnExportDistribution);
         EditDistribution = new AsyncRelayCommand<DistributionModel>(OnEditDistribution);
@@ -79,26 +83,20 @@ public class DashboardViewModel : ObservableObject, INavigationAware
 
     private async Task OnOptimizeDistribution(DistributionModel distribution)
     {
-        var logFile = await _service.OptimizeDistribution(distribution);
-        var log = await File.ReadAllTextAsync(@"C:\Users\pvand\Dev\WslToolbox\WslToolbox.Gui2\bin\Debug\net6.0-windows\logs\diskpart-Ubuntu.log");
-        _dialogControl.ButtonRightName = "Close";
-        _dialogControl.ButtonLeftName = "Close";
-        _dialogControl.Content = new LogViewerForm
+        try
         {
-            Distribution = distribution,
-            Log = log
-        };
-
-        var dialogResult = await _dialogControl.ShowAndWaitAsync();
-
-        switch (dialogResult)
+            var logFile = await _service.OptimizeDistribution(distribution);
+            var log = await File.ReadAllTextAsync(logFile);
+            await _dialogControl.ShowAndWaitAsync(content: new LogViewerForm
+            {
+                Distribution = distribution,
+                Log = log,
+                ReadOnly = true
+            });
+        }
+        catch (Exception e)
         {
-            case IDialogControl.ButtonPressed.Left:
-            case IDialogControl.ButtonPressed.Right:
-            case IDialogControl.ButtonPressed.None:
-            default:
-                _dialogControl.Hide();
-                break;
+            await _dialogControl.ShowAndWaitAsync("Unable to optimize distribution");
         }
     }
 
@@ -118,7 +116,8 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         _dialogControl.Content = new EditDistributionForm {Distribution = model.NewModel};
         _dialogControl.ButtonLeftName = "Save";
         _dialogControl.ButtonRightName = "Cancel";
-        var dialogResult = await _dialogControl.ShowAndWaitAsync($"Rename - {model.NewModel.Name}", "Enter a new name for your distribution");
+        var dialogResult = await _dialogControl.ShowAndWaitAsync($"Rename - {model.NewModel.Name}",
+            "Enter a new name for your distribution");
 
         switch (dialogResult)
         {
@@ -153,9 +152,6 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     {
         Distributions.Clear();
         (await _service.ListDistributions()).ToList()
-            .ForEach(distribution =>
-            {
-                Distributions.Add(distribution);
-            });
+            .ForEach(distribution => { Distributions.Add(distribution); });
     }
 }

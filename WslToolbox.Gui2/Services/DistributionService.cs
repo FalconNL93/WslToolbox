@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,12 +32,14 @@ public class DistributionService
 
     public void RenameDistributions(UpdateModel<DistributionModel> distribution)
     {
-        RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
+        RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel),
+            distribution.NewModel.Name);
     }
 
     public async Task ExportDistribution(DistributionModel distribution)
     {
-        await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution), "C:\\Users\\Peter\\Downloads\\export\\blabla.tar.gz");
+        await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution),
+            "C:\\Users\\Peter\\Downloads\\export\\blabla.tar.gz");
     }
 
     public async Task<IEnumerable<DistributionModel>> ListDistributions()
@@ -64,22 +66,30 @@ public class DistributionService
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await UnregisterDistributionCommand.Execute(distributionClass);
     }
-    
+
     public async Task<string> OptimizeDistribution(DistributionModel distribution)
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
-        
+
         _logger.LogInformation("Searching for VHDX files in {BasePath}", distribution.BasePath);
         var virtualFileSystem = Directory.GetFiles(distribution.BasePath, "*.vhdx", SearchOption.TopDirectoryOnly);
         _logger.LogInformation("Found virtual filesystems: {FileSystems}", virtualFileSystem.ToList());
         _logger.LogInformation("Stopping WSL Services");
-        
+
         _logger.LogInformation("Optimizing {FileSystem}.vhdx", virtualFileSystem.FirstOrDefault());
-        await StopServiceCommand.Execute();
-        await OptimizeDistributionCommand.Execute(
-            distributionClass, 
-            virtualFileSystem.FirstOrDefault(),
-            $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log");
+        try
+        {
+            await StopServiceCommand.Execute();
+            await OptimizeDistributionCommand.Execute(
+                distributionClass,
+                virtualFileSystem.FirstOrDefault(),
+                $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log");
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Could not optimize distribution", e);
+        }
+
 
         return $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log";
     }
