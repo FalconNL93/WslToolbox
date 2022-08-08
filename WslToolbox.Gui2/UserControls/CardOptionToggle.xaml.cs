@@ -9,9 +9,11 @@ public partial class CardOptionToggle : UserControl
         DependencyProperty.Register(nameof(HeaderContent), nameof(HeaderContent).GetType(), typeof(CardOptionToggle));
 
     public static readonly DependencyProperty DescriptionProperty =
-        DependencyProperty.Register(nameof(DescriptionContent), nameof(DescriptionContent).GetType(), typeof(CardOptionToggle));
+        DependencyProperty.Register(nameof(DescriptionContent), nameof(DescriptionContent).GetType(),
+            typeof(CardOptionToggle));
 
-    private readonly DependencyProperty _cardOptionProperty = DependencyProperty.Register(nameof(Value), nameof(Value).GetType(), typeof(CardOptionToggle), new FrameworkPropertyMetadata {BindsTwoWayByDefault = true});
+    private readonly DependencyProperty _cardOptionProperty = DependencyProperty.Register(nameof(Value),
+        nameof(Value).GetType(), typeof(CardOptionToggle), new FrameworkPropertyMetadata {BindsTwoWayByDefault = true});
 
     public CardOptionToggle()
     {

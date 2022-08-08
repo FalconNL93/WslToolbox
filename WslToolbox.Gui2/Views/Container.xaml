@@ -95,6 +95,7 @@
         </Grid>
 
         <ui:Dialog x:Name="FormDialog" Grid.Row="0" Grid.RowSpan="2" DialogHeight="280" />
-        <ui:Snackbar x:Name="MessageSnackbar" Grid.Row="1" MaxWidth="600" Appearance="Secondary" CloseButtonEnabled="True" Timeout="5000" />
+        <ui:Snackbar x:Name="MessageSnackbar" Grid.Row="1" MaxWidth="600" Appearance="Secondary"
+                     CloseButtonEnabled="True" Timeout="5000" />
     </Grid>
 </ui:UiWindow>

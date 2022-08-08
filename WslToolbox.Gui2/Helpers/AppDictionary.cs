@@ -22,7 +22,9 @@ public class AppDictionary : ResourceDictionary
                 Debug.Write($"Adding dictionary {dictionary}");
                 MergedDictionaries.Add(new ResourceDictionary
                 {
-                    Source = new Uri($"pack://application:,,,/WslToolbox.Gui2;component/Resources/Dictionaries/{dictionary}", UriKind.Absolute)
+                    Source = new Uri(
+                        $"pack://application:,,,/WslToolbox.Gui2;component/Resources/Dictionaries/{dictionary}",
+                        UriKind.Absolute)
                 });
             }
             catch (Exception e)

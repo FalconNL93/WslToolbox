@@ -9,9 +9,11 @@ public partial class CardOptionString : UserControl
         DependencyProperty.Register(nameof(HeaderContent), nameof(HeaderContent).GetType(), typeof(CardOptionString));
 
     public static readonly DependencyProperty DescriptionProperty =
-        DependencyProperty.Register(nameof(DescriptionContent), nameof(DescriptionContent).GetType(), typeof(CardOptionString));
+        DependencyProperty.Register(nameof(DescriptionContent), nameof(DescriptionContent).GetType(),
+            typeof(CardOptionString));
 
-    private readonly DependencyProperty _cardOptionProperty = DependencyProperty.Register(nameof(Value), nameof(Value).GetType(), typeof(CardOptionString), new FrameworkPropertyMetadata {BindsTwoWayByDefault = true});
+    private readonly DependencyProperty _cardOptionProperty = DependencyProperty.Register(nameof(Value),
+        nameof(Value).GetType(), typeof(CardOptionString), new FrameworkPropertyMetadata {BindsTwoWayByDefault = true});
 
     public CardOptionString()
     {

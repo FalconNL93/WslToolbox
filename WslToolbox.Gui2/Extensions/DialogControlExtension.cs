@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Wpf.Ui.Controls.Interfaces;
+using WslToolbox.Gui2.Models;
 
 namespace WslToolbox.Gui2.Extensions;
 
@@ -9,33 +10,35 @@ public static class DialogControlExtension
     public static async Task ShowAndWaitAsync
     (
         this IDialogControl dialogControl,
-        string message = "",
-        string title = "",
-        object? content = null,
-        Action? buttonRightAction = null,
-        Action? buttonLeftAction = null,
-        string buttonRightName = "Cancel",
-        string buttonLeftName = "OK"
+        DialogControlModel model,
+        Action? primaryButtonAction = null,
+        Action? secondaryButtonAction = null
     )
     {
-        dialogControl.ButtonRightName = buttonRightName;
-        dialogControl.ButtonLeftName = buttonLeftName;
-        dialogControl.Message = message;
-        dialogControl.Title = title;
-        dialogControl.Content = content;
+        dialogControl.ButtonLeftName = model.PrimaryButtonName;
+        dialogControl.ButtonRightName = model.SecondaryButtonName;
+        dialogControl.Content = model.Content;
 
-        if (buttonLeftAction != null)
+        if (primaryButtonAction != null)
         {
-            dialogControl.ButtonLeftClick += (_, _) => buttonLeftAction();
+            dialogControl.ButtonLeftClick += (_, _) =>
+            {
+                primaryButtonAction();
+                dialogControl.Hide();
+            };
         }
         else
         {
             dialogControl.ButtonLeftClick += (_, _) => dialogControl.Hide();
         }
 
-        if (buttonRightAction != null)
+        if (secondaryButtonAction != null)
         {
-            dialogControl.ButtonRightClick += (_, _) => buttonRightAction();
+            dialogControl.ButtonRightClick += (_, _) =>
+            {
+                secondaryButtonAction();
+                dialogControl.Hide();
+            };
         }
         else
         {

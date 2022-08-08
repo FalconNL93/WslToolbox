@@ -25,15 +25,6 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     private readonly DistributionService _service;
     private readonly ISnackbarService _snackbarService;
 
-    public AsyncRelayCommand RefreshDistributions { get; }
-    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
-    public RelayCommand<DistributionModel> DeleteDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> EditDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> ExportDistribution { get; }
-    public AsyncRelayCommand<DistributionModel> OptimizeDistribution { get; }
-    public ObservableCollection<DistributionModel> Distributions { get; } = new();
-
     public DashboardViewModel(
         ILogger<DashboardViewModel> logger,
         DistributionService service,
@@ -56,6 +47,15 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         EditDistribution = new AsyncRelayCommand<DistributionModel>(OnEditDistribution);
         OptimizeDistribution = new AsyncRelayCommand<DistributionModel>(OnOptimizeDistribution);
     }
+
+    public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<DistributionModel> StartDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> StopDistribution { get; }
+    public RelayCommand<DistributionModel> DeleteDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> EditDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> ExportDistribution { get; }
+    public AsyncRelayCommand<DistributionModel> OptimizeDistribution { get; }
+    public ObservableCollection<DistributionModel> Distributions { get; } = new();
 
     public async void OnNavigatedTo()
     {
@@ -87,17 +87,19 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         {
             var logFile = await _service.OptimizeDistribution(distribution);
             var log = await File.ReadAllTextAsync(logFile);
-            await _dialogControl.ShowAndWaitAsync(content: new LogViewerForm
+            await _dialogControl.ShowAndWaitAsync(new DialogControlModel
             {
-                Distribution = distribution,
-                Log = log,
-                ReadOnly = true
+                Content = new LogViewerForm
+                {
+                    Distribution = distribution,
+                    Log = log,
+                    ReadOnly = true
+                }
             });
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Unable to optimize distribution");
-            await _dialogControl.ShowAndWaitAsync("Unable to optimize distribution");
         }
     }
 
@@ -114,24 +116,12 @@ public class DashboardViewModel : ObservableObject, INavigationAware
             NewModel = distribution.Clone()
         };
 
-        _dialogControl.Content = new EditDistributionForm {Distribution = model.NewModel};
-        _dialogControl.ButtonLeftName = "Save";
-        _dialogControl.ButtonRightName = "Cancel";
-        var dialogResult = await _dialogControl.ShowAndWaitAsync($"Rename - {model.NewModel.Name}",
-            "Enter a new name for your distribution");
-
-        switch (dialogResult)
+        await _dialogControl.ShowAndWaitAsync(new DialogControlModel
         {
-            case IDialogControl.ButtonPressed.Left:
-                _service.RenameDistributions(model);
-                _dialogControl.Hide();
-                break;
-            case IDialogControl.ButtonPressed.Right:
-            case IDialogControl.ButtonPressed.None:
-            default:
-                _dialogControl.Hide();
-                break;
-        }
+            PrimaryButtonName = "Save",
+            Content = new EditDistributionForm {Distribution = distribution},
+            PrimaryAction = () => _service.RenameDistributions(model)
+        });
     }
 
     private void OnDeleteDistribution(DistributionModel distribution)

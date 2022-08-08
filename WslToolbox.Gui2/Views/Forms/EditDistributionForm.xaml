@@ -5,6 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <StackPanel>
+        <TextBlock
+            FontSize="13"
+            FontWeight="Medium"
+            Text="Enter a new name for your distribution" />
         <TextBox Text="{Binding Distribution.Name, RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </StackPanel>
 </UserControl>
