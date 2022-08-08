@@ -96,6 +96,7 @@ public class DashboardViewModel : ObservableObject, INavigationAware
         }
         catch (Exception e)
         {
+            _logger.LogError(e, "Unable to optimize distribution");
             await _dialogControl.ShowAndWaitAsync("Unable to optimize distribution");
         }
     }
