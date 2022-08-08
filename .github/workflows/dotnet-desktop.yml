@@ -2,9 +2,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "new-ui" ]
+    branches: [ "master", "test" ]
   pull_request:
-    branches: [ "new-ui" ]
+    branches: [ "master", "test" ]
 
 jobs:
 
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
 
