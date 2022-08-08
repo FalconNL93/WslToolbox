@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +15,14 @@ using WslToolbox.Gui2.Services;
 using WslToolbox.Gui2.ViewModels;
 using WslToolbox.Gui2.Views;
 using WslToolbox.Gui2.Views.Pages;
+using static System.Reflection.Assembly;
 
 namespace WslToolbox.Gui2;
 
 public partial class App
 {
-    public static readonly string? AppDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+    public static readonly string? AppDirectory = Path.GetDirectoryName(GetEntryAssembly()?.Location);
+    public static readonly string? AssemblyVersionFull = GetExecutingAssembly().GetName().Version?.ToString();
 
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()
@@ -46,10 +47,9 @@ public partial class App
 
             services.AddSingleton<DistributionService>();
 
-            services.AddScoped<Dashboard>();
-            services.AddScoped<DashboardViewModel>();
-            services.AddScoped<Settings>();
-            services.AddScoped<SettingsViewModel>();
+            services.AddPage<Dashboard, DashboardViewModel>();
+            services.AddPage<Settings, SettingsViewModel>();
+            services.AddPage<Information, InformationViewModel>();
 
             services.AddAutoMapper(typeof(App));
 

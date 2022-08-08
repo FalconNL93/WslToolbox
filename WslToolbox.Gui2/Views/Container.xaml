@@ -66,6 +66,12 @@
                     <ui:NavigationSeparator />
                     <ui:NavigationItem
                         Cache="True"
+                        Content="Info"
+                        Icon="Info24"
+                        PageTag="info"
+                        PageType="{x:Type pages:Information}" />
+                    <ui:NavigationItem
+                        Cache="True"
                         Content="Settings"
                         Icon="Settings24"
                         PageTag="settings"
