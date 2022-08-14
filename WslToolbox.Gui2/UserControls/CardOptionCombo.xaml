@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WslToolbox.Gui2.UserControls.CardOptionCombo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <ui:CardControl>
+        <ui:CardControl.Header>
+            <StackPanel>
+                <TextBlock
+                    FontSize="13"
+                    FontWeight="Medium"
+                    Text="{Binding HeaderContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                    Text="{Binding DescriptionContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            </StackPanel>
+        </ui:CardControl.Header>
+        <StackPanel Orientation="Horizontal">
+            <ComboBox
+                Margin="0,8,0,0"
+                ItemsSource="{Binding Options, Mode = OneWay,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                SelectedItem="{Binding .Value, Mode = TwoWay,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </StackPanel>
+    </ui:CardControl>
+</UserControl>

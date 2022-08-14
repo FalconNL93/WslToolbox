@@ -15,7 +15,10 @@ namespace WslToolbox.Core.Commands.Distribution
             DistributionRenameStarted?.Invoke(distribution, EventArgs.Empty);
             await TerminateDistributionCommand.Execute(distribution);
             await Task
-                .Run(() => { RegistryHelper.ChangeKey(distribution, "DistributionName", newName); })
+                .Run(() =>
+                {
+                    RegistryHelper.ChangeKey(distribution, "DistributionName", newName);
+                })
                 .ConfigureAwait(true);
 
             await StartDistributionCommand.Execute(distribution);

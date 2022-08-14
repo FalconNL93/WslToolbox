@@ -15,17 +15,31 @@ namespace WslToolbox.Core.Commands.Distribution
         {
             var openShell = await CommandClass.StartShellAsync(distribution);
 
-            if (openShell.ExitCode != 0) return;
-            if (distribution.IsInstalled) return;
+            if (openShell.ExitCode != 0)
+            {
+                return;
+            }
+
+            if (distribution.IsInstalled)
+            {
+                return;
+            }
+
             ToolboxClass.OnRefreshRequired(2000);
-            if (ToolboxClass.DistributionByName(distribution.Name) != null) return;
+            if (ToolboxClass.DistributionByName(distribution.Name) != null)
+            {
+                return;
+            }
 
             var installTries = 0;
             while (ToolboxClass.DistributionByName(distribution.Name) == null ||
                    ToolboxClass.DistributionByName(distribution.Name).IsInstalled == false)
             {
                 Debug.WriteLine($"Checking install status attempt {installTries}/{MaximumInstallTries}");
-                if (installTries >= MaximumInstallTries) return;
+                if (installTries >= MaximumInstallTries)
+                {
+                    return;
+                }
 
                 await Task.Delay(RefreshRateInstall);
                 installTries++;

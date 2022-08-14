@@ -15,7 +15,10 @@ namespace WslToolbox.Core.Commands.Distribution
             DistributionChangeBasePathStarted?.Invoke(distribution, EventArgs.Empty);
             await TerminateDistributionCommand.Execute(distribution);
             await Task
-                .Run(() => { RegistryHelper.ChangeKey(distribution, "BasePath", newBasePath); })
+                .Run(() =>
+                {
+                    RegistryHelper.ChangeKey(distribution, "BasePath", newBasePath);
+                })
                 .ConfigureAwait(true);
 
             await StartDistributionCommand.Execute(distribution);

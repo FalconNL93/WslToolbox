@@ -77,12 +77,19 @@ namespace WslToolbox.Core
                 {
                     var tabbed = line.Split("\t");
 
-                    if (tabbed[1] != name) continue;
+                    if (tabbed[1] != name)
+                    {
+                        continue;
+                    }
 
                     if (_stateCache.ContainsKey(name))
+                    {
                         _stateCache[name] = tabbed[2];
+                    }
                     else
+                    {
                         _stateCache.Add(name, tabbed[2]);
+                    }
                 }
             }
             catch (Exception)

@@ -13,7 +13,9 @@ namespace WslToolbox.Core.Helpers
                 $"{GetExecutingAssembly().GetName().Version?.Major}.{GetExecutingAssembly().GetName().Version?.Minor}";
 
             if (GetExecutingAssembly().GetName().Version?.Build != 0 || showZeroBuild)
+            {
                 version = $"{version}.{GetExecutingAssembly().GetName().Version?.Build}";
+            }
 
             return version;
         }

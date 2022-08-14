@@ -1,0 +1,50 @@
+﻿<ui:UiPage
+    x:Class="WslToolbox.Gui2.Views.Pages.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:WslToolbox.Gui2.Views.Pages"
+    xmlns:userControls="clr-namespace:WslToolbox.Gui2.UserControls"
+    Title="Settings"
+    d:DataContext="{d:DesignInstance local:Settings, IsDesignTimeCreatable=False}"
+    d:DesignHeight="750"
+    d:DesignWidth="800"
+    Scrollable="True"
+    mc:Ignorable="d">
+
+    <Grid Margin="18,0,18,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <userControls:CardOptionToggle
+                HeaderContent="Docker distributions"
+                DescriptionContent="Hide docker distributions in overview"
+                Value="{Binding ViewModel.ModifiedAppConfig.HideDockerDist, Mode=TwoWay}" />
+            <userControls:CardOptionString
+                HeaderContent="Default export folder"
+                DescriptionContent="Default path for exporting distributions"
+                Value="{Binding ViewModel.ModifiedAppConfig.DefaultExportFolder, Mode=TwoWay}" />
+            <userControls:CardOptionCombo
+                HeaderContent="Application theme"
+                Options="{Binding ViewModel.ThemeOptions, Mode=OneWay}"
+                Value="{Binding ViewModel.ModifiedAppConfig.Theme, Mode=TwoWay}"
+                DescriptionContent="Change the application theme" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <ui:Button
+                VerticalAlignment="Center"
+                Appearance="Primary"
+                Content="Save"
+                Command="{Binding ViewModel.SaveConfiguration}" />
+            <ui:Button
+                VerticalAlignment="Center"
+                Appearance="Secondary"
+                Content="Revert to defaults"
+                Command="{Binding ViewModel.RevertConfiguration}" />
+        </StackPanel>
+    </Grid>
+</ui:UiPage>

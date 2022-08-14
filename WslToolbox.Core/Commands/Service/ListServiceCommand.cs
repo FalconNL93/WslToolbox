@@ -14,7 +14,11 @@ namespace WslToolbox.Core.Commands.Service
 
             var distributionList = distributionClass.ListDistributions(distributionListOutput.Output);
 
-            if (!withoutDocker) return await Task.FromResult(distributionList).ConfigureAwait(true);
+            if (!withoutDocker)
+            {
+                return await Task.FromResult(distributionList).ConfigureAwait(true);
+            }
+
             _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop");
             _ = distributionList.RemoveAll(distro => distro.Name == "docker-desktop-data");
 

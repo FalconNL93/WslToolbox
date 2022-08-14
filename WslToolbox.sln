@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Gui", "WslToolbox.Gui\WslToolbox.Gui.csproj", "{9F9E429B-51BC-44BB-934A-735ECB9534F7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Core", "WslToolbox.Core\WslToolbox.Core.csproj", "{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.Gui2", "WslToolbox.Gui2\WslToolbox.Gui2.csproj", "{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F9E429B-51BC-44BB-934A-735ECB9534F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBBA6A8-2B45-49D3-A22A-0F3CF665BB30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
