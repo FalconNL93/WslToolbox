@@ -46,6 +46,7 @@ public partial class App
             services.AddScoped<ContainerViewModel>();
 
             services.AddSingleton<DistributionService>();
+            services.AddTransient<UpdateService>();
 
             services.AddPage<Dashboard, DashboardViewModel>();
             services.AddPage<Settings, SettingsViewModel>();

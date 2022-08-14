@@ -18,9 +18,28 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="{Binding ViewModel.AppVersion, StringFormat=App Version: {0}}" />
-            <ui:Hyperlink NavigateUri="https://github.com/FalconNL93/WslToolbox" Icon="Globe16" Content="WSL Toolbox on Github" />
+        <StackPanel Orientation="Vertical" Style="{StaticResource Vertical}">
+            <ui:CardControl>
+                <ui:CardControl.Header>
+                    <StackPanel Style="{StaticResource Vertical}">
+                        <TextBlock
+                            FontSize="13"
+                            FontWeight="Medium"
+                            Text="Version information" />
+                        <TextBlock Text="{Binding ViewModel.AppVersion, StringFormat=GUI: {0}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="WrapWithOverflow"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding ViewModel.CoreVersion, StringFormat=Core: {0}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="WrapWithOverflow"
+                                   TextTrimming="CharacterEllipsis" />
+                        <ui:Button Content="Check for updates"
+                                   Command="{Binding ViewModel.CheckForUpdates}" />
+                        <TextBlock Text="{Binding ViewModel.LatestVersion, StringFormat=Latest version: {0}}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+            <ui:Button Content="Open log file"
+                       Command="{Binding ViewModel.OpenLogFile}" />
         </StackPanel>
     </Grid>
 </ui:UiPage>

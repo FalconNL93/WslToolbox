@@ -24,17 +24,20 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly DistributionService _service;
     private readonly ISnackbarService _snackbarService;
+    private readonly UpdateService _updateService;
 
     public DashboardViewModel(
         ILogger<DashboardViewModel> logger,
         DistributionService service,
         ISnackbarService snackbarService,
-        IDialogService dialogService
+        IDialogService dialogService,
+        UpdateService updateService
     )
     {
         _logger = logger;
         _service = service;
         _snackbarService = snackbarService;
+        _updateService = updateService;
         _dialogControl = dialogService.GetDialogControl();
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
