@@ -9,18 +9,8 @@ namespace WslToolbox.Gui2.ViewModels;
 public class ServiceViewModel : ObservableObject
 {
     private readonly ILogger<ServiceViewModel> _logger;
-    public AsyncRelayCommand FetchServiceStatus { get; }
-    public AsyncRelayCommand StartService { get; }
-    public AsyncRelayCommand StopService { get; }
-    public AsyncRelayCommand RestartService { get; }
 
     private bool _isRunning;
-
-    public bool IsRunning
-    {
-        get => _isRunning;
-        set => SetProperty(ref _isRunning, value);
-    }
 
     public ServiceViewModel(ILogger<ServiceViewModel> logger)
     {
@@ -34,7 +24,27 @@ public class ServiceViewModel : ObservableObject
         FetchServiceStatus.ExecuteAsync(null);
     }
 
-    private async Task OnFetchServiceStatus() => IsRunning = await DistributionService.ServiceStatus();
+    public AsyncRelayCommand FetchServiceStatus { get; }
+    public AsyncRelayCommand StartService { get; set; }
+    public AsyncRelayCommand StopService { get; set; }
+    public AsyncRelayCommand RestartService { get; }
+
+    public bool IsRunning
+    {
+        get => _isRunning;
+        set
+        {
+            SetProperty(ref _isRunning, value);
+            StartService.NotifyCanExecuteChanged();
+            StopService.NotifyCanExecuteChanged();
+            RestartService.NotifyCanExecuteChanged();
+        }
+    }
+
+    private async Task OnFetchServiceStatus()
+    {
+        IsRunning = await DistributionService.ServiceStatus();
+    }
 
     private async Task OnStartService()
     {

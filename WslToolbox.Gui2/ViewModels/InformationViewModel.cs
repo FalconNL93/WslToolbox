@@ -61,7 +61,7 @@ public class InformationViewModel : ObservableObject
             _logger.LogInformation("Version from manifest: {Version}", updateManifest.Version);
             _updateService.UpdateAvailable(updateManifest);
             LatestVersion = updateManifest.Version;
-            
+
             await Task.Delay(TimeSpan.FromMinutes(1));
         }
         catch (Exception e)

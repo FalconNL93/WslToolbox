@@ -101,8 +101,15 @@ public class DistributionService
         return serviceStatus;
     }
 
-    public static async Task ServiceStart() => await StartServiceCommand.Execute();
-    public static async Task ServiceStop() => await StopServiceCommand.Execute();
+    public static async Task ServiceStart()
+    {
+        await StartServiceCommand.Execute();
+    }
+
+    public static async Task ServiceStop()
+    {
+        await StopServiceCommand.Execute();
+    }
 
     public static async Task ServiceRestart()
     {
