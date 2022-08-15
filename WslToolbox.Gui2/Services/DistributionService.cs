@@ -93,4 +93,20 @@ public class DistributionService
 
         return $"{App.AppDirectory}/logs/diskpart-{distribution.Name}.log";
     }
+
+    public static async Task<bool> ServiceStatus()
+    {
+        var serviceStatus = await StatusServiceCommand.ServiceIsRunning();
+
+        return serviceStatus;
+    }
+
+    public static async Task ServiceStart() => await StartServiceCommand.Execute();
+    public static async Task ServiceStop() => await StopServiceCommand.Execute();
+
+    public static async Task ServiceRestart()
+    {
+        await StopServiceCommand.Execute();
+        await StartServiceCommand.Execute();
+    }
 }

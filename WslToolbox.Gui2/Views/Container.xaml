@@ -55,27 +55,13 @@
                 TransitionDuration="200"
                 TransitionType="FadeInWithSlide">
                 <ui:NavigationStore.Items>
-                    <ui:NavigationItem
-                        Cache="True"
-                        Content="Home"
-                        Icon="Home24"
-                        PageTag="dashboard"
-                        PageType="{x:Type pages:Dashboard}" />
+                    <ui:NavigationItem Cache="True" Content="Home" Icon="Home24" PageTag="dashboard" PageType="{x:Type pages:Dashboard}" />
+                    <ui:NavigationItem Cache="True" Content="Service" Icon="Home24" PageTag="service" PageType="{x:Type pages:Service}" />
                 </ui:NavigationStore.Items>
                 <ui:NavigationStore.Footer>
                     <ui:NavigationSeparator />
-                    <ui:NavigationItem
-                        Cache="True"
-                        Content="Info"
-                        Icon="Info24"
-                        PageTag="info"
-                        PageType="{x:Type pages:Information}" />
-                    <ui:NavigationItem
-                        Cache="True"
-                        Content="Settings"
-                        Icon="Settings24"
-                        PageTag="settings"
-                        PageType="{x:Type pages:Settings}" />
+                    <ui:NavigationItem Cache="True" Content="Info" Icon="Info24" PageTag="info" PageType="{x:Type pages:Information}" />
+                    <ui:NavigationItem Cache="True" Content="Settings" Icon="Settings24" PageTag="settings" PageType="{x:Type pages:Settings}" />
                 </ui:NavigationStore.Footer>
             </ui:NavigationStore>
 

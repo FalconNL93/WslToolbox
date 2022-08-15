@@ -53,6 +53,7 @@ public partial class App
             services.AddPage<Dashboard, DashboardViewModel>();
             services.AddPage<Settings, SettingsViewModel>();
             services.AddPage<Information, InformationViewModel>();
+            services.AddPage<Service, ServiceViewModel>();
 
             services.AddAutoMapper(typeof(App));
 
