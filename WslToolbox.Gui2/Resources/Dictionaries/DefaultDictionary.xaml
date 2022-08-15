@@ -19,7 +19,15 @@
             </Style>
 
             <Style TargetType="userControls:CardOptionToggle">
-                <Setter Property="Margin" Value="0,0,0,5" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+
+            <Style TargetType="userControls:CardOptionString">
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+
+            <Style TargetType="userControls:CardOptionCombo">
+                <Setter Property="Margin" Value="0,0,0,10" />
             </Style>
         </Style.Resources>
     </Style>
@@ -29,6 +37,9 @@
         <Style.Resources>
             <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
                 <Setter Property="Margin" Value="0,5,0,5" />
+            </Style>
+            <Style TargetType="{x:Type ui:CardControl}" BasedOn="{StaticResource {x:Type ui:CardControl}}">
+                <Setter Property="Margin" Value="0,0,0,10" />
             </Style>
         </Style.Resources>
     </Style>

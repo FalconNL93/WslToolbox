@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using WslToolbox.Core.Helpers;
+using WslToolbox.Gui2.Helpers;
 using WslToolbox.Gui2.Services;
 
 namespace WslToolbox.Gui2.ViewModels;
@@ -22,12 +23,18 @@ public class InformationViewModel : ObservableObject
 
         CheckForUpdates = new AsyncRelayCommand(OnCheckForUpdates);
         OpenLogFile = new RelayCommand(OnOpenLogFile);
+        OpenConfigFile = new RelayCommand(OnOpenConfigFile, () => File.Exists(App.ConfigFile));
     }
 
     public string? AppVersion { get; } = App.AssemblyVersionFull;
+
     public string? CoreVersion { get; } = AssemblyHelper.AssemblyVersionFull;
+
     public AsyncRelayCommand CheckForUpdates { get; }
+
     public RelayCommand OpenLogFile { get; }
+
+    public RelayCommand OpenConfigFile { get; }
 
     public string LatestVersion
     {
@@ -54,6 +61,8 @@ public class InformationViewModel : ObservableObject
             _logger.LogInformation("Version from manifest: {Version}", updateManifest.Version);
             _updateService.UpdateAvailable(updateManifest);
             LatestVersion = updateManifest.Version;
+            
+            await Task.Delay(TimeSpan.FromMinutes(1));
         }
         catch (Exception e)
         {
@@ -65,21 +74,23 @@ public class InformationViewModel : ObservableObject
     {
         try
         {
-            var logOpener = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "explorer",
-                    Arguments = "\"" + $@"{App.AppDirectory}\logs\{AppDomain.CurrentDomain.FriendlyName}.log" + "\""
-                }
-            };
-
-            logOpener.Start();
+            FileHelper.OpenFile(App.LogFile);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Unable to execute {Path}",
-                "\"" + $@"{App.AppDirectory}\logs\{AppDomain.CurrentDomain.FriendlyName}.log" + "\"");
+            _logger.LogError(e, "Unable to open log file");
+        }
+    }
+
+    private void OnOpenConfigFile()
+    {
+        try
+        {
+            FileHelper.OpenFile(App.ConfigFile);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unable to open config file");
         }
     }
 }

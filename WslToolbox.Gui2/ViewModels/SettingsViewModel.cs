@@ -36,7 +36,10 @@ public class SettingsViewModel : ObservableObject
             options.Save(ModifiedAppConfig);
         });
 
-        RevertConfiguration = new RelayCommand(() => { AppConfig = new AppConfig(); });
+        RevertConfiguration = new RelayCommand(() =>
+        {
+            AppConfig = new AppConfig();
+        });
     }
 
     public RelayCommand SaveConfiguration { get; }

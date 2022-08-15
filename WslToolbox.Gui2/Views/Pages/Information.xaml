@@ -19,6 +19,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Style="{StaticResource Vertical}">
+            <StackPanel Orientation="Horizontal">
+                <ui:Button Content="Open log file"
+                           Command="{Binding ViewModel.OpenLogFile}" />
+                <ui:Button Content="Open config file"
+                           Command="{Binding ViewModel.OpenConfigFile}" />
+            </StackPanel>
+
             <ui:CardControl>
                 <ui:CardControl.Header>
                     <StackPanel Style="{StaticResource Vertical}">
@@ -38,8 +45,6 @@
                     </StackPanel>
                 </ui:CardControl.Header>
             </ui:CardControl>
-            <ui:Button Content="Open log file"
-                       Command="{Binding ViewModel.OpenLogFile}" />
         </StackPanel>
     </Grid>
 </ui:UiPage>

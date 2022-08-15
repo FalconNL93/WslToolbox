@@ -146,6 +146,9 @@ public class DashboardViewModel : ObservableObject, INavigationAware
     {
         Distributions.Clear();
         (await _service.ListDistributions()).ToList()
-            .ForEach(distribution => { Distributions.Add(distribution); });
+            .ForEach(distribution =>
+            {
+                Distributions.Add(distribution);
+            });
     }
 }

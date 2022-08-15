@@ -23,6 +23,8 @@ public partial class App
 {
     public static readonly string? AppDirectory = Path.GetDirectoryName(GetEntryAssembly()?.Location);
     public static readonly string? AssemblyVersionFull = GetExecutingAssembly().GetName().Version?.ToString();
+    public static readonly string? ConfigFile = $"{AppDirectory}\\appsettings.json";
+    public static readonly string? LogFile = $"{AppDirectory}\\logs\\{AppDomain.CurrentDomain.FriendlyName}.log";
 
     private static readonly IHost Host = Microsoft.Extensions.Hosting.Host
         .CreateDefaultBuilder()

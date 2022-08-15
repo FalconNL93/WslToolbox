@@ -76,7 +76,10 @@ public partial class Container : INavigationWindow
 
     private async void LoadDefaultPage()
     {
-        await Dispatcher.InvokeAsync(() => { Navigate(typeof(Dashboard)); });
+        await Dispatcher.InvokeAsync(() =>
+        {
+            Navigate(typeof(Dashboard));
+        });
     }
 
     private void RootNavigation_OnNavigated(INavigation sender, RoutedNavigationEventArgs e)

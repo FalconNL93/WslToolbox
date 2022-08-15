@@ -7,8 +7,7 @@ namespace WslToolbox.Gui2.Extensions;
 
 public static class DialogControlExtension
 {
-    public static async Task ShowAndWaitAsync
-    (
+    public static async Task ShowAndWaitAsync(
         this IDialogControl dialogControl,
         DialogControlModel model,
         Action? primaryButtonAction = null,
