@@ -39,16 +39,7 @@ public class InformationViewModel : ObservableObject
     public string LatestVersion
     {
         get => _latestVersion;
-        private set
-        {
-            if (value == _latestVersion)
-            {
-                return;
-            }
-
-            _latestVersion = value;
-            OnPropertyChanged();
-        }
+        private set => SetProperty(ref _latestVersion, value);
     }
 
     private async Task OnCheckForUpdates()
