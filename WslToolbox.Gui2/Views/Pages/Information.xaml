@@ -18,8 +18,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Style="{StaticResource Vertical}">
-            <StackPanel Orientation="Horizontal">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Style="{StaticResource Horizontal}">
                 <ui:Button Content="Open log file"
                            Command="{Binding ViewModel.OpenLogFile}" />
                 <ui:Button Content="Open config file"
@@ -28,7 +28,7 @@
 
             <ui:CardControl>
                 <ui:CardControl.Header>
-                    <StackPanel Style="{StaticResource Vertical}">
+                    <StackPanel>
                         <TextBlock
                             FontSize="13"
                             FontWeight="Medium"

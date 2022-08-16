@@ -19,7 +19,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
+        <StackPanel>
             <userControls:CardOptionToggle
                 HeaderContent="Docker distributions"
                 DescriptionContent="Hide docker distributions in overview"
@@ -34,14 +34,12 @@
                 Value="{Binding ViewModel.ModifiedAppConfig.Theme, Mode=TwoWay}"
                 DescriptionContent="Change the application theme" />
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Style="{StaticResource Horizontal}">
             <ui:Button
-                VerticalAlignment="Center"
                 Appearance="Primary"
                 Content="Save"
                 Command="{Binding ViewModel.SaveConfiguration}" />
             <ui:Button
-                VerticalAlignment="Center"
                 Appearance="Secondary"
                 Content="Revert to defaults"
                 Command="{Binding ViewModel.RevertConfiguration}" />

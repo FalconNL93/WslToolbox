@@ -19,7 +19,7 @@
                     Text="{Binding DescriptionContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             </StackPanel>
         </ui:CardControl.Header>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Style="{StaticResource Horizontal}">
             <ComboBox
                 Margin="0,8,0,0"
                 ItemsSource="{Binding Options, Mode = OneWay,RelativeSource={RelativeSource AncestorType=UserControl}}"

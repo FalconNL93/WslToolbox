@@ -20,28 +20,34 @@
         </Grid.RowDefinitions>
         <ui:CardControl>
             <ui:CardControl.Header>
-                <StackPanel>
-                    <TextBlock FontSize="12">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Text" Value="WSL Service is stopped" />
-                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ViewModel.IsRunning}" Value="true">
-                                        <Setter Property="Text" Value="WSL Service is running" />
-                                        <Setter Property="Foreground" Value="{DynamicResource PaletteGreenBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <StackPanel Orientation="Horizontal">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock FontSize="12">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Text" Value="WSL Service is stopped" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewModel.IsRunning}" Value="true">
+                                            <Setter Property="Text" Value="WSL Service is running" />
+                                            <Setter Property="Foreground" Value="{DynamicResource PaletteGreenBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
                         <ui:Button Content="Refresh service" Command="{Binding ViewModel.FetchServiceStatus}" />
                         <ui:Button Content="Start service" Command="{Binding ViewModel.StartService}" />
                         <ui:Button Content="Stop service" Command="{Binding ViewModel.StopService}" />
                         <ui:Button Content="Restart service" Command="{Binding ViewModel.RestartService}" />
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </ui:CardControl.Header>
         </ui:CardControl>
     </Grid>

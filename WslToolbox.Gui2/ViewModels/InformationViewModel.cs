@@ -22,7 +22,7 @@ public class InformationViewModel : ObservableObject
         _updateService = updateService;
 
         CheckForUpdates = new AsyncRelayCommand(OnCheckForUpdates);
-        OpenLogFile = new RelayCommand(OnOpenLogFile);
+        OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists(App.LogFile));
         OpenConfigFile = new RelayCommand(OnOpenConfigFile, () => File.Exists(App.ConfigFile));
     }
 

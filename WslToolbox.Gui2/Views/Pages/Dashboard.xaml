@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Style="{StaticResource Horizontal}">
                 <ui:Button Content="{x:Static p:localization.Refresh}"
                            Command="{Binding ViewModel.RefreshDistributions}" />
             </StackPanel>
@@ -31,7 +31,6 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ui:CardExpander
-                            Margin="0,10,0,0"
                             Icon="Server24"
                             IsEnabled="True"
                             IsExpanded="False">
@@ -46,7 +45,7 @@
                                             FontSize="13"
                                             FontWeight="Medium"
                                             Text="{Binding Name}" />
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Style="{StaticResource Horizontal}">
                                             <TextBlock
                                                 FontSize="12"
                                                 Foreground="{DynamicResource TextFillColorTertiaryBrush}">
@@ -68,7 +67,7 @@
                                                 Text="{Binding Size, Converter={cv:BytesToReadableConverter}}" />
                                         </StackPanel>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Style="{StaticResource Horizontal}">
                                         <ui:Button
                                             VerticalAlignment="Center"
                                             Appearance="Secondary"
@@ -109,7 +108,7 @@
                                                   Content="{Binding BasePathLocal}" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="1" Style="{StaticResource Vertical}">
+                                <StackPanel Grid.Column="1">
                                     <ui:Button Content="Delete"
                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                 AncestorType={x:Type Page}}, Path=DataContext.ViewModel.DeleteDistribution}"

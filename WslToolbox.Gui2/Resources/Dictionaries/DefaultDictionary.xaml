@@ -1,45 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-                    xmlns:userControls="clr-namespace:WslToolbox.Gui2.UserControls">
-    <Style TargetType="{x:Type StackPanel}" x:Key="StackPanelStyle">
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <!-- Default StackPanel -->
+    <Style TargetType="{x:Type StackPanel}">
+        <Setter Property="Margin" Value="0,0,0,5" />
         <Style.Resources>
             <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
-                <Setter Property="Margin" Value="0,0,5,0" />
+                <Setter Property="Margin" Value="0,0,0,5" />
                 <Setter Property="MinWidth" Value="120" />
                 <Setter Property="Padding" Value="30,6" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
 
-            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="Margin" Value="0,0,0,3" />
-            </Style>
-
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-                <Setter Property="Margin" Value="0,5,0,0" />
-            </Style>
-
-            <Style TargetType="userControls:CardOptionToggle">
-                <Setter Property="Margin" Value="0,0,0,10" />
-            </Style>
-
-            <Style TargetType="userControls:CardOptionString">
-                <Setter Property="Margin" Value="0,0,0,10" />
-            </Style>
-
-            <Style TargetType="userControls:CardOptionCombo">
-                <Setter Property="Margin" Value="0,0,0,10" />
+            <Style TargetType="ui:CardControl" BasedOn="{StaticResource {x:Type ui:CardControl}}">
+                <Setter Property="Margin" Value="0,0,0,5" />
             </Style>
         </Style.Resources>
     </Style>
 
-    <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource StackPanelStyle}" />
-    <Style TargetType="{x:Type StackPanel}" x:Key="Vertical" BasedOn="{StaticResource StackPanelStyle}">
+    <!-- Horizontal StackPanel -->
+    <Style x:Key="Horizontal" TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type StackPanel}}">
         <Style.Resources>
             <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource {x:Type ui:Button}}">
-                <Setter Property="Margin" Value="0,5,0,5" />
-            </Style>
-            <Style TargetType="{x:Type ui:CardControl}" BasedOn="{StaticResource {x:Type ui:CardControl}}">
-                <Setter Property="Margin" Value="0,0,0,10" />
+                <Setter Property="Margin" Value="0,0,5,0" />
             </Style>
         </Style.Resources>
     </Style>
