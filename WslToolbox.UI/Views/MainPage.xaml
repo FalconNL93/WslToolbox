@@ -9,16 +9,29 @@
 
     <Grid x:Name="ContentArea">
         <ScrollViewer>
-            <Grid>
-                <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" />
-                <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}">
+            <Grid VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" />
+                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Distribution">
                             <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                                 <Expander.Header>
                                     <Grid>
-                                        <StackPanel>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
                                             <TextBlock Text="{x:Bind Name}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Button Content="Start" />
+                                            <Button Content="Stop" />
+                                            <Button Content="Restart" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Header>

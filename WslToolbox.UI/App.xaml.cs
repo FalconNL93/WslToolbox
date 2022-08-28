@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Serilog;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Models;
@@ -29,6 +30,8 @@ public partial class App : Application
             .UseSerilog()
             .ConfigureServices((context, services) =>
             {
+                services.AddAutoMapper(typeof(AutoMapperProfiles));
+                
                 // Default Activation Handler
                 services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
@@ -57,8 +60,6 @@ public partial class App : Application
                 services.AddTransient<MainPage>();
                 services.AddTransient<ShellPage>();
                 services.AddTransient<ShellViewModel>();
-                
-                services.AddAutoMapper(typeof(App));
 
                 // Configuration
                 services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
