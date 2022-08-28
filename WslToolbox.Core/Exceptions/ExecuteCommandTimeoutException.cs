@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace WslToolbox.Core.Exceptions
+namespace WslToolbox.Core.Exceptions;
+
+internal class ExecuteCommandTimeoutException : Exception
 {
-    internal class ExecuteCommandTimeoutException : Exception
+    public ExecuteCommandTimeoutException()
     {
-        public ExecuteCommandTimeoutException()
-        {
-        }
+    }
 
-        public ExecuteCommandTimeoutException(string message)
-            : base(message)
-        {
-        }
+    public ExecuteCommandTimeoutException(string message)
+        : base(message)
+    {
+    }
 
-        public ExecuteCommandTimeoutException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    public ExecuteCommandTimeoutException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }

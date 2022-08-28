@@ -4,37 +4,36 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WslToolbox.Core.Commands.Distribution
+namespace WslToolbox.Core.Commands.Distribution;
+
+public static class OptimizeDistributionCommand
 {
-    public static class OptimizeDistributionCommand
+    private const string Command = "diskpart /s {0} > {1}";
+
+    public static Task<CommandClass> Execute(DistributionClass distribution, string file, string output)
     {
-        private const string Command = "diskpart /s {0} > {1}";
+        ToolboxClass.OnRefreshRequired();
+        var tempFile = WriteDiskPart(file);
+        var startTask = CommandClass.ExecuteCommand(string.Format(Command, tempFile, output), elevated: true);
+        File.Delete(tempFile);
+        ToolboxClass.OnRefreshRequired();
 
-        public static Task<CommandClass> Execute(DistributionClass distribution, string file, string output)
+        return Task.FromResult(startTask);
+    }
+
+    private static string WriteDiskPart(string basePath)
+    {
+        var tempFile = Path.GetTempFileName();
+        var diskPartScript = new List<string>
         {
-            ToolboxClass.OnRefreshRequired();
-            var tempFile = WriteDiskPart(file);
-            var startTask = CommandClass.ExecuteCommand(string.Format(Command, tempFile, output), elevated: true);
-            File.Delete(tempFile);
-            ToolboxClass.OnRefreshRequired();
+            $"select vdisk file=\"{basePath}\"",
+            "attach vdisk readonly",
+            "detach vdisk"
+        };
 
-            return Task.FromResult(startTask);
-        }
+        File.WriteAllText(tempFile, string.Join(Environment.NewLine, diskPartScript));
 
-        private static string WriteDiskPart(string basePath)
-        {
-            var tempFile = Path.GetTempFileName();
-            var diskPartScript = new List<string>
-            {
-                $"select vdisk file=\"{basePath}\"",
-                "attach vdisk readonly",
-                "detach vdisk",
-            };
-
-            File.WriteAllText(tempFile, string.Join(Environment.NewLine, diskPartScript));
-
-            Debug.Write(string.Join("\\n", diskPartScript));
-            return tempFile;
-        }
+        Debug.Write(string.Join("\\n", diskPartScript));
+        return tempFile;
     }
 }

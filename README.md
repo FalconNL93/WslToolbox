@@ -5,7 +5,8 @@ WSL Toolbox allows you to manage your WSL Distributions through an easy to use i
 WSL Toolbox is currently in development. Some features may not work as expected.
 
 ## Note
-I am currently developing a new GUI for WSL Toolbox, this GUI will be maintained in the "new-gui" branch and will eventually replace the current GUI. 
+
+I am currently developing a new GUI for WSL Toolbox, this GUI will be maintained in the "new-gui" branch and will eventually replace the current GUI.
 
 ## Install
 

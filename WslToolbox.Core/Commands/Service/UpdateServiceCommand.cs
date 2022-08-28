@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-namespace WslToolbox.Core.Commands.Service
-{
-    public static class UpdateServiceCommand
-    {
-        private const string Command = "wsl --update";
+namespace WslToolbox.Core.Commands.Service;
 
-        public static async Task Execute()
-        {
-            await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
-                Command
-            ))).ConfigureAwait(true);
-        }
+public static class UpdateServiceCommand
+{
+    private const string Command = "wsl --update";
+
+    public static async Task Execute()
+    {
+        await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
+            Command
+        ))).ConfigureAwait(true);
     }
 }

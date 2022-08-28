@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="WslToolbox.UI.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:WslToolbox.UI.Core.Models"
+    mc:Ignorable="d">
+
+    <Grid x:Name="ContentArea">
+        <ScrollViewer>
+            <Grid>
+                <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" />
+                <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Distribution">
+                            <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                                <Expander.Header>
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Bind Name}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <Grid />
+                                </Expander.Content>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

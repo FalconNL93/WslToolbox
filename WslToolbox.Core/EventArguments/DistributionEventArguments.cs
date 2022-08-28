@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace WslToolbox.Core.EventArguments
-{
-    public class DistributionEventArguments : EventArgs
-    {
-        public readonly string Command;
-        public DistributionClass Distribution;
+namespace WslToolbox.Core.EventArguments;
 
-        public DistributionEventArguments(string command, DistributionClass distribution)
-        {
-            Command = command;
-            Distribution = distribution;
-        }
+public class DistributionEventArguments : EventArgs
+{
+    public readonly string Command;
+    public DistributionClass Distribution;
+
+    public DistributionEventArguments(string command, DistributionClass distribution)
+    {
+        Command = command;
+        Distribution = distribution;
     }
 }

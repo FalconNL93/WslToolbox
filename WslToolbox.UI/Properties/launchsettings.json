@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "WslToolbox.UI (Unpackaged)": {
+      "commandName": "Project"
+    },
+    "WslToolbox.UI (Package)": {
+      "commandName": "MsixPackage"
+    }
+  }
+}

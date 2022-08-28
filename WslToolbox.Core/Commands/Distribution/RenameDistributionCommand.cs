@@ -2,28 +2,27 @@
 using System.Threading.Tasks;
 using WslToolbox.Core.Helpers;
 
-namespace WslToolbox.Core.Commands.Distribution
+namespace WslToolbox.Core.Commands.Distribution;
+
+public static class RenameDistributionCommand
 {
-    public static class RenameDistributionCommand
+    public static event EventHandler DistributionRenameStarted;
+    public static event EventHandler DistributionRenameFinished;
+
+    public static async void Execute(DistributionClass distribution, string newName)
     {
-        public static event EventHandler DistributionRenameStarted;
-        public static event EventHandler DistributionRenameFinished;
+        ToolboxClass.OnRefreshRequired();
+        DistributionRenameStarted?.Invoke(distribution, EventArgs.Empty);
+        await TerminateDistributionCommand.Execute(distribution);
+        await Task
+            .Run(() =>
+            {
+                RegistryHelper.ChangeKey(distribution, "DistributionName", newName);
+            })
+            .ConfigureAwait(true);
 
-        public static async void Execute(DistributionClass distribution, string newName)
-        {
-            ToolboxClass.OnRefreshRequired();
-            DistributionRenameStarted?.Invoke(distribution, EventArgs.Empty);
-            await TerminateDistributionCommand.Execute(distribution);
-            await Task
-                .Run(() =>
-                {
-                    RegistryHelper.ChangeKey(distribution, "DistributionName", newName);
-                })
-                .ConfigureAwait(true);
-
-            await StartDistributionCommand.Execute(distribution);
-            ToolboxClass.OnRefreshRequired();
-            DistributionRenameFinished?.Invoke(distribution, EventArgs.Empty);
-        }
+        await StartDistributionCommand.Execute(distribution);
+        ToolboxClass.OnRefreshRequired();
+        DistributionRenameFinished?.Invoke(distribution, EventArgs.Empty);
     }
 }

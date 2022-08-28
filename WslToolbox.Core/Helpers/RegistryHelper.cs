@@ -3,112 +3,111 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace WslToolbox.Core.Helpers
+namespace WslToolbox.Core.Helpers;
+
+public class RegistryHelper
 {
-    public class RegistryHelper
+    public static void ChangeKey(DistributionClass distribution, string key, string value)
     {
-        public static void ChangeKey(DistributionClass distribution, string key, string value)
+        if (!OperatingSystem.IsWindows())
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                return;
-            }
-
-            var keyPath = @$"Software\Microsoft\Windows\CurrentVersion\Lxss\{distribution.Guid}";
-
-            try
-            {
-                var openSubKey =
-                    Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
-
-                openSubKey.SetValue(key, value);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
+            return;
         }
 
-        public static object GetKey(DistributionClass distribution, string key, string defaultValue = "")
+        var keyPath = @$"Software\Microsoft\Windows\CurrentVersion\Lxss\{distribution.Guid}";
+
+        try
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                return defaultValue;
-            }
+            var openSubKey =
+                Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
-            var keyPath = @$"Software\Microsoft\Windows\CurrentVersion\Lxss\{distribution.Guid}";
+            openSubKey.SetValue(key, value);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
+    }
 
-            try
-            {
-                var openSubKey =
-                    Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadSubTree);
-
-                return openSubKey.GetValue(key, defaultValue).ToString();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
+    public static object GetKey(DistributionClass distribution, string key, string defaultValue = "")
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return defaultValue;
         }
 
-        public static string DistributionRegistryByName(string name)
+        var keyPath = @$"Software\Microsoft\Windows\CurrentVersion\Lxss\{distribution.Guid}";
+
+        try
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                return string.Empty;
-            }
+            var openSubKey =
+                Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadSubTree);
 
-            var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+            return openSubKey.GetValue(key, defaultValue).ToString();
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
 
-            foreach (var wslKey in wslRegistry.GetSubKeyNames())
-            {
-                if (!wslKey.StartsWith("{") && !wslKey.EndsWith("}"))
-                {
-                    continue;
-                }
+        return defaultValue;
+    }
 
-                var subKey = wslRegistry.OpenSubKey(wslKey)?.GetValue("DistributionName");
-                if ((string) subKey != name)
-                {
-                    continue;
-                }
-
-                return wslKey;
-            }
-
+    public static string DistributionRegistryByName(string name)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return string.Empty;
         }
 
-        public static string DefaultDistributionGuid()
+        var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+
+        foreach (var wslKey in wslRegistry.GetSubKeyNames())
         {
-            if (!OperatingSystem.IsWindows())
+            if (!wslKey.StartsWith("{") && !wslKey.EndsWith("}"))
             {
-                return string.Empty;
+                continue;
             }
 
-            var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
-
-            var subKey = wslRegistry.GetValue("DefaultDistribution");
-            if ((string) subKey != null)
+            var subKey = wslRegistry.OpenSubKey(wslKey)?.GetValue("DistributionName");
+            if ((string) subKey != name)
             {
-                return (string) subKey;
+                continue;
             }
 
+            return wslKey;
+        }
+
+        return string.Empty;
+    }
+
+    public static string DefaultDistributionGuid()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
             return string.Empty;
         }
 
-        public static IEnumerable<string> ListDistributions()
+        var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+
+        var subKey = wslRegistry.GetValue("DefaultDistribution");
+        if ((string) subKey != null)
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                return null;
-            }
-
-            var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
-
-            return wslRegistry?.GetSubKeyNames();
+            return (string) subKey;
         }
+
+        return string.Empty;
+    }
+
+    public static IEnumerable<string> ListDistributions()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return null;
+        }
+
+        var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
+
+        return wslRegistry?.GetSubKeyNames();
     }
 }
