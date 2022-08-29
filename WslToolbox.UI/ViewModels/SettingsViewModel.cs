@@ -1,66 +1,54 @@
-﻿using System.Reflection;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using WslToolbox.UI.Contracts.Services;
-using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.ViewModels;
 
 public class SettingsViewModel : ObservableRecipient
 {
-    private readonly IThemeSelectorService _themeSelectorService;
-    private ElementTheme _elementTheme;
-    private string _versionDescription;
+    public UserOptions UserOptions { get; }
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
+
+    private readonly IThemeSelectorService _themeSelectorService;
+    private readonly UserOptions _userOptions;
+    private ElementTheme _elementTheme;
+
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, IOptions<UserOptions> userOptions)
     {
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
+        UserOptions = userOptions.Value;
 
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async param =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
+
+        SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeChange);
+    }
+
+    private async void OnThemeChange(ElementTheme param)
+    {
+        if (ElementTheme == param)
+        {
+            return;
+        }
+
+        ElementTheme = param;
+        await _themeSelectorService.SetThemeAsync(param);
     }
 
     public ElementTheme ElementTheme
     {
         get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
-    }
-
-    public string VersionDescription
-    {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
+        set
+        {
+            SetProperty(ref _elementTheme, value);
+            SwitchThemeCommand.Execute(value);
+        }
     }
 
     public ICommand SwitchThemeCommand { get; }
-
-    private static string GetVersionDescription()
-    {
-        Version version;
-
-        if (RuntimeHelper.IsMSIX)
-        {
-            var packageVersion = Package.Current.Id.Version;
-
-            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
-        }
-        else
-        {
-            version = Assembly.GetExecutingAssembly().GetName().Version!;
-        }
-
-        return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
-    }
 }

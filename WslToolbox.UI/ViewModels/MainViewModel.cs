@@ -9,15 +9,18 @@ namespace WslToolbox.UI.ViewModels;
 
 public class MainViewModel : ObservableRecipient
 {
-    public AsyncRelayCommand RefreshDistributions { get; }
     private readonly DistributionService _distributionService;
-    
+
     public MainViewModel(DistributionService distributionService)
     {
         _distributionService = distributionService;
-        
+
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
     }
+
+    public AsyncRelayCommand RefreshDistributions { get; }
+
+    public ObservableCollection<Distribution> Distributions { get; set; } = new();
 
     private async Task OnRefreshDistributions()
     {
@@ -36,6 +39,4 @@ public class MainViewModel : ObservableRecipient
             throw;
         }
     }
-
-    public ObservableCollection<Distribution> Distributions { get; set; } = new();
 }

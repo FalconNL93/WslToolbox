@@ -16,7 +16,6 @@ public class FileService : IFileService
 
         var json = File.ReadAllText(path);
         return JsonConvert.DeserializeObject<T>(json);
-
     }
 
     public void Save<T>(string folderPath, string fileName, T content)

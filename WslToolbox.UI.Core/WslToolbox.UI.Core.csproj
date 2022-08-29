@@ -17,6 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
+        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
     </ItemGroup>
 </Project>

@@ -16,11 +16,13 @@ public class DistributionService
 
     private readonly ILogger<DistributionService> _logger;
     private readonly IMapper _mapper;
+    private readonly UserOptions _userOptions;
 
-    public DistributionService(ILogger<DistributionService> logger, IMapper mapper)
+    public DistributionService(ILogger<DistributionService> logger, IMapper mapper, IOptions<UserOptions> userOptions)
     {
         _logger = logger;
         _mapper = mapper;
+        _userOptions = userOptions.Value;
     }
 
     public void RenameDistributions(UpdateModel<Distribution> distribution)
@@ -37,7 +39,7 @@ public class DistributionService
 
     public async Task<IEnumerable<Distribution>> ListDistributions()
     {
-        var distributions = await ListServiceCommand.ListDistributions();
+        var distributions = await ListServiceCommand.ListDistributions(_userOptions.HideDocker);
 
         return _mapper.Map<IEnumerable<Distribution>>(distributions);
     }

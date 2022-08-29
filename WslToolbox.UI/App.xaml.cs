@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Serilog;
@@ -6,8 +7,8 @@ using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
+using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
-using WslToolbox.UI.Models;
 using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
@@ -18,6 +19,9 @@ namespace WslToolbox.UI;
 
 public partial class App : Application
 {
+    public const string UserConfiguration = "appsettings.json";
+    public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
     public App()
     {
         InitializeComponent();
@@ -31,7 +35,7 @@ public partial class App : Application
             .ConfigureServices((context, services) =>
             {
                 services.AddAutoMapper(typeof(AutoMapperProfiles));
-                
+
                 // Default Activation Handler
                 services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
@@ -40,7 +44,6 @@ public partial class App : Application
 
                 // Services
                 services.AddSingleton<IAppNotificationService, AppNotificationService>();
-                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
                 services.AddTransient<INavigationViewService, NavigationViewService>();
 
@@ -62,7 +65,7 @@ public partial class App : Application
                 services.AddTransient<ShellViewModel>();
 
                 // Configuration
-                services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+                services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
 
         GetService<IAppNotificationService>().Initialize();
