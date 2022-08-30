@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Serilog;
+using Serilog.Events;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
@@ -27,6 +28,7 @@ public partial class App : Application
         InitializeComponent();
 
         Log.Logger = new LoggerConfiguration()
+            .WriteTo.File("log.txt", LogEventLevel.Debug)
             .CreateLogger();
 
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
@@ -54,6 +56,7 @@ public partial class App : Application
                 // Core Services
                 services.AddSingleton<IDistributionDataService, DistributionDataService>();
                 services.AddSingleton<IFileService, FileService>();
+                services.AddSingleton<IConfigurationService, ConfigurationService>();
                 services.AddSingleton<DistributionService>();
 
                 // Views and ViewModels

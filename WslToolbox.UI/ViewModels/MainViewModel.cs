@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 
@@ -10,10 +12,14 @@ namespace WslToolbox.UI.ViewModels;
 public class MainViewModel : ObservableRecipient
 {
     private readonly DistributionService _distributionService;
+    private readonly ILogger<MainViewModel> _logger;
+    private readonly IConfigurationService _configurationService;
 
-    public MainViewModel(DistributionService distributionService)
+    public MainViewModel(DistributionService distributionService, ILogger<MainViewModel> logger, IConfigurationService configurationService)
     {
         _distributionService = distributionService;
+        _logger = logger;
+        _configurationService = configurationService;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
     }

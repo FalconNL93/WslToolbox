@@ -7,10 +7,10 @@
     xmlns:helpers="using:WslToolbox.UI.Helpers"
     mc:Ignorable="d">
     <Page.Resources>
-        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
     <Grid>
         <StackPanel x:Name="ContentArea">
+            <Button Command="{x:Bind ViewModel.SaveConfiguration}"></Button>
             <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" Header="Hide docker distributions" />

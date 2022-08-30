@@ -8,10 +8,6 @@ public class ThemeSelectorService : IThemeSelectorService
 {
     private const string SettingsKey = "AppBackgroundRequestedTheme";
 
-    public ThemeSelectorService()
-    {
-    }
-
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
     public async Task InitializeAsync()
