@@ -4,13 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:helpers="using:WslToolbox.UI.Helpers"
     mc:Ignorable="d">
     <Page.Resources>
     </Page.Resources>
     <Grid>
-        <StackPanel x:Name="ContentArea">
-            <Button Command="{x:Bind ViewModel.SaveConfiguration}"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ContentArea" Grid.Row="0">
             <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" Header="Hide docker distributions" />
@@ -20,6 +22,9 @@
                 <TextBlock x:Uid="Settings_Theme" />
                 <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.ElementTheme, Mode=TwoWay}" />
             </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{x:Bind ViewModel.SaveConfiguration}" Content="Save" />
         </StackPanel>
     </Grid>
 </Page>

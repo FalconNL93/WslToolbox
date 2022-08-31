@@ -9,13 +9,13 @@ using WslToolbox.UI.Core.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
-public class MainViewModel : ObservableRecipient
+public class DashboardViewModel : ObservableRecipient
 {
     private readonly DistributionService _distributionService;
-    private readonly ILogger<MainViewModel> _logger;
+    private readonly ILogger<DashboardViewModel> _logger;
     private readonly IConfigurationService _configurationService;
 
-    public MainViewModel(DistributionService distributionService, ILogger<MainViewModel> logger, IConfigurationService configurationService)
+    public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService)
     {
         _distributionService = distributionService;
         _logger = logger;

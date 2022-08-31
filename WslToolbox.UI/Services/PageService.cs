@@ -12,7 +12,7 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<MainViewModel, MainPage>();
+        Configure<DashboardViewModel, DashboardPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 
