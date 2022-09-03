@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
     mc:Ignorable="d">
-
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid VerticalAlignment="Top">
@@ -36,7 +35,13 @@
                                     </Grid>
                                 </Expander.Header>
                                 <Expander.Content>
-                                    <Grid />
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Rename" />
+                                            <Button Content="Delete" />
+                                            <Button Content="Move" />
+                                        </StackPanel>
+                                    </Grid>
                                 </Expander.Content>
                             </Expander>
                         </DataTemplate>

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -20,8 +21,9 @@ namespace WslToolbox.UI;
 
 public partial class App : Application
 {
-    public const string UserConfiguration = "appsettings.json";
+    public const string UserConfiguration = "appsettings.user.json";
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    public static readonly string? Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
     public App()
     {
@@ -32,6 +34,10 @@ public partial class App : Application
             .CreateLogger();
 
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration(c =>
+            {
+                c.AddJsonFile(UserConfiguration, true);
+            })
             .UseContentRoot(AppContext.BaseDirectory)
             .UseSerilog()
             .ConfigureServices((context, services) =>
@@ -75,6 +81,7 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
     }
+
 
     private IHost Host { get; }
 

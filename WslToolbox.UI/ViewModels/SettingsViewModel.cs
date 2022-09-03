@@ -25,6 +25,7 @@ public class SettingsViewModel : ObservableRecipient
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeChange);
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
+        
     }
 
     private void OnSaveConfiguration()
@@ -32,6 +33,7 @@ public class SettingsViewModel : ObservableRecipient
         _configurationService.Save(UserOptions);
     }
 
+    public string? Version { get; set; } = App.Version;
     public UserOptions UserOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));

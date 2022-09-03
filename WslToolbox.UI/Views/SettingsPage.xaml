@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:a="using:WslToolbox.UI"
     mc:Ignorable="d">
     <Page.Resources>
     </Page.Resources>
@@ -12,7 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="ContentArea" Grid.Row="0">
+        <StackPanel Grid.Row="0">
             <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" Header="Hide docker distributions" />
@@ -21,6 +22,11 @@
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
                 <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.ElementTheme, Mode=TwoWay}" />
+            </StackPanel>
+            
+            <TextBlock Text="Updates" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                <TextBlock Text="{x:Bind ViewModel.Version}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
