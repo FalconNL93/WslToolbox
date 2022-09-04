@@ -11,9 +11,9 @@ namespace WslToolbox.UI.ViewModels;
 
 public class DashboardViewModel : ObservableRecipient
 {
+    private readonly IConfigurationService _configurationService;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
-    private readonly IConfigurationService _configurationService;
 
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService)
     {
@@ -22,9 +22,17 @@ public class DashboardViewModel : ObservableRecipient
         _configurationService = configurationService;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
+        StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution);
+        StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution);
+        RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution);
+        DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
     }
 
     public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<Distribution> StartDistribution { get; }
+    public AsyncRelayCommand<Distribution> StopDistributions { get; }
+    public AsyncRelayCommand<Distribution> RestartDistribution { get; }
+    public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
 
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
 
@@ -44,5 +52,26 @@ public class DashboardViewModel : ObservableRecipient
             Debug.WriteLine(e);
             throw;
         }
+    }
+
+    private async Task OnDeleteDistribution(Distribution? distribution)
+    {
+        await _distributionService.DeleteDistribution(distribution);
+    }
+
+    private async Task OnRestartDistribution(Distribution? distribution)
+    {
+        await _distributionService.StopDistribution(distribution);
+        await _distributionService.StartDistribution(distribution);
+    }
+
+    private async Task OnStopDistribution(Distribution? distribution)
+    {
+        await _distributionService.StopDistribution(distribution);
+    }
+
+    private async Task OnStartDistribution(Distribution? distribution)
+    {
+        await _distributionService.StartDistribution(distribution);
     }
 }

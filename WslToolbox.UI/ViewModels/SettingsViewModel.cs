@@ -11,8 +11,8 @@ namespace WslToolbox.UI.ViewModels;
 
 public class SettingsViewModel : ObservableRecipient
 {
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly IConfigurationService _configurationService;
+    private readonly IThemeSelectorService _themeSelectorService;
     private readonly UserOptions _userOptions;
     private ElementTheme _elementTheme;
 
@@ -25,12 +25,6 @@ public class SettingsViewModel : ObservableRecipient
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeChange);
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
-        
-    }
-
-    private void OnSaveConfiguration()
-    {
-        _configurationService.Save(UserOptions);
     }
 
     public string? Version { get; set; } = App.Version;
@@ -50,6 +44,11 @@ public class SettingsViewModel : ObservableRecipient
 
     public ICommand SwitchThemeCommand { get; }
     public ICommand SaveConfiguration { get; }
+
+    private void OnSaveConfiguration()
+    {
+        _configurationService.Save(UserOptions);
+    }
 
     private async void OnThemeChange(ElementTheme param)
     {

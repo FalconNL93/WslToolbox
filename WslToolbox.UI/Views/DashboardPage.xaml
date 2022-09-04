@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
+    x:Name="DbPg"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <ScrollViewer>
@@ -28,18 +29,27 @@
                                             <TextBlock Text="{x:Bind Name}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <Button Content="Start" />
-                                            <Button Content="Stop" />
-                                            <Button Content="Restart" />
+                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Start" />
+                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Restart" />
+                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" Content="Stop" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Header>
                                 <Expander.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Rename" />
-                                            <Button Content="Delete" />
-                                            <Button Content="Move" />
+                                            <Button Content="Rename" IsEnabled="False" />
+                                            <Button Content="Delete">
+                                                <Button.Flyout>
+                                                    <Flyout>
+                                                        <StackPanel>
+                                                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to delete this distribution?" Margin="0,0,0,12" />
+                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Delete" />
+                                                        </StackPanel>
+                                                    </Flyout>
+                                                </Button.Flyout>
+                                            </Button>
+                                            <Button Content="Move" IsEnabled="False" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Content>
