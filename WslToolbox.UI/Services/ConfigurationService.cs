@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Services;
 
@@ -29,6 +30,31 @@ public class ConfigurationService : IConfigurationService
         {
             _logger.LogError(e, "Could not save configuration");
         }
+    }
+    
+    public void Delete<T>() where T : class
+    {
+    }
+    
+    public void Delete()
+    {
+        try
+        {
+            File.Delete(App.UserConfiguration);
+        }
+        catch (FileNotFoundException)
+        {
+            _logger.LogError("Configuration file does not exist");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Could not delete configuration file");
+        }
+    }
+
+    public void Restore<T>() where T : class
+    {
+        Delete();
     }
 
     public T Read<T>()

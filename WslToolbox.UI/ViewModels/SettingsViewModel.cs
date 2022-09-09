@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.Helpers;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -25,6 +26,8 @@ public class SettingsViewModel : ObservableRecipient
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeChange);
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
+        RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
+        OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
     }
 
     public string? Version { get; set; } = App.Version;
@@ -43,11 +46,21 @@ public class SettingsViewModel : ObservableRecipient
     }
 
     public ICommand SwitchThemeCommand { get; }
-    public ICommand SaveConfiguration { get; }
+    public RelayCommand SaveConfiguration { get; }
+    public RelayCommand RestoreDefaultConfiguration { get; }
+    public RelayCommand OpenConfiguration { get; }
 
     private void OnSaveConfiguration()
     {
         _configurationService.Save(UserOptions);
+    }
+
+    private void OnRestoreDefaultConfiguration()
+    {
+        _configurationService.Restore<UserOptions>();
+        
+        RestoreDefaultConfiguration.NotifyCanExecuteChanged();
+        OpenConfiguration.NotifyCanExecuteChanged();
     }
 
     private async void OnThemeChange(ElementTheme param)
@@ -59,5 +72,18 @@ public class SettingsViewModel : ObservableRecipient
 
         ElementTheme = param;
         await _themeSelectorService.SetThemeAsync(param);
+    }
+
+    private static void OnOpenConfiguration()
+    {
+        try
+        {
+            ShellHelper.OpenFile($"{App.AppDirectory}\\{App.UserConfiguration}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

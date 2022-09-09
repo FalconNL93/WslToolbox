@@ -2,5 +2,5 @@
 
 public class UserOptions
 {
-    public bool HideDocker { get; set; }
+    public bool HideDocker { get; set; } = true;
 }

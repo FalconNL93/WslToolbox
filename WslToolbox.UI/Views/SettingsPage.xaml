@@ -22,23 +22,33 @@
                 </StackPanel>
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock x:Uid="Settings_Theme" />
+                    <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallBottomMargin}" />
                     <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.ElementTheme, Mode=TwoWay}" />
                 </StackPanel>
 
                 <TextBlock Text="About" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" />
-                    <CheckBox Content="Automatically check for updates" IsEnabled="false" />
-                    <TextBlock Text="{x:Bind ViewModel.Version, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" />
-                    <Button Content="Check for updates" IsEnabled="false" />
+                    <TextBlock Text="{x:Bind ViewModel.Version, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}"/>
+                    <CheckBox Content="Automatically check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" />
+                    <Button Content="Check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" />
+                    <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
         <Grid Row="1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumTopBottomMargin}">
-                <Button Command="{x:Bind ViewModel.SaveConfiguration}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}">
+                    <Button Command="{x:Bind ViewModel.OpenConfiguration}" Content="Open JSON" MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumTopBottomMargin}">
+                    <Button Command="{x:Bind ViewModel.RestoreDefaultConfiguration}" Content="Restore defaults" MinWidth="{StaticResource ButtonMinWidth}" Margin="{StaticResource SmallRightMargin}"/>
+                    <Button Command="{x:Bind ViewModel.SaveConfiguration}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
