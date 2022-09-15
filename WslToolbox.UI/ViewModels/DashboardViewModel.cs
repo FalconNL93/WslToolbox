@@ -62,7 +62,6 @@ public class DashboardViewModel : ObservableRecipient
         }
         finally
         {
-            await Task.Delay(3000);
             IsRefreshing = false;
         }
     }

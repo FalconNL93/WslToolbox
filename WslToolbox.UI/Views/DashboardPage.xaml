@@ -24,7 +24,7 @@
                     <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
 
-                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource MediumTopMargin}" 
+                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource SmallTopMargin}" 
                               IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Distribution">
