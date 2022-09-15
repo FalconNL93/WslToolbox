@@ -9,6 +9,8 @@ public sealed partial class DashboardPage : Page
     {
         ViewModel = App.GetService<DashboardViewModel>();
         InitializeComponent();
+        
+        ViewModel.RefreshDistributions.Execute(null);
     }
 
     public DashboardViewModel ViewModel { get; }

@@ -5,8 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
+    xmlns:converters="using:WslToolbox.UI.Helpers"
     x:Name="DbPg"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBoolean" />
+    </Page.Resources>
+
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid VerticalAlignment="Top">
@@ -14,8 +19,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" />
-                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}">
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                    <Button Content="Add" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
+
+                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource MediumTopMargin}" 
+                              IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Distribution">
                             <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
@@ -29,17 +39,19 @@
                                             <TextBlock Text="{x:Bind Name}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Start" />
-                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Restart" />
-                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" Content="Stop" />
+                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Start" Margin="{StaticResource SmallRightMargin}"
+                                                    MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Restart" Margin="{StaticResource SmallRightMargin}"
+                                                    MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" Content="Stop" MinWidth="{StaticResource ButtonMinWidth}" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Header>
                                 <Expander.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Rename" IsEnabled="False" />
-                                            <Button Content="Delete">
+                                            <Button Content="Rename" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Content="Delete" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
                                                 <Button.Flyout>
                                                     <Flyout>
                                                         <StackPanel>
@@ -49,7 +61,7 @@
                                                     </Flyout>
                                                 </Button.Flyout>
                                             </Button>
-                                            <Button Content="Move" IsEnabled="False" />
+                                            <Button Content="Move" IsEnabled="False" MinWidth="{StaticResource ButtonMinWidth}" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Content>

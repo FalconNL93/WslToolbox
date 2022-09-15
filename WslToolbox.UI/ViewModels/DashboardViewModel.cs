@@ -14,6 +14,13 @@ public class DashboardViewModel : ObservableRecipient
     private readonly IConfigurationService _configurationService;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
+    private bool _isRefreshing = true;
+
+    public bool IsRefreshing
+    {
+        get => _isRefreshing;
+        set => SetProperty(ref _isRefreshing, value);
+    }
 
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService)
     {
@@ -40,6 +47,7 @@ public class DashboardViewModel : ObservableRecipient
     {
         try
         {
+            IsRefreshing = true;
             Distributions.Clear();
             (await _distributionService.ListDistributions()).ToList()
                 .ForEach(distribution =>
@@ -51,6 +59,11 @@ public class DashboardViewModel : ObservableRecipient
         {
             Debug.WriteLine(e);
             throw;
+        }
+        finally
+        {
+            await Task.Delay(3000);
+            IsRefreshing = false;
         }
     }
 
