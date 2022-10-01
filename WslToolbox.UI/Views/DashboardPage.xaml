@@ -24,7 +24,7 @@
                     <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
 
-                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource SmallTopMargin}" 
+                <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource SmallTopMargin}"
                               IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Distribution">
@@ -51,6 +51,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="Rename" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Content="Move" IsEnabled="False" MinWidth="{StaticResource ButtonMinWidth}" />
                                             <Button Content="Delete" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
                                                 <Button.Flyout>
                                                     <Flyout>
@@ -61,7 +62,6 @@
                                                     </Flyout>
                                                 </Button.Flyout>
                                             </Button>
-                                            <Button Content="Move" IsEnabled="False" MinWidth="{StaticResource ButtonMinWidth}" />
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Content>
