@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WslToolbox.UI.Contracts.Services;
-using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Services;
 
@@ -31,11 +30,11 @@ public class ConfigurationService : IConfigurationService
             _logger.LogError(e, "Could not save configuration");
         }
     }
-    
+
     public void Delete<T>() where T : class
     {
     }
-    
+
     public void Delete()
     {
         try

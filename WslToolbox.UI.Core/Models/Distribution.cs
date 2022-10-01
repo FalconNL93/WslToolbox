@@ -1,8 +1,12 @@
 ﻿namespace WslToolbox.UI.Core.Models;
 
-// Model for the SampleDataService. Replace with your own model.
 public class Distribution
 {
+    public const string StateRunning = "Running";
+    public const string StateStopped = "Stopped";
+    public const string StateAvailable = "Stopped";
+    public const string StateBusy = "Busy";
+
     public bool IsDefault { get; set; }
     public bool IsInstalled { get; set; }
     public string Name { get; set; }

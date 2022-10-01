@@ -28,6 +28,7 @@ public class SettingsViewModel : ObservableRecipient
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
         RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
         OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
+        OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists($"{App.AppDirectory}\\{App.LogFile}"));
     }
 
     public string? Version { get; set; } = App.Version;
@@ -49,6 +50,20 @@ public class SettingsViewModel : ObservableRecipient
     public RelayCommand SaveConfiguration { get; }
     public RelayCommand RestoreDefaultConfiguration { get; }
     public RelayCommand OpenConfiguration { get; }
+    public RelayCommand OpenLogFile { get; }
+
+    private static void OnOpenLogFile()
+    {
+        try
+        {
+            ShellHelper.OpenFile($"{App.AppDirectory}\\{App.LogFile}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 
     private void OnSaveConfiguration()
     {
@@ -58,7 +73,7 @@ public class SettingsViewModel : ObservableRecipient
     private void OnRestoreDefaultConfiguration()
     {
         _configurationService.Restore<UserOptions>();
-        
+
         RestoreDefaultConfiguration.NotifyCanExecuteChanged();
         OpenConfiguration.NotifyCanExecuteChanged();
     }

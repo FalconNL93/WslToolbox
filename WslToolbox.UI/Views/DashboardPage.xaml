@@ -33,12 +33,16 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                             <TextBlock Text="{x:Bind Name}" />
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{x:Bind State}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
                                             <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Start" Margin="{StaticResource SmallRightMargin}"
                                                     MinWidth="{StaticResource ButtonMinWidth}" />
                                             <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Restart" Margin="{StaticResource SmallRightMargin}"

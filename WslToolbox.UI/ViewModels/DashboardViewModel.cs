@@ -3,9 +3,11 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Helpers;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -16,12 +18,6 @@ public class DashboardViewModel : ObservableRecipient
     private readonly ILogger<DashboardViewModel> _logger;
     private bool _isRefreshing = true;
 
-    public bool IsRefreshing
-    {
-        get => _isRefreshing;
-        set => SetProperty(ref _isRefreshing, value);
-    }
-
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService)
     {
         _distributionService = distributionService;
@@ -29,10 +25,18 @@ public class DashboardViewModel : ObservableRecipient
         _configurationService = configurationService;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
-        StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution);
-        StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution);
-        RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution);
+        StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution, DistributionCommand.CanStartDistribution);
+        StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution, DistributionCommand.CanStopDistribution);
+        RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
+
+        EventHandlers();
+    }
+
+    public bool IsRefreshing
+    {
+        get => _isRefreshing;
+        set => SetProperty(ref _isRefreshing, value);
     }
 
     public AsyncRelayCommand RefreshDistributions { get; }
@@ -40,11 +44,22 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> StopDistributions { get; }
     public AsyncRelayCommand<Distribution> RestartDistribution { get; }
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
-
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
+
+    private void EventHandlers()
+    {
+        StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
+        TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
+    }
+
+    private void OnReloadExecution(object? sender, EventArgs e)
+    {
+        RefreshDistributions.Execute(null);
+    }
 
     private async Task OnRefreshDistributions()
     {
+        _logger.LogInformation("Refreshing list of distributions");
         try
         {
             IsRefreshing = true;

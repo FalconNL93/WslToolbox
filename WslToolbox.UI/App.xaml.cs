@@ -22,6 +22,7 @@ namespace WslToolbox.UI;
 public partial class App : Application
 {
     public const string UserConfiguration = "appsettings.user.json";
+    public const string LogFile = "log.txt";
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     public static readonly string? Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
@@ -30,7 +31,7 @@ public partial class App : Application
         InitializeComponent();
 
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.File("log.txt", LogEventLevel.Debug)
+            .WriteTo.File(LogFile, LogEventLevel.Debug)
             .CreateLogger();
 
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
