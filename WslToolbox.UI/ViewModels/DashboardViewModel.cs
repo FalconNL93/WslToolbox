@@ -3,11 +3,15 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Controls;
+using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -29,6 +33,7 @@ public class DashboardViewModel : ObservableRecipient
         StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution, DistributionCommand.CanStopDistribution);
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
+        AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
 
         EventHandlers();
     }
@@ -45,6 +50,25 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> RestartDistribution { get; }
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
+
+    public AsyncRelayCommand<Page> AddDistributionCommand { get; }
+
+    private async Task OnAddDistribution(Page page)
+    {
+        var available = await _distributionService.ListInstallableDistributions();
+        
+        try
+        {
+            var installDistribution = await page.ShowModal<AddDistribution>(
+                available.ToList(),
+                "Add distribution", "Add");
+            
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Could not start {Message}", e.Message);
+        }
+    }
 
     private void EventHandlers()
     {

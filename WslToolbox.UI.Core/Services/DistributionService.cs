@@ -43,6 +43,14 @@ public class DistributionService
 
         return _mapper.Map<IEnumerable<Distribution>>(distributions);
     }
+    
+    public async Task<IEnumerable<Distribution>> ListInstallableDistributions()
+    {
+        var currentDistributions = await ListServiceCommand.ListDistributions(_userOptions.HideDocker);
+        var distributions = await DistributionClass.ListAvailableDistributions(currentDistributions.Where(x => !x.IsInstalled).ToList());
+
+        return _mapper.Map<IEnumerable<Distribution>>(distributions);
+    }
 
     public async Task StartDistribution(Distribution distribution)
     {
