@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -55,6 +56,7 @@ public partial class App : Application
                 services.AddSingleton<IAppNotificationService, AppNotificationService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
                 services.AddTransient<INavigationViewService, NavigationViewService>();
+                services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
                 services.AddSingleton<IActivationService, ActivationService>();
                 services.AddSingleton<IPageService, PageService>();

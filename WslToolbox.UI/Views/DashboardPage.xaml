@@ -22,13 +22,14 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Button Content="Add" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
                     <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.TestWindow}" CommandParameter="{x:Bind}" Content="Test" MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
 
                 <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource SmallTopMargin}"
                               IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="models:Distribution">
-                            <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                            <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="{StaticResource SmallStackMargin}">
                                 <Expander.Header>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -61,7 +62,8 @@
                                                     <Flyout>
                                                         <StackPanel>
                                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to delete this distribution?" Margin="0,0,0,12" />
-                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Delete" />
+                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Delete" Margin="{StaticResource SmallRightMargin}"
+                                                                    MinWidth="{StaticResource ButtonMinWidth}" />
                                                         </StackPanel>
                                                     </Flyout>
                                                 </Button.Flyout>

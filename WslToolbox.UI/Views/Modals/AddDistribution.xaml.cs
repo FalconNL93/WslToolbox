@@ -15,4 +15,6 @@ public sealed partial class AddDistribution : ModalPage
         
         InitializeComponent();
     }
+    
+    
 }

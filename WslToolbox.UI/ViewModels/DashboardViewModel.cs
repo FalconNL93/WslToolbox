@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.Core;
@@ -11,6 +12,7 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Services;
 using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.ViewModels;
@@ -18,15 +20,17 @@ namespace WslToolbox.UI.ViewModels;
 public class DashboardViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
+    private readonly IMessenger _messenger;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
     private bool _isRefreshing = true;
 
-    public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService)
+    public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService, IMessenger messenger)
     {
         _distributionService = distributionService;
         _logger = logger;
         _configurationService = configurationService;
+        _messenger = messenger;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
         StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution, DistributionCommand.CanStartDistribution);
@@ -34,8 +38,34 @@ public class DashboardViewModel : ObservableRecipient
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
-
+        TestWindow = new AsyncRelayCommand<Page>(OnTestWindow);
+        _messenger.Register<ProgressIndicatorChangedMessage>(this, OnMessage);
+        
         EventHandlers();
+    }
+
+    private void OnMessage(object recipient, ProgressIndicatorChangedMessage message)
+    {
+        Debug.WriteLine("Message received");
+    }
+
+    private async Task OnTestWindow(Page page)
+    {
+        try
+        {
+            _messenger.Send(new ProgressIndicatorChangedMessage(new ProgressIndicator
+            {
+                Title = "Test",
+                Message = "abc"
+            }));
+            //var installDistribution = await page.ShowProgressModal<NotificationModal>("Installing", "Installing distribution...", true);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error");
+            throw;
+        }
+
     }
 
     public bool IsRefreshing
@@ -50,19 +80,24 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> RestartDistribution { get; }
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
-
     public AsyncRelayCommand<Page> AddDistributionCommand { get; }
+    public AsyncRelayCommand<Page> TestWindow { get; }
 
     private async Task OnAddDistribution(Page page)
     {
         var available = await _distributionService.ListInstallableDistributions();
-        
+        var distributions = available.Where(x => !x.IsInstalled).ToList();
         try
         {
             var installDistribution = await page.ShowModal<AddDistribution>(
-                available.ToList(),
-                "Add distribution", "Add");
+                distributions, "Add distribution", "Add");
+
+            if (installDistribution.Modal == null || installDistribution.ContentDialogResult != ContentDialogResult.Primary)
+            {
+                return;
+            }
             
+            _distributionService.InstallDistribution(installDistribution.Modal.GetSelectedItem<Distribution>());
         }
         catch (Exception e)
         {
