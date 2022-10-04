@@ -6,6 +6,7 @@ public class ProgressIndicator
 {
     public string Title { get; set; }
     public string Message { get; set; }
+    public bool Show { get; set; }
 }
 
 public class ProgressIndicatorChangedMessage : ValueChangedMessage<ProgressIndicator>

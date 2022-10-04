@@ -38,7 +38,7 @@ public class DashboardViewModel : ObservableRecipient
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
-        TestWindow = new AsyncRelayCommand<Page>(OnTestWindow);
+        TestWindow = new RelayCommand<Page>(OnTestWindow);
         _messenger.Register<ProgressIndicatorChangedMessage>(this, OnMessage);
         
         EventHandlers();
@@ -49,16 +49,17 @@ public class DashboardViewModel : ObservableRecipient
         Debug.WriteLine("Message received");
     }
 
-    private async Task OnTestWindow(Page page)
+    private void OnTestWindow(Page page)
     {
         try
         {
+            Task.Run(() => page.ShowProgressModal<NotificationModal>("Installing", "Installing distribution...", true));
+            Task.Delay(10000);
             _messenger.Send(new ProgressIndicatorChangedMessage(new ProgressIndicator
             {
-                Title = "Test",
-                Message = "abc"
+                Title = "Installing",
+                Message = "Finishing installation..."
             }));
-            //var installDistribution = await page.ShowProgressModal<NotificationModal>("Installing", "Installing distribution...", true);
         }
         catch (Exception e)
         {
@@ -81,7 +82,7 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
     public AsyncRelayCommand<Page> AddDistributionCommand { get; }
-    public AsyncRelayCommand<Page> TestWindow { get; }
+    public RelayCommand<Page> TestWindow { get; }
 
     private async Task OnAddDistribution(Page page)
     {
