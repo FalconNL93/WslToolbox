@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
-using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
@@ -39,34 +38,20 @@ public class DashboardViewModel : ObservableRecipient
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
         TestWindow = new RelayCommand<Page>(OnTestWindow);
-        _messenger.Register<ProgressIndicatorChangedMessage>(this, OnMessage);
-        
+
         EventHandlers();
     }
 
-    private void OnMessage(object recipient, ProgressIndicatorChangedMessage message)
-    {
-        Debug.WriteLine("Message received");
-    }
-
-    private void OnTestWindow(Page page)
+    private async void OnTestWindow(Page page)
     {
         try
         {
-            Task.Run(() => page.ShowProgressModal<NotificationModal>("Installing", "Installing distribution...", true));
-            Task.Delay(10000);
-            _messenger.Send(new ProgressIndicatorChangedMessage(new ProgressIndicator
-            {
-                Title = "Installing",
-                Message = "Finishing installation..."
-            }));
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error");
             throw;
         }
-
     }
 
     public bool IsRefreshing
@@ -97,7 +82,7 @@ public class DashboardViewModel : ObservableRecipient
             {
                 return;
             }
-            
+
             _distributionService.InstallDistribution(installDistribution.Modal.GetSelectedItem<Distribution>());
         }
         catch (Exception e)

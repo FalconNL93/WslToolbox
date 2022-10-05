@@ -2,20 +2,23 @@
 
 namespace WslToolbox.UI.Services;
 
-public class ProgressIndicator
+public class ProgressModel
 {
-    public string Title { get; set; }
-    public string Message { get; set; }
-    public bool Show { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public bool IsIndeterminate { get; set; } = true;
+    public bool ShowPaused { get; set; }
+    public bool ShowError { get; set; }
+    
 }
 
-public class ProgressIndicatorChangedMessage : ValueChangedMessage<ProgressIndicator>
+public class ProgressIndicatorChangedMessage : ValueChangedMessage<ProgressModel>
 {
-    public ProgressIndicatorChangedMessage(ProgressIndicator value) : base(value)
+    public ProgressIndicatorChangedMessage(ProgressModel value) : base(value)
     {
     }
 }
 
-public class ProgressIndicatorRequestMessage : RequestMessage<ProgressIndicator>
+public class ProgressIndicatorRequestMessage : RequestMessage<ProgressModel>
 {
 }

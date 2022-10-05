@@ -5,7 +5,10 @@
     xmlns:views="using:WslToolbox.UI.Contracts.Views">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TextBlock Text="{x:Bind Message}" Margin="{StaticResource SmallBottomMargin}" />
-        <ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" ShowPaused="False" ShowError="False" />
+        <TextBlock Text="{x:Bind ViewModel.Progress.Message, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}" />
+        <ProgressBar HorizontalAlignment="Stretch"
+                     IsIndeterminate="{x:Bind ViewModel.Progress.IsIndeterminate, Mode=OneWay}"
+                     ShowPaused="{x:Bind ViewModel.Progress.ShowPaused, Mode=OneWay}"
+                     ShowError="{x:Bind ViewModel.Progress.ShowError, Mode=OneWay}" />
     </StackPanel>
 </views:ModalPage>

@@ -2,6 +2,9 @@
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Views;
 using WslToolbox.UI.Models;
+using WslToolbox.UI.Services;
+using WslToolbox.UI.ViewModels;
+using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.Extensions;
 
@@ -39,7 +42,8 @@ public static class PageExtensions
     
     public static async Task<ModalResult> ShowProgressModal<T>(this Page page, string title, string message, bool enableCancel = false) where T : ModalPage
     {
-        var modalPage = (T) Activator.CreateInstance(typeof(T), message);
+        var modalPage = App.GetService<NotificationModal>();
+        
         var contentDialog = new ContentDialog
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
@@ -48,6 +52,11 @@ public static class PageExtensions
             IsSecondaryButtonEnabled = false,
             XamlRoot = page.XamlRoot,
             Content = modalPage
+        };
+
+        modalPage.ViewModel.Progress = new ProgressModel
+        {
+            Message = message,
         };
 
         if (enableCancel)

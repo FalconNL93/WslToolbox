@@ -16,6 +16,7 @@ using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views;
+using WslToolbox.UI.Views.Modals;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace WslToolbox.UI;
@@ -75,6 +76,8 @@ public partial class App : Application
                 services.AddTransient<DashboardPage>();
                 services.AddTransient<ShellPage>();
                 services.AddTransient<ShellViewModel>();
+                services.AddTransient<NotificationModal>();
+                services.AddTransient<NotificationViewModel>();
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
