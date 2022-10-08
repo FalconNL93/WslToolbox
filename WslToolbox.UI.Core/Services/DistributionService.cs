@@ -43,7 +43,7 @@ public class DistributionService
 
         return _mapper.Map<IEnumerable<Distribution>>(distributions);
     }
-    
+
     public async Task<IEnumerable<Distribution>> ListInstallableDistributions()
     {
         var currentDistributions = await ListServiceCommand.ListDistributions(_userOptions.HideDocker);
@@ -56,7 +56,7 @@ public class DistributionService
     {
         OpenShellDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution));
     }
-    
+
     public async Task StartDistribution(Distribution distribution)
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
@@ -123,5 +123,11 @@ public class DistributionService
     {
         await StopServiceCommand.Execute();
         await StartServiceCommand.Execute();
+    }
+
+    public async Task<CommandClass> ExecuteCommand(Distribution distribution, string command)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        return await ExecuteDistributionCommand.Run(distributionClass, command);
     }
 }

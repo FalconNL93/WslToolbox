@@ -56,7 +56,7 @@
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="Rename" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Content="Move" IsEnabled="False" MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Content="Move" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
                                             <Button Content="Delete" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
                                                 <Button.Flyout>
                                                     <Flyout>

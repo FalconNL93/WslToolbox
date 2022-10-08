@@ -1,9 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Views;
 using WslToolbox.UI.Models;
 using WslToolbox.UI.Services;
-using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.Extensions;
@@ -39,35 +39,38 @@ public static class PageExtensions
             Modal = modalPage
         };
     }
-    
-    public static async Task<ModalResult> ShowProgressModal<T>(this Page page, string title, string message, bool enableCancel = false) where T : ModalPage
+
+    public static async Task<ModalResult> ShowProgressModal(this Page page, ProgressModel progressModel)
     {
         var modalPage = App.GetService<NotificationModal>();
-        
         var contentDialog = new ContentDialog
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-            Title = title,
-            IsPrimaryButtonEnabled = false,
-            IsSecondaryButtonEnabled = false,
+            Title = progressModel.Title,
+            IsPrimaryButtonEnabled = progressModel.IsPrimaryButtonEnabled,
+            IsSecondaryButtonEnabled = progressModel.IsSecondaryButtonEnabled,
+
             XamlRoot = page.XamlRoot,
             Content = modalPage
         };
 
-        modalPage.ViewModel.Progress = new ProgressModel
-        {
-            Message = message,
-        };
-
-        if (enableCancel)
-        {
-            contentDialog.CloseButtonText = "Cancel";
-        }
+        modalPage.ViewModel.Progress = progressModel;
 
         return new ModalResult
         {
             ContentDialogResult = await contentDialog.ShowAsync(),
             Modal = modalPage
         };
+    }
+
+    public static void UpdateModal(this Page page, string message, bool showProgress = false)
+    {
+        var messenger = App.GetService<IMessenger>();
+        messenger.Send(new ProgressIndicatorChangedMessage(new ProgressModel
+        {
+            Message = message,
+            IsIndeterminate = false,
+            ShowProgress = showProgress
+        }));
     }
 }

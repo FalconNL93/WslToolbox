@@ -11,22 +11,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.UI.Core", "WslTo
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D7B2C47-7143-42DB-A777-943F7087746C}.Release|Any CPU.ActiveCfg = Release|x86
-		{7D7B2C47-7143-42DB-A777-943F7087746C}.Release|Any CPU.Build.0 = Release|x86
-		{7D7B2C47-7143-42DB-A777-943F7087746C}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{7D7B2C47-7143-42DB-A777-943F7087746C}.Debug|Any CPU.Build.0 = Debug|x64
-		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|x64.ActiveCfg = Debug|x64
+		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Debug|x64.Build.0 = Debug|x64
+		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|x64.ActiveCfg = Release|x64
+		{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}.Release|x64.Build.0 = Release|x64
+		{7D7B2C47-7143-42DB-A777-943F7087746C}.Debug|x64.ActiveCfg = Debug|x64
+		{7D7B2C47-7143-42DB-A777-943F7087746C}.Debug|x64.Build.0 = Debug|x64
+		{7D7B2C47-7143-42DB-A777-943F7087746C}.Release|x64.ActiveCfg = Release|x64
+		{7D7B2C47-7143-42DB-A777-943F7087746C}.Release|x64.Build.0 = Release|x64
+		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|x64.ActiveCfg = Debug|x64
+		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|x64.Build.0 = Debug|x64
+		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Release|x64.ActiveCfg = Release|x64
+		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

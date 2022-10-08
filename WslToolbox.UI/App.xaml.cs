@@ -76,6 +76,7 @@ public partial class App : Application
                 services.AddTransient<DashboardPage>();
                 services.AddTransient<ShellPage>();
                 services.AddTransient<ShellViewModel>();
+
                 services.AddTransient<NotificationModal>();
                 services.AddTransient<NotificationViewModel>();
 

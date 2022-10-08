@@ -2,21 +2,32 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>WslToolbox.UI.Core</RootNamespace>
-        <Platforms>x86;x64;arm64;AnyCPU</Platforms>
+        <Platforms>x86;x64;arm64</Platforms>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Configurations>Debug;Release</Configurations>
+        <AssemblyName>wsltb-c</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\" />
+        <Folder Include="Models\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
+        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj"/>
     </ItemGroup>
 </Project>

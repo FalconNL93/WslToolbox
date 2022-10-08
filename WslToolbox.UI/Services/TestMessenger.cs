@@ -9,7 +9,9 @@ public class ProgressModel
     public bool IsIndeterminate { get; set; } = true;
     public bool ShowPaused { get; set; }
     public bool ShowError { get; set; }
-    
+    public bool ShowProgress { get; set; }
+    public bool IsPrimaryButtonEnabled { get; set; }
+    public bool IsSecondaryButtonEnabled { get; set; }
 }
 
 public class ProgressIndicatorChangedMessage : ValueChangedMessage<ProgressModel>

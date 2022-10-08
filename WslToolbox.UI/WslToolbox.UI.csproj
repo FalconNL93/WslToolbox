@@ -15,7 +15,7 @@
         <EnableMsixTooling>true</EnableMsixTooling>
         <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
         <WindowsPackageType>None</WindowsPackageType>
-        <AssemblyName>wsl-toolbox</AssemblyName>
+        <AssemblyName>wsltb</AssemblyName>
         <Title>WSL Toolbox UI</Title>
         <Authors>FalconNL93</Authors>
         <PackageProjectUrl>https://github.com/FalconNL93/WslToolbox</PackageProjectUrl>
@@ -54,6 +54,18 @@
 
     <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
         <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <Target Name="_RemoveFrameworkReferences" BeforeTargets="_ConvertItems;_CalculateInputsForGenerateCurrentProjectAppxManifest">

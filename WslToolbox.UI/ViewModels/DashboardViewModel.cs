@@ -19,9 +19,9 @@ namespace WslToolbox.UI.ViewModels;
 public class DashboardViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
-    private readonly IMessenger _messenger;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
+    private readonly IMessenger _messenger;
     private bool _isRefreshing = true;
 
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService, IMessenger messenger)
@@ -42,18 +42,6 @@ public class DashboardViewModel : ObservableRecipient
         EventHandlers();
     }
 
-    private async void OnTestWindow(Page page)
-    {
-        try
-        {
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error");
-            throw;
-        }
-    }
-
     public bool IsRefreshing
     {
         get => _isRefreshing;
@@ -68,6 +56,32 @@ public class DashboardViewModel : ObservableRecipient
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
     public AsyncRelayCommand<Page> AddDistributionCommand { get; }
     public RelayCommand<Page> TestWindow { get; }
+
+    private async void OnTestWindow(Page page)
+    {
+        try
+        {
+            page.ShowProgressModal(new ProgressModel
+            {
+                Title = "Executing",
+                Message = "Executing command, please wait..."
+            });
+            page.UpdateModal("Updating distributions...");
+            var dist = await _distributionService.ListDistributions();
+            var first = dist.FirstOrDefault();
+
+            var bb = await _distributionService.ExecuteCommand(first, "whoami");
+            page.UpdateModal($"Output: {bb.Output}", true);
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            _logger.LogInformation("Command: {Command} Output: {Output}", bb.Command, bb.Output);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error");
+            throw;
+        }
+    }
 
     private async Task OnAddDistribution(Page page)
     {

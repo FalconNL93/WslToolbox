@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
-using WslToolbox.UI.Core.Models;
+﻿using Microsoft.UI.Xaml.Controls;
 
 namespace WslToolbox.UI.Contracts.Views;
 

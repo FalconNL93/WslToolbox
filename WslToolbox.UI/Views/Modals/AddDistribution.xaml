@@ -5,7 +5,7 @@
     xmlns:views="using:WslToolbox.UI.Contracts.Views">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TextBlock Text="Select the distribution you would like to install" Margin="{StaticResource SmallBottomMargin}"/>
-        <ComboBox ItemsSource="{x:Bind _distributions}" DisplayMemberPath="Name" SelectedItem="{x:Bind SelectedItem, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+        <TextBlock Text="Select the distribution you would like to install" Margin="{StaticResource SmallBottomMargin}" />
+        <ComboBox ItemsSource="{x:Bind _distributions}" DisplayMemberPath="Name" SelectedItem="{x:Bind SelectedItem, Mode=TwoWay}" HorizontalAlignment="Stretch" />
     </StackPanel>
 </views:ModalPage>
