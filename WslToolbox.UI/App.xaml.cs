@@ -1,9 +1,12 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Serilog;
 using Serilog.Events;
 using WslToolbox.UI.Activation;
@@ -12,6 +15,7 @@ using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
@@ -27,6 +31,7 @@ public partial class App : Application
     public const string LogFile = "log.txt";
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     public static readonly string? Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+    public static bool IsDeveloper = Debugger.IsAttached;
 
     public App()
     {
@@ -70,15 +75,11 @@ public partial class App : Application
                 services.AddSingleton<DistributionService>();
 
                 // Views and ViewModels
-                services.AddTransient<SettingsViewModel>();
-                services.AddTransient<SettingsPage>();
-                services.AddTransient<DashboardViewModel>();
-                services.AddTransient<DashboardPage>();
-                services.AddTransient<ShellPage>();
-                services.AddTransient<ShellViewModel>();
-
-                services.AddTransient<NotificationModal>();
-                services.AddTransient<NotificationViewModel>();
+                services.AddPage<ShellViewModel, ShellPage>();
+                services.AddPage<DashboardViewModel, DashboardPage>();
+                services.AddPage<SettingsViewModel, SettingsPage>();
+                services.AddPage<NotificationViewModel, NotificationModal>();
+                services.AddPage<DeveloperViewModel, DeveloperPage>();
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
@@ -88,7 +89,6 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
     }
-
 
     private IHost Host { get; }
 

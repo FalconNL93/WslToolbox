@@ -23,7 +23,7 @@ public class DashboardViewModel : ObservableRecipient
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly IMessenger _messenger;
     private bool _isRefreshing = true;
-
+    
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService, IMessenger messenger)
     {
         _distributionService = distributionService;
@@ -37,7 +37,6 @@ public class DashboardViewModel : ObservableRecipient
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
-        TestWindow = new RelayCommand<Page>(OnTestWindow);
 
         EventHandlers();
     }
@@ -47,7 +46,7 @@ public class DashboardViewModel : ObservableRecipient
         get => _isRefreshing;
         set => SetProperty(ref _isRefreshing, value);
     }
-
+    
     public AsyncRelayCommand RefreshDistributions { get; }
     public AsyncRelayCommand<Distribution> StartDistribution { get; }
     public AsyncRelayCommand<Distribution> StopDistributions { get; }
@@ -55,33 +54,6 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
     public AsyncRelayCommand<Page> AddDistributionCommand { get; }
-    public RelayCommand<Page> TestWindow { get; }
-
-    private async void OnTestWindow(Page page)
-    {
-        try
-        {
-            page.ShowProgressModal(new ProgressModel
-            {
-                Title = "Executing",
-                Message = "Executing command, please wait..."
-            });
-            page.UpdateModal("Updating distributions...");
-            var dist = await _distributionService.ListDistributions();
-            var first = dist.FirstOrDefault();
-
-            var bb = await _distributionService.ExecuteCommand(first, "whoami");
-            page.UpdateModal($"Output: {bb.Output}", true);
-            await Task.Delay(TimeSpan.FromSeconds(5));
-
-            _logger.LogInformation("Command: {Command} Output: {Output}", bb.Command, bb.Output);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error");
-            throw;
-        }
-    }
 
     private async Task OnAddDistribution(Page page)
     {

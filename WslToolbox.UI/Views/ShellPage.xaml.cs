@@ -26,6 +26,7 @@ public sealed partial class ShellPage : Page
     }
 
     public ShellViewModel ViewModel { get; }
+    public bool IsDeveloper { get; } = App.IsDeveloper;
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {

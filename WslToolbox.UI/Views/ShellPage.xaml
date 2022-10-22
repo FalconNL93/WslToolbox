@@ -5,8 +5,11 @@
     xmlns:helpers="using:WslToolbox.UI.Helpers"
     xmlns:behaviors="using:WslToolbox.UI.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:app="clr-namespace:WslToolbox.UI"
     Loaded="OnLoaded">
-
+    <Page.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+    </Page.Resources>
     <Grid>
         <Grid x:Name="AppTitleBar"
               Canvas.ZIndex="1"
@@ -38,6 +41,11 @@
                 <NavigationViewItem Content="Dashboard" helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.DashboardViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Home" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Developer" helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.DeveloperViewModel" Visibility="{x:Bind IsDeveloper, Converter={StaticResource VisibilityConverter}}">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Flag" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
