@@ -23,7 +23,7 @@
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallBottomMargin}" />
-                    <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.ElementTheme, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" />
                 </StackPanel>
 
                 <TextBlock Text="About" Style="{ThemeResource SubtitleTextBlockStyle}" />

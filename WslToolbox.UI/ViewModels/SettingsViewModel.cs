@@ -24,11 +24,22 @@ public class SettingsViewModel : ObservableRecipient
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
 
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(OnThemeChange);
+        SwitchThemeCommand = new AsyncRelayCommand<ElementTheme>(OnThemeChange);
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
         RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
         OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
         OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists($"{App.AppDirectory}\\{App.LogFile}"));
+    }
+
+    private async Task OnThemeChange(ElementTheme param)
+    {
+        if (ElementTheme == param)
+        {
+            return;
+        }
+
+        ElementTheme = param;
+        await _themeSelectorService.SetThemeAsync(param);
     }
 
     public string? Version { get; set; } = App.Version;
@@ -46,7 +57,7 @@ public class SettingsViewModel : ObservableRecipient
         }
     }
 
-    public ICommand SwitchThemeCommand { get; }
+    public AsyncRelayCommand<ElementTheme> SwitchThemeCommand { get; }
     public RelayCommand SaveConfiguration { get; }
     public RelayCommand RestoreDefaultConfiguration { get; }
     public RelayCommand OpenConfiguration { get; }
@@ -76,17 +87,6 @@ public class SettingsViewModel : ObservableRecipient
 
         RestoreDefaultConfiguration.NotifyCanExecuteChanged();
         OpenConfiguration.NotifyCanExecuteChanged();
-    }
-
-    private async void OnThemeChange(ElementTheme param)
-    {
-        if (ElementTheme == param)
-        {
-            return;
-        }
-
-        ElementTheme = param;
-        await _themeSelectorService.SetThemeAsync(param);
     }
 
     private static void OnOpenConfiguration()

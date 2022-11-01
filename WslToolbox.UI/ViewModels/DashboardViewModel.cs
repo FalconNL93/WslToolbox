@@ -81,6 +81,7 @@ public class DashboardViewModel : ObservableRecipient
     {
         StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
         TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
+        UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)
