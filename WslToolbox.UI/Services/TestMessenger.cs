@@ -12,6 +12,7 @@ public class ProgressModel
     public bool ShowProgress { get; set; }
     public bool IsPrimaryButtonEnabled { get; set; }
     public bool IsSecondaryButtonEnabled { get; set; }
+    public bool ShowClose { get; set; }
 }
 
 public class ProgressIndicatorChangedMessage : ValueChangedMessage<ProgressModel>

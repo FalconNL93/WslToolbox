@@ -5,7 +5,6 @@
     xmlns:helpers="using:WslToolbox.UI.Helpers"
     xmlns:behaviors="using:WslToolbox.UI.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:app="clr-namespace:WslToolbox.UI"
     Loaded="OnLoaded">
     <Page.Resources>
         <helpers:BoolToVisibilityConverter x:Key="VisibilityConverter" />

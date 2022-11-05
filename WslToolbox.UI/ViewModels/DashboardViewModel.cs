@@ -11,7 +11,6 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Services;
 using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.ViewModels;
@@ -23,7 +22,7 @@ public class DashboardViewModel : ObservableRecipient
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly IMessenger _messenger;
     private bool _isRefreshing = true;
-    
+
     public DashboardViewModel(DistributionService distributionService, ILogger<DashboardViewModel> logger, IConfigurationService configurationService, IMessenger messenger)
     {
         _distributionService = distributionService;
@@ -46,7 +45,7 @@ public class DashboardViewModel : ObservableRecipient
         get => _isRefreshing;
         set => SetProperty(ref _isRefreshing, value);
     }
-    
+
     public AsyncRelayCommand RefreshDistributions { get; }
     public AsyncRelayCommand<Distribution> StartDistribution { get; }
     public AsyncRelayCommand<Distribution> StopDistributions { get; }

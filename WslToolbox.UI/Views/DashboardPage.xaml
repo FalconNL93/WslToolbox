@@ -10,7 +10,6 @@
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:InverseBooleanConverter x:Key="InverseBoolean" />
-        <helpers:BoolToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">

@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
@@ -31,17 +30,6 @@ public class SettingsViewModel : ObservableRecipient
         OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists($"{App.AppDirectory}\\{App.LogFile}"));
     }
 
-    private async Task OnThemeChange(ElementTheme param)
-    {
-        if (ElementTheme == param)
-        {
-            return;
-        }
-
-        ElementTheme = param;
-        await _themeSelectorService.SetThemeAsync(param);
-    }
-
     public string? Version { get; set; } = App.Version;
     public UserOptions UserOptions { get; }
 
@@ -62,6 +50,17 @@ public class SettingsViewModel : ObservableRecipient
     public RelayCommand RestoreDefaultConfiguration { get; }
     public RelayCommand OpenConfiguration { get; }
     public RelayCommand OpenLogFile { get; }
+
+    private async Task OnThemeChange(ElementTheme param)
+    {
+        if (ElementTheme == param)
+        {
+            return;
+        }
+
+        ElementTheme = param;
+        await _themeSelectorService.SetThemeAsync(param);
+    }
 
     private static void OnOpenLogFile()
     {

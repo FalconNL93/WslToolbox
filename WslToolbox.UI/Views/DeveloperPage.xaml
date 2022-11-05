@@ -4,13 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:WslToolbox.UI.Helpers"
-    x:Name="DbPg"
     mc:Ignorable="d">
-    <Page.Resources>
-        <converters:InverseBooleanConverter x:Key="InverseBoolean" />
-        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <ScrollViewer>
@@ -18,6 +12,7 @@
                 <StackPanel>
                     <TextBlock Text="This developer page is for testing purposes" Margin="{StaticResource SmallBottomMargin}" />
                     <Button Command="{x:Bind ViewModel.TestWindow}" CommandParameter="{x:Bind}" Content="Test" MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Content="Test" MinWidth="{StaticResource ButtonMinWidth}" Command="{x:Bind ViewModel.Load}" />
                 </StackPanel>
             </Grid>
         </ScrollViewer>

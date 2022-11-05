@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Serilog;
 using Serilog.Events;
 using WslToolbox.UI.Activation;

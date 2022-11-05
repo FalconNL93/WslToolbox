@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
@@ -10,8 +11,8 @@ namespace WslToolbox.UI.ViewModels;
 
 public class DeveloperViewModel : ObservableRecipient
 {
-    private readonly ILogger<DeveloperViewModel> _logger;
     private readonly DistributionService _distributionService;
+    private readonly ILogger<DeveloperViewModel> _logger;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
@@ -20,10 +21,21 @@ public class DeveloperViewModel : ObservableRecipient
     {
         _logger = logger;
         _distributionService = distributionService;
+
         TestWindow = new RelayCommand<Page>(OnTestWindow);
+        Load = new AsyncRelayCommand(OnLoad);
     }
 
+
     public RelayCommand<Page> TestWindow { get; }
+    public AsyncRelayCommand Load { get; }
+
+    private async Task OnLoad()
+    {
+        Debug.WriteLine("Executed");
+        await Task.Delay(TimeSpan.FromSeconds(10));
+        Debug.WriteLine("Finished");
+    }
 
     private async void OnTestWindow(Page? page)
     {
@@ -32,7 +44,8 @@ public class DeveloperViewModel : ObservableRecipient
             page.ShowProgressModal(new ProgressModel
             {
                 Title = "Executing",
-                Message = "Executing command, please wait..."
+                Message = "Executing command, please wait...",
+                ShowClose = true
             });
             page.UpdateModal("Updating distributions...");
             var dist = await _distributionService.ListDistributions();

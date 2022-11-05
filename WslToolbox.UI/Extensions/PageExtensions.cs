@@ -49,6 +49,7 @@ public static class PageExtensions
             Title = progressModel.Title,
             IsPrimaryButtonEnabled = progressModel.IsPrimaryButtonEnabled,
             IsSecondaryButtonEnabled = progressModel.IsSecondaryButtonEnabled,
+            CloseButtonText = progressModel.ShowClose ? "Close" : string.Empty,
 
             XamlRoot = page.XamlRoot,
             Content = modalPage
