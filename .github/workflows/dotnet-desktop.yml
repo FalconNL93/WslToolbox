@@ -9,7 +9,7 @@ env:
   ProductName: 'WSL Toolbox'
   ProductDescription: 'WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.'
   ProductUuid: 'FalconNL93.WSLToolbox'
-  ProductVersion: '0.6'
+  ProductVersion: '0.6.0'
   ProductEnvironment: 'dev'
   ProductUrl: 'https://github.com/FalconNL93/wsltoolbox'
   ProductExecutable: 'toolbox.exe'
@@ -57,7 +57,7 @@ jobs:
           Configuration: ${{ matrix.configuration }}
 
       - name: Publish
-        run: msbuild WslToolbox.UI\WslToolbox.UI.csproj /p:Configuration=$env:Configuration /p:Platform=x64 /p:outdir="../release/x64"
+        run: msbuild WslToolbox.UI\WslToolbox.UI.csproj /p:Configuration=$env:Configuration /p:Platform=x64 /p:outdir="../release/x64" /p:Version="$env:GITHUB_WORKSPACE"
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3.1.0
@@ -86,3 +86,15 @@ jobs:
         with:
           path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-setup.exe
           retention-days: 1
+
+  purge:
+      runs-on: ubuntu-latest
+      needs: setup
+      steps:
+        - name: Delete workflow runs
+          uses: Mattraks/delete-workflow-runs@v2
+          with:
+            token: ${{ github.token }}
+            repository: ${{ github.repository }}
+            retain_days: 0
+            keep_minimum_runs: 1
