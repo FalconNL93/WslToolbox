@@ -3,6 +3,17 @@ name: .NET Core Desktop
 on:
   push:
     branches: [ "develop" ]
+    
+env:
+  ProductOwner: "FalconNL93"
+  ProductName: 'WSL Toolbox'
+  ProductDescription: 'WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.'
+  ProductUuid: 'FalconNL93.WSLToolbox'
+  ProductVersion: '0.6'
+  ProductEnvironment: 'dev'
+  ProductUrl: 'https://github.com/FalconNL93/wsltoolbox'
+  ProductExecutable: 'toolbox.exe'
+  SetupOutputFile: 'wsltoolbox-0.6'
 
 jobs:
   build:
@@ -18,35 +29,60 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      
+
       # Install the .NET Core workload
       - name: Install .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
-      
+
       # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
-      
+
       # Execute all unit tests in the solution
       - name: Execute unit tests
         run: dotnet test
-      
+
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Restore the application
         run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
         env:
           Configuration: ${{ matrix.configuration }}
-      
+
       # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Build the application
         run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
         env:
           Configuration: ${{ matrix.configuration }}
 
+      - name: Publish
+        run: msbuild WslToolbox.UI\WslToolbox.UI.csproj /p:Configuration=$env:Configuration /p:Platform=x64 /p:outdir="../release/x64"
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: release
-          path: WslToolbox.Gui2\bin\Release\net6.0-windows\
+          path: release\x64\
+          retention-days: 1
+    
+  setup:
+      runs-on: windows-2022
+      needs: build
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2.5.0
+      - name: Build data
+        uses: actions/download-artifact@v3
+        with:
+          name: release
+          path: ${{ github.workspace }}\app
+      - name: Test
+        run: echo "-BinariesDirectory $env:GITHUB_WORKSPACE\app"
+      - name: Setup
+        run: .\WslToolbox.Setup\build.ps1 -BinariesDirectory $env:GITHUB_WORKSPACE\app
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-setup.exe
+          retention-days: 1
