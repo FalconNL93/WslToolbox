@@ -12,8 +12,8 @@ $env:ProductUuid = 'FalconNL93.WSLToolbox';
 $env:ProductVersion = '0.6.0';
 $env:ProductEnvironment = 'dev';
 $env:ProductUrl = 'https://github.com/FalconNL93/wsltoolbox';
-$env:SetupOutputFile = 'wsltoolbox-0.6';
+$env:Platform = 'x86'
+$env:SetupOutputFile = "wsltoolbox-0.6-$env:Platform";
 
-dotnet msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-dotnet msbuild WslToolbox.UI\WslToolbox.UI.csproj /p:Configuration=$env:Configuration /p:Platform=x64 /p:outdir="$env:GITHUB_WORKSPACE\app\release\x64" /p:Version="$env:ProductVersion"
-& .\WslToolbox.Setup\build.ps1 -BinariesDirectory $env:GITHUB_WORKSPACE\app\release\x64
+dotnet publish -p:PublishProfile=$env:Platform -o "$env:GITHUB_WORKSPACE\app\release\$env:Platform" WslToolbox.UI\WslToolbox.UI.csproj
+& .\WslToolbox.Setup\build.ps1 -BinariesDirectory $env:GITHUB_WORKSPACE\app\release\$env:Platform

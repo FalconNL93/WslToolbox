@@ -3,7 +3,7 @@ name: .NET Core Desktop
 on:
   push:
     branches: [ "nightly" ]
-    
+
 env:
   ProductOwner: "FalconNL93"
   ProductName: 'WSL Toolbox'
@@ -20,6 +20,7 @@ jobs:
     strategy:
       matrix:
         configuration: [ Release ]
+        platform: [x86, x64]
     runs-on: windows-latest
     env:
       Solution_Name: WslToolbox.sln
@@ -57,19 +58,21 @@ jobs:
           Configuration: ${{ matrix.configuration }}
 
       - name: Publish
-        run: msbuild WslToolbox.UI\WslToolbox.UI.csproj /p:Configuration=$env:Configuration /p:Platform=x64 /p:outdir="../release/x64" /p:Version="$env:GITHUB_WORKSPACE"
+        run: dotnet publish -p:PublishProfile=$env:Platform -o "$env:GITHUB_WORKSPACE\app\release\$env:Platform" WslToolbox.UI\WslToolbox.UI.csproj
+        env:
+          Platform: ${{ matrix.platform }}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: release
-          path: release\x64\
+          path: $env:GITHUB_WORKSPACE\app\release\$env:Platform
           retention-days: 1
-    
+  
   setup:
-      runs-on: windows-2022
-      needs: build
-      steps:
+    runs-on: windows-2022
+    needs: build
+    steps:
       - name: Checkout
         uses: actions/checkout@v2.5.0
       - name: Build data
@@ -88,13 +91,13 @@ jobs:
           retention-days: 1
 
   purge:
-      runs-on: ubuntu-latest
-      needs: setup
-      steps:
-        - name: Delete workflow runs
-          uses: Mattraks/delete-workflow-runs@v2
-          with:
-            token: ${{ github.token }}
-            repository: ${{ github.repository }}
-            retain_days: 0
-            keep_minimum_runs: 1
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 1
