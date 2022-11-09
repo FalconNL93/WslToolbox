@@ -1,36 +1,36 @@
 [Setup]
-AppId={#ProductUuid}
-AppName={#ProductName}
-AppVersion={#ProductVersion}
-AppVerName={#ProductName} {#ProductVersion}
-AppPublisher={#ProductOwner}
-AppPublisherURL={#ProductUrl}
-AppSupportURL={#ProductUrl}
-AppUpdatesURL={#ProductUrl}
+AppId={#AppUuid}
+AppName={#AppName}
+AppVersion={#AppVersion}
+AppVerName={#AppName} {#AppVersion}
+AppPublisher={#AppOwner}
+AppPublisherURL={#AppUrl}
+AppSupportURL={#AppUrl}
+AppUpdatesURL={#AppUrl}
 WizardStyle=modern
 
 ; Executable information
-VersionInfoDescription={#ProductDescription}
-VersionInfoProductTextVersion={#ProductVersion}
-VersionInfoCompany={#ProductOwner}
-VersionInfoVersion={#ProductVersion}
+VersionInfoDescription={#AppDescription}
+VersionInfoProductTextVersion={#AppVersion}
+VersionInfoCompany={#AppOwner}
+VersionInfoVersion={#AppVersion}
 
 ; Permissions
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline
 
 ; Compiler
-OutputDir="{#OutputDirectory}"
-OutputBaseFilename="{#OutputFile}-setup"
+OutputDir="{#SetupOutputDirectory}"
+OutputBaseFilename="{#SetupOutputFile}"
 
 ; Pages
 DisableWelcomePage=no
 DisableProgramGroupPage=yes
 
 ; Settings
-DefaultDirName={userappdata}\{#ProductName}
-UninstallDisplayName={#ProductName}
-UninstallDisplayIcon={app}\{#DefaultExecutable}
+DefaultDirName={userappdata}\{#AppName}
+UninstallDisplayName={#AppName}
+UninstallDisplayIcon={app}\{#AppExecutable}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -40,19 +40,19 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startmenuicon"; Description: "{cm:CreateStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "{#BinariesDirectory}\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "{#AppDirectory}\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: "{autodesktop}\{#ProductName}"; Filename: "{app}\{#DefaultExecutable}"; Tasks: desktopicon
-Name: "{autoprograms}\{#ProductName}"; Filename: "{app}\{#DefaultExecutable}"; Tasks: startmenuicon
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExecutable}"; Tasks: desktopicon
+Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExecutable}"; Tasks: startmenuicon
 
 [Run]
-Filename: "{app}\{#DefaultExecutable}"; Description: "{cm:LaunchProgram,{#StringChange(ProductName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#AppExecutable}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Messages]
-SetupAppTitle = {#ProductName}
-SetupWindowTitle = Setup - {#ProductName}
-BeveledLabel = {#ProductVersion}
+SetupAppTitle = {#AppName}
+SetupWindowTitle = Setup - {#AppName}
+BeveledLabel = "{#AppName} - {#AppVersion}"
 
 [CustomMessages]
 CreateDesktopIcon=Create a &desktop icon

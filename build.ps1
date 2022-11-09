@@ -1,19 +1,56 @@
+Param(
+    [ValidateSet(
+        "x86", 
+        "x64"
+    )]
+    [Parameter(Mandatory = $true)]
+    [String]$Platform,
+
+    [Parameter(Mandatory = $false)]
+    [Switch]$WithSetup
+)
+
 # For local building
 $ErrorActionPreference = "Stop"
 
-$env:GITHUB_WORKSPACE = $PSScriptRoot;
-$env:Solution_Name = "WslToolbox.sln";
-$env:Configuration = "Release";
-$env:ProductOwner = 'FalconNL93';
-$env:ProductExecutable = 'toolbox.exe';
-$env:ProductName = 'WSL Toolbox';
-$env:ProductDescription = 'WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.';
-$env:ProductUuid = 'FalconNL93.WSLToolbox';
-$env:ProductVersion = '0.6.0';
-$env:ProductEnvironment = 'dev';
-$env:ProductUrl = 'https://github.com/FalconNL93/wsltoolbox';
-$env:Platform = 'x86'
-$env:SetupOutputFile = "wsltoolbox-0.6-$env:Platform";
+$CommandName = $PSCmdlet.MyInvocation.InvocationName;
+$ParameterList = (Get-Command -Name $CommandName).Parameters;
+foreach ($Parameter in $ParameterList) {
+    Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
+}
 
-dotnet publish -p:PublishProfile=$env:Platform -o "$env:GITHUB_WORKSPACE\app\release\$env:Platform" WslToolbox.UI\WslToolbox.UI.csproj
-& .\WslToolbox.Setup\build.ps1 -BinariesDirectory $env:GITHUB_WORKSPACE\app\release\$env:Platform
+$RootProject = "WslToolbox.UI\WslToolbox.UI.csproj";
+$AppDirectory = $PSScriptRoot;
+$AppUuid = 'FalconNL93.WSLToolbox';
+$AppName = "WSL Toolbox"
+$AppDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
+$AppExecutable = "toolbox.exe";
+$AppVersion = '0.6.0';
+$AppUrl = "https://github.com/FalconNL93/wsltoolbox";
+$AppOwner = "FalconNL93"
+$SetupOutputFile = "wsltoolbox-0.6-$Platform";
+
+dotnet publish "$RootProject" `
+    -p:PublishProfile="$Platform" `
+    -r win-x64 `
+    --self-contained true `
+    --nologo `
+    -o "$AppDirectory\app\release\$Platform"
+if (!$?) { exit 1; }
+
+if (!$WithSetup) {
+    exit 0;
+}
+
+& .\WslToolbox.Setup\build.ps1 `
+    -AppDirectory "$AppDirectory\app\release\$Platform" `
+    -AppUuid "$AppUuid" `
+    -AppName "$AppName" `
+    -AppDescription "$AppDescription" `
+    -AppExecutable "$AppExecutable" `
+    -AppVersion "$AppVersion" `
+    -AppUrl "$AppUrl" `
+    -AppOwner "$AppOwner" `
+    -SetupOutputFile "$SetupOutputFile"
+
+if (!$?) { exit 1; }

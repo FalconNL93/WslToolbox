@@ -1,6 +1,35 @@
 Param(
+    # Required parameters
     [Parameter(Mandatory = $true)]
-    [String]$BinariesDirectory,
+    [String]$AppDirectory,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppUuid,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppName,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppDescription,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppExecutable,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppVersion,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppUrl,
+
+    [Parameter(Mandatory = $true)]
+    [String]$AppOwner,
+
+    [Parameter(Mandatory = $true)]
+    [String]$SetupOutputFile,
+
+    # Additional parameters
+    [Parameter(Mandatory = $false)]
+    [String]$SetupOutputDirectory,
 
     [Parameter(Mandatory = $false)]
     [Switch]$Run,
@@ -12,92 +41,71 @@ Param(
     [Switch]$Info
 )
 
+
 $Compiler = ${env:INNO_COMPILER_PATH} ? ${env:INNO_COMPILER_PATH} : "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe"
 $InnoFile = "${PSScriptRoot}\setup.iss"
-$OutputDirectory = ${env:SetupOutputDirectory} ? ${env:SetupOutputDirectory} : "${PSScriptRoot}\bin"
+$OutputDirectory = ${SetupOutputDirectory} ? ${SetupOutputDirectory} : "${PSScriptRoot}\bin"
 
-$ProductExecutable = ${env:ProductExecutable}
-$ProductName = ${env:ProductName}
-$ProductOwner = ${env:ProductOwner}
-$ProductUrl = ${env:ProductUrl}
-$ProductDescription = ${env:ProductDescription}
-$ProductUuid = ${env:ProductUuid}
-$ProductVersion = ${env:ProductVersion}
-$ProductEnvironment = ${env:ProductEnvironment}
-$OutputFile = ${env:SetupOutputFile}
-$TargetFramework = ${env:ProductTargetFramework}
+$CommandName = $PSCmdlet.MyInvocation.InvocationName;
+$ParameterList = (Get-Command -Name $CommandName).Parameters;
+foreach ($Parameter in $ParameterList) {
+    Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
+}
 
-if (!(test-Path ${BinariesDirectory}))
-{
-    Write-Output "${BinariesDirectory} does not exist."
+if (!(test-Path ${AppDirectory})) {
+    Write-Output "${AppDirectory} does not exist."
     exit 1
 }
 
-if (!(test-Path $Compiler))
-{
+if (!(test-Path $Compiler)) {
     Write-Output "${Compiler} not found."
     exit 1
 }
 
-if (!(test-Path ${InnoFile}))
-{
+if (!(test-Path ${InnoFile})) {
     Write-Output "${InnoFile} not found."
     exit 1
 }
 
-if (!(test-Path $OutputDirectory))
-{
+if (!(test-Path $OutputDirectory)) {
     New-Item "$OutputDirectory" -itemType Directory
 }
 
-"{0} {1} - {2}`r`n{3}`r`n{4}`r`n{5}`r`n{6}\*.*" -f `
-    ${ProductName}, ${ProductVersion}, ${ProductEnvironment},     `
-        ${ProductUuid},     `
-        "${OutputDirectory}\${OutputFile}.exe",     `
-        $Compiler,     `
-        $BinariesDirectory
 
-if ($Info)
-{
+if ($Info) {
     exit 0;
 }
 
 & ${Compiler} `
-    /DDefaultExecutable="${ProductExecutable}" `
-    /DProductName="${ProductName}" `
-    /DProductOwner="${ProductOwner}" `
-    /DProductUrl="${ProductUrl}" `
-    /DProductVersion="${ProductVersion}" `
-    /DProductDescription="${ProductDescription}" `
-    /DProductEnvironment="${ProductEnvironment}" `
-    /DProductUuid="${ProductUuid}" `
-    /DOutputFile="${OutputFile}" `
-    /DOutputDirectory="${OutputDirectory}" `
-    /DTargetFramework="${TargetFramework}" `
-    /DBinariesDirectory="${BinariesDirectory}" `
+    /DAppDirectory="${AppDirectory}" `
+    /DAppUuid="${AppUuid}" `
+    /DAppName="${AppName}" `
+    /DAppDescription="${AppDescription}" `
+    /DAppExecutable="${AppExecutable}" `
+    /DAppVersion="${AppVersion}" `
+    /DAppUrl="${AppUrl}" `
+    /DAppOwner="${AppOwner}" `
+    /DSetupOutputFile="${SetupOutputFile}" `
+    /DSetupOutputDirectory="${OutputDirectory}" `
     ${InnoFile}
 
-if (!($?))
-{
+if (!($?)) {
     Write-Output "Build failed."; exit $?;
 }
 
-if ($Run)
-{
-    $SetupFile = "${OutputDirectory}\${OutputFile}.exe"
+if ($Run) {
+    $SetupFile = "${OutputDirectory}\${SetupOutputFile}.exe"
     $Parameters;
 
-    if (!(test-Path $SetupFile))
-    {
+    if (!(test-Path $SetupFile)) {
         Write-Output "${SetupFile} not found."
         exit 1
     }
 
-    if ($Silent)
-    {
+    if ($Silent) {
         $Parameters = $Parameters + "/SILENT"
     }
 
-    Write-Output "Launching ${SetupFile} ${Parameters}"
-    & ${SetupFile} ${Parameters}
+    Write-Output "Launching ${OutputDirectory} ${Parameters}"
+    & ${OutputDirectory} ${Parameters}
 }

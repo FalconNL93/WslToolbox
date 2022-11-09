@@ -5,25 +5,25 @@ on:
     branches: [ "nightly" ]
 
 env:
-  ProductOwner: "FalconNL93"
-  ProductName: 'WSL Toolbox'
-  ProductDescription: 'WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.'
-  ProductUuid: 'FalconNL93.WSLToolbox'
-  ProductVersion: '0.6.0'
-  ProductEnvironment: 'dev'
-  ProductUrl: 'https://github.com/FalconNL93/wsltoolbox'
-  ProductExecutable: 'toolbox.exe'
-  SetupOutputFile: 'wsltoolbox-0.6'
+  AppUuid: "FalconNL93.WSLToolbox"
+  AppName: "WSL Toolbox"
+  AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
+  AppExecutable: "toolbox.exe"
+  AppVersion: '0.6.0'
+  AppUrl: "https://github.com/FalconNL93/wsltoolbox"
+  AppOwner: "FalconNL93"
+  SetupOutputFile: "wsltoolbox-0.6"
 
 jobs:
+    
   build:
     strategy:
       matrix:
         configuration: [ Release ]
-        platform: [x86, x64]
+        platform: [ x64 ]
     runs-on: windows-latest
     env:
-      Solution_Name: WslToolbox.sln
+      Platform: ${{ matrix.platform }}
 
     steps:
       - name: Checkout
@@ -37,57 +37,55 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-      - name: Setup MSBuild.exe
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      # Execute all unit tests in the solution
-      - name: Execute unit tests
-        run: dotnet test
-
       # Restore the application to populate the obj folder with RuntimeIdentifiers
-      - name: Restore the application
-        run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-        env:
-          Configuration: ${{ matrix.configuration }}
-
-      # Restore the application to populate the obj folder with RuntimeIdentifiers
-      - name: Build the application
-        run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
-        env:
-          Configuration: ${{ matrix.configuration }}
-
       - name: Publish
-        run: dotnet publish -p:PublishProfile=$env:Platform -o "$env:GITHUB_WORKSPACE\app\release\$env:Platform" WslToolbox.UI\WslToolbox.UI.csproj
-        env:
-          Platform: ${{ matrix.platform }}
+        run: |
+          dotnet publish "WslToolbox.UI\WslToolbox.UI.csproj" `
+          -p:PublishProfile="${{ env.Platform }}" `
+          -r win-${{ env.Platform }} `
+          --self-contained true `
+          --nologo `
+          -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: release
-          path: $env:GITHUB_WORKSPACE\app\release\$env:Platform
+          path: ${{ github.workspace }}\app\release\${{ env.Platform }}
           retention-days: 1
   
   setup:
+    env:
+      Platform: "x64"
     runs-on: windows-2022
     needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2.5.0
-      - name: Build data
+
+      - name: Download build data
         uses: actions/download-artifact@v3
         with:
           name: release
           path: ${{ github.workspace }}\app
-      - name: Test
-        run: echo "-BinariesDirectory $env:GITHUB_WORKSPACE\app"
+
       - name: Setup
-        run: .\WslToolbox.Setup\build.ps1 -BinariesDirectory $env:GITHUB_WORKSPACE\app
+        run: |
+          .\WslToolbox.Setup\build.ps1 `
+          -AppDirectory "${{ github.workspace }}\app" `
+          -AppUuid "${{ env.AppUuid }}" `
+          -AppName "${{ env.AppName }}" `
+          -AppDescription "${{ env.AppDescription }}" `
+          -AppExecutable "${{ env.AppExecutable }}" `
+          -AppVersion "${{ env.AppVersion }}" `
+          -AppUrl "${{ env.AppUrl }}" `
+          -AppOwner "${{ env.AppOwner }}" `
+          -SetupOutputFile "${{ env.SetupOutputFile }}-${{ env.Platform }}-setup"
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-          path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-setup.exe
+          path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-${{ env.Platform }}-setup.exe
           retention-days: 1
 
   purge:
