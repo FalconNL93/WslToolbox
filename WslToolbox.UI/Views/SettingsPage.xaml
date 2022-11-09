@@ -34,7 +34,7 @@
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource SmallBottomMargin}">
-                    <Button Content="Check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" Width="130" />
+                    <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomMargin}" Width="130" />
                     <Button Command="{x:Bind ViewModel.OpenLogFile}" Content="Open log" Width="130" />
                 </StackPanel>
 

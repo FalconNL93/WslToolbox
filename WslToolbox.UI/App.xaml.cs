@@ -55,6 +55,12 @@ public partial class App : Application
 
                 // Other Activation Handlers
                 services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
+                
+                // Clients
+                services.AddHttpClient<UpdateService>(c =>
+                {
+                    c.BaseAddress = new Uri("https://raw.githubusercontent.com/FalconNL93/manifests/main/");
+                });
 
                 // Services
                 services.AddSingleton<IAppNotificationService, AppNotificationService>();
