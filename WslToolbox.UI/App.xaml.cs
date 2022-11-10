@@ -28,8 +28,8 @@ public partial class App : Application
     public const string UserConfiguration = "appsettings.user.json";
     public const string LogFile = "log.txt";
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-    public static readonly string? Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-    public static bool IsDeveloper = Debugger.IsAttached;
+    public static readonly string? UiVersion = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+    public static readonly bool IsDeveloper = Debugger.IsAttached;
 
     public App()
     {
@@ -55,7 +55,7 @@ public partial class App : Application
 
                 // Other Activation Handlers
                 services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
-                
+
                 // Clients
                 services.AddHttpClient<UpdateService>(c =>
                 {

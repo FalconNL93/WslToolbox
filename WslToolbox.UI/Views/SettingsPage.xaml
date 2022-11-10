@@ -5,9 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:helpers="using:WslToolbox.UI.Helpers"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <helpers:DateTimeToVisibilityConverter x:Key="DateTimeVisibilityConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,13 +31,20 @@
 
                 <TextBlock Text="About" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock Text="{x:Bind ViewModel.Version, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
+                    <TextBlock Text="{x:Bind ViewModel.UpdaterResult.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
                     <CheckBox Content="Automatically check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" />
                     <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource SmallBottomMargin}">
-                    <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomMargin}" Width="130" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomMargin}" Width="130" />
+                        <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
+                                         NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"
+                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
+
+                        <TextBlock Text="No new update available" Visibility="{x:Bind ViewModel.UpdaterResult.LastSearched, Converter={StaticResource DateTimeVisibilityConverter}, Mode=OneWay}"/>
+                    </StackPanel>
                     <Button Command="{x:Bind ViewModel.OpenLogFile}" Content="Open log" Width="130" />
                 </StackPanel>
 

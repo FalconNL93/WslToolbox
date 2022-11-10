@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using WslToolbox.UI.Contracts.Services;
@@ -13,12 +14,18 @@ namespace WslToolbox.UI.ViewModels;
 public class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
-    private readonly UpdateService _updateService;
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly UpdateService _updateService;
     private readonly UserOptions _userOptions;
     private ElementTheme _elementTheme;
+    private UpdateResultModel _updaterResult = new();
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, IOptions<UserOptions> userOptions, IConfigurationService configurationService, UpdateService updateService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService,
+        IOptions<UserOptions> userOptions,
+        IConfigurationService configurationService,
+        UpdateService updateService,
+        IMessenger messenger
+    )
     {
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
@@ -31,15 +38,15 @@ public class SettingsViewModel : ObservableRecipient
         RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
         OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
         OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists($"{App.AppDirectory}\\{App.LogFile}"));
-        CheckForUpdates = new AsyncRelayCommand<string>(OnCheckForUpdates);
+        CheckForUpdates = new AsyncRelayCommand(OnCheckForUpdates);
     }
 
-    private async Task OnCheckForUpdates(string? arg)
+    public UpdateResultModel UpdaterResult
     {
-        var latestVersion = await _updateService.LatestVersion();
+        get => _updaterResult;
+        set => SetProperty(ref _updaterResult, value);
     }
 
-    public string? Version { get; set; } = App.Version;
     public UserOptions UserOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
@@ -59,7 +66,14 @@ public class SettingsViewModel : ObservableRecipient
     public RelayCommand RestoreDefaultConfiguration { get; }
     public RelayCommand OpenConfiguration { get; }
     public RelayCommand OpenLogFile { get; }
-    public AsyncRelayCommand<string> CheckForUpdates { get; }
+    public AsyncRelayCommand CheckForUpdates { get; }
+
+    private async Task OnCheckForUpdates()
+    {
+        UpdaterResult = await _updateService.GetUpdateDetails();
+
+        await Task.Delay(TimeSpan.FromSeconds(30));
+    }
 
     private async Task OnThemeChange(ElementTheme param)
     {
