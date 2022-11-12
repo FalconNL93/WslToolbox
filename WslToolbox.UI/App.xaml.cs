@@ -25,6 +25,7 @@ namespace WslToolbox.UI;
 
 public partial class App : Application
 {
+    public const string Name = "WSL Toolbox";
     public const string UserConfiguration = "appsettings.user.json";
     public const string LogFile = "log.txt";
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

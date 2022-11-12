@@ -70,6 +70,7 @@ public class SettingsViewModel : ObservableRecipient
 
     private async Task OnCheckForUpdates()
     {
+        UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
 
         await Task.Delay(TimeSpan.FromSeconds(30));

@@ -31,19 +31,18 @@
 
                 <TextBlock Text="About" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock Text="{x:Bind ViewModel.UpdaterResult.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
+                    <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
                     <CheckBox Content="Automatically check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" />
                     <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
                 </StackPanel>
 
                 <StackPanel Margin="{StaticResource SmallBottomMargin}">
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomMargin}" Width="130" />
+                        <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
+                        <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" />
                         <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
                                          NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"
                                          Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
-
-                        <TextBlock Text="No new update available" Visibility="{x:Bind ViewModel.UpdaterResult.LastSearched, Converter={StaticResource DateTimeVisibilityConverter}, Mode=OneWay}"/>
                     </StackPanel>
                     <Button Command="{x:Bind ViewModel.OpenLogFile}" Content="Open log" Width="130" />
                 </StackPanel>

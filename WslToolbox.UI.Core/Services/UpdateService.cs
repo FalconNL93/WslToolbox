@@ -33,7 +33,8 @@ public class UpdateService
             {
                 LatestVersion = Version.Parse(manifest.ResponseVersion),
                 DownloadUri = new Uri(manifest.DownloadUrl),
-                LastSearched = DateTime.Now
+                LastSearched = DateTime.Now,
+                UpdateStatus = updateResultModel.UpdateAvailable ? string.Empty : "No update available"
             };
         }
         catch (Exception e)

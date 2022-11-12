@@ -32,6 +32,9 @@ $SetupOutputFile = "wsltoolbox-0.6-$Platform";
 
 dotnet publish "$RootProject" `
     -p:PublishProfile="$Platform" `
+    -p:Version="1.0.0.0" `
+    -p:FileVersion="1.0.0.0" `
+    -p:AssemblyVersion="1.0.0.0" `
     -r win-x64 `
     --self-contained true `
     --nologo `
