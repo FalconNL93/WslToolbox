@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
-    xmlns:helpers="using:WslToolbox.UI.Helpers"
     xmlns:converters="using:WslToolbox.UI.Converters"
     x:Name="DbPg"
     mc:Ignorable="d">
@@ -44,11 +43,17 @@
                                             <TextBlock Text="{x:Bind State}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Start" Margin="{StaticResource SmallRightMargin}"
-                                                    MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Restart" Margin="{StaticResource SmallRightMargin}"
-                                                    MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" Content="Stop" MinWidth="{StaticResource ButtonMinWidth}" />
+                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
+                                                    MinWidth="{StaticResource ButtonGlyphMinWidth}">
+                                                <SymbolIcon Symbol="Play" />
+                                            </Button>
+                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
+                                                    MinWidth="{StaticResource ButtonGlyphMinWidth}">
+                                                <SymbolIcon Symbol="Stop" />
+                                            </Button>
+                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" MinWidth="{StaticResource ButtonGlyphMinWidth}">
+                                                <SymbolIcon Symbol="Refresh" />
+                                            </Button>
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Header>
@@ -57,7 +62,13 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="Rename" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
                                             <Button Content="Move" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Content="Delete" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
+                                            <Button Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
+
+                                                <StackPanel Orientation="Horizontal">
+                                                    <SymbolIcon Symbol="Delete" Margin="{StaticResource SmallRightMargin}"/>
+                                                    <TextBlock Text="Delete"/>
+                                                </StackPanel>
+
                                                 <Button.Flyout>
                                                     <Flyout>
                                                         <StackPanel>

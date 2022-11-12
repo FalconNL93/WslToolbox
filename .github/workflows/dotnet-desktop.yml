@@ -43,8 +43,10 @@ jobs:
           -p:Version="${{ env.AppVersion }}" `
           -p:FileVersion="${{ env.AppVersion }}" `
           -p:AssemblyVersion="${{ env.AppVersion }}" `
+          -p:PublishTrimmed=True `
+          -p:TrimMode=CopyUsed `
+          --self-contained `
           -r win-${{ env.Platform }} `
-          --self-contained true `
           --nologo `
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
 
