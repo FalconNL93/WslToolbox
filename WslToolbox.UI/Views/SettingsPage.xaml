@@ -5,19 +5,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
-    xmlns:helpers="using:WslToolbox.UI.Helpers"
+    xmlns:c="using:WslToolbox.UI.Converters"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-        <helpers:DateTimeToVisibilityConverter x:Key="DateTimeVisibilityConverter" />
+        <c:EmptyToVisibilityConverter x:Key="NotEmpty" />
+        <c:DateTimeToVisibilityConverter x:Key="WhenChecked" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0">
+        <Grid Grid.Row="0">
+            <InfoBar Name="SettingsInfoBar" />
+        </Grid>
+        <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
@@ -31,7 +36,7 @@
 
                 <TextBlock Text="About" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
+                    <TextBlock Text="{x:Bind ViewModel.UpdaterResult.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
                     <CheckBox Content="Automatically check for updates" IsEnabled="false" Margin="{StaticResource SmallBottomMargin}" />
                     <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
                 </StackPanel>
@@ -39,17 +44,20 @@
                 <StackPanel Margin="{StaticResource SmallBottomMargin}">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdates}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
-                        <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" />
-                        <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
-                                         NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"
-                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
+
+                        <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" Visibility="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource NotEmpty}, Mode=OneWay}" />
+                        <Grid Visibility="{x:Bind ViewModel.UpdaterResult.LastChecked, Converter={StaticResource WhenChecked}, Mode=OneWay}">
+                            <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
+                                             NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"
+                                             Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
+                        </Grid>
                     </StackPanel>
                     <Button Command="{x:Bind ViewModel.OpenLogFile}" Content="Open log" Width="130" />
                 </StackPanel>
 
             </StackPanel>
         </ScrollViewer>
-        <Grid Row="1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+        <Grid Row="2" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

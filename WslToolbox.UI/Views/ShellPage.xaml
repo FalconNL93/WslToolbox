@@ -5,9 +5,10 @@
     xmlns:helpers="using:WslToolbox.UI.Helpers"
     xmlns:behaviors="using:WslToolbox.UI.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     Loaded="OnLoaded">
     <Page.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
     <Grid>
         <Grid x:Name="AppTitleBar"

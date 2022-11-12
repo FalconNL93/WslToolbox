@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:views="using:WslToolbox.UI.Contracts.Views"
-    xmlns:helpers="using:WslToolbox.UI.Helpers">
+    xmlns:converters1="using:CommunityToolkit.WinUI.UI.Converters">
     <Page.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <converters1:BoolToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <TextBlock Text="{x:Bind ViewModel.Progress.Message, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}" />

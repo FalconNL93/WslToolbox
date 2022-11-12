@@ -6,10 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
     xmlns:helpers="using:WslToolbox.UI.Helpers"
+    xmlns:converters="using:WslToolbox.UI.Converters"
     x:Name="DbPg"
     mc:Ignorable="d">
     <Page.Resources>
-        <helpers:InverseBooleanConverter x:Key="InverseBoolean" />
+        <converters:InverseBooleanConverter x:Key="InverseBoolean" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">

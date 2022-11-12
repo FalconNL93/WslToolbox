@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WslToolbox.UI.Core.Models;
+namespace WslToolbox.UI.Core.Models.Responses;
 
 public class UpdateManifestResponse
 {

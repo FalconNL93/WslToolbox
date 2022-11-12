@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Views;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.Models;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.Views.Modals;
@@ -72,6 +73,16 @@ public static class PageExtensions
             Message = message,
             IsIndeterminate = false,
             ShowProgress = showProgress
+        }));
+    }
+    
+    public static void ShowInfoBar(this Page page, string title, string message)
+    {
+        var messenger = App.GetService<IMessenger>();
+        messenger.Send(new InfoBarChangedMessage(new InfoBarModel()
+        {
+            Title = title,
+            Message = message,
         }));
     }
 }

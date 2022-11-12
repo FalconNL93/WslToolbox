@@ -4,10 +4,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Messengers;
+using WslToolbox.UI.Models;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -16,6 +19,7 @@ public class SettingsViewModel : ObservableRecipient
     private readonly IConfigurationService _configurationService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
+    private readonly IMessenger _messenger;
     private readonly UserOptions _userOptions;
     private ElementTheme _elementTheme;
     private UpdateResultModel _updaterResult = new();
@@ -30,6 +34,7 @@ public class SettingsViewModel : ObservableRecipient
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
         _updateService = updateService;
+        _messenger = messenger;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
 
@@ -72,8 +77,9 @@ public class SettingsViewModel : ObservableRecipient
     {
         UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
+        _messenger.ShowInfoBar("Update available", "There is an update available for WSL Toolbox");
 
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        await Task.Delay(TimeSpan.FromSeconds(10));
     }
 
     private async Task OnThemeChange(ElementTheme param)

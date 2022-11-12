@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
-namespace WslToolbox.UI.Helpers;
+namespace WslToolbox.UI.Converters;
 
 public class EnumToBooleanConverter : IValueConverter
 {

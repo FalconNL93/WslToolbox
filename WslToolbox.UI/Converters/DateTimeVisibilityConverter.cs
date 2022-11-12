@@ -1,9 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
-namespace WslToolbox.UI.Helpers;
+namespace WslToolbox.UI.Converters;
 
-public class BoolToVisibilityConverter : IValueConverter
+public class DateTimeToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -12,7 +12,7 @@ public class BoolToVisibilityConverter : IValueConverter
             throw new InvalidOperationException($"The target must be a {typeof(Visibility)}");
         }
 
-        return (bool) value ? Visibility.Visible : Visibility.Collapsed;
+        return (DateTime) value == DateTime.MinValue ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
