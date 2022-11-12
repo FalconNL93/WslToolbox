@@ -2,17 +2,17 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "nightly" ]
+    branches: [ "develop", "nightly" ]
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: '0.6.0'
+  AppVersion: '0.6.${{ github.run_number }}'
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
-  SetupOutputFile: "wsltoolbox-0.6"
+  SetupOutputFile: "wsltoolbox-setup"
 
 jobs:
     
@@ -31,17 +31,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install the .NET Core workload
       - name: Install .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
 
-      # Restore the application to populate the obj folder with RuntimeIdentifiers
       - name: Publish
         run: |
           dotnet publish "WslToolbox.UI\WslToolbox.UI.csproj" `
           -p:PublishProfile="${{ env.Platform }}" `
+          -p:Version="${{ env.AppVersion }}" `
+          -p:FileVersion="${{ env.AppVersion }}" `
+          -p:AssemblyVersion="${{ env.AppVersion }}" `
           -r win-${{ env.Platform }} `
           --self-contained true `
           --nologo `
