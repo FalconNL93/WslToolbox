@@ -65,6 +65,16 @@ public static class PageExtensions
         };
     }
 
+    public static async Task<ModalResult> ShowError(this Page page, string message, string title)
+    {
+        return await page.ShowModal<ErrorModal>(
+            message,
+            title,
+            "Close",
+            string.Empty,
+            string.Empty);
+    }
+
     public static void UpdateModal(this Page page, string message, bool showProgress = false)
     {
         var messenger = App.GetService<IMessenger>();
@@ -75,14 +85,14 @@ public static class PageExtensions
             ShowProgress = showProgress
         }));
     }
-    
+
     public static void ShowInfoBar(this Page page, string title, string message)
     {
         var messenger = App.GetService<IMessenger>();
-        messenger.Send(new InfoBarChangedMessage(new InfoBarModel()
+        messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
             Title = title,
-            Message = message,
+            Message = message
         }));
     }
 }

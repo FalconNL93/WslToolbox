@@ -1,7 +1,5 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Models.Responses;
 
@@ -9,9 +7,9 @@ namespace WslToolbox.UI.Core.Services;
 
 public class UpdateService
 {
+    private const string ManifestFile = "wsltoolbox.json";
     private readonly HttpClient _httpClient;
     private readonly ILogger<UpdateService> _logger;
-    private const string ManifestFile = "wsltoolbox.json";
 
     public UpdateService(HttpClient httpClient, ILogger<UpdateService> logger)
     {
@@ -23,14 +21,14 @@ public class UpdateService
     {
         var updateResultModel = new UpdateResultModel();
         UpdateManifestResponse manifest;
-        
+
         try
         {
             manifest = await _httpClient.GetFromJsonAsync<UpdateManifestResponse>(ManifestFile);
             if (manifest == null)
             {
                 _logger.LogError("Could not download update manifest");
-                
+
                 updateResultModel.UpdateStatus = "Could not check for updates";
                 return updateResultModel;
             }
@@ -42,7 +40,7 @@ public class UpdateService
             updateResultModel.UpdateStatus = "Could not check for updates";
             return updateResultModel;
         }
-        
+
         updateResultModel.LatestVersion = Version.Parse(manifest.ResponseVersion);
         updateResultModel.LastChecked = DateTime.Now;
         updateResultModel.UpdateStatus = updateResultModel.UpdateAvailable ? string.Empty : "No update available";
@@ -51,7 +49,7 @@ public class UpdateService
         {
             updateResultModel.DownloadUri = new Uri(manifest.DownloadUrl);
         }
-        
+
         return updateResultModel;
     }
 }
