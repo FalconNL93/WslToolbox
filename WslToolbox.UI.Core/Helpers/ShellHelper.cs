@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace WslToolbox.UI.Helpers;
+namespace WslToolbox.UI.Core.Helpers;
 
 public static class ShellHelper
 {

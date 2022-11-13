@@ -4,13 +4,11 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Messengers;
-using WslToolbox.UI.Models;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -40,9 +38,10 @@ public class SettingsViewModel : ObservableRecipient
 
         SwitchThemeCommand = new AsyncRelayCommand<ElementTheme>(OnThemeChange);
         SaveConfiguration = new RelayCommand(OnSaveConfiguration);
-        RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
-        OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists($"{App.AppDirectory}\\{App.UserConfiguration}"));
-        OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists($"{App.AppDirectory}\\{App.LogFile}"));
+        RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists(Toolbox.UserConfiguration));
+        OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists(Toolbox.UserConfiguration));
+        OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists(Toolbox.UserConfiguration));
+        OpenAppDir = new RelayCommand(OnOpenAppDir, () => Directory.Exists(Toolbox.AppDirectory));
         CheckForUpdates = new AsyncRelayCommand(OnCheckForUpdates);
     }
 
@@ -71,13 +70,13 @@ public class SettingsViewModel : ObservableRecipient
     public RelayCommand RestoreDefaultConfiguration { get; }
     public RelayCommand OpenConfiguration { get; }
     public RelayCommand OpenLogFile { get; }
+    public RelayCommand OpenAppDir { get; }
     public AsyncRelayCommand CheckForUpdates { get; }
 
     private async Task OnCheckForUpdates()
     {
         UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
-        _messenger.ShowInfoBar("Update available", "There is an update available for WSL Toolbox");
 
         await Task.Delay(TimeSpan.FromSeconds(10));
     }
@@ -97,7 +96,20 @@ public class SettingsViewModel : ObservableRecipient
     {
         try
         {
-            ShellHelper.OpenFile($"{App.AppDirectory}\\{App.LogFile}");
+            ShellHelper.OpenFile(Toolbox.LogFile);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    private static void OnOpenAppDir()
+    {
+        try
+        {
+            ShellHelper.OpenFile(Toolbox.AppDirectory);
         }
         catch (Exception e)
         {
@@ -123,7 +135,7 @@ public class SettingsViewModel : ObservableRecipient
     {
         try
         {
-            ShellHelper.OpenFile($"{App.AppDirectory}\\{App.UserConfiguration}");
+            ShellHelper.OpenFile(Toolbox.UserConfiguration);
         }
         catch (Exception e)
         {

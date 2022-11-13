@@ -68,6 +68,13 @@ public class DistributionService
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await TerminateDistributionCommand.Execute(distributionClass);
     }
+    
+    public async Task RestartDistribution(Distribution distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        await TerminateDistributionCommand.Execute(distributionClass);
+        await StartDistributionCommand.Execute(distributionClass);
+    }
 
     public async Task DeleteDistribution(Distribution distribution)
     {

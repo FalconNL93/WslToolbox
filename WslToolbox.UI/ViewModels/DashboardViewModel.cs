@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
@@ -31,13 +32,44 @@ public class DashboardViewModel : ObservableRecipient
         _messenger = messenger;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
+        
         StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution, DistributionCommand.CanStartDistribution);
         StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution, DistributionCommand.CanStopDistribution);
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
+        
+        StartAllDistribution = new AsyncRelayCommand(OnStartAllDistribution);
+        StopAllDistributions = new AsyncRelayCommand(OnStopAllDistribution);
+        RestartAllDistribution = new AsyncRelayCommand(OnRestartAllDistribution);
+        
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
+        OpenUrlCommand = new OpenUrlCommand();
 
         EventHandlers();
+    }
+
+    private async Task OnStartAllDistribution()
+    {
+        foreach (var distribution in Distributions)
+        {
+            await _distributionService.StartDistribution(distribution);
+        }
+    }
+
+    private async Task OnStopAllDistribution()
+    {
+        foreach (var distribution in Distributions)
+        {
+            await _distributionService.StopDistribution(distribution);
+        }
+    }
+
+    private async Task OnRestartAllDistribution()
+    {
+        foreach (var distribution in Distributions)
+        {
+            await _distributionService.RestartDistribution(distribution);
+        }
     }
 
     public bool IsRefreshing
@@ -51,8 +83,12 @@ public class DashboardViewModel : ObservableRecipient
     public AsyncRelayCommand<Distribution> StopDistributions { get; }
     public AsyncRelayCommand<Distribution> RestartDistribution { get; }
     public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
+    public AsyncRelayCommand StartAllDistribution { get; }
+    public AsyncRelayCommand StopAllDistributions { get; }
+    public AsyncRelayCommand RestartAllDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
     public AsyncRelayCommand<Page> AddDistributionCommand { get; }
+    public OpenUrlCommand OpenUrlCommand { get; }
 
     private async Task OnAddDistribution(Page page)
     {

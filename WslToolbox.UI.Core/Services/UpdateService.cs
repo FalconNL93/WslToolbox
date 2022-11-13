@@ -34,8 +34,6 @@ public class UpdateService
                 updateResultModel.UpdateStatus = "Could not check for updates";
                 return updateResultModel;
             }
-
-            LocalStorage.WriteStorage(LocalStorage.UpdateManifest, JsonConvert.SerializeObject(manifest));
         }
         catch (Exception e)
         {

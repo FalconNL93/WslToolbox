@@ -11,6 +11,7 @@ using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
@@ -26,10 +27,6 @@ namespace WslToolbox.UI;
 public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
-    public const string UserConfiguration = "appsettings.user.json";
-    public const string LogFile = "log.txt";
-    public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-    public static readonly string? UiVersion = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
     public static readonly bool IsDeveloper = Debugger.IsAttached;
 
     public App()
@@ -37,13 +34,13 @@ public partial class App : Application
         InitializeComponent();
 
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.File(LogFile, LogEventLevel.Debug)
+            .WriteTo.File(Toolbox.LogFile, LogEventLevel.Debug)
             .CreateLogger();
 
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration(c =>
             {
-                c.AddJsonFile(UserConfiguration, true);
+                c.AddJsonFile(Toolbox.UserConfiguration, true);
             })
             .UseContentRoot(AppContext.BaseDirectory)
             .UseSerilog()

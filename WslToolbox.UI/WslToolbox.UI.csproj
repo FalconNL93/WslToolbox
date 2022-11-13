@@ -54,23 +54,24 @@
         <ProjectCapability Include="Msix" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Helpers\ShellHelper.cs" />
+    </ItemGroup>
+
     <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
         <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
-        <DebugType>None</DebugType>
-        <DebugSymbols>False</DebugSymbols>
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <DebugType>None</DebugType>
-        <DebugSymbols>False</DebugSymbols>
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-        <DebugType>None</DebugType>
-        <DebugSymbols>False</DebugSymbols>
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <Target Name="_RemoveFrameworkReferences" BeforeTargets="_ConvertItems;_CalculateInputsForGenerateCurrentProjectAppxManifest">

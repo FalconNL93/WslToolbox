@@ -21,7 +21,18 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Button Content="Add" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
-                    <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" Margin="{StaticResource SmallRightMargin}" />
+                    <DropDownButton Content="Other">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem Icon="Play" Text="Start all" Command="{x:Bind ViewModel.StartAllDistribution}" />
+                                <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributions}" />
+                                <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistribution}" />
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="Open WSL app in Windows Store" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="https://aka.ms/wslstorepage" />
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                 </StackPanel>
 
                 <ItemsControl Grid.Row="1" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" Margin="{StaticResource SmallTopMargin}"

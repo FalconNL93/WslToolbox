@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Helpers;
 
 namespace WslToolbox.UI.Services;
 
@@ -22,7 +23,7 @@ public class ConfigurationService : IConfigurationService
 
         try
         {
-            File.WriteAllText(App.UserConfiguration, JsonConvert.SerializeObject(configuration));
+            File.WriteAllText(Toolbox.UserConfiguration, JsonConvert.SerializeObject(configuration));
             _logger.LogInformation("Configuration saved");
         }
         catch (Exception e)
@@ -39,7 +40,7 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
-            File.Delete(App.UserConfiguration);
+            File.Delete(Toolbox.UserConfiguration);
         }
         catch (FileNotFoundException)
         {
@@ -58,7 +59,7 @@ public class ConfigurationService : IConfigurationService
 
     public T Read<T>()
     {
-        var config = File.ReadAllText(App.UserConfiguration);
+        var config = File.ReadAllText(Toolbox.UserConfiguration);
 
         return JsonConvert.DeserializeObject<T>(config);
     }
