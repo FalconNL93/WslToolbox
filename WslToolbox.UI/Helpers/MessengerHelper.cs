@@ -19,7 +19,7 @@ public static class MessengerHelper
             Message = message
         }));
     }
-    
+
     public static void ShowError(this IMessenger messenger, string message, string title)
     {
         messenger.Send(new ErrorChangedMessage(new ErrorModel

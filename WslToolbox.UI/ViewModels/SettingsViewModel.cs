@@ -8,16 +8,15 @@ using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
-using WslToolbox.UI.Helpers;
 
 namespace WslToolbox.UI.ViewModels;
 
 public class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
+    private readonly IMessenger _messenger;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
-    private readonly IMessenger _messenger;
     private readonly UserOptions _userOptions;
     private ElementTheme _elementTheme;
     private UpdateResultModel _updaterResult = new();
@@ -104,7 +103,7 @@ public class SettingsViewModel : ObservableRecipient
             throw;
         }
     }
-    
+
     private static void OnOpenAppDir()
     {
         try

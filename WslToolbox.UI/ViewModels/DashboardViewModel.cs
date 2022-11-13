@@ -32,21 +32,39 @@ public class DashboardViewModel : ObservableRecipient
         _messenger = messenger;
 
         RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
-        
+
         StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution, DistributionCommand.CanStartDistribution);
         StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution, DistributionCommand.CanStopDistribution);
         RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
-        
+
         StartAllDistribution = new AsyncRelayCommand(OnStartAllDistribution);
         StopAllDistributions = new AsyncRelayCommand(OnStopAllDistribution);
         RestartAllDistribution = new AsyncRelayCommand(OnRestartAllDistribution);
-        
+
         DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
         AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
         OpenUrlCommand = new OpenUrlCommand();
 
         EventHandlers();
     }
+
+    public bool IsRefreshing
+    {
+        get => _isRefreshing;
+        set => SetProperty(ref _isRefreshing, value);
+    }
+
+    public AsyncRelayCommand RefreshDistributions { get; }
+    public AsyncRelayCommand<Distribution> StartDistribution { get; }
+    public AsyncRelayCommand<Distribution> StopDistributions { get; }
+    public AsyncRelayCommand<Distribution> RestartDistribution { get; }
+    public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
+    public AsyncRelayCommand StartAllDistribution { get; }
+    public AsyncRelayCommand StopAllDistributions { get; }
+    public AsyncRelayCommand RestartAllDistribution { get; }
+    public ObservableCollection<Distribution> Distributions { get; set; } = new();
+    public AsyncRelayCommand<Page> AddDistributionCommand { get; }
+    public OpenUrlCommand OpenUrlCommand { get; }
 
     private async Task OnStartAllDistribution()
     {
@@ -71,24 +89,6 @@ public class DashboardViewModel : ObservableRecipient
             await _distributionService.RestartDistribution(distribution);
         }
     }
-
-    public bool IsRefreshing
-    {
-        get => _isRefreshing;
-        set => SetProperty(ref _isRefreshing, value);
-    }
-
-    public AsyncRelayCommand RefreshDistributions { get; }
-    public AsyncRelayCommand<Distribution> StartDistribution { get; }
-    public AsyncRelayCommand<Distribution> StopDistributions { get; }
-    public AsyncRelayCommand<Distribution> RestartDistribution { get; }
-    public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
-    public AsyncRelayCommand StartAllDistribution { get; }
-    public AsyncRelayCommand StopAllDistributions { get; }
-    public AsyncRelayCommand RestartAllDistribution { get; }
-    public ObservableCollection<Distribution> Distributions { get; set; } = new();
-    public AsyncRelayCommand<Page> AddDistributionCommand { get; }
-    public OpenUrlCommand OpenUrlCommand { get; }
 
     private async Task OnAddDistribution(Page page)
     {

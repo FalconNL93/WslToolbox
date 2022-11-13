@@ -28,7 +28,7 @@
                                 <MenuFlyoutItem Icon="Play" Text="Start all" Command="{x:Bind ViewModel.StartAllDistribution}" />
                                 <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributions}" />
                                 <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistribution}" />
-                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Text="Open WSL app in Windows Store" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="https://aka.ms/wslstorepage" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
@@ -76,8 +76,8 @@
                                             <Button Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
 
                                                 <StackPanel Orientation="Horizontal">
-                                                    <SymbolIcon Symbol="Delete" Margin="{StaticResource SmallRightMargin}"/>
-                                                    <TextBlock Text="Delete"/>
+                                                    <SymbolIcon Symbol="Delete" Margin="{StaticResource SmallRightMargin}" />
+                                                    <TextBlock Text="Delete" />
                                                 </StackPanel>
 
                                                 <Button.Flyout>

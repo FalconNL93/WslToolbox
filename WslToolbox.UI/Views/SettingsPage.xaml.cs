@@ -6,12 +6,12 @@ using WslToolbox.UI.ViewModels;
 namespace WslToolbox.UI.Views;
 
 public sealed partial class SettingsPage : Page
-{ 
+{
     public SettingsPage()
     {
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
-        
+
         WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(this, (_, message) =>
         {
             var infoBar = message.Value;

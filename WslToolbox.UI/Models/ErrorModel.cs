@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
-namespace WslToolbox.UI.Models;
+﻿namespace WslToolbox.UI.Models;
 
 public class ErrorModel
 {

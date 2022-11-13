@@ -33,7 +33,7 @@
                     <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallBottomMargin}" />
                     <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" />
                 </StackPanel>
-                
+
                 <TextBlock Text="Updates" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <TextBlock Text="{x:Bind ViewModel.UpdaterResult.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
