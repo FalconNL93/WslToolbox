@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Views;
@@ -65,14 +66,12 @@ public static class PageExtensions
         };
     }
 
-    public static async Task<ModalResult> ShowError(this Page page, string message, string title)
+    public static void ShowError(this Page page, string message, string title)
     {
-        return await page.ShowModal<ErrorModal>(
-            message,
-            title,
-            "Close",
-            string.Empty,
-            string.Empty);
+        App.MainWindow.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, () =>
+        {
+            App.MainWindow.ShowMessageDialogAsync(message, title);
+        });
     }
 
     public static void UpdateModal(this Page page, string message, bool showProgress = false)

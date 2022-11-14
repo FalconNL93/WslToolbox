@@ -15,6 +15,7 @@ public class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
     private readonly IMessenger _messenger;
+    private readonly IAppNotificationService _notificationService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
     private readonly UserOptions _userOptions;
@@ -25,13 +26,15 @@ public class SettingsViewModel : ObservableRecipient
         IOptions<UserOptions> userOptions,
         IConfigurationService configurationService,
         UpdateService updateService,
-        IMessenger messenger
+        IMessenger messenger,
+        IAppNotificationService notificationService
     )
     {
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
         _updateService = updateService;
         _messenger = messenger;
+        _notificationService = notificationService;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
 
@@ -76,6 +79,8 @@ public class SettingsViewModel : ObservableRecipient
     {
         UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
+
+        _notificationService.Show("test");
 
         await Task.Delay(TimeSpan.FromSeconds(10));
     }

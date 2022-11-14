@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Serilog;
 using Serilog.Events;
@@ -14,7 +15,6 @@ using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
-using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views;
@@ -108,6 +108,16 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
+        try
+        {
+            var logger = GetService<ILogger<App>>();
+            logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+        }
+        catch (Exception)
+        {
+            throw new Exception($"Unexpected error {e.Message}");
+        }
+
         throw new Exception($"Unexpected error {e.Message}");
     }
 

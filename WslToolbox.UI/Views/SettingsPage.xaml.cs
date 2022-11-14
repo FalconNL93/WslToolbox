@@ -11,17 +11,6 @@ public sealed partial class SettingsPage : Page
     {
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
-
-        WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(this, (_, message) =>
-        {
-            var infoBar = message.Value;
-            SettingsInfoBar.IsOpen = infoBar.IsOpen;
-            SettingsInfoBar.Title = infoBar.Title;
-            SettingsInfoBar.Message = infoBar.Message;
-            SettingsInfoBar.Severity = infoBar.Severity;
-            SettingsInfoBar.IsClosable = infoBar.IsClosable;
-            SettingsInfoBar.IsIconVisible = infoBar.IsIconVisible;
-        });
     }
 
     public SettingsViewModel ViewModel { get; }
