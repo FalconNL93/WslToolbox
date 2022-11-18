@@ -71,20 +71,30 @@
                                 <Expander.Content>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Rename" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Content="Move" IsEnabled="False" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" />
-                                            <Button Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}">
-
-                                                <StackPanel Orientation="Horizontal">
-                                                    <SymbolIcon Symbol="Delete" Margin="{StaticResource SmallRightMargin}" />
-                                                    <TextBlock Text="Delete" />
-                                                </StackPanel>
-
+                                            <Button Margin="{StaticResource SmallRightMargin}"
+                                                    Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}"
+                                                    CommandParameter="{Binding BasePathLocal}">
+                                                <SymbolIcon Symbol="Folder" ToolTipService.ToolTip="Open directory" />
+                                            </Button>
+                                            <Button Margin="{StaticResource SmallRightMargin}" IsEnabled="false"
+                                                    Command="{Binding ViewModel.RenameDistribution, ElementName=DbPg}"
+                                                    CommandParameter="{Binding}">
+                                                <SymbolIcon Symbol="MoveToFolder" ToolTipService.ToolTip="Move" />
+                                            </Button>
+                                            <Button Margin="{StaticResource SmallRightMargin}"
+                                                    Command="{Binding ViewModel.RenameDistribution, ElementName=DbPg}"
+                                                    CommandParameter="{Binding}">
+                                                <SymbolIcon Symbol="Rename" ToolTipService.ToolTip="Rename" />
+                                            </Button>
+                                            <Button>
+                                                <SymbolIcon Symbol="Delete" ToolTipService.ToolTip="Delete" />
                                                 <Button.Flyout>
                                                     <Flyout>
                                                         <StackPanel>
                                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to delete this distribution?" Margin="0,0,0,12" />
-                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Content="Delete" Margin="{StaticResource SmallRightMargin}"
+                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Content="Delete" Margin="{StaticResource SmallRightMargin}"
                                                                     MinWidth="{StaticResource ButtonMinWidth}" />
                                                         </StackPanel>
                                                     </Flyout>
