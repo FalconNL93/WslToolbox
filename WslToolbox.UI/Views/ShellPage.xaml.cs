@@ -1,11 +1,14 @@
 ﻿using Windows.System;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
+using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.Views;
 
@@ -23,6 +26,26 @@ public sealed partial class ShellPage : Page
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = App.Name;
+        
+        WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, (r, m) =>
+        {
+            async Task<ContentDialogResult> ReceiveAsync()
+            {
+                var dialog = new InputDialog
+                {
+                    ViewModel = m.InputDialogModel,
+                    XamlRoot = XamlRoot,
+                    Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                    DefaultButton = ContentDialogButton.Primary,
+                };
+
+                var response = await dialog.ShowAsync();
+
+                return response;
+            }
+    
+            m.Reply(ReceiveAsync());
+        });
     }
 
     public ShellViewModel ViewModel { get; }

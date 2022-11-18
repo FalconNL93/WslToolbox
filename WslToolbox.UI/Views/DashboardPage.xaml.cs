@@ -16,25 +16,6 @@ public sealed partial class DashboardPage : Page
         InitializeComponent();
 
         ViewModel.RefreshDistributions.Execute(null);
-
-        WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, (r, m) =>
-        {
-            async Task<ContentDialogResult> ReceiveAsync()
-            {
-                var dialog = new InputDialog
-                {
-                    ViewModel = m.InputDialogModel,
-                    XamlRoot = XamlRoot,
-                    Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-                    DefaultButton = ContentDialogButton.Primary,
-                };
-
-                return await dialog.ShowAsync();
-            }
-    
-            m.Reply(ReceiveAsync());
-        });
-        
     }
     
 
