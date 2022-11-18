@@ -11,22 +11,21 @@ using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
-using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Messengers;
-using WslToolbox.UI.Services;
 using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.ViewModels;
 
-public class DashboardViewModel : ObservableRecipient
+public partial class DashboardViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly IMessenger _messenger;
     private readonly IAppNotificationService _notificationService;
+
+    [ObservableProperty]
     private bool _isRefreshing = true;
-    public event EventHandler<Distribution?> ShowRenameDialog;
 
     public DashboardViewModel(DistributionService distributionService,
         ILogger<DashboardViewModel> logger,
@@ -40,46 +39,15 @@ public class DashboardViewModel : ObservableRecipient
         _messenger = messenger;
         _notificationService = notificationService;
 
-        RefreshDistributions = new AsyncRelayCommand(OnRefreshDistributions);
-
-        StartDistribution = new AsyncRelayCommand<Distribution>(OnStartDistribution, DistributionCommand.CanStartDistribution);
-        StopDistributions = new AsyncRelayCommand<Distribution>(OnStopDistribution, DistributionCommand.CanStopDistribution);
-        RestartDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
-        RenameDistribution = new AsyncRelayCommand<Distribution>(OnRenameDistribution, DistributionCommand.CanRestartDistribution);
-        MoveDistribution = new AsyncRelayCommand<Distribution>(OnRestartDistribution, DistributionCommand.CanRestartDistribution);
-
-        StartAllDistribution = new AsyncRelayCommand(OnStartAllDistribution);
-        StopAllDistributions = new AsyncRelayCommand(OnStopAllDistribution);
-        RestartAllDistribution = new AsyncRelayCommand(OnRestartAllDistribution);
-
-        DeleteDistribution = new AsyncRelayCommand<Distribution>(OnDeleteDistribution);
-        AddDistributionCommand = new AsyncRelayCommand<Page>(OnAddDistribution);
-        OpenUrlCommand = new OpenUrlCommand();
-
         EventHandlers();
     }
 
-    public bool IsRefreshing
-    {
-        get => _isRefreshing;
-        set => SetProperty(ref _isRefreshing, value);
-    }
+    public OpenUrlCommand OpenUrlCommand { get; } = new();
 
-    public AsyncRelayCommand RefreshDistributions { get; }
-    public AsyncRelayCommand<Distribution> StartDistribution { get; }
-    public AsyncRelayCommand<Distribution> StopDistributions { get; }
-    public AsyncRelayCommand<Distribution> RestartDistribution { get; }
-    public AsyncRelayCommand<Distribution> DeleteDistribution { get; }
-    public AsyncRelayCommand<Distribution> RenameDistribution { get; }
-    public AsyncRelayCommand<Distribution> MoveDistribution { get; }
-    public AsyncRelayCommand StartAllDistribution { get; }
-    public AsyncRelayCommand StopAllDistributions { get; }
-    public AsyncRelayCommand RestartAllDistribution { get; }
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
-    public AsyncRelayCommand<Page> AddDistributionCommand { get; }
-    public OpenUrlCommand OpenUrlCommand { get; }
 
-    private async Task OnStartAllDistribution()
+    [RelayCommand]
+    private async Task StartAllDistribution()
     {
         foreach (var distribution in Distributions)
         {
@@ -87,7 +55,8 @@ public class DashboardViewModel : ObservableRecipient
         }
     }
 
-    private async Task OnStopAllDistribution()
+    [RelayCommand]
+    private async Task StopAllDistribution()
     {
         foreach (var distribution in Distributions)
         {
@@ -95,7 +64,8 @@ public class DashboardViewModel : ObservableRecipient
         }
     }
 
-    private async Task OnRestartAllDistribution()
+    [RelayCommand]
+    private async Task RestartAllDistribution()
     {
         foreach (var distribution in Distributions)
         {
@@ -103,7 +73,8 @@ public class DashboardViewModel : ObservableRecipient
         }
     }
 
-    private async Task OnAddDistribution(Page page)
+    [RelayCommand]
+    private async Task AddDistribution(Page page)
     {
         var available = await _distributionService.ListInstallableDistributions();
         var distributions = available.Where(x => !x.IsInstalled).ToList();
@@ -127,17 +98,18 @@ public class DashboardViewModel : ObservableRecipient
 
     private void EventHandlers()
     {
-        StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
         TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
         UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)
     {
-        RefreshDistributions.Execute(null);
+        RefreshDistributionsCommand.Execute(null);
     }
 
-    private async Task OnRefreshDistributions()
+    [RelayCommand]
+    private async Task RefreshDistributions()
     {
         _logger.LogInformation("Refreshing list of distributions");
         try
@@ -161,40 +133,42 @@ public class DashboardViewModel : ObservableRecipient
         }
     }
 
-    private async Task OnDeleteDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task DeleteDistribution(Distribution? distribution)
     {
         await _distributionService.DeleteDistribution(distribution);
     }
 
-    private async Task OnRestartDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task RestartDistribution(Distribution? distribution)
     {
         await _distributionService.StopDistribution(distribution);
         await _distributionService.StartDistribution(distribution);
     }
 
-    private async Task OnStopDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task StopDistribution(Distribution? distribution)
     {
         await _distributionService.StopDistribution(distribution);
     }
 
-    private async Task OnStartDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task StartDistribution(Distribution? distribution)
     {
         await _distributionService.StartDistribution(distribution);
     }
 
-    private async Task OnRenameDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task RenameDistribution(Distribution? distribution)
     {
-         _messenger.Send(new InputDialogRequestMessage(new InputDialogModel()));
+        var response = await _messenger.Send(new InputDialogRequestMessage("Rename", "Rename distribution", distribution.Name));
+        var bb = response;
     }
 
-    private async Task OnMoveDistribution(Distribution? distribution)
+    [RelayCommand]
+    private async Task MoveDistribution(Distribution? distribution)
     {
         await _distributionService.StopDistribution(distribution);
         await _distributionService.StartDistribution(distribution);
-    }
-
-    protected virtual void OnShowRenameDialog(Distribution? distribution)
-    {
-        ShowRenameDialog?.Invoke(this, distribution);
     }
 }

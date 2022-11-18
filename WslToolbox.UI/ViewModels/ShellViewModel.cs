@@ -5,9 +5,12 @@ using WslToolbox.UI.Views;
 
 namespace WslToolbox.UI.ViewModels;
 
-public class ShellViewModel : ObservableRecipient
+public partial class ShellViewModel : ObservableRecipient
 {
+    [ObservableProperty]
     private bool _isBackEnabled;
+
+    [ObservableProperty]
     private object? _selected;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
@@ -20,18 +23,6 @@ public class ShellViewModel : ObservableRecipient
     public INavigationService NavigationService { get; }
 
     public INavigationViewService NavigationViewService { get; }
-
-    public bool IsBackEnabled
-    {
-        get => _isBackEnabled;
-        set => SetProperty(ref _isBackEnabled, value);
-    }
-
-    public object? Selected
-    {
-        get => _selected;
-        set => SetProperty(ref _selected, value);
-    }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {

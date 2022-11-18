@@ -21,13 +21,13 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Button Content="Add" Margin="{StaticResource SmallRightMargin}" MinWidth="{StaticResource ButtonMinWidth}" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
-                    <Button Command="{x:Bind ViewModel.RefreshDistributions}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" Margin="{StaticResource SmallRightMargin}" />
+                    <Button Command="{x:Bind ViewModel.RefreshDistributionsCommand}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" Margin="{StaticResource SmallRightMargin}" />
                     <DropDownButton Content="Other">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Icon="Play" Text="Start all" Command="{x:Bind ViewModel.StartAllDistribution}" />
-                                <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributions}" />
-                                <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistribution}" />
+                                <MenuFlyoutItem Icon="Play" Text="Start all" Command="{x:Bind ViewModel.StartAllDistributionCommand}" />
+                                <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributionCommand}" />
+                                <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistributionCommand}" />
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Text="Open WSL app in Windows Store" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="https://aka.ms/wslstorepage" />
                             </MenuFlyout>
@@ -54,15 +54,15 @@
                                             <TextBlock Text="{x:Bind State}" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                            <Button Command="{Binding ViewModel.StartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
+                                            <Button Command="{Binding ViewModel.StartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
                                                     MinWidth="{StaticResource ButtonGlyphMinWidth}">
                                                 <SymbolIcon Symbol="Play" />
                                             </Button>
-                                            <Button Command="{Binding ViewModel.RestartDistribution, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
+                                            <Button Command="{Binding ViewModel.RestartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" Margin="{StaticResource SmallRightMargin}"
                                                     MinWidth="{StaticResource ButtonGlyphMinWidth}">
                                                 <SymbolIcon Symbol="Stop" />
                                             </Button>
-                                            <Button Command="{Binding ViewModel.StopDistributions, ElementName=DbPg}" CommandParameter="{Binding}" MinWidth="{StaticResource ButtonGlyphMinWidth}">
+                                            <Button Command="{Binding ViewModel.StopDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" MinWidth="{StaticResource ButtonGlyphMinWidth}">
                                                 <SymbolIcon Symbol="Refresh" />
                                             </Button>
                                         </StackPanel>
@@ -77,12 +77,12 @@
                                                 <SymbolIcon Symbol="Folder" ToolTipService.ToolTip="Open directory" />
                                             </Button>
                                             <Button Margin="{StaticResource SmallRightMargin}" IsEnabled="false"
-                                                    Command="{Binding ViewModel.RenameDistribution, ElementName=DbPg}"
+                                                    Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}"
                                                     CommandParameter="{Binding}">
                                                 <SymbolIcon Symbol="MoveToFolder" ToolTipService.ToolTip="Move" />
                                             </Button>
                                             <Button Margin="{StaticResource SmallRightMargin}"
-                                                    Command="{Binding ViewModel.RenameDistribution, ElementName=DbPg}"
+                                                    Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}"
                                                     CommandParameter="{Binding}">
                                                 <SymbolIcon Symbol="Rename" ToolTipService.ToolTip="Rename" />
                                             </Button>
@@ -92,7 +92,7 @@
                                                     <Flyout>
                                                         <StackPanel>
                                                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to delete this distribution?" Margin="0,0,0,12" />
-                                                            <Button Command="{Binding ViewModel.DeleteDistribution, ElementName=DbPg}"
+                                                            <Button Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}"
                                                                     CommandParameter="{Binding}"
                                                                     Content="Delete" Margin="{StaticResource SmallRightMargin}"
                                                                     MinWidth="{StaticResource ButtonMinWidth}" />

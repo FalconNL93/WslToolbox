@@ -3,8 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     PrimaryButtonText="Rename"
-    Title="{x:Bind ViewModel.Title}"
-    >
+    Title="{x:Bind ViewModel.Title}">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <TextBlock Text="{x:Bind ViewModel.Message}" Margin="{StaticResource SmallBottomMargin}" />

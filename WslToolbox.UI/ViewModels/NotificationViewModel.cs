@@ -4,8 +4,9 @@ using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
-public class NotificationViewModel : ObservableRecipient
+public partial class NotificationViewModel : ObservableRecipient
 {
+    [ObservableProperty]
     private ProgressModel _progress = new();
 
     public NotificationViewModel(IMessenger messenger)
@@ -14,11 +15,5 @@ public class NotificationViewModel : ObservableRecipient
         {
             Progress = message.Value;
         });
-    }
-
-    public ProgressModel Progress
-    {
-        get => _progress;
-        set => SetProperty(ref _progress, value);
     }
 }

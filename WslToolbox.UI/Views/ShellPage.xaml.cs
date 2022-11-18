@@ -26,30 +26,29 @@ public sealed partial class ShellPage : Page
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = App.Name;
-        
-        WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, (r, m) =>
-        {
-            async Task<ContentDialogResult> ReceiveAsync()
-            {
-                var dialog = new InputDialog
-                {
-                    ViewModel = m.InputDialogModel,
-                    XamlRoot = XamlRoot,
-                    Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-                    DefaultButton = ContentDialogButton.Primary,
-                };
 
-                var response = await dialog.ShowAsync();
-
-                return response;
-            }
-    
-            m.Reply(ReceiveAsync());
-        });
+        WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, OnShowInputDialog);
     }
 
     public ShellViewModel ViewModel { get; }
     public bool IsDeveloper { get; } = App.IsDeveloper;
+
+    private void OnShowInputDialog(object recipient, InputDialogRequestMessage message)
+    {
+        var contentDialog = new InputDialog
+        {
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            XamlRoot = XamlRoot,
+            ViewModel = new InputDialogModel
+            {
+                Title = message.Title,
+                Message = message.Message,
+                DefaultInput = message.DefaultValue
+            }
+        };
+
+        message.Reply(contentDialog.ShowAsync().AsTask());
+    }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
@@ -68,7 +67,7 @@ public sealed partial class ShellPage : Page
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
-        AppTitleBar.Margin = new Thickness()
+        AppTitleBar.Margin = new Thickness
         {
             Left = sender.CompactPaneLength * (sender.DisplayMode == NavigationViewDisplayMode.Minimal ? 2 : 1),
             Top = AppTitleBar.Margin.Top,

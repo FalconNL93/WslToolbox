@@ -17,12 +17,16 @@ public class ShowInputDialogChangedMessage : ValueChangedMessage<InputDialogMode
     }
 }
 
-public class InputDialogRequestMessage : RequestMessage<Task<ContentDialogResult>>
+public class InputDialogRequestMessage : AsyncRequestMessage<ContentDialogResult>
 {
-    public InputDialogModel InputDialogModel { get; set; }
-    
-    public InputDialogRequestMessage(InputDialogModel value)
+    public string DefaultValue;
+    public string Message;
+    public string Title;
+
+    public InputDialogRequestMessage(string title, string message, string defaultValue = "")
     {
-        InputDialogModel = value;
+        Title = title;
+        Message = message;
+        DefaultValue = defaultValue;
     }
 }

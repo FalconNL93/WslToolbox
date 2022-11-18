@@ -47,7 +47,6 @@ public class AppNotificationService : IAppNotificationService
 
     public void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
     {
-        
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
             App.MainWindow.ShowMessageDialogAsync("TODO: Handle notification invocations when your app is already running.", "Notification Invoked");

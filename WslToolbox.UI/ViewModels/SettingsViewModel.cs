@@ -11,7 +11,7 @@ using WslToolbox.UI.Core.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
-public class SettingsViewModel : ObservableRecipient
+public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
     private readonly IMessenger _messenger;
@@ -19,7 +19,10 @@ public class SettingsViewModel : ObservableRecipient
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
     private readonly UserOptions _userOptions;
+
+    [ObservableProperty]
     private ElementTheme _elementTheme;
+
     private UpdateResultModel _updaterResult = new();
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
@@ -37,14 +40,6 @@ public class SettingsViewModel : ObservableRecipient
         _notificationService = notificationService;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
-
-        SwitchThemeCommand = new AsyncRelayCommand<ElementTheme>(OnThemeChange);
-        SaveConfiguration = new RelayCommand(OnSaveConfiguration);
-        RestoreDefaultConfiguration = new RelayCommand(OnRestoreDefaultConfiguration, () => File.Exists(Toolbox.UserConfiguration));
-        OpenConfiguration = new RelayCommand(OnOpenConfiguration, () => File.Exists(Toolbox.UserConfiguration));
-        OpenLogFile = new RelayCommand(OnOpenLogFile, () => File.Exists(Toolbox.UserConfiguration));
-        OpenAppDir = new RelayCommand(OnOpenAppDir, () => Directory.Exists(Toolbox.AppDirectory));
-        CheckForUpdates = new AsyncRelayCommand(OnCheckForUpdates);
     }
 
     public UpdateResultModel UpdaterResult
@@ -57,25 +52,8 @@ public class SettingsViewModel : ObservableRecipient
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 
-    public ElementTheme ElementTheme
-    {
-        get => _elementTheme;
-        set
-        {
-            SetProperty(ref _elementTheme, value);
-            SwitchThemeCommand.Execute(value);
-        }
-    }
-
-    public AsyncRelayCommand<ElementTheme> SwitchThemeCommand { get; }
-    public RelayCommand SaveConfiguration { get; }
-    public RelayCommand RestoreDefaultConfiguration { get; }
-    public RelayCommand OpenConfiguration { get; }
-    public RelayCommand OpenLogFile { get; }
-    public RelayCommand OpenAppDir { get; }
-    public AsyncRelayCommand CheckForUpdates { get; }
-
-    private async Task OnCheckForUpdates()
+    [RelayCommand]
+    private async Task CheckForUpdates()
     {
         UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
@@ -85,7 +63,8 @@ public class SettingsViewModel : ObservableRecipient
         await Task.Delay(TimeSpan.FromSeconds(10));
     }
 
-    private async Task OnThemeChange(ElementTheme param)
+    [RelayCommand]
+    private async Task ThemeChange(ElementTheme param)
     {
         if (ElementTheme == param)
         {
@@ -96,7 +75,8 @@ public class SettingsViewModel : ObservableRecipient
         await _themeSelectorService.SetThemeAsync(param);
     }
 
-    private static void OnOpenLogFile()
+    [RelayCommand]
+    private static void OpenLogFile()
     {
         try
         {
@@ -109,7 +89,8 @@ public class SettingsViewModel : ObservableRecipient
         }
     }
 
-    private static void OnOpenAppDir()
+    [RelayCommand]
+    private static void OpenAppDir()
     {
         try
         {
@@ -122,20 +103,23 @@ public class SettingsViewModel : ObservableRecipient
         }
     }
 
-    private void OnSaveConfiguration()
+    [RelayCommand]
+    private void SaveConfiguration()
     {
         _configurationService.Save(UserOptions);
     }
 
-    private void OnRestoreDefaultConfiguration()
+    [RelayCommand]
+    private void RestoreDefaultConfiguration()
     {
         _configurationService.Restore<UserOptions>();
 
-        RestoreDefaultConfiguration.NotifyCanExecuteChanged();
-        OpenConfiguration.NotifyCanExecuteChanged();
+        RestoreDefaultConfigurationCommand.NotifyCanExecuteChanged();
+        OpenConfigurationCommand.NotifyCanExecuteChanged();
     }
 
-    private static void OnOpenConfiguration()
+    [RelayCommand]
+    private static void OpenConfiguration()
     {
         try
         {

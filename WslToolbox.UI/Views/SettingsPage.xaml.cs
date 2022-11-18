@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Controls;
-using WslToolbox.UI.Messengers;
+﻿using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Views;
