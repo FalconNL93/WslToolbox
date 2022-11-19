@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.ViewModels;
-using WslToolbox.UI.Views;
+using WslToolbox.UI.Views.Pages;
 
 namespace WslToolbox.UI.Services;
 

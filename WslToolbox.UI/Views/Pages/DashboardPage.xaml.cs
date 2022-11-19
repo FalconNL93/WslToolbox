@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.ViewModels;
 
-namespace WslToolbox.UI.Views;
+namespace WslToolbox.UI.Views.Pages;
 
 public sealed partial class DashboardPage : Page
 {

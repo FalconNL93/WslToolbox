@@ -39,6 +39,7 @@
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3"/>
         <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1"/>
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9"/>
         <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1"/>
@@ -56,6 +57,12 @@
 
     <ItemGroup>
         <Compile Remove="Helpers\ShellHelper.cs"/>
+        <Compile Update="ViewModels\SettingsViewModel.Commands.cs">
+            <DependentUpon>SettingsViewModel.cs</DependentUpon>
+        </Compile>
+        <Compile Update="ViewModels\DashboardViewModel.Commands.cs">
+            <DependentUpon>DashboardViewModel.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

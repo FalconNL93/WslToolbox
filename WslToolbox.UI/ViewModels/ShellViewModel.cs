@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Navigation;
 using WslToolbox.UI.Contracts.Services;
-using WslToolbox.UI.Views;
+using WslToolbox.UI.Views.Pages;
 
 namespace WslToolbox.UI.ViewModels;
 

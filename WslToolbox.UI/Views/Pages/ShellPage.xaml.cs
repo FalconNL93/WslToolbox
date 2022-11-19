@@ -10,7 +10,7 @@ using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
 
-namespace WslToolbox.UI.Views;
+namespace WslToolbox.UI.Views.Pages;
 
 public sealed partial class ShellPage : Page
 {
@@ -28,6 +28,7 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = App.Name;
 
         WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, OnShowInputDialog);
+        WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
     }
 
     public ShellViewModel ViewModel { get; }
@@ -49,6 +50,18 @@ public sealed partial class ShellPage : Page
 
         message.Reply(contentDialog.ShowAsync().AsTask());
     }
+
+    private void OnShowSimpleDialog(object recipient, SimpleDialogShowMessage message)
+    {
+        var contentDialog = new SimpleDialog(message.ViewModel)
+        {
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            XamlRoot = XamlRoot
+        };
+
+        message.Reply(contentDialog.ShowAsync().AsTask());
+    }
+
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {

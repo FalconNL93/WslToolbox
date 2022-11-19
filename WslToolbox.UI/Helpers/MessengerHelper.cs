@@ -20,12 +20,8 @@ public static class MessengerHelper
         }));
     }
 
-    public static void ShowError(this IMessenger messenger, string message, string title)
+    public static async Task<ContentDialogResult> ShowDialog(this IMessenger messenger, SimpleDialogModel dialogModel)
     {
-        messenger.Send(new ErrorChangedMessage(new ErrorModel
-        {
-            Message = message,
-            Title = title
-        }));
+        return await messenger.Send(new SimpleDialogShowMessage(dialogModel));
     }
 }

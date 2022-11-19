@@ -17,8 +17,8 @@ using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
-using WslToolbox.UI.Views;
 using WslToolbox.UI.Views.Modals;
+using WslToolbox.UI.Views.Pages;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace WslToolbox.UI;

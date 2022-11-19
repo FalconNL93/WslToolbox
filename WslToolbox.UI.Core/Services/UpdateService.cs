@@ -7,7 +7,7 @@ namespace WslToolbox.UI.Core.Services;
 
 public class UpdateService
 {
-    private const string ManifestFile = "wsltoolbox.json";
+    private const string ManifestFile = "wsltoolbox/manifest.json";
     private readonly HttpClient _httpClient;
     private readonly ILogger<UpdateService> _logger;
 
