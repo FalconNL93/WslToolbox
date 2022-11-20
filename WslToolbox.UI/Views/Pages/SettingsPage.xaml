@@ -28,6 +28,9 @@
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" Header="Hide docker distributions" />
                 </StackPanel>
+                <StackPanel>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.EnableWebserver, Mode=TwoWay}" Header="Enable web admin" />
+                </StackPanel>
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallBottomMargin}" />
@@ -55,6 +58,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log" Width="130" Margin="{StaticResource SmallRightMargin}" />
                         <Button Command="{x:Bind ViewModel.OpenAppDirCommand}" Content="Open app dir" Width="130" />
+                        <Button Command="{x:Bind ViewModel.EnableWebAdminCommand}" Content="Enable Web Admin" Width="130" />
                     </StackPanel>
                 </StackPanel>
 

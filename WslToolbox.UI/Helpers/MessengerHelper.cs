@@ -28,5 +28,7 @@ public static class MessengerHelper
     public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger, InputDialogModel dialogModel)
     {
         var dialogMessenger = messenger.Send(new InputDialogMessage(dialogModel));
+
+        return dialogMessenger.ViewModel;
     }
 }

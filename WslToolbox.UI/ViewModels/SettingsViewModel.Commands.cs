@@ -6,6 +6,7 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Models;
 using WslToolbox.UI.Notifications;
+using WslToolbox.Web;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -100,5 +101,11 @@ public partial class SettingsViewModel
             Console.WriteLine(e);
             throw;
         }
+    }
+    
+    [RelayCommand]
+    private async Task EnableWebAdmin()
+    {
+
     }
 }

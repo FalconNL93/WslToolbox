@@ -45,6 +45,7 @@ public partial class App : Application
             .UseSerilog()
             .ConfigureServices((context, services) =>
             {
+                services.AddHostedService<WebAdminService>();
                 services.AddAutoMapper(typeof(AutoMapperProfiles));
 
                 // Default Activation Handler
@@ -86,6 +87,7 @@ public partial class App : Application
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
 
+        Host.Start();
         GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
