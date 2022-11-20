@@ -24,4 +24,9 @@ public static class MessengerHelper
     {
         return await messenger.Send(new SimpleDialogShowMessage(dialogModel));
     }
+    
+    public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger, InputDialogModel dialogModel)
+    {
+        var dialogMessenger = messenger.Send(new InputDialogMessage(dialogModel));
+    }
 }

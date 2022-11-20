@@ -1,10 +1,15 @@
 ﻿using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
+using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Messengers;
+using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
@@ -12,15 +17,21 @@ namespace WslToolbox.UI.ViewModels;
 public class DeveloperViewModel : ObservableRecipient
 {
     private readonly DistributionService _distributionService;
+    private readonly IAppNotificationService _appNotificationService;
+    private readonly IMessenger _messenger;
     private readonly ILogger<DeveloperViewModel> _logger;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
-        DistributionService distributionService
+        DistributionService distributionService,
+        IAppNotificationService appNotificationService,
+        IMessenger messenger
     )
     {
         _logger = logger;
         _distributionService = distributionService;
+        _appNotificationService = appNotificationService;
+        _messenger = messenger;
 
         TestWindow = new RelayCommand<Page>(OnTestWindow);
         Load = new AsyncRelayCommand(OnLoad);
@@ -39,28 +50,11 @@ public class DeveloperViewModel : ObservableRecipient
 
     private async void OnTestWindow(Page? page)
     {
-        try
+        var dialog = await _messenger.ShowInputDialog(new InputDialogModel
         {
-            page.ShowProgressModal(new ProgressModel
-            {
-                Title = "Executing",
-                Message = "Executing command, please wait...",
-                ShowClose = true
-            });
-            page.UpdateModal("Updating distributions...");
-            var dist = await _distributionService.ListDistributions();
-            var first = dist.FirstOrDefault();
-
-            var bb = await _distributionService.ExecuteCommand(first, "whoami");
-            page.UpdateModal($"Output: {bb.Output}");
-            await Task.Delay(TimeSpan.FromSeconds(5));
-
-            _logger.LogInformation("Command: {Command} Output: {Output}", bb.Command, bb.Output);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error");
-            throw;
-        }
+            Message = "Enter input",
+            Title = "Input",
+            InputFieldText = ""
+        });
     }
 }

@@ -22,12 +22,7 @@ public partial class SettingsViewModel
 
         if (!UpdaterResult.UpdateAvailable)
         {
-            await _messenger.ShowDialog(new SimpleDialogModel
-            {
-                Message = "No updates available"
-            });
-
-            _appNotificationService.Show(UpdateNotification.Build());
+            _appNotificationService.Show(UpdateNotification.NoUpdates);
         }
 
         await Task.Delay(TimeSpan.FromSeconds(10));

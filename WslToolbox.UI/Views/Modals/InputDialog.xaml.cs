@@ -5,8 +5,10 @@ namespace WslToolbox.UI.Views.Modals;
 
 public sealed partial class InputDialog : ContentDialog
 {
-    public InputDialog()
+    public InputDialog(InputDialogModel viewModel)
     {
+        ViewModel = viewModel;
+        
         InitializeComponent();
     }
 

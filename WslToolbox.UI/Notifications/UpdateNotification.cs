@@ -4,12 +4,9 @@ namespace WslToolbox.UI.Notifications;
 
 public static class UpdateNotification
 {
-    public static string Build()
-    {
-        var builder = new ToastContentBuilder();
-
-        builder.AddText("No new updates available");
-
-        return builder.GetXml().GetXml();
-    }
+    public static string NoUpdates =>
+        new ToastContentBuilder()
+            .AddText("No new updates available")
+            .GetXml()
+            .GetXml();
 }

@@ -27,28 +27,22 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = App.Name;
 
-        WeakReferenceMessenger.Default.Register<InputDialogRequestMessage>(this, OnShowInputDialog);
+        WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
         WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
     }
 
     public ShellViewModel ViewModel { get; }
     public bool IsDeveloper { get; } = App.IsDeveloper;
 
-    private void OnShowInputDialog(object recipient, InputDialogRequestMessage message)
+    private void OnShowInputDialog(object recipient, InputDialogMessage message)
     {
-        var contentDialog = new InputDialog
+        var contentDialog = new InputDialog(message.ViewModel)
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-            XamlRoot = XamlRoot,
-            ViewModel = new InputDialogModel
-            {
-                Title = message.Title,
-                Message = message.Message,
-                DefaultInput = message.DefaultValue
-            }
+            XamlRoot = XamlRoot
         };
 
-        message.Reply(contentDialog.ShowAsync().AsTask());
+        message.Reply(contentDialog);
     }
 
     private void OnShowSimpleDialog(object recipient, SimpleDialogShowMessage message)

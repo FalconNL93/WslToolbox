@@ -1,32 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.Messengers;
 
 public class InputDialogModel
 {
-    public string Title { get; set; }
     public string Message { get; set; }
-    public string DefaultInput { get; set; }
+    public string Title { get; set; } = App.Name;
+    public string InputFieldText { get; set; }
 }
 
-public class ShowInputDialogChangedMessage : ValueChangedMessage<InputDialogModel>
+public class InputDialogMessage : RequestMessage<InputDialog>
 {
-    public ShowInputDialogChangedMessage(InputDialogModel value) : base(value)
+    public InputDialogMessage(InputDialogModel value)
     {
+        ViewModel = value;
     }
-}
 
-public class InputDialogRequestMessage : AsyncRequestMessage<ContentDialogResult>
-{
-    public string DefaultValue;
-    public string Message;
-    public string Title;
-
-    public InputDialogRequestMessage(string title, string message, string defaultValue = "")
-    {
-        Title = title;
-        Message = message;
-        DefaultValue = defaultValue;
-    }
+    public InputDialogModel ViewModel { get; set; }
 }

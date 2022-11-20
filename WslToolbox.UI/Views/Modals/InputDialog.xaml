@@ -7,6 +7,6 @@
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <TextBlock Text="{x:Bind ViewModel.Message}" Margin="{StaticResource SmallBottomMargin}" />
-        <TextBox Text="{x:Bind ViewModel.DefaultInput}" />
+        <TextBox Text="{x:Bind ViewModel.InputFieldText, Mode=TwoWay}" />
     </StackPanel>
 </ContentDialog>
