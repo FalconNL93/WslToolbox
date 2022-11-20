@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.UI", "WslToolbox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.UI.Core", "WslToolbox.UI.Core\WslToolbox.UI.Core.csproj", "{E4E7666F-52E2-4672-9185-04FDFBA44F98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.Web", "WslToolbox.Web\WslToolbox.Web.csproj", "{D7499808-9D21-4DF0-B977-0782302D3B92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Release|x86.Build.0 = Release|x86
 		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|x86.ActiveCfg = Debug|x86
 		{E4E7666F-52E2-4672-9185-04FDFBA44F98}.Debug|x86.Build.0 = Debug|x86
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Release|x64.Build.0 = Release|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7499808-9D21-4DF0-B977-0782302D3B92}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

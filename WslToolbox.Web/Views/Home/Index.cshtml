@@ -1,0 +1,9 @@
+﻿@using WslToolbox.Core
+@{
+    ViewData["Title"] = "Home Page";
+    var dists = (List<DistributionClass>) ViewData["Dists"]!;
+}
+@foreach (var dist in dists)
+{
+    <p>@dist.Name</p>
+}
