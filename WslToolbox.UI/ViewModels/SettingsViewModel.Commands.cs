@@ -3,10 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
-using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Models;
 using WslToolbox.UI.Notifications;
-using WslToolbox.Web;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -102,10 +99,10 @@ public partial class SettingsViewModel
             throw;
         }
     }
-    
+
     [RelayCommand]
     private async Task EnableWebAdmin()
     {
-
+        ShellHelper.StartWebAdmin(new WebAdminModel());
     }
 }

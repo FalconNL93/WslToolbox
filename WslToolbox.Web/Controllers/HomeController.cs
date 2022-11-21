@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WslToolbox.Core.Commands.Service;
 using WslToolbox.Web.Models;
 
 namespace WslToolbox.Web.Controllers;
@@ -15,10 +16,10 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var dists = await Core.Commands.Service.ListServiceCommand.ListDistributions(true);
+        var dists = await ListServiceCommand.ListDistributions(true);
 
         ViewData["Dists"] = dists;
-        
+
         return View();
     }
 

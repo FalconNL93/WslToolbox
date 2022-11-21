@@ -45,7 +45,6 @@ public partial class App : Application
             .UseSerilog()
             .ConfigureServices((context, services) =>
             {
-                services.AddHostedService<WebAdminService>();
                 services.AddAutoMapper(typeof(AutoMapperProfiles));
 
                 // Default Activation Handler
