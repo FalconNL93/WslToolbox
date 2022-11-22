@@ -9,6 +9,7 @@ using Serilog;
 using Serilog.Events;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.BackgroundServices;
 using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
@@ -45,6 +46,7 @@ public partial class App : Application
             .UseSerilog()
             .ConfigureServices((context, services) =>
             {
+                services.AddHostedService<WebAdminBackgroundService>();
                 services.AddAutoMapper(typeof(AutoMapperProfiles));
 
                 // Default Activation Handler
