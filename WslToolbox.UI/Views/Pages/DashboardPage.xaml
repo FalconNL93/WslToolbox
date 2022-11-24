@@ -62,45 +62,42 @@
                                                     MinWidth="{StaticResource ButtonGlyphMinWidth}">
                                                 <SymbolIcon Symbol="Stop" />
                                             </Button>
-                                            <Button Command="{Binding ViewModel.StopDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" MinWidth="{StaticResource ButtonGlyphMinWidth}">
+                                            <Button Command="{Binding ViewModel.StopDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" MinWidth="{StaticResource ButtonGlyphMinWidth}"
+                                                    Margin="{StaticResource SmallRightMargin}">
                                                 <SymbolIcon Symbol="Refresh" />
                                             </Button>
+                                            <DropDownButton Content="Actions">
+                                                <DropDownButton.Flyout>
+                                                    <MenuFlyout Placement="Bottom">
+                                                        <MenuFlyoutItem Text="Open folder" Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}">
+                                                            <MenuFlyoutItem.Icon>
+                                                                <SymbolIcon Symbol="Folder" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
+                                                        <MenuFlyoutItem Text="Move" Command="{Binding ViewModel.MoveDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}">
+                                                            <MenuFlyoutItem.Icon>
+                                                                <SymbolIcon Symbol="MoveToFolder" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
+                                                        <MenuFlyoutItem Text="Rename" Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}">
+                                                            <MenuFlyoutItem.Icon>
+                                                                <SymbolIcon Symbol="Rename" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
+                                                        <MenuFlyoutItem Text="Delete" Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}">
+                                                            <MenuFlyoutItem.Icon>
+                                                                <SymbolIcon Symbol="Delete" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
+                                                    </MenuFlyout>
+                                                </DropDownButton.Flyout>
+                                            </DropDownButton>
                                         </StackPanel>
                                     </Grid>
                                 </Expander.Header>
                                 <Expander.Content>
                                     <Grid>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Margin="{StaticResource SmallRightMargin}"
-                                                    Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}"
-                                                    CommandParameter="{Binding BasePathLocal}">
-                                                <SymbolIcon Symbol="Folder" ToolTipService.ToolTip="Open directory" />
-                                            </Button>
-                                            <Button Margin="{StaticResource SmallRightMargin}" IsEnabled="false"
-                                                    Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}"
-                                                    CommandParameter="{Binding}">
-                                                <SymbolIcon Symbol="MoveToFolder" ToolTipService.ToolTip="Move" />
-                                            </Button>
-                                            <Button Margin="{StaticResource SmallRightMargin}"
-                                                    Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}"
-                                                    CommandParameter="{Binding}">
-                                                <SymbolIcon Symbol="Rename" ToolTipService.ToolTip="Rename" />
-                                            </Button>
-                                            <Button>
-                                                <SymbolIcon Symbol="Delete" ToolTipService.ToolTip="Delete" />
-                                                <Button.Flyout>
-                                                    <Flyout>
-                                                        <StackPanel>
-                                                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to delete this distribution?" Margin="0,0,0,12" />
-                                                            <Button Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}"
-                                                                    CommandParameter="{Binding}"
-                                                                    Content="Delete" Margin="{StaticResource SmallRightMargin}"
-                                                                    MinWidth="{StaticResource ButtonMinWidth}" />
-                                                        </StackPanel>
-                                                    </Flyout>
-                                                </Button.Flyout>
-                                            </Button>
-                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" />
                                     </Grid>
                                 </Expander.Content>
                             </Expander>
