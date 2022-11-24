@@ -6,20 +6,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Services;
-using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Messengers;
-using WslToolbox.UI.Notifications;
-using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
 public class DeveloperViewModel : ObservableRecipient
 {
-    private readonly DistributionService _distributionService;
     private readonly IAppNotificationService _appNotificationService;
-    private readonly IMessenger _messenger;
+    private readonly DistributionService _distributionService;
     private readonly ILogger<DeveloperViewModel> _logger;
+    private readonly IMessenger _messenger;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,

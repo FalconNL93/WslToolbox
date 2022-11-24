@@ -19,7 +19,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="{StaticResource SmallBottomMargin}">
             <InfoBar Name="SettingsInfoBar" />
         </Grid>
         <ScrollViewer Grid.Row="1">

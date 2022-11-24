@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Views.Pages;
@@ -10,9 +12,22 @@ public sealed partial class SettingsPage : Page
     {
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
+
+        WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(this, OnShowInfoBar);
     }
 
     public SettingsViewModel ViewModel { get; }
+
+    private void OnShowInfoBar(object recipient, InfoBarChangedMessage message)
+    {
+        var infoBarModel = message.Value;
+        SettingsInfoBar.IsOpen = infoBarModel.IsOpen;
+        SettingsInfoBar.IsClosable = infoBarModel.IsClosable;
+        SettingsInfoBar.IsIconVisible = infoBarModel.IsIconVisible;
+        SettingsInfoBar.Severity = infoBarModel.Severity;
+        SettingsInfoBar.Title = infoBarModel.Title;
+        SettingsInfoBar.Message = infoBarModel.Message;
+    }
 
     private async void OnThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
     {

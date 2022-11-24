@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Models;
 using WslToolbox.UI.Notifications;
 
 namespace WslToolbox.UI.ViewModels;
@@ -23,6 +22,7 @@ public partial class SettingsViewModel
         if (!UpdaterResult.UpdateAvailable)
         {
             _appNotificationService.Show(UpdateNotification.NoUpdates);
+            _messenger.ShowInfoBar("No updates", "No updates available");
         }
 
         await Task.Delay(TimeSpan.FromSeconds(10));
