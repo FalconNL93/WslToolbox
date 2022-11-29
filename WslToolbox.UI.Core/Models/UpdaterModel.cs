@@ -18,6 +18,6 @@ public partial class UpdateResultModel : ObservableRecipient
 
     [ObservableProperty]
     private string _updateStatus;
-    
+
     public bool UpdateAvailable => LatestVersion.CompareTo(CurrentVersion) > 0;
 }

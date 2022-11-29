@@ -8,7 +8,7 @@ public sealed partial class InputDialog : ContentDialog
     public InputDialog(InputDialogModel viewModel)
     {
         ViewModel = viewModel;
-        
+
         InitializeComponent();
     }
 
