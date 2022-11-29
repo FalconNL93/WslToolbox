@@ -24,6 +24,13 @@ public partial class SettingsViewModel
             _appNotificationService.Show(UpdateNotification.NoUpdates);
             _messenger.ShowInfoBar("No updates", "No updates available");
         }
+        else
+        {
+            await _messenger.ShowUpdateDialog(new UpdateViewModel
+            {
+                EnableInstallUpdate = true,
+            });
+        }
 
         await Task.Delay(TimeSpan.FromSeconds(10));
     }

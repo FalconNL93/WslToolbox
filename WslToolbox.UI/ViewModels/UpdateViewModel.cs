@@ -2,6 +2,11 @@
 
 namespace WslToolbox.UI.ViewModels;
 
-public class UpdateViewModel : ObservableRecipient
+public partial class UpdateViewModel : ObservableRecipient
 {
+    [ObservableProperty]
+    private bool _enableInstallUpdate;
+
+    [ObservableProperty]
+    private bool _latestVersion;
 }

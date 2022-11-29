@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.Models;
+using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Helpers;
 
@@ -28,6 +29,13 @@ public static class MessengerHelper
     public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger, InputDialogModel dialogModel)
     {
         var dialogMessenger = messenger.Send(new InputDialogMessage(dialogModel));
+
+        return dialogMessenger.ViewModel;
+    }
+    
+    public static async Task<UpdateViewModel> ShowUpdateDialog(this IMessenger messenger, UpdateViewModel viewModel)
+    {
+        var dialogMessenger = messenger.Send(new UpdateDialogMessage(viewModel));
 
         return dialogMessenger.ViewModel;
     }

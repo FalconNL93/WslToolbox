@@ -28,35 +28,35 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Manifest Include="$(ApplicationManifest)"/>
+        <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"/>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0"/>
-        <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2"/>
-        <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2"/>
-        <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3"/>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9"/>
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1"/>
-        <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0"/>
-        <PackageReference Include="WinUIEx" Version="1.8.0"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+        <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+        <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+        <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+        <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+        <PackageReference Include="WinUIEx" Version="1.8.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WslToolbox.UI.Core\WslToolbox.UI.Core.csproj"/>
+        <ProjectReference Include="..\WslToolbox.UI.Core\WslToolbox.UI.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-        <ProjectCapability Include="Msix"/>
+        <ProjectCapability Include="Msix" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="Helpers\ShellHelper.cs"/>
+        <Compile Remove="Helpers\ShellHelper.cs" />
         <Compile Update="ViewModels\SettingsViewModel.Commands.cs">
             <DependentUpon>SettingsViewModel.cs</DependentUpon>
         </Compile>
@@ -66,7 +66,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="UI"/>
+        <Folder Include="UI" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
@@ -87,7 +87,7 @@
 
     <Target Name="_RemoveFrameworkReferences" BeforeTargets="_ConvertItems;_CalculateInputsForGenerateCurrentProjectAppxManifest">
         <ItemGroup>
-            <FrameworkSdkReference Remove="@(FrameworkSdkReference)" Condition="$([System.String]::Copy('%(FrameworkSdkReference.SDKName)').StartsWith('Microsoft.WindowsAppRuntime.'))"/>
+            <FrameworkSdkReference Remove="@(FrameworkSdkReference)" Condition="$([System.String]::Copy('%(FrameworkSdkReference.SDKName)').StartsWith('Microsoft.WindowsAppRuntime.'))" />
         </ItemGroup>
     </Target>
 </Project>
