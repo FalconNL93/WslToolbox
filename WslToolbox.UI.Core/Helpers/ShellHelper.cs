@@ -11,4 +11,12 @@ public static class ShellHelper
         process.StartInfo.Arguments = "\"" + path + "\"";
         process.Start();
     }
+    
+    public static void OpenUrl(Uri url)
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = "explorer";
+        process.StartInfo.Arguments = "\"" + url.AbsoluteUri + "\"";
+        process.Start();
+    }
 }

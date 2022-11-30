@@ -5,6 +5,7 @@ namespace WslToolbox.UI.Core.Helpers;
 public static class Toolbox
 {
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version;
     public static readonly string AppData = @$"{AppDirectory}\data";
 
     public static readonly string UserConfiguration = @$"{AppData}\config.json";

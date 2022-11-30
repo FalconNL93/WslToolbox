@@ -8,5 +8,8 @@ public partial class UpdateViewModel : ObservableRecipient
     private bool _enableInstallUpdate;
 
     [ObservableProperty]
-    private bool _latestVersion;
+    private Version _latestVersion;
+    
+    [ObservableProperty]
+    private Version _currentVersion;
 }

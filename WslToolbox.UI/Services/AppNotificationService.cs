@@ -2,8 +2,15 @@
 using System.Web;
 using Microsoft.Windows.AppNotifications;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Helpers;
 
 namespace WslToolbox.UI.Services;
+
+public static class NotificationActions
+{
+    public const string OpenUrl = nameof(OpenUrl);
+    public const string Show = nameof(Show);
+}
 
 public class AppNotificationService : IAppNotificationService
 {
@@ -17,7 +24,6 @@ public class AppNotificationService : IAppNotificationService
     public void Initialize()
     {
         AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
-
         AppNotificationManager.Default.Register();
     }
 
@@ -45,11 +51,22 @@ public class AppNotificationService : IAppNotificationService
         Unregister();
     }
 
-    public void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
+    private static void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+        foreach (var arg in args.Arguments)
         {
-            App.MainWindow.BringToFront();
-        });
+            switch (arg.Key)
+            {
+                case NotificationActions.OpenUrl:
+                    ShellHelper.OpenUrl(new Uri(arg.Value));
+                    break;
+                case NotificationActions.Show:
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        App.MainWindow.BringToFront();
+                    });
+                    break;
+            }
+        }
     }
 }

@@ -2,11 +2,18 @@
     x:Class="WslToolbox.UI.Views.Modals.UpdateDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    Title="New update"
     PrimaryButtonText="Install update"
     IsPrimaryButtonEnabled="{x:Bind ViewModel.EnableInstallUpdate, Mode=OneWay}"
     SecondaryButtonText="Skip">
+    <ContentDialog.Resources>
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+    </ContentDialog.Resources>
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TextBlock>A new update is available for WSL Toolbox</TextBlock>
+        <TextBlock Text="A new update is available for WSL Toolbox" />
+        <TextBlock Text="{x:Bind ViewModel.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Current version: {0}'}" />
+        <TextBlock Text="{x:Bind ViewModel.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='New version: {0}'}" />
     </StackPanel>
 </ContentDialog>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Helpers;
@@ -21,15 +22,22 @@ public partial class SettingsViewModel
 
         if (!UpdaterResult.UpdateAvailable)
         {
-            _appNotificationService.Show(UpdateNotification.NoUpdates);
-            _messenger.ShowInfoBar("No updates", "No updates available");
+            _appNotificationService.ShowNoUpdatesNotification();
         }
         else
         {
-            await _messenger.ShowUpdateDialog(new UpdateViewModel
+            _appNotificationService.ShowUpdatesAvailableNotification(UpdaterResult);
+            var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
             {
                 EnableInstallUpdate = true,
+                CurrentVersion = UpdaterResult.CurrentVersion,
+                LatestVersion = UpdaterResult.LatestVersion
             });
+
+            if (result == ContentDialogResult.Primary)
+            {
+                ShellHelper.OpenUrl(UpdaterResult.DownloadUri);
+            }
         }
 
         await Task.Delay(TimeSpan.FromSeconds(10));
