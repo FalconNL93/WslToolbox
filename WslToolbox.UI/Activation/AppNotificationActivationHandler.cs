@@ -21,7 +21,7 @@ public class AppNotificationActivationHandler : ActivationHandler<LaunchActivate
         return AppInstance.GetCurrent().GetActivatedEventArgs()?.Kind == ExtendedActivationKind.AppNotification;
     }
 
-    protected override async Task HandleInternalAsync(LaunchActivatedEventArgs args)
+    protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
         // TODO: Handle notification activations.
 
