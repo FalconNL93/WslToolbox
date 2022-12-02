@@ -23,11 +23,6 @@ public class AppNotificationService : IAppNotificationService
 
     public void Initialize()
     {
-        if (App.IsPackage())
-        {
-            return;
-        }
-
         AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
         AppNotificationManager.Default.Register();
     }
