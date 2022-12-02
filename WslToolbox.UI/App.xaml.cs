@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,18 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
+
+    public static bool IsPackage()
+    {
+        try
+        {
+            return Package.Current.Id != null;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     public App()
     {
