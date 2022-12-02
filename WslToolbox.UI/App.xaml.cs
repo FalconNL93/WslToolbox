@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Serilog;
 using Serilog.Events;
+using Windows.ApplicationModel;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
@@ -27,6 +28,18 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
+   
+    public static bool IsPackage()
+    {
+        try
+        {
+            return Package.Current.Id != null;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     public App()
     {
