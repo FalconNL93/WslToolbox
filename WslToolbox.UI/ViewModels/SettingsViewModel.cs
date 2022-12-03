@@ -21,6 +21,12 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private UpdateResultModel _updaterResult = new();
 
+    [ObservableProperty]
+    private bool _updateServiceAvailable;
+
+    [ObservableProperty]
+    private bool _isPackage;
+
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IOptions<UserOptions> userOptions,
         IConfigurationService configurationService,
@@ -36,6 +42,9 @@ public partial class SettingsViewModel : ObservableRecipient
         _appNotificationService = appNotificationService;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
+
+        _updateServiceAvailable = !App.IsPackage();
+        _isPackage = App.IsPackage();
     }
 
     public UserOptions UserOptions { get; }

@@ -7,7 +7,10 @@ Param(
     [String]$Platform,
 
     [Parameter(Mandatory = $false)]
-    [Switch]$WithSetup
+    [Switch]$WithSetup,
+
+    [Parameter(Mandatory = $false)]
+    [Switch]$WithMsix
 )
 
 # For local building
@@ -19,7 +22,9 @@ foreach ($Parameter in $ParameterList) {
     Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
 }
 
-$RootProject = "WslToolbox.UI\WslToolbox.UI.csproj";
+$RootProjectDirectory = "$(Get-Location)\WslToolbox.UI"
+$RootProject = "$RootProjectDirectory\WslToolbox.UI.csproj";
+$AppxManifest = "$RootProjectDirectory\Package.appxmanifest";
 $AppDirectory = $PSScriptRoot;
 $AppUuid = 'FalconNL93.WSLToolbox';
 $AppName = "WSL Toolbox"
@@ -30,13 +35,20 @@ $AppUrl = "https://github.com/FalconNL93/wsltoolbox";
 $AppOwner = "FalconNL93"
 $SetupOutputFile = "wsltoolbox-0.6-$Platform";
 
+if($WithMsix)
+{
+    [xml]$manifest= get-content "$AppxManifest"
+    $manifest.Package.Identity.Version = "$AppVersion.0"
+    $manifest.save("$AppxManifest")
+}
+
 dotnet publish "$RootProject" `
     -p:PublishProfile="$Platform" `
-    -p:Version="1.0.0.0" `
-    -p:FileVersion="1.0.0.0" `
-    -p:AssemblyVersion="1.0.0.0" `
-    -p:PublishTrimmed=True `
-    -p:TrimMode=CopyUsed `
+    -p:Version="$AppVersion" `
+    -p:FileVersion="$AppVersion" `
+    -p:AssemblyVersion="$AppVersion" `
+    -p:GenerateAppxPackageOnBuild=$WithMsix `
+    -p:AppxPackageDir="$AppDirectory\app\release\$Platform-msix\" `
     --self-contained `
     -r win-x64 `
     --nologo `
