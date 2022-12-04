@@ -37,7 +37,7 @@
                 <TextBlock Text="Updates" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                     <TextBlock Text="{x:Bind ViewModel.UpdaterResult.CurrentVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource SmallBottomMargin}" />
-                    <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}"/>
+                    <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                     <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                         <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
 

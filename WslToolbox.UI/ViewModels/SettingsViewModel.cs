@@ -11,17 +11,21 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Notifications;
-using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient
 {
-    private readonly IAppNotificationService _appNotificationService;
     private readonly IConfigurationService _configurationService;
     private readonly IMessenger _messenger;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
+
+    [ObservableProperty]
+    private ElementTheme _elementTheme;
+
+    [ObservableProperty]
+    private bool _isPackage;
 
     [ObservableProperty]
     private UpdateResultModel _updaterResult = new();
@@ -29,26 +33,18 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private bool _updateServiceAvailable;
 
-    [ObservableProperty]
-    private bool _isPackage;
-    
-    [ObservableProperty]
-    private ElementTheme _elementTheme;
-
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IOptions<UserOptions> userOptions,
         IOptions<RunOptions> runOptions,
         IConfigurationService configurationService,
         UpdateService updateService,
-        IMessenger messenger,
-        IAppNotificationService appNotificationService
+        IMessenger messenger
     )
     {
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
         _updateService = updateService;
         _messenger = messenger;
-        _appNotificationService = appNotificationService;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
         RunOptions = runOptions.Value;
@@ -61,7 +57,7 @@ public partial class SettingsViewModel : ObservableRecipient
     public RunOptions RunOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
-    
+
     [RelayCommand]
     private async Task CheckForUpdates()
     {
@@ -70,11 +66,12 @@ public partial class SettingsViewModel : ObservableRecipient
 
         if (!UpdaterResult.UpdateAvailable)
         {
-            _appNotificationService.ShowNoUpdatesNotification();
+            UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
+            //UpdateNotification.ShowNoUpdatesNotification();
         }
         else
         {
-            _appNotificationService.ShowUpdatesAvailableNotification(UpdaterResult);
+            UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
             var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
             {
                 EnableInstallUpdate = true,

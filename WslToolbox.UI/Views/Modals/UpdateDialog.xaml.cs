@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Views.Modals;

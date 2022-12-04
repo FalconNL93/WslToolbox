@@ -11,7 +11,7 @@ public static class ShellHelper
         process.StartInfo.Arguments = "\"" + path + "\"";
         process.Start();
     }
-    
+
     public static void OpenUrl(Uri url)
     {
         using var process = new Process();

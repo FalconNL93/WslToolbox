@@ -20,9 +20,6 @@ public partial class DashboardViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool _isRefreshing = true;
-    
-    public bool CanRenameDistribution => false;
-    public bool CanMoveDistribution => false;
 
     public DashboardViewModel(DistributionService distributionService,
         ILogger<DashboardViewModel> logger)
@@ -32,6 +29,9 @@ public partial class DashboardViewModel : ObservableRecipient
 
         EventHandlers();
     }
+
+    public bool CanRenameDistribution => false;
+    public bool CanMoveDistribution => false;
 
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
@@ -48,7 +48,7 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         RefreshDistributionsCommand.Execute(null);
     }
-    
+
     [RelayCommand]
     private async Task StartAllDistribution()
     {

@@ -4,16 +4,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
-using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Services;
-using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Messengers;
 
 namespace WslToolbox.UI.ViewModels;
 
 public class DeveloperViewModel : ObservableRecipient
 {
-    private readonly IAppNotificationService _appNotificationService;
     private readonly DistributionService _distributionService;
     private readonly ILogger<DeveloperViewModel> _logger;
     private readonly IMessenger _messenger;
@@ -21,13 +17,11 @@ public class DeveloperViewModel : ObservableRecipient
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
         DistributionService distributionService,
-        IAppNotificationService appNotificationService,
         IMessenger messenger
     )
     {
         _logger = logger;
         _distributionService = distributionService;
-        _appNotificationService = appNotificationService;
         _messenger = messenger;
 
         TestWindow = new RelayCommand<Page>(OnTestWindow);
@@ -47,11 +41,5 @@ public class DeveloperViewModel : ObservableRecipient
 
     private async void OnTestWindow(Page? page)
     {
-        var dialog = await _messenger.ShowInputDialog(new InputDialogModel
-        {
-            Message = "Enter input",
-            Title = "Input",
-            InputFieldText = ""
-        });
     }
 }

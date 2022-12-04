@@ -10,5 +10,4 @@ public static class Toolbox
 
     public static readonly string UserConfiguration = @$"{AppData}\config.json";
     public static readonly string LogFile = @$"{AppData}\log.txt";
-    
 }

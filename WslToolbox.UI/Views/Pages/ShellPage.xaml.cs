@@ -31,7 +31,7 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
         WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
     }
-    
+
     public ShellViewModel ViewModel { get; }
     public bool IsDeveloper { get; } = App.IsDeveloper;
 
@@ -45,7 +45,7 @@ public sealed partial class ShellPage : Page
 
         message.Reply(contentDialog);
     }
-    
+
     private void OnShowUpdateDialog(object recipient, UpdateDialogMessage message)
     {
         var contentDialog = new UpdateDialog(message.ViewModel)

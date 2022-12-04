@@ -32,7 +32,7 @@ public static class MessengerHelper
 
         return dialogMessenger.ViewModel;
     }
-    
+
     public static async Task<ContentDialogResult> ShowUpdateDialog(this IMessenger messenger, UpdateViewModel viewModel)
     {
         return await messenger.Send(new UpdateDialogMessage(viewModel));

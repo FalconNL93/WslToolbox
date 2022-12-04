@@ -1,30 +1,26 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
-using WslToolbox.UI.Contracts.Services;
+﻿using CommunityToolkit.WinUI.Notifications;
 using WslToolbox.UI.Core.Models;
-using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.Notifications;
 
 public static class UpdateNotification
 {
-    public static void ShowNoUpdatesNotification(this IAppNotificationService notificationService)
+    public static void ShowNoUpdatesNotification()
     {
-        notificationService.Show(new ToastContentBuilder()
+        new ToastContentBuilder()
             .AddText("No new updates available")
-            .GetXml()
-            .GetXml());
+            .Show();
     }
 
-    public static void ShowUpdatesAvailableNotification(this IAppNotificationService notificationService, UpdateResultModel updateResult)
+    public static void ShowUpdatesAvailableNotification(UpdateResultModel updateResult)
     {
-        notificationService.Show(new ToastContentBuilder()
+        new ToastContentBuilder()
             .AddText($"New update {updateResult.LatestVersion} available")
             .AddButton(new ToastButton()
                 .SetContent("Download")
-                .AddArgument(NotificationActions.OpenUrl, updateResult.DownloadUri.ToString()))
+                .AddArgument("url", updateResult.DownloadUri.ToString()))
             .AddButton(new ToastButton()
                 .SetContent("Skip"))
-            .GetXml()
-            .GetXml());
+            .Show();
     }
 }

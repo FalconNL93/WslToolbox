@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using WslToolbox.UI.Core.Helpers;
 
 namespace WslToolbox.UI.Core.Models;

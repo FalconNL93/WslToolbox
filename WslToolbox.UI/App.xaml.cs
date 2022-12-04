@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using Windows.ApplicationModel;
-using Windows.Foundation.Collections;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.WinUI.Notifications;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -34,18 +32,6 @@ public partial class App : Application
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
 
-    public static bool IsPackage()
-    {
-        try
-        {
-            return Package.Current.Id != null;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public App()
     {
         InitializeComponent();
@@ -69,9 +55,6 @@ public partial class App : Application
                 // Default Activation Handler
                 services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-                // Other Activation Handlers
-                services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
-
                 // Clients
                 services.AddHttpClient<UpdateService>(c =>
                 {
@@ -79,7 +62,7 @@ public partial class App : Application
                 });
 
                 // Services
-                services.AddSingleton<IAppNotificationService, AppNotificationService>();
+                services.AddSingleton<AppNotificationService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
                 services.AddTransient<INavigationViewService, NavigationViewService>();
                 services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
@@ -109,9 +92,25 @@ public partial class App : Application
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
 
-        GetService<IAppNotificationService>().Initialize();
+        GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
+    }
+
+    private IHost Host { get; }
+
+    public static WindowEx MainWindow { get; } = new MainWindow();
+
+    public static bool IsPackage()
+    {
+        try
+        {
+            return Package.Current.Id != null;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static bool AppCenterInitialized()
@@ -126,10 +125,6 @@ public partial class App : Application
 
         return true;
     }
-
-    private IHost Host { get; }
-
-    public static WindowEx MainWindow { get; } = new MainWindow();
 
     public static T GetService<T>()
         where T : class
