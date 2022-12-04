@@ -1,5 +1,11 @@
 ﻿using System.Diagnostics;
+using Windows.ApplicationModel;
+using Windows.Foundation.Collections;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.WinUI.Notifications;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Serilog;
 using Serilog.Events;
-using Windows.ApplicationModel;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
@@ -28,7 +33,7 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
-   
+
     public static bool IsPackage()
     {
         try
@@ -44,6 +49,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        var withAppCenter = AppCenterInitialized();
 
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(Toolbox.LogFile, LogEventLevel.Debug)
@@ -96,12 +102,29 @@ public partial class App : Application
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
 
                 // Configuration
+                services.Configure<RunOptions>(options =>
+                {
+                    options.WithAppCenter = withAppCenter;
+                });
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
 
         GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
+    }
+
+    private static bool AppCenterInitialized()
+    {
+        var appCenterKey = Environment.GetEnvironmentVariable("APPCENTER_KEY");
+        if (appCenterKey == null)
+        {
+            return false;
+        }
+
+        AppCenter.Start(appCenterKey, typeof(Analytics), typeof(Crashes));
+
+        return true;
     }
 
     private IHost Host { get; }

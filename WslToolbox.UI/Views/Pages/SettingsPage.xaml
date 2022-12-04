@@ -52,6 +52,7 @@
 
                 <TextBlock Text="Other" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallBottomMargin}">
+                    <TextBlock Text="AppCenter analytics enabled" Visibility="{x:Bind ViewModel.RunOptions.WithAppCenter, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                     <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
                     <StackPanel Orientation="Horizontal">
                         <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log" Width="130" Margin="{StaticResource SmallRightMargin}" />

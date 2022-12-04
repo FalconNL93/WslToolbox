@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -16,7 +17,6 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IMessenger _messenger;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
-    private readonly UserOptions _userOptions = new();
 
     [ObservableProperty]
     private UpdateResultModel _updaterResult = new();
@@ -29,6 +29,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IOptions<UserOptions> userOptions,
+        IOptions<RunOptions> runOptions,
         IConfigurationService configurationService,
         UpdateService updateService,
         IMessenger messenger,
@@ -42,12 +43,14 @@ public partial class SettingsViewModel : ObservableRecipient
         _appNotificationService = appNotificationService;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
+        RunOptions = runOptions.Value;
 
         _updateServiceAvailable = !App.IsPackage();
         _isPackage = App.IsPackage();
     }
 
     public UserOptions UserOptions { get; }
+    public RunOptions RunOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 }
