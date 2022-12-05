@@ -12,7 +12,6 @@
                 <StackPanel>
                     <TextBlock Text="This developer page is for testing purposes" Margin="{StaticResource SmallBottomMargin}" />
                     <Button Command="{x:Bind ViewModel.TestWindow}" CommandParameter="{x:Bind}" Content="Test" MinWidth="{StaticResource ButtonMinWidth}" />
-
                 </StackPanel>
             </Grid>
         </ScrollViewer>

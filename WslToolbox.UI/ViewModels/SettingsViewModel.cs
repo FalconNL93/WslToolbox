@@ -64,12 +64,7 @@ public partial class SettingsViewModel : ObservableRecipient
         UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
         UpdaterResult = await _updateService.GetUpdateDetails();
 
-        if (!UpdaterResult.UpdateAvailable)
-        {
-            UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
-            //UpdateNotification.ShowNoUpdatesNotification();
-        }
-        else
+        if (UpdaterResult.UpdateAvailable)
         {
             UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
             var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
@@ -83,6 +78,10 @@ public partial class SettingsViewModel : ObservableRecipient
             {
                 ShellHelper.OpenUrl(UpdaterResult.DownloadUri);
             }
+        }
+        else
+        {
+            UpdateNotification.ShowNoUpdatesNotification();
         }
 
         await Task.Delay(TimeSpan.FromSeconds(10));
