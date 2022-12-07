@@ -21,11 +21,6 @@ public class AppNotificationService
 
     public void Initialize()
     {
-        if (App.IsPackage())
-        {
-            return;
-        }
-
         ToastNotificationManagerCompat.OnActivated += ToastOnActivated;
     }
 

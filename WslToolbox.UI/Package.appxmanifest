@@ -23,14 +23,13 @@
         <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
 
             <Extensions>
-                <!--Specify which CLSID to activate when toast clicked-->
                 <desktop:Extension Category="windows.toastNotificationActivation">
                     <desktop:ToastNotificationActivation ToastActivatorCLSID="073d660d-b4a0-4bcb-8cd2-059d110da92b"/>
                 </desktop:Extension>
 
                 <com:Extension Category="windows.comServer">
                     <com:ComServer>
-                        <com:ExeServer Executable="YourProject\YourProject.exe" Arguments="-ToastActivated" DisplayName="Toast activator">
+                        <com:ExeServer Executable="toolbox.exe" Arguments="-ToastActivated" DisplayName="Toast activator">
                             <com:Class Id="073d660d-b4a0-4bcb-8cd2-059d110da92b" DisplayName="Toast activator"/>
                         </com:ExeServer>
                     </com:ComServer>
@@ -45,6 +44,5 @@
     </Applications>
     <Capabilities>
         <Capability Name="internetClient"/>
-        <rescap:Capability Name="runFullTrust"/>
     </Capabilities>
 </Package>
