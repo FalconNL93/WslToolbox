@@ -25,7 +25,7 @@
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
         <EnableMsixTooling>true</EnableMsixTooling>
-        <PackageCertificateThumbprint>245707BCCEDED94B47E357D159AEA7F3CDF5ECAB</PackageCertificateThumbprint>
+        <PackageCertificateThumbprint>DEAB88F422FA0FBF43084A7A6FF62C5512EACC21</PackageCertificateThumbprint>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>

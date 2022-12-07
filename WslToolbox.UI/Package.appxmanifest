@@ -1,48 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package
-        xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-        xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
-        xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
-        xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-        xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-        IgnorableNamespaces="uap rescap mp com desktop">
-    <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FFA21981-581C-4EA2-BFF1-B728777C84B7" Version="0.6.0.0"/>
-    <Properties>
-        <DisplayName>WSL Toolbox Beta</DisplayName>
-        <PublisherDisplayName>FalconNL93</PublisherDisplayName>
-        <Logo>Images\StoreLogo.png</Logo>
-    </Properties>
-    <Dependencies>
-        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.19041.0" MaxVersionTested="10.0.19041.0"/>
-        <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.19041.0"/>
-    </Dependencies>
-    <Resources>
-        <Resource Language="x-generate"/>
-    </Resources>
-    <Applications>
-        <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
-
-            <Extensions>
-                <desktop:Extension Category="windows.toastNotificationActivation">
-                    <desktop:ToastNotificationActivation ToastActivatorCLSID="073d660d-b4a0-4bcb-8cd2-059d110da92b"/>
-                </desktop:Extension>
-
-                <com:Extension Category="windows.comServer">
-                    <com:ComServer>
-                        <com:ExeServer Executable="toolbox.exe" Arguments="-ToastActivated" DisplayName="Toast activator">
-                            <com:Class Id="073d660d-b4a0-4bcb-8cd2-059d110da92b" DisplayName="Toast activator"/>
-                        </com:ExeServer>
-                    </com:ComServer>
-                </com:Extension>
-            </Extensions>
-
-            <uap:VisualElements DisplayName="WSL Toolbox Beta" Description="WslToolbox.Msix" BackgroundColor="transparent" Square150x150Logo="Images\Square150x150Logo.png" Square44x44Logo="Images\Square44x44Logo.png">
-                <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
-                <uap:SplashScreen Image="Images\SplashScreen.png"/>
-            </uap:VisualElements>
-        </Application>
-    </Applications>
-    <Capabilities>
-        <Capability Name="internetClient"/>
-    </Capabilities>
+<Package xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10">
+  <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FFA21981-581C-4EA2-BFF1-B728777C84B7" Version="0.6.0.0" />
+  <Properties>
+    <DisplayName>WSL Toolbox Beta</DisplayName>
+    <PublisherDisplayName>FalconNL93</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.19041.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
+      <Extensions>
+        <desktop:Extension Category="windows.toastNotificationActivation">
+          <desktop:ToastNotificationActivation ToastActivatorCLSID="073d660d-b4a0-4bcb-8cd2-059d110da92b" />
+        </desktop:Extension>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="toolbox.exe" Arguments="-ToastActivated" DisplayName="Toast activator">
+              <com:Class Id="073d660d-b4a0-4bcb-8cd2-059d110da92b" DisplayName="Toast activator" />
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+      </Extensions>
+      <uap:VisualElements DisplayName="WSL Toolbox Beta" Description="WslToolbox.Msix" BackgroundColor="transparent" Square150x150Logo="Images\Square150x150Logo.png" Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png" />
+        <uap:SplashScreen Image="Images\SplashScreen.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient"/></Capabilities>
 </Package>
