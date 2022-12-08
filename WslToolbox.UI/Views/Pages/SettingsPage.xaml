@@ -40,8 +40,8 @@
                     <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                     <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                         <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
-
                         <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" Visibility="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource NotEmpty}, Mode=OneWay}" />
+                        <ProgressBar Width="130" IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="{x:Bind ViewModel.UpdaterResult.IsChecking, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                         <Grid Visibility="{x:Bind ViewModel.UpdaterResult.LastChecked, Converter={StaticResource WhenChecked}, Mode=OneWay}">
                             <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
                                              NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"

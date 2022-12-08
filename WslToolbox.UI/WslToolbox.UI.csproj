@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
-        <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+        <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
         <RootNamespace>WslToolbox.UI</RootNamespace>
         <ApplicationIcon>Assets/app.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -25,7 +25,7 @@
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
         <EnableMsixTooling>true</EnableMsixTooling>
-        <PackageCertificateThumbprint>DEAB88F422FA0FBF43084A7A6FF62C5512EACC21</PackageCertificateThumbprint>
+        <PackageCertificateThumbprint>89EB5F9C17F8BC9E78041D92918721A385F3747C</PackageCertificateThumbprint>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
@@ -36,8 +36,9 @@
         <AppxBundle>Never</AppxBundle>
         <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
         <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+        <AppxPackageDir>C:\Users\pvand\Dev\WslToolbox\app\msix</AppxPackageDir>
     </PropertyGroup>
-
+	<Target Name="_RemoveFrameworkReferences" />
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
     </ItemGroup>

@@ -61,7 +61,9 @@ public partial class SettingsViewModel : ObservableRecipient
     [RelayCommand]
     private async Task CheckForUpdates()
     {
-        UpdaterResult = new UpdateResultModel {UpdateStatus = "Checking for updates..."};
+        UpdaterResult = new UpdateResultModel {IsChecking = true};
+
+        await Task.Delay(TimeSpan.FromSeconds(2));
         UpdaterResult = await _updateService.GetUpdateDetails();
 
         if (UpdaterResult.UpdateAvailable)
@@ -83,8 +85,6 @@ public partial class SettingsViewModel : ObservableRecipient
         {
             UpdateNotification.ShowNoUpdatesNotification();
         }
-
-        await Task.Delay(TimeSpan.FromSeconds(10));
     }
 
     [RelayCommand]

@@ -38,7 +38,12 @@ public class UpdateService
             _logger.LogError(e, "Could not fetch app manifest from {BaseAddress}", _httpClient.BaseAddress);
 
             updateResultModel.UpdateStatus = "Could not check for updates";
+            updateResultModel.IsChecking = false;
             return updateResultModel;
+        }
+        finally
+        {
+            updateResultModel.IsChecking = false;
         }
 
         updateResultModel.LatestVersion = Version.Parse(manifest.ResponseVersion);

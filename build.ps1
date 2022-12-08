@@ -1,7 +1,8 @@
 Param(
     [ValidateSet(
         "x86", 
-        "x64"
+        "x64",
+        "clean"
     )]
     [Parameter(Mandatory = $true)]
     [String]$Platform,
@@ -22,10 +23,10 @@ foreach ($Parameter in $ParameterList) {
     Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
 }
 
+$AppDirectory = $PSScriptRoot;
 $RootProjectDirectory = "$(Get-Location)\WslToolbox.UI"
 $RootProject = "$RootProjectDirectory\WslToolbox.UI.csproj";
 $AppxManifest = "$RootProjectDirectory\Package.appxmanifest";
-$AppDirectory = $PSScriptRoot;
 $AppUuid = 'FalconNL93.WSLToolbox';
 $AppName = "WSL Toolbox"
 $AppDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
@@ -34,6 +35,20 @@ $AppVersion = '0.6.0';
 $AppUrl = "https://github.com/FalconNL93/wsltoolbox";
 $AppOwner = "FalconNL93"
 $SetupOutputFile = "wsltoolbox-0.6-$Platform";
+
+if($Platform = "clean")
+{
+    dotnet clean
+    Remove-Item "$AppDirectory\app" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.Core\bin","$AppDirectory\WslToolbox.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.Msix\bin","$AppDirectory\WslToolbox.Msix\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.UI\bin","$AppDirectory\WslToolbox.UI\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.UI.Core\bin","$AppDirectory\WslToolbox.UI.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+
+    exit 0;
+}
+
+
 
 if($WithMsix)
 {

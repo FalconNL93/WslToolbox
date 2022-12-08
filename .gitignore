@@ -368,3 +368,6 @@ FodyWeavers.xsd
 # VSCode
 .vscode/
 *.code-workspace
+
+# Custom
+app/
