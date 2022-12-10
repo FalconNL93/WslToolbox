@@ -1,30 +1,27 @@
+# Parameters
 Param(
     [ValidateSet(
-        "x86", 
-        "x64",
-        "clean"
+        "build",
+        "clean",
+        "inno"
     )]
-    [Parameter(Mandatory = $true)]
-    [String]$Platform,
+    [Parameter(Mandatory = $false)]
+    [string]$Action = "x64",
 
     [Parameter(Mandatory = $false)]
-    [Switch]$WithSetup,
-
-    [Parameter(Mandatory = $false)]
-    [Switch]$WithMsix
+    [Switch]$Inno
 )
+
+function Header {
+    Write-Output "`n===================================="
+}
 
 # For local building
 $ErrorActionPreference = "Stop"
 
-$CommandName = $PSCmdlet.MyInvocation.InvocationName;
-$ParameterList = (Get-Command -Name $CommandName).Parameters;
-foreach ($Parameter in $ParameterList) {
-    Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
-}
-
+$Platform = "x64";
 $AppDirectory = $PSScriptRoot;
-$RootProjectDirectory = "$(Get-Location)\WslToolbox.UI"
+$RootProjectDirectory = "$(Get-Location)\WslToolbox.UI";
 $RootProject = "$RootProjectDirectory\WslToolbox.UI.csproj";
 $AppxManifest = "$RootProjectDirectory\Package.appxmanifest";
 $AppUuid = 'FalconNL93.WSLToolbox';
@@ -36,28 +33,20 @@ $AppUrl = "https://github.com/FalconNL93/wsltoolbox";
 $AppOwner = "FalconNL93"
 $SetupOutputFile = "wsltoolbox-0.6-$Platform";
 
-if($Platform = "clean")
-{
-    dotnet clean
-    Remove-Item "$AppDirectory\app" -Recurse -Verbose -ErrorAction SilentlyContinue
-    Remove-Item "$AppDirectory\WslToolbox.Core\bin","$AppDirectory\WslToolbox.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
-    Remove-Item "$AppDirectory\WslToolbox.Msix\bin","$AppDirectory\WslToolbox.Msix\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
-    Remove-Item "$AppDirectory\WslToolbox.UI\bin","$AppDirectory\WslToolbox.UI\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
-    Remove-Item "$AppDirectory\WslToolbox.UI.Core\bin","$AppDirectory\WslToolbox.UI.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
-
-    exit 0;
+$CommandName = $PSCmdlet.MyInvocation.InvocationName;
+$ParameterList = (Get-Command -Name $CommandName).Parameters;
+foreach ($Parameter in $ParameterList) {
+    Get-Variable -Name $Parameter.Values.Name -ErrorAction SilentlyContinue;
 }
+Header
 
+function Publish {
+    [xml]$manifest= get-content "$AppxManifest";
+    $manifest.Package.Identity.Version = "$AppVersion.0";
+    $manifest.save("$AppxManifest");
 
-
-if($WithMsix)
-{
-    [xml]$manifest= get-content "$AppxManifest"
-    $manifest.Package.Identity.Version = "$AppVersion.0"
-    $manifest.save("$AppxManifest")
-}
-
-dotnet publish "$RootProject" `
+    dotnet publish "$RootProject" `
+    --nologo `
     -p:PublishProfile="$Platform" `
     -p:Version="$AppVersion" `
     -p:FileVersion="$AppVersion" `
@@ -66,15 +55,20 @@ dotnet publish "$RootProject" `
     -p:AppxPackageDir="$AppDirectory\app\release\$Platform-msix\" `
     --self-contained `
     -r win-x64 `
-    --nologo `
     -o "$AppDirectory\app\release\$Platform"
-if (!$?) { exit 1; }
-
-if (!$WithSetup) {
-    exit 0;
 }
 
-& .\WslToolbox.Setup\build.ps1 `
+function CleanSolution {
+    dotnet clean
+    Remove-Item "$AppDirectory\app" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.Core\bin","$AppDirectory\WslToolbox.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.Msix\bin","$AppDirectory\WslToolbox.Msix\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.UI\bin","$AppDirectory\WslToolbox.UI\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$AppDirectory\WslToolbox.UI.Core\bin","$AppDirectory\WslToolbox.UI.Core\obj" -Recurse -Verbose -ErrorAction SilentlyContinue
+}
+
+function InnoSetup {
+    .\WslToolbox.Setup\build.ps1 `
     -AppDirectory "$AppDirectory\app\release\$Platform" `
     -AppUuid "$AppUuid" `
     -AppName "$AppName" `
@@ -84,5 +78,33 @@ if (!$WithSetup) {
     -AppUrl "$AppUrl" `
     -AppOwner "$AppOwner" `
     -SetupOutputFile "$SetupOutputFile"
+}
 
-if (!$?) { exit 1; }
+Switch ($Action)
+{
+    "clean" 
+    { 
+        CleanSolution; 
+        break; 
+    }
+    "inno"
+    {
+        InnoSetup;
+        break;
+    }
+    default 
+    { 
+        Publish; 
+
+        if($Inno)
+        {
+            InnoSetup;
+        }
+        
+        Header;
+        Write-Output "Output Directory: $AppDirectory\app\release\$Platform\";
+        Write-Output "AppX Directory: $AppDirectory\app\release\$Platform-msix\";
+        
+        break;
+    }
+}
