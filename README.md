@@ -1,68 +1,45 @@
 # WSL Toolbox
 
-WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.
+WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface for free.
 
-WSL Toolbox is currently in development. Some features may not work as expected.
+## Beta
 
-## Note
+WSL Toolbox is currently in beta, some functionality may not work like expected or are missing/yet to be implemented.
 
-I am currently developing a new GUI for WSL Toolbox, this GUI will be maintained in the "new-gui" branch and will eventually replace the current GUI.
+Please report any bugs you encounter or create a pull request if you would like to contribute. Applies for feature requests too.
 
-## Install
-
-Download WSL Toolbox via the [releases page](https://github.com/FalconNL93/WslToolbox/releases). Either choose the
-ZIP-file or the setup file.
-
-## Build
-
-| Branch   |                                                                                                      Build Status                                                                                                       |
-|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| Beta     | [![Build Status](https://dev.azure.com/FalconNL93/WSL%20Toolbox/_apis/build/status/FalconNL93.WslToolbox?branchName=beta)](https://dev.azure.com/FalconNL93/WSL%20Toolbox/_build/latest?definitionId=1&branchName=beta) |
+The UI is being rewritten to WinUI3 starting from version 0.6, the old UI (version 0.5.x) is still available from the releases page.
 
 ## Features
 
-- Grid overview of installed distributions
-- Distribution control
-    - Start / Stop / Restart
-    - Install
-    - Remove
-    - Export
-    - Import
-    - Rename
-    - Convert WSL1 to WSL2
+* Distribution overview
+* Distribution control (start, stop and restart)
+* Install new distributions
+* Remove or edit distributions
+* Import and export distributions
+* Light/Dark mode
+* Version check
 
-- WSL Service control
-    - Start / Stop / Restart
-    - Update kernel
+Configuration for WSL Toolbox is saved to a JSON file.
 
-- Interface features
-    - Light / Dark mode
-    - Run application on startup
-    - System tray
-    - Minimize to system tray
-    - Minimize to tray on startup
-    - Config customizable through GUI and JSON
+## Install
 
-## Shortcuts
-
-| Shortcut |        Action         |
-|:---------|:---------------------:|
-| F5       | Refresh distributions |
-| CTRL + , |     Open settings     |
-
-## Requirements
-
-- Windows 10 build 19041 or later
-- Windows 11
-- [.NET 5 Runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime)
+* Download from [releases](https://github.com/FalconNL93/WslToolbox/releases)
+* [Windows Store](https://www.microsoft.com/store/productId/9NDGGX7M2H0V)
+* Chocolately (soon)
+* Winget (soon)
 
 ## Screenshots
+![Main window](/assets/images/scr1.png?raw=true "Main Window")
+![Add distribution](/assets/images/scr3.png?raw=true "Add distribution")
+![Settings window](/assets/images/scr2.png?raw=true "Settings Window")
 
-![Main Window](./docs/images/screenshots/mw1.png?raw=true "Main Window")
-![Main Window 2](./docs/images/screenshots/mw2.png?raw=true "Main Window 2")
-![Main Window 3](./docs/images/screenshots/mw3.png?raw=true "Main Window 3")
-![Main Window 4](./docs/images/screenshots/mw4.png?raw=true "Main Window 4")
-![Settings Window 4](./docs/images/screenshots/sw1.png?raw=true "Settings Window")
+## Requirements
+* [Windows Subsystem for Linux](https://www.microsoft.com/store/productId/9P9TQF7MRM4R)
+* [.NET 6 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+* Windows 11 (x64) **OR** Windows 10 (x64) version 1903 or higher.
+
+ARM64 is not tested.
 
 ## Special thanks
 
@@ -70,12 +47,3 @@ ZIP-file or the setup file.
 
 I'm using [Jetbrains](https://www.jetbrains.com/) [Rider](https://www.jetbrains.com/rider/) to learn and develop C#,
 they provided me with an open source license.
-
-## Dependencies
-
-**WSL Toolbox is using the following packages:**
-
-- ModernWPF UI Library - https://github.com/Kinnara/ModernWpf
-- Command Line Parser Library - https://github.com/commandlineparser/commandline
-- AutoUpdater.NET - https://github.com/ravibpatel/AutoUpdater.NET
-- Hardcodet NotifyIcon for WPF - https://github.com/hardcodet/wpf-notifyicon
