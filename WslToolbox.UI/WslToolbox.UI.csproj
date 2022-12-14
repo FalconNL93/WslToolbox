@@ -6,7 +6,7 @@
         <RootNamespace>WslToolbox.UI</RootNamespace>
         <ApplicationIcon>Assets/app.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
-        <Platforms>x86;x64;arm64</Platforms>
+        <Platforms>x64;arm64;x86</Platforms>
         <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
         <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -24,7 +24,6 @@
         <AssemblyVersion>0.6.0</AssemblyVersion>
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
-        <EnableMsixTooling>true</EnableMsixTooling>
         <PackageCertificateThumbprint>89EB5F9C17F8BC9E78041D92918721A385F3747C</PackageCertificateThumbprint>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
@@ -36,7 +35,9 @@
         <AppxBundle>Never</AppxBundle>
         <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
         <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+        <EnableMsixTooling>true</EnableMsixTooling>
         <AppxPackageDir>C:\Users\pvand\Dev\WslToolbox\app\msix</AppxPackageDir>
+        <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 	<Target Name="_RemoveFrameworkReferences" />
     <ItemGroup>
@@ -190,10 +191,6 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <DebugType>none</DebugType>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
         <DebugType>none</DebugType>
     </PropertyGroup>
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10">
-  <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FFA21981-581C-4EA2-BFF1-B728777C84B7" Version="0.6.0.0" />
+  <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FFA21981-581C-4EA2-BFF1-B728777C84B7" Version="0.6.0.1" />
   <Properties>
     <DisplayName>WSL Toolbox Beta</DisplayName>
     <PublisherDisplayName>FalconNL93</PublisherDisplayName>

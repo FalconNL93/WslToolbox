@@ -20,6 +20,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IMessenger _messenger;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
+    public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
 
     [ObservableProperty]
     private ElementTheme _elementTheme;

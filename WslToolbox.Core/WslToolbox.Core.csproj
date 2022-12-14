@@ -6,7 +6,7 @@
         <FileVersion>0.6.0</FileVersion>
         <IsPackable>true</IsPackable>
         <TargetFramework>net6.0-windows</TargetFramework>
-        <Platforms>x86;x64;arm64</Platforms>
+        <Platforms>x64;arm64;x86</Platforms>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>WSL Toolbox Core</Title>
         <Authors>FalconNL93</Authors>
@@ -27,10 +27,6 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-        <DebugType>none</DebugType>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
         <DebugType>none</DebugType>
     </PropertyGroup>
 

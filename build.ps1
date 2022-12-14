@@ -9,6 +9,9 @@ Param(
     [string]$Action = "x64",
 
     [Parameter(Mandatory = $false)]
+    [Switch]$WithMsix,
+
+    [Parameter(Mandatory = $false)]
     [Switch]$Inno
 )
 
@@ -28,7 +31,7 @@ $AppUuid = 'FalconNL93.WSLToolbox';
 $AppName = "WSL Toolbox"
 $AppDescription = "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
 $AppExecutable = "toolbox.exe";
-$AppVersion = '0.6.0';
+$AppVersion = '0.6.0.1';
 $AppUrl = "https://github.com/FalconNL93/wsltoolbox";
 $AppOwner = "FalconNL93"
 $SetupOutputFile = "wsltoolbox-0.6-$Platform";
@@ -41,9 +44,12 @@ foreach ($Parameter in $ParameterList) {
 Header
 
 function Publish {
-    [xml]$manifest= get-content "$AppxManifest";
-    $manifest.Package.Identity.Version = "$AppVersion.0";
-    $manifest.save("$AppxManifest");
+    if($WithMsix)
+    {
+        [xml]$manifest= get-content "$AppxManifest";
+        $manifest.Package.Identity.Version = "$AppVersion";
+        $manifest.save("$AppxManifest");
+    }
 
     dotnet publish "$RootProject" `
     --nologo `
