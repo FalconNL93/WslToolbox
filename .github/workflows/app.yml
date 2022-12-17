@@ -40,7 +40,7 @@ jobs:
       - name: Add certificate
         run: |
           $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
-          [IO.File]::WriteAllBytes("cert.pfx", $pfxEncoded)
+          [IO.File]::WriteAllBytes("WslToolbox.UI\cert.pfx", $pfxEncoded)
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
