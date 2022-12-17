@@ -9,13 +9,12 @@ env:
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: '0.6.${{ github.run_number }}'
+  AppVersion: '0.6.0.${{ github.run_number }}'
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
   SetupOutputFile: "wsltoolbox-setup"
 
 jobs:
-  
   build:
     strategy:
       matrix:
@@ -31,31 +30,45 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install .NET Core
-        uses: actions/setup-dotnet@v2
+      - name: Modify AppX version
+        shell: pwsh
+        run: |
+          [xml]$manifest= get-content "WslToolbox.UI\Package.appxmanifest";
+          $manifest.Package.Identity.Version = "${{ env.AppVersion }}";
+          $manifest.save("WslToolbox.UI\Package.appxmanifest");
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x
 
       - name: Publish
         run: |
           dotnet publish "WslToolbox.UI\WslToolbox.UI.csproj" `
+          --nologo `
           -p:PublishProfile="${{ env.Platform }}" `
           -p:Version="${{ env.AppVersion }}" `
           -p:FileVersion="${{ env.AppVersion }}" `
           -p:AssemblyVersion="${{ env.AppVersion }}" `
-          -p:PublishTrimmed=True `
-          -p:TrimMode=CopyUsed `
+          -p:GenerateAppxPackageOnBuild=true `
+          -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" 
           --self-contained `
           -r win-${{ env.Platform }} `
-          --nologo `
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+      - name: Upload binary artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: release
-          path: ${{ github.workspace }}\app\release\${{ env.Platform }}
+          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
           retention-days: 1
+          path: ${{ github.workspace }}\app\release\${{ env.Platform }}
+
+      - name: Upload MSIX artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_msix
+          retention-days: 1
+          path: ${{ github.workspace }}\app\release\${{ env.Platform }}-msix\WslToolbox.UI_${{ env.AppVersion }}_${{ env.Platform }}_Test
   
   setup:
     env:
@@ -64,12 +77,12 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.5.0
+        uses: actions/checkout@v3
 
       - name: Download build data
         uses: actions/download-artifact@v3
         with:
-          name: release
+          name: bin
           path: ${{ github.workspace }}\app
 
       - name: InnoSetup
@@ -86,9 +99,9 @@ jobs:
           -SetupOutputFile "${{ env.SetupOutputFile }}-${{ env.Platform }}-setup"
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.SetupOutputFile }}-${{ env.Platform }}-setup
+          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup
           path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-${{ env.Platform }}-setup.exe
           retention-days: 1
 
