@@ -13,7 +13,6 @@ env:
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
   SetupOutputFile: "wsltoolbox-setup"
-  SigningCertificate: "${{ github.workspace }}\appcert.pfx"
 
 jobs:
   build:
@@ -41,7 +40,7 @@ jobs:
       - name: Add certificate
         run: |
           $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
-          [IO.File]::WriteAllBytes("${{ env.SigningCertificate }}", $pfxEncoded)
+          [IO.File]::WriteAllBytes("cert.pfx", $pfxEncoded)
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
@@ -58,7 +57,7 @@ jobs:
           -p:AssemblyVersion="${{ env.AppVersion }}" `
           -p:GenerateAppxPackageOnBuild=true `
           -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" `
-          -p:PackageCertificateKeyFile="${{ env.SigningCertificate }}" `
+          -p:PackageCertificateKeyFile="cert.pfx" `
           -p:PackageCertificatePassword="${{ secrets.APPX_PASS }}" `
           --self-contained `
           -r win-${{ env.Platform }} `
