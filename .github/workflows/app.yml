@@ -40,7 +40,7 @@ jobs:
       - name: Add certificate
         run: |
           $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
-          [IO.File]::WriteAllBytes("WslToolbox.UI\cert.pfx", $pfxEncoded)
+          [IO.File]::WriteAllBytes("${{ github.workspace }}\cert.pfx", $pfxEncoded)
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
@@ -57,7 +57,7 @@ jobs:
           -p:AssemblyVersion="${{ env.AppVersion }}" `
           -p:GenerateAppxPackageOnBuild=true `
           -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" `
-          -p:PackageCertificateKeyFile="cert.pfx" `
+          -p:PackageCertificateKeyFile="${{ github.workspace }}\cert.pfx" `
           -p:PackageCertificatePassword="${{ secrets.APPX_PASS }}" `
           --self-contained `
           -r win-${{ env.Platform }} `
