@@ -24,7 +24,7 @@
         <AssemblyVersion>0.6.0</AssemblyVersion>
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
-        <PackageCertificateThumbprint>89EB5F9C17F8BC9E78041D92918721A385F3747C</PackageCertificateThumbprint>
+        <PackageCertificateThumbprint>DB384AB3941933E2C94E42D8C2655268370F3D08</PackageCertificateThumbprint>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
