@@ -89,7 +89,7 @@ jobs:
       - name: Download build data
         uses: actions/download-artifact@v3
         with:
-          name: bin
+          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
           path: ${{ github.workspace }}\app
 
       - name: InnoSetup
