@@ -56,9 +56,9 @@ jobs:
           -p:FileVersion="${{ env.AppVersion }}" `
           -p:AssemblyVersion="${{ env.AppVersion }}" `
           -p:GenerateAppxPackageOnBuild=true `
-          -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" `
+          -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix\" `
+          -p:PackageCertificateThumbprint="" `
           -p:PackageCertificateKeyFile="${{ github.workspace }}\cert.pfx" `
-          -p:PackageCertificatePassword="${{ secrets.APPX_PASS }}" `
           --self-contained `
           -r win-${{ env.Platform }} `
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
@@ -89,7 +89,7 @@ jobs:
       - name: Download build data
         uses: actions/download-artifact@v3
         with:
-          name: bin
+          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
           path: ${{ github.workspace }}\app
 
       - name: InnoSetup
