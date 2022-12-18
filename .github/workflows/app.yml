@@ -58,7 +58,7 @@ jobs:
           -p:GenerateAppxPackageOnBuild=true `
           -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" `
           -p:PackageCertificateKeyFile="${{ github.workspace }}\cert.pfx" `
-          -p:PackageCertificatePassword="${{ secrets.APPX_PASS }}" `
+          -p:PackageCertificatePassword='${{ secrets.APPX_PASS }}' `
           --self-contained `
           -r win-${{ env.Platform }} `
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
