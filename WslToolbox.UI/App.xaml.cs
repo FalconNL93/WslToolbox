@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.AppCenter;
@@ -13,6 +14,7 @@ using Microsoft.UI.Xaml;
 using Serilog;
 using Serilog.Events;
 using WslToolbox.UI.Activation;
+using WslToolbox.UI.Attributes;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
@@ -87,16 +89,8 @@ public partial class App : Application
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
 
-        var runConfiguration = GetService<IOptions<UserOptions>>().Value;
-        if (runConfiguration.Analytics)
-        {
-            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
-            if (secret != null)
-            {
-                ConfigureAppCenter(secret);
-            }
-        }
 
+        ConfigureAppCenter();
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -118,10 +112,32 @@ public partial class App : Application
         }
     }
 
-    private static void ConfigureAppCenter(string secret)
+    private static void ConfigureAppCenter()
     {
         try
         {
+            var runConfiguration = GetService<IOptions<UserOptions>>().Value;
+            if (runConfiguration.Analytics)
+            {
+                return;
+            }
+
+            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly != null && entryAssembly.GetCustomAttribute<AppCenterAttribute>() != null)
+            {
+                var secretKey = entryAssembly.GetCustomAttribute<AppCenterAttribute>()?.AppCenterKey;
+                if (!string.IsNullOrEmpty(secretKey))
+                {
+                    secret = secretKey;
+                }
+            }
+
+            if (secret == null)
+            {
+                return;
+            }
+
             AppCenter.Start(secret,
                 typeof(Analytics),
                 typeof(Crashes)
