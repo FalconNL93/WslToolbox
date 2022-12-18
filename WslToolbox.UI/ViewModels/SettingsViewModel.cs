@@ -36,7 +36,6 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IOptions<UserOptions> userOptions,
-        IOptions<RunOptions> runOptions,
         IConfigurationService configurationService,
         UpdateService updateService,
         IMessenger messenger
@@ -48,14 +47,12 @@ public partial class SettingsViewModel : ObservableRecipient
         _messenger = messenger;
         _elementTheme = _themeSelectorService.Theme;
         UserOptions = userOptions.Value;
-        RunOptions = runOptions.Value;
 
         _updateServiceAvailable = !App.IsPackage();
         _isPackage = App.IsPackage();
     }
 
     public UserOptions UserOptions { get; }
-    public RunOptions RunOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 

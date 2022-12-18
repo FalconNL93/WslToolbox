@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using Serilog;
 using Serilog.Events;
@@ -35,8 +36,6 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        var withAppCenter = AppCenterInitialized();
-
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(Toolbox.LogFile, LogEventLevel.Debug)
             .CreateLogger();
@@ -85,12 +84,18 @@ public partial class App : Application
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
 
                 // Configuration
-                services.Configure<RunOptions>(options =>
-                {
-                    options.WithAppCenter = withAppCenter;
-                });
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
             }).Build();
+
+        var runConfiguration = GetService<IOptions<UserOptions>>().Value;
+        if (runConfiguration.Analytics)
+        {
+            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
+            if (secret != null)
+            {
+                ConfigureAppCenter(secret);
+            }
+        }
 
         GetService<AppNotificationService>().Initialize();
 
@@ -113,17 +118,18 @@ public partial class App : Application
         }
     }
 
-    private static bool AppCenterInitialized()
+    private static void ConfigureAppCenter(string secret)
     {
-        var appCenterKey = Environment.GetEnvironmentVariable("APPCENTER_KEY");
-        if (appCenterKey == null)
+        try
         {
-            return false;
+            AppCenter.Start(secret,
+                typeof(Analytics),
+                typeof(Crashes)
+            );
         }
-
-        AppCenter.Start(appCenterKey, typeof(Analytics), typeof(Crashes));
-
-        return true;
+        catch (Exception e)
+        {
+        }
     }
 
     public static T GetService<T>()
