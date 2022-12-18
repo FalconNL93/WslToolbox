@@ -56,7 +56,7 @@ jobs:
           -p:FileVersion="${{ env.AppVersion }}" `
           -p:AssemblyVersion="${{ env.AppVersion }}" `
           -p:GenerateAppxPackageOnBuild=true `
-          -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix" `
+          -p:AppxPackageDir="${{ github.workspace }}\app\release\${{ env.Platform }}-msix\" `
           -p:PackageCertificateThumbprint="" `
           -p:PackageCertificateKeyFile="${{ github.workspace }}\cert.pfx" `
           --self-contained `
