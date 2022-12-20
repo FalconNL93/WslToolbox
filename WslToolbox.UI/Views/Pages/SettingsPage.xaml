@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:c="using:WslToolbox.UI.Converters"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
@@ -25,13 +26,15 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" Header="Hide docker distributions" />
-                </StackPanel>
+                <labs:SettingsCard Header="Hide docker distributions">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
+                </labs:SettingsCard>
+
                 <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock x:Uid="Settings_Theme" Margin="{StaticResource SmallBottomMargin}" />
-                    <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" SelectionChanged="OnThemeSelectionChanged" />
+                    <labs:SettingsCard Header="Theme">
+                        <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" SelectionChanged="OnThemeSelectionChanged" />
+                    </labs:SettingsCard>
                 </StackPanel>
 
                 <TextBlock Text="Info" Style="{ThemeResource SubtitleTextBlockStyle}" />
