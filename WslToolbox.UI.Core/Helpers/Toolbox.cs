@@ -13,4 +13,5 @@ public static class Toolbox
 
     public static readonly string UserConfiguration = @$"{AppData}\config.json";
     public static readonly string LogFile = @$"{AppData}\log.txt";
+    public static readonly string StoreUrl = "ms-windows-store://pdp/?productid=9NDGGX7M2H0V";
 }

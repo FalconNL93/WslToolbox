@@ -35,7 +35,6 @@
         <AppxBundle>Never</AppxBundle>
         <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
         <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
-        <EnableMsixTooling>true</EnableMsixTooling>
         <AppxPackageDir>C:\Users\pvand\Dev\WslToolbox\app\msix</AppxPackageDir>
         <Configurations>Debug;Release</Configurations>
         <PackageCertificateKeyFile>WslToolbox.UI_TemporaryKey.pfx</PackageCertificateKeyFile>
@@ -53,7 +52,7 @@
     
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-        <PackageReference Include="CommunityToolkit.Common" Version="8.1.0-preview1" />
+        <PackageReference Include="CommunityToolkit.Common" Version="8.1.0-preview2" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0-preview1" />
         <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
         <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />

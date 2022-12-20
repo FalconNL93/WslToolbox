@@ -84,6 +84,12 @@ public partial class SettingsViewModel : ObservableRecipient
             UpdateNotification.ShowNoUpdatesNotification();
         }
     }
+    
+    [RelayCommand]
+    private async Task OpenAppInStore()
+    {
+        ShellHelper.OpenFile(Toolbox.StoreUrl);
+    }
 
     [RelayCommand]
     private async Task ThemeChange(ElementTheme param)

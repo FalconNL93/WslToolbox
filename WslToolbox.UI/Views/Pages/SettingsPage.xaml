@@ -37,7 +37,11 @@
                 <TextBlock Text="Info" Style="{ThemeResource SubtitleTextBlockStyle}" />
                 <TextBlock Text="{x:Bind ViewModel.AppDescription}" />
                 <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
+                    <StackPanel Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                        <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" />
+                        <Button Content="Open app in store" Command="{x:Bind ViewModel.OpenAppInStoreCommand}" Margin="{StaticResource SmallBottomRightMargin}" />
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                         <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
                         <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" Visibility="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource NotEmpty}, Mode=OneWay}" />
