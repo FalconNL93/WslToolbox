@@ -9,9 +9,9 @@ public static class Toolbox
 
     public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version;
-    public static readonly string AppData = @$"{AppDirectory}\data";
+    public static readonly string AppData = Path.Combine(AppDirectory, "data");
 
-    public static readonly string UserConfiguration = @$"{AppData}\config.json";
-    public static readonly string LogFile = @$"{AppData}\log.txt";
+    public static readonly string UserConfiguration = Path.Combine(AppData, "config.json");
+    public static readonly string LogFile = Path.Combine(AppData, "log.txt");
     public static readonly string StoreUrl = "ms-windows-store://pdp/?productid=9NDGGX7M2H0V";
 }

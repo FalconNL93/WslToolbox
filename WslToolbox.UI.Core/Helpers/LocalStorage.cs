@@ -13,35 +13,35 @@ public static class LocalStorage
             Directory.CreateDirectory(Toolbox.AppData);
         }
 
-        File.WriteAllText($@"{Toolbox.AppData}\{file}", content);
+        File.WriteAllText(Path.Combine(Toolbox.AppData, file), content);
     }
 
     public static T ReadStorage<T>(string file) where T : class
     {
-        if (!Directory.Exists(Toolbox.AppData) || !File.Exists($@"{Toolbox.AppData}\{file}"))
+        if (!Directory.Exists(Toolbox.AppData) || !File.Exists(Path.Combine(Toolbox.AppData, file)))
         {
             throw new FileNotFoundException();
         }
 
-        var contents = File.ReadAllText($@"{Toolbox.AppData}\{file}");
+        var contents = File.ReadAllText(Path.Combine(Toolbox.AppData, file));
         return JsonConvert.DeserializeObject<T>(contents);
     }
 
     public static T ReadStorageOrDefault<T>(string file) where T : class
     {
-        if (!Directory.Exists(Toolbox.AppData) || !File.Exists($@"{Toolbox.AppData}\{file}"))
+        if (!Directory.Exists(Toolbox.AppData) || !File.Exists(Path.Combine(Toolbox.AppData, file)))
         {
             return null;
         }
 
-        var contents = File.ReadAllText($@"{Toolbox.AppData}\{file}");
+        var contents = File.ReadAllText(Path.Combine(Toolbox.AppData, file));
         return JsonConvert.DeserializeObject<T>(contents);
     }
 
     public static string ReadStorage(string file)
     {
-        return !Directory.Exists(Toolbox.AppData) || !File.Exists($@"{Toolbox.AppData}\{file}")
+        return !Directory.Exists(Toolbox.AppData) || !File.Exists(Path.Combine(Toolbox.AppData, file))
             ? null
-            : File.ReadAllText($@"{Toolbox.AppData}\{file}");
+            : File.ReadAllText(Path.Combine(Toolbox.AppData, file));
     }
 }
