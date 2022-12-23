@@ -4,14 +4,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid VerticalAlignment="Top">
-                <StackPanel>
-                    <TextBlock Text="This developer page is for testing purposes" Margin="{StaticResource SmallBottomMargin}" />
-                    <Button Command="{x:Bind ViewModel.TestWindow}" CommandParameter="{x:Bind}" Content="Test" MinWidth="{StaticResource ButtonMinWidth}" />
+                <StackPanel Spacing="{StaticResource DefaultSpacing}">
+                    <labs:SettingsCard Description="Fake updater result" Header="Update result">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE896;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <ComboBox Name="FakeUpdateResultsSelector" ItemsSource="{x:Bind ViewModel.FakeUpdateResults}" SelectedValuePath="{x:Bind ViewModel.DevOptions.Value.FakeUpdateResult, Mode=OneWay}"
+                                  SelectionChanged="OnFakeUpdateSelectionChanged" />
+
+                    </labs:SettingsCard>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

@@ -25,7 +25,7 @@
             <InfoBar Name="SettingsInfoBar" />
         </Grid>
         <ScrollViewer Grid.Row="1">
-            <StackPanel Spacing="4">
+            <StackPanel Spacing="{StaticResource DefaultSpacing}">
                 <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
                 <labs:SettingsCard Description="Show distributions created by Docker" Header="Docker distributions">
                     <labs:SettingsCard.HeaderIcon>
@@ -46,9 +46,13 @@
                 <InfoBar Name="UpdateInfoBar" />
                 <labs:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
                     <labs:SettingsCard.HeaderIcon>
-                        <FontIcon Glyph="&#xE799;" />
+                        <FontIcon Glyph="&#xE896;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}">
+                        <Button Content="Download update" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}"
+                                Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
+                        <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
+                    </StackPanel>
                 </labs:SettingsCard>
 
                 <labs:SettingsExpander Description="Enable or disable notifications" Header="Notifications">

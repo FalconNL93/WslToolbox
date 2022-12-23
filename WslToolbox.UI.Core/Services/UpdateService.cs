@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Models.Responses;
 
@@ -10,17 +11,20 @@ public class UpdateService
     private const string ManifestFile = "wsltoolbox/manifest.json";
     private readonly HttpClient _httpClient;
     private readonly ILogger<UpdateService> _logger;
+    private readonly IOptions<DevOptions> _devOptions;
 
-    public UpdateService(HttpClient httpClient, ILogger<UpdateService> logger)
+    public UpdateService(HttpClient httpClient, ILogger<UpdateService> logger, IOptions<DevOptions> devOptions)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _devOptions = devOptions;
     }
 
     public async Task<UpdateResultModel> GetUpdateDetails()
     {
         var updateResultModel = new UpdateResultModel();
         UpdateManifestResponse manifest;
+        var enableFaker = _devOptions.Value.FakeUpdateResult != FakeUpdateResult.Off;
 
         try
         {
@@ -48,6 +52,12 @@ public class UpdateService
 
         updateResultModel.LatestVersion = Version.Parse(manifest.ResponseVersion);
         updateResultModel.LastChecked = DateTime.Now;
+
+        if (enableFaker)
+        {
+            updateResultModel.LatestVersion = _devOptions.Value.FakeUpdateResult == FakeUpdateResult.NoUpdate ? new Version("0.0.0") : new Version("9.99.99");
+        }
+        
         updateResultModel.UpdateStatus = updateResultModel.UpdateAvailable ? string.Empty : "No update available";
 
         if (Uri.IsWellFormedUriString(manifest.DownloadUrl, UriKind.Absolute))

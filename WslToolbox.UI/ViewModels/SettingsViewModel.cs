@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
@@ -57,6 +58,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public UserOptions UserOptions { get; }
     public NotificationOptions NotificationOptions { get; }
+    public OpenUrlCommand OpenUrlCommand { get; } = new();
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 

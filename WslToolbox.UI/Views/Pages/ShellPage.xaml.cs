@@ -27,9 +27,9 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = App.Name;
 
-        WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
-        WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
-        WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
+        // WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
+        // WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
+        // WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
     }
 
     public ShellViewModel ViewModel { get; }
