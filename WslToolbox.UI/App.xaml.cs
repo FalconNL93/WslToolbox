@@ -87,6 +87,7 @@ public partial class App : Application
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
+                services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
             }).Build();
 
 

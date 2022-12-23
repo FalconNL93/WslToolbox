@@ -36,6 +36,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IOptions<UserOptions> userOptions,
+        IOptions<NotificationOptions> notificationOptions,
         IConfigurationService configurationService,
         UpdateService updateService,
         IMessenger messenger
@@ -46,6 +47,8 @@ public partial class SettingsViewModel : ObservableRecipient
         _updateService = updateService;
         _messenger = messenger;
         _elementTheme = _themeSelectorService.Theme;
+        
+        NotificationOptions = notificationOptions.Value;
         UserOptions = userOptions.Value;
 
         _updateServiceAvailable = !App.IsPackage();
@@ -53,6 +56,7 @@ public partial class SettingsViewModel : ObservableRecipient
     }
 
     public UserOptions UserOptions { get; }
+    public NotificationOptions NotificationOptions { get; }
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 
@@ -66,6 +70,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
         if (UpdaterResult.UpdateAvailable)
         {
+            _messenger.ShowUpdateInfoBar("Update available", "A new update is available", InfoBarSeverity.Success);
             UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
             var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
             {
@@ -81,10 +86,11 @@ public partial class SettingsViewModel : ObservableRecipient
         }
         else
         {
+            _messenger.ShowUpdateInfoBar("No new updates", "You are running the latest version", InfoBarSeverity.Success);
             UpdateNotification.ShowNoUpdatesNotification();
         }
     }
-    
+
     [RelayCommand]
     private async Task OpenAppInStore()
     {

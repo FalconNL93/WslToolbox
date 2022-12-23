@@ -14,6 +14,7 @@ public sealed partial class SettingsPage : Page
         InitializeComponent();
 
         WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(this, OnShowInfoBar);
+        WeakReferenceMessenger.Default.Register<UpdateInfoBarChangedMessage>(this, OnShowUpdateInfoBar);
     }
 
     public SettingsViewModel ViewModel { get; }
@@ -27,6 +28,17 @@ public sealed partial class SettingsPage : Page
         SettingsInfoBar.Severity = infoBarModel.Severity;
         SettingsInfoBar.Title = infoBarModel.Title;
         SettingsInfoBar.Message = infoBarModel.Message;
+    }
+    
+    private void OnShowUpdateInfoBar(object recipient, UpdateInfoBarChangedMessage message)
+    {
+        var infoBarModel = message.Value;
+        UpdateInfoBar.IsOpen = infoBarModel.IsOpen;
+        UpdateInfoBar.IsClosable = infoBarModel.IsClosable;
+        UpdateInfoBar.IsIconVisible = infoBarModel.IsIconVisible;
+        UpdateInfoBar.Severity = infoBarModel.Severity;
+        UpdateInfoBar.Title = infoBarModel.Title;
+        UpdateInfoBar.Message = infoBarModel.Message;
     }
 
     private async void OnThemeSelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -11,6 +11,7 @@
     <Page.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="InverseVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         <c:EmptyToVisibilityConverter x:Key="NotEmpty" />
         <c:DateTimeToVisibilityConverter x:Key="WhenChecked" />
     </Page.Resources>
@@ -24,55 +25,45 @@
             <InfoBar Name="SettingsInfoBar" />
         </Grid>
         <ScrollViewer Grid.Row="1">
-            <StackPanel>
-                <TextBlock Text="General" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <labs:SettingsCard Header="Hide docker distributions">
+            <StackPanel Spacing="4">
+                <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
+                <labs:SettingsCard Description="Show distributions created by Docker" Header="Docker distributions">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE799;" />
+                    </labs:SettingsCard.HeaderIcon>
                     <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
                 </labs:SettingsCard>
 
-                <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <labs:SettingsCard Header="Theme">
-                        <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" Width="200" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" SelectionChanged="OnThemeSelectionChanged" />
-                    </labs:SettingsCard>
-                </StackPanel>
+                <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Personalization" />
+                <labs:SettingsCard Description="Change the theme of the application" Header="Theme">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE799;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" SelectionChanged="OnThemeSelectionChanged" />
+                </labs:SettingsCard>
 
-                <TextBlock Text="Info" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <TextBlock Text="{x:Bind ViewModel.AppDescription}" />
-                <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                    <StackPanel Visibility="{x:Bind ViewModel.IsPackage, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
-                        <TextBlock Text="Updates are running through Windows Store" Margin="{StaticResource SmallBottomMargin}" />
-                        <Button Content="Open app in store" Command="{x:Bind ViewModel.OpenAppInStoreCommand}" Margin="{StaticResource SmallBottomRightMargin}" />
-                    </StackPanel>
-                    <labs:SettingsCard Header="Updates">
-                        <labs:SettingsCard.Description>
-                            <TextBlock Text="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Mode=OneWay}" Visibility="{x:Bind ViewModel.UpdaterResult.UpdateStatus, Converter={StaticResource NotEmpty}, Mode=OneWay}" />
-                        </labs:SettingsCard.Description>
-                        <StackPanel Orientation="Horizontal">
-                            <ProgressBar Width="130" IsIndeterminate="True" ShowPaused="False" ShowError="False" Visibility="{x:Bind ViewModel.UpdaterResult.IsChecking, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
-                            <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" Margin="{StaticResource SmallBottomRightMargin}" Width="130" />
-                        </StackPanel>
-                    </labs:SettingsCard>
-                    
-                    <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
-                        <Grid Visibility="{x:Bind ViewModel.UpdaterResult.LastChecked, Converter={StaticResource WhenChecked}, Mode=OneWay}">
-                            <HyperlinkButton Content="{x:Bind ViewModel.UpdaterResult.LatestVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Download update {0}'}"
-                                             NavigateUri="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}" Margin="{StaticResource SmallBottomMargin}"
-                                             Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
-                        </Grid>
-                    </StackPanel>
-                </StackPanel>
+                <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="App information" />
+                <InfoBar Name="UpdateInfoBar" />
+                <labs:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE799;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
+                </labs:SettingsCard>
 
-                <TextBlock Text="Other" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <StackPanel Margin="{StaticResource SmallBottomMargin}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" Header="Enable app analytics" />
-                    <HyperlinkButton Content="WSL Toolbox on Github" NavigateUri="https://github.com/FalconNL93/WslToolbox" Margin="{StaticResource SmallBottomMargin}" />
-                    <StackPanel Orientation="Horizontal">
-                        <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log" Width="130" Margin="{StaticResource SmallRightMargin}" />
-                        <Button Command="{x:Bind ViewModel.OpenAppDirCommand}" Content="Open app dir" Width="130" />
-                    </StackPanel>
-                </StackPanel>
-
+                <labs:SettingsExpander Description="Enable or disable notifications" Header="Notifications">
+                    <labs:SettingsExpander.HeaderIcon>
+                        <FontIcon Glyph="&#xE91B;" />
+                    </labs:SettingsExpander.HeaderIcon>
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard ContentAlignment="Left">
+                            <CheckBox Content="Updates available" IsChecked="{x:Bind ViewModel.NotificationOptions.UpdatesAvailable, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard ContentAlignment="Left">
+                            <CheckBox Content="No updates available" IsChecked="{x:Bind ViewModel.NotificationOptions.NoUpdatesAvailable, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
             </StackPanel>
         </ScrollViewer>
         <Grid Row="2" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">

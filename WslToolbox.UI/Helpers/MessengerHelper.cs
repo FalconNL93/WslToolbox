@@ -37,4 +37,17 @@ public static class MessengerHelper
     {
         return await messenger.Send(new UpdateDialogMessage(viewModel));
     }
+    
+    public static void ShowUpdateInfoBar(this IMessenger messenger, string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational)
+    {
+        messenger.Send(new UpdateInfoBarChangedMessage(new InfoBarModel
+        {
+            IsOpen = true,
+            IsClosable = true,
+            IsIconVisible = true,
+            Severity = severity,
+            Title = title,
+            Message = message
+        }));
+    }
 }
