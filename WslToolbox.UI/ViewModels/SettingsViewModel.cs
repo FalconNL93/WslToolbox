@@ -36,9 +36,9 @@ public partial class SettingsViewModel : ObservableRecipient
     private bool _updateServiceAvailable;
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
+        IConfigurationService configurationService,
         IOptions<UserOptions> userOptions,
         IOptions<NotificationOptions> notificationOptions,
-        IConfigurationService configurationService,
         UpdateService updateService,
         IMessenger messenger
     )

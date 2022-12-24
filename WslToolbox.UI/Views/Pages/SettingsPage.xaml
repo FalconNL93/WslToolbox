@@ -41,6 +41,12 @@
                     </labs:SettingsCard.HeaderIcon>
                     <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" SelectedValuePath="{x:Bind ViewModel.UserOptions.Theme, Mode=TwoWay}" SelectionChanged="OnThemeSelectionChanged" />
                 </labs:SettingsCard>
+                <labs:SettingsCard Description="Enable application analytics" Header="Analytics">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE799;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
+                </labs:SettingsCard>
 
                 <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="App information" />
                 <InfoBar Name="UpdateInfoBar" />
@@ -55,7 +61,7 @@
                     </StackPanel>
                 </labs:SettingsCard>
 
-                <labs:SettingsExpander Description="Enable or disable notifications" Header="Notifications">
+                <labs:SettingsExpander Description="Enable or disable notifications" Header="Notifications" IsEnabled="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon Glyph="&#xE91B;" />
                     </labs:SettingsExpander.HeaderIcon>

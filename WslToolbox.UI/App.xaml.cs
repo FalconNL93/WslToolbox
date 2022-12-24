@@ -84,6 +84,8 @@ public partial class App : Application
                 services.AddPage<SettingsViewModel, SettingsPage>();
                 services.AddPage<NotificationViewModel, NotificationModal>();
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
+                
+                services.AddSingleton<StartupDialogViewModel>();
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
@@ -172,7 +174,9 @@ public partial class App : Application
             throw new Exception($"Unexpected error {e.Message}");
         }
 
+#if DEBUG
         throw new Exception($"Unexpected error {e.Message}");
+#endif
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)

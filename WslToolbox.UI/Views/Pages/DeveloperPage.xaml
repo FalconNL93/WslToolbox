@@ -5,12 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Debug mode" FalseValue="Release mode" />
+    </Page.Resources>
     <Grid x:Name="ContentArea">
         <ScrollViewer>
             <Grid VerticalAlignment="Top">
                 <StackPanel Spacing="{StaticResource DefaultSpacing}">
+                    <labs:SettingsCard Description="{x:Bind ViewModel.IsDebug, Converter={StaticResource BoolToObjectConverter}}" Header="App info" />
                     <labs:SettingsCard Description="Fake updater result" Header="Update result">
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
@@ -18,6 +22,12 @@
                         <ComboBox Name="FakeUpdateResultsSelector" ItemsSource="{x:Bind ViewModel.FakeUpdateResults}" SelectedValuePath="{x:Bind ViewModel.DevOptions.Value.FakeUpdateResult, Mode=OneWay}"
                                   SelectionChanged="OnFakeUpdateSelectionChanged" />
 
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Description="Show startup dialog" Header="Dialogs">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE896;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <Button Content="Check for updates" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
                     </labs:SettingsCard>
                 </StackPanel>
             </Grid>

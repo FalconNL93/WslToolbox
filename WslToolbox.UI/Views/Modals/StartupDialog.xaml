@@ -1,0 +1,21 @@
+﻿<ContentDialog
+    x:Class="WslToolbox.UI.Views.Modals.StartupDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    Title="{x:Bind ViewModel.Title}"
+    PrimaryButtonText="Save"
+    PrimaryButtonCommand="{x:Bind ViewModel.SaveConfigurationCommand}"
+    CloseButtonText="Close">
+
+    <StackPanel HorizontalAlignment="Stretch" Spacing="4">
+        <TextBlock Text="Thank you for using the WSL Toolbox beta. Could you help us with enabling app analytics to identify errors?" Margin="0,0,0,4" />
+
+        <labs:SettingsCard Description="Enable application analytics" Header="Analytics">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE799;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
+        </labs:SettingsCard>
+    </StackPanel>
+</ContentDialog>

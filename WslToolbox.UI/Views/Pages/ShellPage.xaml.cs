@@ -27,9 +27,10 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = App.Name;
 
-        // WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
-        // WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
-        // WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
+        WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
+        WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);
+        WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
+        WeakReferenceMessenger.Default.Register<StartupDialogShowMessage>(this, OnShowStartupDialog);
     }
 
     public ShellViewModel ViewModel { get; }
@@ -61,6 +62,17 @@ public sealed partial class ShellPage : Page
     private void OnShowSimpleDialog(object recipient, SimpleDialogShowMessage message)
     {
         var contentDialog = new SimpleDialog(message.ViewModel)
+        {
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            XamlRoot = XamlRoot
+        };
+
+        message.Reply(contentDialog.ShowAsync().AsTask());
+    }
+
+    private void OnShowStartupDialog(object recipient, StartupDialogShowMessage message)
+    {
+        var contentDialog = new StartupDialog(message.ViewModel)
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
