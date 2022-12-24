@@ -64,7 +64,7 @@
         <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221209.1" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221116.1" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
         <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.1-dev-00077" />
