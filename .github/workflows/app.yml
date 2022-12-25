@@ -23,6 +23,7 @@ jobs:
     runs-on: windows-latest
     env:
       Platform: ${{ matrix.platform }}
+      APPCENTER_KEY: ${{ secrets.APPCENTER_KEY }}
 
     steps:
       - name: Checkout
