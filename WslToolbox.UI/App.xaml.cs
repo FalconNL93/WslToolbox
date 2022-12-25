@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Reflection;
 using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.Messaging;
@@ -60,6 +61,10 @@ public partial class App : Application
                 services.AddHttpClient<UpdateService>(c =>
                 {
                     c.BaseAddress = new Uri("https://raw.githubusercontent.com/FalconNL93/manifests/main/");
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
+                    {
+                        NoCache = true
+                    };
                 });
 
                 // Services
