@@ -12,7 +12,6 @@ env:
   AppVersion: '0.6.${{ github.run_number }}.0'
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
-  SetupOutputFile: "wsltoolbox-setup"
 
 jobs:
   build:
@@ -104,13 +103,13 @@ jobs:
           -AppVersion "${{ env.AppVersion }}" `
           -AppUrl "${{ env.AppUrl }}" `
           -AppOwner "${{ env.AppOwner }}" `
-          -SetupOutputFile "${{ env.SetupOutputFile }}-${{ env.Platform }}-setup"
+          -SetupOutputFile "wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup"
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup
-          path: WslToolbox.Setup\bin\${{ env.SetupOutputFile }}-${{ env.Platform }}-setup.exe
+          path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
           retention-days: 1
 
   purge:

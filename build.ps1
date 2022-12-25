@@ -34,7 +34,7 @@ $AppExecutable = "toolbox.exe";
 $AppVersion = '0.6.17.0';
 $AppUrl = "https://github.com/FalconNL93/wsltoolbox";
 $AppOwner = "FalconNL93"
-$SetupOutputFile = "wsltoolbox-0.6-$Platform";
+$SetupOutputFile = "wsltoolbox_${AppVersion}_${Platform}_setup";
 
 $CommandName = $PSCmdlet.MyInvocation.InvocationName;
 $ParameterList = (Get-Command -Name $CommandName).Parameters;

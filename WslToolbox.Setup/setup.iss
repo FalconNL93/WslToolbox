@@ -52,7 +52,7 @@ Filename: "{app}\{#AppExecutable}"; Description: "{cm:LaunchProgram,{#StringChan
 [Messages]
 SetupAppTitle = {#AppName}
 SetupWindowTitle = Setup - {#AppName}
-BeveledLabel = "{#AppName} - {#AppVersion}"
+BeveledLabel = {#AppVersion}
 
 [CustomMessages]
 CreateDesktopIcon=Create a &desktop icon
