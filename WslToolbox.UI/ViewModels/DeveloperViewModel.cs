@@ -16,16 +16,7 @@ public partial class DeveloperViewModel : ObservableRecipient
     private readonly ILogger<DeveloperViewModel> _logger;
     private readonly IMessenger _messenger;
     public readonly IOptions<DevOptions> DevOptions;
-    public bool IsDebug = false;
-    
-    [RelayCommand]
-    private async Task ShowStartupDialog()
-    {
-        var vm = App.GetService<StartupDialogViewModel>();
-        await _messenger.ShowStartupDialog(vm);
-    }
-
-    public ObservableCollection<string> FakeUpdateResults { get; set; } = new(Enum.GetNames(typeof(FakeUpdateResult)));
+    public bool IsDebug;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
@@ -41,5 +32,14 @@ public partial class DeveloperViewModel : ObservableRecipient
 #if DEBUG
         IsDebug = true;
 #endif
+    }
+
+    public ObservableCollection<string> FakeUpdateResults { get; set; } = new(Enum.GetNames(typeof(FakeUpdateResult)));
+
+    [RelayCommand]
+    private async Task ShowStartupDialog()
+    {
+        var vm = App.GetService<StartupDialogViewModel>();
+        await _messenger.ShowStartupDialogAsync(vm);
     }
 }

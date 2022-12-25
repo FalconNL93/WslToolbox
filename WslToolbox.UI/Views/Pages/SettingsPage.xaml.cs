@@ -44,7 +44,6 @@ public sealed partial class SettingsPage : Page
     private async void OnThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var theme = ThemeSelector.SelectedItem;
-
         if (theme is null)
         {
             return;

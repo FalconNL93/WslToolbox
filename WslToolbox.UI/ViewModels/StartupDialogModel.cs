@@ -7,17 +7,6 @@ namespace WslToolbox.UI.ViewModels;
 
 public partial class StartupDialogViewModel
 {
-    public string Message { get; set; }
-    public string Title { get; set; } = App.Name;
-    public string PrimaryButtonText { get; set; } = "Close";
-    public string SecondaryButtonText { get; set; }
-
-    [RelayCommand]
-    private void SaveConfiguration()
-    {
-        _configurationService.Save(UserOptions);
-    }
-
     private readonly IConfigurationService _configurationService;
     public readonly UserOptions UserOptions;
 
@@ -26,5 +15,17 @@ public partial class StartupDialogViewModel
     {
         _configurationService = configurationService;
         UserOptions = userOptions.Value;
+    }
+
+    public string Message { get; set; }
+    public string Title { get; set; } = App.Name;
+    public string PrimaryButtonText { get; set; } = "Close";
+    public string SecondaryButtonText { get; set; }
+
+    [RelayCommand]
+    private void SaveConfiguration()
+    {
+        UserOptions.SeenWelcomePage = true;
+        _configurationService.Save(UserOptions);
     }
 }

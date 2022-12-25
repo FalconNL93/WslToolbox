@@ -2,13 +2,16 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
+using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Views.Modals;
 
 namespace WslToolbox.UI.ViewModels;
@@ -17,15 +20,22 @@ public partial class DashboardViewModel : ObservableRecipient
 {
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
+    private readonly IMessenger _messenger;
+    private readonly UserOptions _userOptions;
 
     [ObservableProperty]
     private bool _isRefreshing = true;
 
-    public DashboardViewModel(DistributionService distributionService,
-        ILogger<DashboardViewModel> logger)
+    public DashboardViewModel(
+        DistributionService distributionService,
+        ILogger<DashboardViewModel> logger,
+        IMessenger messenger,
+        IOptions<UserOptions> userOptions)
     {
         _distributionService = distributionService;
         _logger = logger;
+        _messenger = messenger;
+        _userOptions = userOptions.Value;
 
         EventHandlers();
     }
@@ -36,6 +46,18 @@ public partial class DashboardViewModel : ObservableRecipient
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
+
+    [RelayCommand]
+    private async Task ShowStartupDialog()
+    {
+        if (_userOptions.SeenWelcomePage)
+        {
+            return;
+        }
+
+        var vm = App.GetService<StartupDialogViewModel>();
+        await _messenger.ShowStartupDialogAsync(vm);
+    }
 
     private void EventHandlers()
     {

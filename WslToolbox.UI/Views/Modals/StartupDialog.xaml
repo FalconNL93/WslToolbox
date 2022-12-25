@@ -8,8 +8,8 @@
     PrimaryButtonCommand="{x:Bind ViewModel.SaveConfigurationCommand}"
     CloseButtonText="Close">
 
-    <StackPanel HorizontalAlignment="Stretch" Spacing="4">
-        <TextBlock Text="Thank you for using the WSL Toolbox beta. Could you help us with enabling app analytics to identify errors?" Margin="0,0,0,4" />
+    <StackPanel Spacing="4">
+        <TextBlock Text="Thank you for using the WSL Toolbox beta. Could you help us with enabling app analytics to identify errors?" Margin="0,0,0,4" TextWrapping="Wrap"/>
 
         <labs:SettingsCard Description="Enable application analytics" Header="Analytics">
             <labs:SettingsCard.HeaderIcon>

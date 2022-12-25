@@ -48,7 +48,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _updateService = updateService;
         _messenger = messenger;
         _elementTheme = _themeSelectorService.Theme;
-        
+
         NotificationOptions = notificationOptions.Value;
         UserOptions = userOptions.Value;
 

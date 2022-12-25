@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using ABI.Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.ViewModels;
+using RoutedEventArgs = Microsoft.UI.Xaml.RoutedEventArgs;
 
 namespace WslToolbox.UI.Views.Pages;
 
@@ -15,4 +17,9 @@ public sealed partial class DashboardPage : Page
 
 
     public DashboardViewModel ViewModel { get; }
+    
+    private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+    {
+        ViewModel.ShowStartupDialogCommand.Execute(null);
+    }
 }
