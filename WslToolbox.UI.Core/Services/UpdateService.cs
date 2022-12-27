@@ -52,6 +52,7 @@ public class UpdateService
 
         updateResultModel.LatestVersion = Version.Parse(manifest.ResponseVersion);
         updateResultModel.LastChecked = DateTime.Now;
+        updateResultModel.Files = manifest.Files;
 
         if (enableFaker)
         {

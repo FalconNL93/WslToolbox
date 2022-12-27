@@ -36,6 +36,13 @@ public partial class App : Application
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
 
+    public enum AppTypes
+    {
+        Portable,
+        Setup,
+        Packaged
+    }
+
     public App()
     {
         InitializeComponent();
@@ -116,10 +123,22 @@ public partial class App : Application
         {
             return Package.Current.Id != null;
         }
-        catch
+        catch (Exception e)
         {
             return false;
         }
+    }
+
+    public static AppTypes GetAppType()
+    {
+        if (IsPackage())
+        {
+            return AppTypes.Packaged;
+        }
+
+        return File.Exists(Path.Combine(Toolbox.AppDirectory, "unins001.exe"))
+            ? AppTypes.Setup
+            : AppTypes.Portable;
     }
 
     private static void ConfigureAppCenter()

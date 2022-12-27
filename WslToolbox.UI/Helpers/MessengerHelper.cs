@@ -26,13 +26,31 @@ public static class MessengerHelper
         return await messenger.Send(new SimpleDialogShowMessage(viewModel));
     }
 
+    public static async Task<ContentDialogResult> ShowDialog(this IMessenger messenger,
+        string title,
+        string message,
+        string primaryButtonText = "OK",
+        string secondaryButtonText = ""
+    )
+    {
+        return await messenger.Send(new SimpleDialogShowMessage(new SimpleDialogModel
+        {
+            Message = message,
+            Title = title,
+            PrimaryButtonText = primaryButtonText,
+            SecondaryButtonText = secondaryButtonText,
+            PrimaryButtonCommand = null,
+            SecondaryButtonCommand = null
+        }));
+    }
+
     public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger, InputDialogModel viewModel)
     {
         var dialogMessenger = messenger.Send(new InputDialogMessage(viewModel));
 
         return dialogMessenger.ViewModel;
     }
-    
+
     public static async Task ShowStartupDialogAsync(this IMessenger messenger, StartupDialogViewModel viewModel)
     {
         await messenger.Send(new StartupDialogShowMessage(viewModel));
@@ -42,7 +60,7 @@ public static class MessengerHelper
     {
         return await messenger.Send(new UpdateDialogMessage(viewModel));
     }
-    
+
     public static void ShowUpdateInfoBar(this IMessenger messenger, string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational)
     {
         messenger.Send(new UpdateInfoBarChangedMessage(new InfoBarModel

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models.Responses;
 
 namespace WslToolbox.UI.Core.Models;
 
@@ -21,6 +22,9 @@ public partial class UpdateResultModel : ObservableRecipient
 
     [ObservableProperty]
     private bool _isChecking;
+
+    [ObservableProperty]
+    private FilesModel _files;
 
     public bool UpdateAvailable => LatestVersion.CompareTo(CurrentVersion) > 0;
 }

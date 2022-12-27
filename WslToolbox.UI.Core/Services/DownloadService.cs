@@ -15,14 +15,15 @@ public class DownloadService
         _logger = logger;
     }
 
-    public async Task DownloadFileAsync(UpdateResultModel updateResultModel)
+    public async Task<string> DownloadFileAsync(UpdateResultModel updateResultModel)
     {
-        var updateUrl = new Uri("");
-        if (!File.Exists("download.zip"))
-        {
-        }
+        var downloadUri = $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Setup}ss";
+        _logger.LogInformation("Trying to download {DownloadUri}", downloadUri);
+        var fileBytes = await _httpClient.GetByteArrayAsync(downloadUri);
+        var tempFile = Path.GetTempFileName();
+        _logger.LogInformation("Download file to {TempFile}", tempFile);
+        await File.WriteAllBytesAsync(tempFile, fileBytes);
 
-        var fileBytes = await _httpClient.GetByteArrayAsync(updateUrl);
-        await File.WriteAllBytesAsync("download.zip", fileBytes);
+        return tempFile;
     }
 }

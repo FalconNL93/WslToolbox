@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
@@ -53,7 +54,17 @@ public partial class DeveloperViewModel : ObservableRecipient
     [RelayCommand]
     private async Task DownloadUpdate()
     {
-        var updateManifest = await _updateService.GetUpdateDetails();
-        await _downloadService.DownloadFileAsync(updateManifest);
+        try
+        {
+            var updateManifest = await _updateService.GetUpdateDetails();
+            var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
+        
+            ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unable to download update file");
+            await _messenger.ShowDialog("Error", "Unable to download and/or install the update. Please check log files for more information.");
+        }
     }
 }

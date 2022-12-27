@@ -5,6 +5,7 @@ namespace WslToolbox.UI.Core.Models.Responses;
 public class FilesModel
 {
     public string Portable { get; set; }
+    public string Setup { get; set; }
 }
 
 public class UpdateManifestResponse

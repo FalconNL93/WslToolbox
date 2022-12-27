@@ -82,11 +82,12 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
                     <Button Command="{x:Bind ViewModel.OpenConfigurationCommand}" Content="Open JSON" MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log" MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumTopBottomMargin}">
-                    <Button Command="{x:Bind ViewModel.RestoreDefaultConfigurationCommand}" Content="Restore defaults" MinWidth="{StaticResource ButtonMinWidth}" Margin="{StaticResource SmallRightMargin}" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
+                    <Button Command="{x:Bind ViewModel.RestoreDefaultConfigurationCommand}" Content="Restore defaults" MinWidth="{StaticResource ButtonMinWidth}" />
                     <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
             </Grid>

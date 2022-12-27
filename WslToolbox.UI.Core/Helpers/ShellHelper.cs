@@ -12,6 +12,24 @@ public static class ShellHelper
         process.Start();
     }
 
+    public static void OpenExecutable(string path, string arguments = null, bool exitApp = false)
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = path;
+        if (arguments != null)
+        {
+            process.StartInfo.Arguments = arguments;
+        }
+
+        process.StartInfo.UseShellExecute = false;
+        process.Start();
+
+        if (exitApp)
+        {
+            Environment.Exit(0);
+        }
+    }
+
     public static void OpenUrl(Uri url)
     {
         using var process = new Process();
