@@ -58,13 +58,15 @@ public partial class App : Application
                 services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
                 // Clients
+                services.AddHttpClient<DownloadService>(c =>
+                {
+                    c.BaseAddress = new Uri("https://github.com/FalconNL93/WslToolbox/releases/download/");
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
+                });
                 services.AddHttpClient<UpdateService>(c =>
                 {
                     c.BaseAddress = new Uri("https://raw.githubusercontent.com/FalconNL93/manifests/main/");
-                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
-                    {
-                        NoCache = true
-                    };
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
 
                 // Services
@@ -89,7 +91,7 @@ public partial class App : Application
                 services.AddPage<SettingsViewModel, SettingsPage>();
                 services.AddPage<NotificationViewModel, NotificationModal>();
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
-                
+
                 services.AddSingleton<StartupDialogViewModel>();
 
                 // Configuration

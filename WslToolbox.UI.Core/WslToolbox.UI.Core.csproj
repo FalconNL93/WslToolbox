@@ -35,4 +35,16 @@
     <ItemGroup>
         <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+    </ItemGroup>
 </Project>

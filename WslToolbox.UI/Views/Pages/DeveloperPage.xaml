@@ -23,6 +23,13 @@
                                   SelectionChanged="OnFakeUpdateSelectionChanged" />
 
                     </labs:SettingsCard>
+                    <labs:SettingsCard Description="Download latest update file" Header="Download update">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE896;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <Button Content="Download" Command="{x:Bind ViewModel.DownloadUpdateCommand}" />
+                        
+                    </labs:SettingsCard>
                     <labs:SettingsCard Description="Show startup dialog" Header="Dialogs">
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />

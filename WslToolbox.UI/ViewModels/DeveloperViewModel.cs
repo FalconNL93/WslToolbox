@@ -16,18 +16,25 @@ public partial class DeveloperViewModel : ObservableRecipient
     private readonly ILogger<DeveloperViewModel> _logger;
     private readonly IMessenger _messenger;
     public readonly IOptions<DevOptions> DevOptions;
+    private readonly DownloadService _downloadService;
+    private readonly UpdateService _updateService;
     public bool IsDebug;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
         DistributionService distributionService,
         IMessenger messenger,
-        IOptions<DevOptions> devOptions)
+        IOptions<DevOptions> devOptions,
+        DownloadService downloadService,
+        UpdateService updateService
+    )
     {
         _logger = logger;
         _distributionService = distributionService;
         _messenger = messenger;
         DevOptions = devOptions;
+        _downloadService = downloadService;
+        _updateService = updateService;
 
 #if DEBUG
         IsDebug = true;
@@ -41,5 +48,12 @@ public partial class DeveloperViewModel : ObservableRecipient
     {
         var vm = App.GetService<StartupDialogViewModel>();
         await _messenger.ShowStartupDialogAsync(vm);
+    }
+    
+    [RelayCommand]
+    private async Task DownloadUpdate()
+    {
+        var updateManifest = await _updateService.GetUpdateDetails();
+        await _downloadService.DownloadFileAsync(updateManifest);
     }
 }

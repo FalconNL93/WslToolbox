@@ -2,6 +2,11 @@
 
 namespace WslToolbox.UI.Core.Models.Responses;
 
+public class FilesModel
+{
+    public string Portable { get; set; }
+}
+
 public class UpdateManifestResponse
 {
     [JsonPropertyName("version")]
@@ -9,4 +14,7 @@ public class UpdateManifestResponse
 
     [JsonPropertyName("download")]
     public string DownloadUrl { get; set; }
+
+    [JsonPropertyName("files")]
+    public FilesModel Files { get; set; }
 }
