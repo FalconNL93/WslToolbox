@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>wsltoolbox</id>    
+    <version>0.6.17</version>
+    <title>WSL Toolbox</title>
+    <authors>FalconNL93</authors>
+    <tags>wsltoolbox</tags>
+    <projectUrl>https://github.com/FalconNL93/WslToolbox</projectUrl>
+    <projectSourceUrl>https://github.com/FalconNL93/WslToolbox.git</projectSourceUrl>
+    <packageSourceUrl>https://github.com/FalconNL93/WslToolbox/tree/master/chocolatey/wsltoolbox</packageSourceUrl>
+    <bugTrackerUrl>https://github.com/FalconNL93/WslToolbox/issues</bugTrackerUrl>
+    <licenseUrl>https://github.com/FalconNL93/WslToolbox/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+
+    <summary>WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.</summary>
+    <description>WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface.</description>
+    <releaseNotes></releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
