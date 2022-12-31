@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
 
 namespace WslToolbox.UI.Core.Helpers;
 

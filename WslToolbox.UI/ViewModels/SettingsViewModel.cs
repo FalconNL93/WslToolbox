@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,13 +13,16 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Notifications;
+using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
+    private readonly AppNotificationService _notificationService;
     private readonly IMessenger _messenger;
+    private readonly ILogger<SettingsViewModel> _logger;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
     public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
@@ -39,14 +43,17 @@ public partial class SettingsViewModel : ObservableRecipient
         IConfigurationService configurationService,
         IOptions<UserOptions> userOptions,
         IOptions<NotificationOptions> notificationOptions,
+        AppNotificationService notificationService,
         UpdateService updateService,
-        IMessenger messenger
-    )
+        IMessenger messenger,
+        ILogger<SettingsViewModel> logger)
     {
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
+        _notificationService = notificationService;
         _updateService = updateService;
         _messenger = messenger;
+        _logger = logger;
         _elementTheme = _themeSelectorService.Theme;
 
         NotificationOptions = notificationOptions.Value;
@@ -62,6 +69,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 
+
     [RelayCommand]
     private async Task CheckForUpdates()
     {
@@ -70,10 +78,14 @@ public partial class SettingsViewModel : ObservableRecipient
         await Task.Delay(TimeSpan.FromSeconds(2));
         UpdaterResult = await _updateService.GetUpdateDetails();
 
-        if (UpdaterResult.UpdateAvailable)
+        if (UpdaterResult.HasError)
+        {
+            _messenger.ShowUpdateInfoBar("Error", "Could not retrieve update information", InfoBarSeverity.Error);
+        }
+        else if (UpdaterResult.UpdateAvailable)
         {
             _messenger.ShowUpdateInfoBar("Update available", "A new update is available", InfoBarSeverity.Success);
-            UpdateNotification.ShowUpdatesAvailableNotification(UpdaterResult);
+            _notificationService.Show(UpdateNotification.UpdatesAvailable(UpdaterResult));
             var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
             {
                 EnableInstallUpdate = true,
@@ -89,7 +101,7 @@ public partial class SettingsViewModel : ObservableRecipient
         else
         {
             _messenger.ShowUpdateInfoBar("No new updates", "You are running the latest version", InfoBarSeverity.Success);
-            UpdateNotification.ShowNoUpdatesNotification();
+            _notificationService.Show(UpdateNotification.NoUpdatesNotification);
         }
     }
 

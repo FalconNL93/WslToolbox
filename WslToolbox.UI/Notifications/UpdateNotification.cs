@@ -7,16 +7,13 @@ namespace WslToolbox.UI.Notifications;
 
 public static class UpdateNotification
 {
-    public static void ShowNoUpdatesNotification()
-    {
+    public static ToastContentBuilder NoUpdatesNotification =>
         new ToastContentBuilder()
             .AddHeader(MethodBase.GetCurrentMethod().Name, "Updates", new ToastArguments())
-            .AddText("You are running the latest version")
-            .Show();
-    }
+            .AddText("You are running the latest version");
 
-    public static void ShowUpdatesAvailableNotification(UpdateResultModel updateResult)
-    {
+
+    public static ToastContentBuilder UpdatesAvailable(UpdateResultModel updateResult) =>
         new ToastContentBuilder()
             .AddHeader(MethodBase.GetCurrentMethod().Name, "Updates", new ToastArguments())
             .AddText($"New update {updateResult.LatestVersion} available")
@@ -24,7 +21,5 @@ public static class UpdateNotification
                 .SetContent("Download")
                 .AddArgument(ToastActions.OpenUrl, updateResult.DownloadUri.ToString()))
             .AddButton(new ToastButton()
-                .SetContent("Close"))
-            .Show();
-    }
+                .SetContent("Close"));
 }

@@ -25,6 +25,9 @@ public partial class UpdateResultModel : ObservableRecipient
 
     [ObservableProperty]
     private FilesModel _files;
+    
+    [ObservableProperty]
+    private bool _hasError;
 
     public bool UpdateAvailable => LatestVersion.CompareTo(CurrentVersion) > 0;
 }

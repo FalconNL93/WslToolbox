@@ -34,7 +34,7 @@
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
                         </labs:SettingsCard.HeaderIcon>
-                        <Button Content="Check for updates" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
+                        <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
                     </labs:SettingsCard>
                 </StackPanel>
             </Grid>

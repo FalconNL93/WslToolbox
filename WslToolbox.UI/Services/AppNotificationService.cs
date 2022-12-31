@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.WinUI.Notifications;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Services;
 
@@ -13,15 +16,36 @@ public static class ToastActions
 public class AppNotificationService
 {
     private readonly INavigationService _navigationService;
+    private readonly ILogger<AppNotificationService> _logger;
+    private readonly UserOptions _userOptions;
 
-    public AppNotificationService(INavigationService navigationService)
+    public AppNotificationService(INavigationService navigationService, IOptions<UserOptions> userOptions, ILogger<AppNotificationService> logger)
     {
         _navigationService = navigationService;
+        _logger = logger;
+        _userOptions = userOptions.Value;
     }
 
     public void Initialize()
     {
+        if (!_userOptions.Notifications)
+        {
+            _logger.LogInformation("Notification system disabled");
+            return;
+        }
+        
+        _logger.LogInformation("Notification system enabled");
         ToastNotificationManagerCompat.OnActivated += ToastOnActivated;
+    }
+
+    public void Show(ToastContentBuilder notification)
+    {
+        if (!_userOptions.Notifications)
+        {
+            return;
+        }
+
+        notification.Show();
     }
 
     private static void ToastOnActivated(ToastNotificationActivatedEventArgsCompat e)

@@ -5,17 +5,31 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     Title="{x:Bind ViewModel.Title}"
     PrimaryButtonText="Save"
-    PrimaryButtonCommand="{x:Bind ViewModel.SaveConfigurationCommand}"
-    CloseButtonText="Close">
+    PrimaryButtonCommand="{x:Bind ViewModel.SaveConfigurationCommand}">
+    <Grid>
+        <StackPanel Spacing="20">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Welcome to the WSL Toolbox Beta, some features may not work as expected and by enabling application analytics we can identify errors so we can fix this in future versions." Margin="0,0,0,4"
+                           TextWrapping="Wrap" />
 
-    <StackPanel Spacing="4">
-        <TextBlock Text="Thank you for using the WSL Toolbox beta. Could you help us with enabling app analytics to identify errors?" Margin="0,0,0,4" TextWrapping="Wrap"/>
-
-        <labs:SettingsCard Description="Enable application analytics" Header="Analytics">
-            <labs:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE799;" />
-            </labs:SettingsCard.HeaderIcon>
-            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
-        </labs:SettingsCard>
-    </StackPanel>
+                <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Initial setup" />
+                <labs:SettingsCard Description="Enable application analytics" Header="Analytics">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE799;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
+                </labs:SettingsCard>
+                <labs:SettingsCard Description="Enable application notifications" Header="Notifications">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xED0D;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Notifications, Mode=TwoWay}" />
+                </labs:SettingsCard>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Note" />
+                <TextBlock Text="You can always change this settings in the settings menu." TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </ContentDialog>

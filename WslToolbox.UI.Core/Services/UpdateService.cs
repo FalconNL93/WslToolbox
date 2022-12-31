@@ -20,6 +20,25 @@ public class UpdateService
         _devOptions = devOptions;
     }
 
+    public static async Task<bool> UpdateServiceStatus()
+    {
+        try
+        {
+            var httpClient = new HttpClient();
+            await httpClient.SendAsync(new HttpRequestMessage
+            {
+                Method = HttpMethod.Head,
+                RequestUri = new Uri("https://www.github.com"),
+            });
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public async Task<UpdateResultModel> GetUpdateDetails()
     {
         var updateResultModel = new UpdateResultModel();
@@ -34,6 +53,8 @@ public class UpdateService
                 _logger.LogError("Could not download update manifest");
 
                 updateResultModel.UpdateStatus = "Could not check for updates";
+                updateResultModel.HasError = true;
+
                 return updateResultModel;
             }
         }
@@ -43,6 +64,8 @@ public class UpdateService
 
             updateResultModel.UpdateStatus = "Could not check for updates";
             updateResultModel.IsChecking = false;
+            updateResultModel.HasError = true;
+
             return updateResultModel;
         }
         finally
@@ -58,7 +81,7 @@ public class UpdateService
         {
             updateResultModel.LatestVersion = _devOptions.Value.FakeUpdateResult == FakeUpdateResult.NoUpdate ? new Version("0.0.0") : new Version("9.99.99");
         }
-        
+
         updateResultModel.UpdateStatus = updateResultModel.UpdateAvailable ? string.Empty : "No update available";
 
         if (Uri.IsWellFormedUriString(manifest.DownloadUrl, UriKind.Absolute))

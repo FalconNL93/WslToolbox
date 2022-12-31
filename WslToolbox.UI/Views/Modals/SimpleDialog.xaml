@@ -9,6 +9,6 @@
     SecondaryButtonCommand="{x:Bind ViewModel.SecondaryButtonCommand}">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TextBlock Text="{x:Bind ViewModel.Message}" Margin="{StaticResource SmallBottomMargin}" />
+        <TextBlock Text="{x:Bind ViewModel.Message}" Margin="{StaticResource SmallBottomMargin}" TextWrapping="Wrap"/>
     </StackPanel>
 </ContentDialog>

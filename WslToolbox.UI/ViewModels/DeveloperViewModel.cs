@@ -19,7 +19,7 @@ public partial class DeveloperViewModel : ObservableRecipient
     public readonly IOptions<DevOptions> DevOptions;
     private readonly DownloadService _downloadService;
     private readonly UpdateService _updateService;
-    public bool IsDebug;
+    public readonly bool IsDebug;
 
     public DeveloperViewModel(
         ILogger<DeveloperViewModel> logger,
@@ -50,21 +50,13 @@ public partial class DeveloperViewModel : ObservableRecipient
         var vm = App.GetService<StartupDialogViewModel>();
         await _messenger.ShowStartupDialogAsync(vm);
     }
-    
+
     [RelayCommand]
     private async Task DownloadUpdate()
     {
-        try
-        {
-            var updateManifest = await _updateService.GetUpdateDetails();
-            var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
-        
-            ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Unable to download update file");
-            await _messenger.ShowDialog("Error", "Unable to download and/or install the update. Please check log files for more information.");
-        }
+        var updateManifest = await _updateService.GetUpdateDetails();
+        var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
+
+        ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
     }
 }
