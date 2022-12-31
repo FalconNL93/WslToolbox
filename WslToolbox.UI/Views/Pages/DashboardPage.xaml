@@ -47,10 +47,10 @@
                                     <Button Command="{Binding ViewModel.StartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                         <SymbolIcon Symbol="Play" />
                                     </Button>
-                                    <Button Command="{Binding ViewModel.RestartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
+                                    <Button Command="{Binding ViewModel.StopDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                         <SymbolIcon Symbol="Stop" />
                                     </Button>
-                                    <Button Command="{Binding ViewModel.StopDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
+                                    <Button Command="{Binding ViewModel.RestartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                         <SymbolIcon Symbol="Refresh" />
                                     </Button>
 
