@@ -25,7 +25,7 @@
             <InfoBar Name="SettingsInfoBar" />
         </Grid>
         <ScrollViewer Grid.Row="1">
-            <Grid>
+            <Grid Margin="{StaticResource SmallBottomMargin}">
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
@@ -74,9 +74,9 @@
                         <InfoBar Name="UpdateInfoBar" />
                         <labs:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
                             <labs:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE896;" />
+                                <FontIcon Glyph="&#xE946;" />
                             </labs:SettingsCard.HeaderIcon>
-                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                                 <Button Content="Download update" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}"
                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                                 <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
