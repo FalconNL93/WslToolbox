@@ -12,8 +12,6 @@
     Loaded="OnLoaded">
     <Page.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBoolean" />
-        <CommandBarFlyout x:Name="DistributionContextMenu">
-        </CommandBarFlyout>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -43,7 +41,12 @@
                     <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:Distribution">
-                                <labs:SettingsCard Description="{x:Bind State}" Header="{x:Bind Name}" ContextRequested="Distribution_ContextRequested">
+                                <labs:SettingsCard Description="{x:Bind State}" Header="{x:Bind Name}">
+                                    <labs:SettingsCard.ContextFlyout>
+                                        <CommandBarFlyout x:Name="DistributionContextMenu" ShowMode="Auto">
+                                            <AppBarButton Label="Open folder" Icon="Folder" Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}" />
+                                        </CommandBarFlyout>
+                                    </labs:SettingsCard.ContextFlyout>
                                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}">
                                         <Button Command="{Binding ViewModel.StartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                             <FontIcon Glyph="&#xE768;" />

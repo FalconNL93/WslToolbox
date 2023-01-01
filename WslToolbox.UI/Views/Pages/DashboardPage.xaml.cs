@@ -25,16 +25,4 @@ public sealed partial class DashboardPage : Page
     {
         ViewModel.ShowStartupDialogCommand.Execute(null);
     }
-
-    private void Distribution_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
-    {
-        var element = (FrameworkElement) sender;
-        args.TryGetPosition(sender, out var position);
-        
-        DistributionContextMenu.ShowAt(element, new FlyoutShowOptions
-        {
-            Position = position,
-            ShowMode = FlyoutShowMode.Auto
-        });
-    }
 }
