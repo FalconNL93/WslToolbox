@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Models.Responses;
 
@@ -77,17 +78,20 @@ public class UpdateService
         updateResultModel.LastChecked = DateTime.Now;
         updateResultModel.Files = manifest.Files;
 
+        updateResultModel.DownloadUri = Toolbox.GetAppType() switch
+        {
+            Toolbox.AppTypes.Setup => new Uri(Toolbox.GitHubDownloadUrl, $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Setup}"),
+            _ => new Uri(Toolbox.GitHubDownloadUrl, $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Portable}")
+        };
+        
+        _logger.LogInformation("Download URL for update {DownloadUrl}", updateResultModel.DownloadUri);
+
         if (enableFaker)
         {
             updateResultModel.LatestVersion = _devOptions.Value.FakeUpdateResult == FakeUpdateResult.NoUpdate ? new Version("0.0.0") : new Version("9.99.99");
         }
 
         updateResultModel.UpdateStatus = updateResultModel.UpdateAvailable ? string.Empty : "No update available";
-
-        if (Uri.IsWellFormedUriString(manifest.DownloadUrl, UriKind.Absolute))
-        {
-            updateResultModel.DownloadUri = new Uri(manifest.DownloadUrl);
-        }
 
         return updateResultModel;
     }

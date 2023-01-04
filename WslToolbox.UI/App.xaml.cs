@@ -35,12 +35,17 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
-
-    public enum AppTypes
+    
+    public static bool IsPackage()
     {
-        Portable,
-        Setup,
-        Packaged
+        try
+        {
+            return Package.Current.Id != null;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public App()
@@ -67,12 +72,12 @@ public partial class App : Application
                 // Clients
                 services.AddHttpClient<DownloadService>(c =>
                 {
-                    c.BaseAddress = new Uri("https://github.com/FalconNL93/WslToolbox/releases/download/");
+                    c.BaseAddress = Toolbox.GitHubDownloadUrl;
                     c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
                 services.AddHttpClient<UpdateService>(c =>
                 {
-                    c.BaseAddress = new Uri("https://raw.githubusercontent.com/FalconNL93/manifests/main/");
+                    c.BaseAddress = Toolbox.GitHubManifestFile;
                     c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
 
@@ -116,30 +121,6 @@ public partial class App : Application
     private IHost Host { get; }
 
     public static WindowEx MainWindow { get; } = new MainWindow();
-
-    public static bool IsPackage()
-    {
-        try
-        {
-            return Package.Current.Id != null;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
-
-    public static AppTypes GetAppType()
-    {
-        if (IsPackage())
-        {
-            return AppTypes.Packaged;
-        }
-
-        return File.Exists(Path.Combine(Toolbox.AppDirectory, "unins001.exe"))
-            ? AppTypes.Setup
-            : AppTypes.Portable;
-    }
 
     private static void ConfigureAppCenter()
     {
