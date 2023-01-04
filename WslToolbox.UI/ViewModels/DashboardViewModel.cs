@@ -64,6 +64,7 @@ public partial class DashboardViewModel : ObservableRecipient
         WslToolbox.Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
         TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
         UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
+        OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)
