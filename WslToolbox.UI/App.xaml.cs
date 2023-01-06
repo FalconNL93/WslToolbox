@@ -35,7 +35,6 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
-    public static bool AppCenterAvailable;
     private ILogger<App> _logger;
 
     public static bool IsPackage()
@@ -127,18 +126,13 @@ public partial class App : Application
     {
         try
         {
-            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
-            if (secret != null)
-            {
-                AppCenterAvailable = true;
-            }
-            
             var runConfiguration = GetService<IOptions<UserOptions>>().Value;
             if (!runConfiguration.Analytics )
             {
                 return;
             }
             
+            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null && entryAssembly.GetCustomAttribute<AppCenterAttribute>() != null)
             {
