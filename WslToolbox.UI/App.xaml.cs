@@ -35,7 +35,9 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
-    
+    public static bool AppCenterAvailable;
+    private ILogger<App> _logger;
+
     public static bool IsPackage()
     {
         try
@@ -110,9 +112,8 @@ public partial class App : Application
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
                 services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
             }).Build();
-
-
-        ConfigureAppCenter();
+        
+        _logger = GetService<ILogger<App>>();
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -122,17 +123,22 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    private static void ConfigureAppCenter()
+    private void ConfigureAppCenter()
     {
         try
         {
+            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
+            if (secret != null)
+            {
+                AppCenterAvailable = true;
+            }
+            
             var runConfiguration = GetService<IOptions<UserOptions>>().Value;
-            if (runConfiguration.Analytics)
+            if (!runConfiguration.Analytics )
             {
                 return;
             }
-
-            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
+            
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null && entryAssembly.GetCustomAttribute<AppCenterAttribute>() != null)
             {
@@ -142,12 +148,12 @@ public partial class App : Application
                     secret = secretKey;
                 }
             }
-
+            
             if (secret == null)
             {
                 return;
             }
-
+            
             AppCenter.Start(secret,
                 typeof(Analytics),
                 typeof(Crashes)
@@ -155,6 +161,8 @@ public partial class App : Application
         }
         catch (Exception e)
         {
+            _logger.LogError(e, "Unable to initialize AppCenter");
+            throw;
         }
     }
 
@@ -173,8 +181,7 @@ public partial class App : Application
     {
         try
         {
-            var logger = GetService<ILogger<App>>();
-            logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+            _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
         }
         catch (Exception)
         {
