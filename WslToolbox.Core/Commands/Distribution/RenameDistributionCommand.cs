@@ -9,7 +9,7 @@ public static class RenameDistributionCommand
     public static event EventHandler DistributionRenameStarted;
     public static event EventHandler DistributionRenameFinished;
 
-    public static async void Execute(DistributionClass distribution, string newName)
+    public static async Task Execute(DistributionClass distribution, string newName)
     {
         ToolboxClass.OnRefreshRequired();
         DistributionRenameStarted?.Invoke(distribution, EventArgs.Empty);

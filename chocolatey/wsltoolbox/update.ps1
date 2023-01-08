@@ -1,21 +1,29 @@
+
 import-module au
 
 $releases = 'https://github.com/FalconNL93/WslToolbox/releases'
-function global:au_GetLatest {
-     $download_page = Invoke-WebRequest -Uri $releases -UseBasicParsing
-     $regex   = '.exe$'
-     $url     = $download_page.links | ? href -match $regex | select -First 1 -expand href
-     $version = $url -split '-|.exe' | select -Last 1 -Skip 2
-     return @{ Version = $version; URL64 = $url }
-}
 
 function global:au_SearchReplace {
-    @{
-        "tools\chocolateyInstall.ps1" = @{
-            "(^[$]url32\s*=\s*)('.*')"      = "`$1'$($Latest.URL64)'"
-            "(^[$]checksum32\s*=\s*)('.*')" = "`$1'$($Latest.Checksum64)'"
+   @{
+        ".\tools\chocolateyInstall.ps1" = @{
+            "(?i)(^\s*url64bit\s*=\s*)('.*')"   = "`$1'$($Latest.URL64)'"
+            "(?i)(^\s*checksum64\s*=\s*)('.*')" = "`$1'$($Latest.Checksum64)'"
         }
     }
 }
 
-Update-Package -ChecksumFor 64 -Force
+function global:au_GetLatest {
+    Write-Output "test";
+    $download_page = Invoke-WebRequest -Uri $releases
+
+    $url64   = $download_page.links | ? href -match '.exe$' | % href | select -First 1
+    Write-Output $url64;
+    $version = (Split-Path ( Split-Path $url64 ) -Leaf)
+
+    @{
+        URL64   = 'https://github.com' + $url64
+        Version = $version
+    }
+}
+
+update

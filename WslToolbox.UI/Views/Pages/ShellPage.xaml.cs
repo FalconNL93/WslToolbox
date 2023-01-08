@@ -43,8 +43,8 @@ public sealed partial class ShellPage : Page
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
         };
-
-        message.Reply(contentDialog);
+        
+        message.Reply(contentDialog.ShowInput());
     }
 
     private void OnShowUpdateDialog(object recipient, UpdateDialogMessage message)

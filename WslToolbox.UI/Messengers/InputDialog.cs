@@ -1,16 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using WslToolbox.UI.Views.Modals;
+using Microsoft.UI.Xaml.Controls;
 
 namespace WslToolbox.UI.Messengers;
 
 public class InputDialogModel
 {
+    public string PrimaryButtonText { get; set; } = "OK";
+    public string SecondaryButtonText { get; set; }
     public string Message { get; set; }
     public string Title { get; set; } = App.Name;
-    public string InputFieldText { get; set; }
+    public string Result { get; set; }
+    public ContentDialogResult ContentDialogResult;
 }
 
-public class InputDialogMessage : RequestMessage<InputDialog>
+public class InputDialogMessage : AsyncRequestMessage<InputDialogModel>
 {
     public InputDialogMessage(InputDialogModel value)
     {

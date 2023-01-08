@@ -12,5 +12,11 @@ public sealed partial class InputDialog : ContentDialog
         InitializeComponent();
     }
 
+    public async Task<InputDialogModel> ShowInput()
+    {
+        ViewModel.ContentDialogResult = await ShowAsync();
+        return ViewModel;
+    }
+
     public InputDialogModel ViewModel { get; set; }
 }

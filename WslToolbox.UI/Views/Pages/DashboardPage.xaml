@@ -44,7 +44,11 @@
                                 <labs:SettingsCard Description="{x:Bind State}" Header="{x:Bind Name}">
                                     <labs:SettingsCard.ContextFlyout>
                                         <CommandBarFlyout x:Name="DistributionContextMenu" ShowMode="Auto">
-                                            <AppBarButton Label="Open folder" Icon="Folder" Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}" />
+                                            <CommandBarFlyout.SecondaryCommands>
+                                                <AppBarButton Label="Open folder" Icon="Folder" Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}" CommandParameter="{Binding BasePathLocal}" />
+                                                <AppBarButton Label="Open shell" Command="{Binding ViewModel.OpenShellDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" />
+                                            </CommandBarFlyout.SecondaryCommands>
+
                                         </CommandBarFlyout>
                                     </labs:SettingsCard.ContextFlyout>
                                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}">

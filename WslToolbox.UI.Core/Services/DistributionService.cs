@@ -25,10 +25,9 @@ public class DistributionService
         _userOptions = userOptions.Value;
     }
 
-    public void RenameDistributions(UpdateModel<Distribution> distribution)
+    public async Task RenameDistributions(UpdateModel<Distribution> distribution)
     {
-        RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel),
-            distribution.NewModel.Name);
+        await RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
     }
 
     public async Task ExportDistribution(Distribution distribution)
@@ -80,6 +79,12 @@ public class DistributionService
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await UnregisterDistributionCommand.Execute(distributionClass);
+    }
+    
+    public void OpenShellDistribution(Distribution distribution)
+    {
+        var distributionClass = _mapper.Map<DistributionClass>(distribution);
+        OpenShellDistributionCommand.Execute(distributionClass);
     }
 
     public async Task<string> OptimizeDistribution(Distribution distribution)

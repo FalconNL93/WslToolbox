@@ -8,6 +8,7 @@ public class Distribution : ObservableRecipient
     public const string StateStopped = "Stopped";
     public const string StateAvailable = "Stopped";
     public const string StateBusy = "Busy";
+    
     private string _state;
 
     public bool IsDefault { get; set; }

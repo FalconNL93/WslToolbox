@@ -44,11 +44,25 @@ public static class MessengerHelper
         }));
     }
 
-    public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger, InputDialogModel viewModel)
+    public static async Task<InputDialogModel> ShowInputDialog(this IMessenger messenger,
+        string title,
+        string message,
+        string initialValue = "",
+        string primaryButtonText = "OK",
+        string secondaryButtonText = ""
+        
+    )
     {
-        var dialogMessenger = messenger.Send(new InputDialogMessage(viewModel));
+        var dialog = await messenger.Send(new InputDialogMessage(new InputDialogModel
+        {
+            Message = message,
+            Title = title,
+            Result = initialValue,
+            PrimaryButtonText = primaryButtonText,
+            SecondaryButtonText = secondaryButtonText
+        }));
 
-        return dialogMessenger.ViewModel;
+        return dialog;
     }
 
     public static async Task ShowStartupDialogAsync(this IMessenger messenger, StartupDialogViewModel viewModel)

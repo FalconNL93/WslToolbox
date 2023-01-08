@@ -40,8 +40,11 @@ public partial class DashboardViewModel : ObservableRecipient
         EventHandlers();
     }
 
-    public bool CanRenameDistribution => false;
-    public bool CanMoveDistribution => false;
+    private static bool DistributionIsRunning(Distribution? distribution) => distribution is {State: "Running"};
+    private static bool DistributionIsStopped(Distribution? distribution) => distribution is {State: "Stopped"};
+    private static bool DistributionIsBusy(Distribution? distribution) => distribution is {State: "Busy"};
+    public static bool CanRenameDistribution => true;
+    public static bool CanMoveDistribution => false;
 
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
@@ -62,9 +65,10 @@ public partial class DashboardViewModel : ObservableRecipient
     private void EventHandlers()
     {
         WslToolbox.Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
-        TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
-        UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
-        OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)
@@ -147,7 +151,13 @@ public partial class DashboardViewModel : ObservableRecipient
         }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(DistributionIsRunning))]
+    private void OpenShellDistribution(Distribution? distribution)
+    {
+        _distributionService.OpenShellDistribution(distribution);
+    }
+
+    [RelayCommand(CanExecute = nameof(DistributionIsStopped))]
     private async Task DeleteDistribution(Distribution? distribution)
     {
         await _distributionService.DeleteDistribution(distribution);
@@ -160,13 +170,13 @@ public partial class DashboardViewModel : ObservableRecipient
         await _distributionService.StartDistribution(distribution);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(DistributionIsRunning))]
     private async Task StopDistribution(Distribution? distribution)
     {
         await _distributionService.StopDistribution(distribution);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(DistributionIsStopped))]
     private async Task StartDistribution(Distribution? distribution)
     {
         await _distributionService.StartDistribution(distribution);
@@ -175,6 +185,18 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanRenameDistribution))]
     private async Task RenameDistribution(Distribution? distribution)
     {
+        var inputRequest = await _messenger.ShowInputDialog("Rename distribution", "Enter a new name for your distribution", distribution.Name);
+        if (inputRequest.ContentDialogResult != ContentDialogResult.Primary || inputRequest.Result == distribution.Name)
+        {
+            return;
+        }
+
+        distribution.Name = inputRequest.Result;
+        await _distributionService.RenameDistributions(new UpdateModel<Distribution>
+        {
+            CurrentModel = distribution,
+            NewModel = distribution
+        });
     }
 
     [RelayCommand(CanExecute = nameof(CanMoveDistribution))]
