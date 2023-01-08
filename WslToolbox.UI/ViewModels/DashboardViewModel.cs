@@ -160,6 +160,12 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(DistributionIsStopped))]
     private async Task DeleteDistribution(Distribution? distribution)
     {
+        var deleteConfirm = await _messenger.ShowDialog("Delete", $"Delete {distribution.Name}?", "Delete", "Cancel");
+        if (deleteConfirm != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
         await _distributionService.DeleteDistribution(distribution);
     }
 
@@ -185,7 +191,7 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanRenameDistribution))]
     private async Task RenameDistribution(Distribution? distribution)
     {
-        var inputRequest = await _messenger.ShowInputDialog("Rename distribution", "Enter a new name for your distribution", distribution.Name);
+        var inputRequest = await _messenger.ShowInputDialog("Rename distribution", "Enter a new name for your distribution", distribution.Name, "Rename", "Cancel");
         if (inputRequest.ContentDialogResult != ContentDialogResult.Primary || inputRequest.Result == distribution.Name)
         {
             return;

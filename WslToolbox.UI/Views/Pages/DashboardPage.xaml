@@ -73,6 +73,8 @@
                                                             <FontIcon Glyph="&#xF12B;" />
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
+                                                    <MenuFlyoutItem Text="Open shell" Command="{Binding ViewModel.OpenShellDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" />
+                                                    <MenuFlyoutSeparator />
                                                     <MenuFlyoutItem Text="Export" Command="{Binding ViewModel.MoveDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xEDE1;" />
@@ -88,6 +90,7 @@
                                                             <FontIcon Glyph="&#xE8AC;" />
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
+                                                    <MenuFlyoutSeparator />
                                                     <MenuFlyoutItem Text="Delete" Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding }">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE74D;" />
