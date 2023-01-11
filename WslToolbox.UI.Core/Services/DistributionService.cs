@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Core.Commands.Service;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Core.Services;
@@ -30,10 +31,14 @@ public class DistributionService
         await RenameDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution.CurrentModel), distribution.NewModel.Name);
     }
 
-    public async Task ExportDistribution(Distribution distribution)
+    public async Task ExportDistribution(Distribution distribution, string path)
     {
-        await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution),
-            "C:\\Users\\Peter\\Downloads\\export\\blabla.tar.gz");
+        await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution), path);
+    }
+    
+    public async Task ImportDistribution(NewDistributionModel model)
+    {
+        await ImportDistributionCommand.Execute(model.Name, model.InstallPath, model.File);
     }
 
     public async Task<IEnumerable<Distribution>> ListDistributions()

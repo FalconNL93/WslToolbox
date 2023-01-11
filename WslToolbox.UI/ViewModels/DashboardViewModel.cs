@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.UI.Core.Commands;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Extensions;
@@ -69,6 +71,11 @@ public partial class DashboardViewModel : ObservableRecipient
         WslToolbox.Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameFinished += OnReloadExecution;
         WslToolbox.Core.Commands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
         WslToolbox.Core.Commands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
+        
+        WslToolbox.Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted += OnReloadExecution;
+        WslToolbox.Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)
@@ -208,5 +215,58 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanMoveDistribution))]
     private async Task MoveDistribution(Distribution? distribution)
     {
+    }
+    
+    [RelayCommand]
+    private async Task ExportDistribution(Distribution? distribution)
+    {
+        var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
+        {
+            { "TAR GZ", FileExtensions.TarGz },
+        });
+        
+        var exportPath = DialogHelper.ShowSaveFileDialog(new SaveFileDialog
+        {
+            DefaultExt = FileExtensions.TarGz,
+            FileName = distribution.Name,
+            Filter = filter,
+            Title = $"Export {distribution.Name}",
+        });
+
+        if (exportPath.Result != DialogResult.OK)
+        {
+            return;
+        }
+        
+        await _distributionService.ExportDistribution(distribution, exportPath.Dialog.FileName);
+    }
+    
+    [RelayCommand]
+    private async Task ImportDistribution()
+    {
+        var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
+        {
+            { "TAR GZ", FileExtensions.TarGz },
+        });
+        
+        var importPath = DialogHelper.ShowOpenFileDialog(new OpenFileDialog
+        {
+            DefaultExt = FileExtensions.TarGz,
+            Filter = filter,
+            Title = "Import distribution",
+        });
+
+        if (importPath.Result != DialogResult.OK)
+        {
+            return;
+        }
+        
+        var name =  Path.GetFileNameWithoutExtension(importPath.Dialog.FileName);
+        await _distributionService.ImportDistribution(new NewDistributionModel
+        {
+            Name = name,
+            InstallPath = Path.GetDirectoryName(importPath.Dialog.FileName),
+            File = Path.GetFullPath(importPath.Dialog.FileName)
+        });
     }
 }

@@ -31,6 +31,7 @@
                                 <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributionCommand}" />
                                 <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistributionCommand}" />
                                 <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Icon="Play" Text="Import" Command="{x:Bind ViewModel.ImportDistributionCommand}" />
                                 <MenuFlyoutItem Text="Open WSL app in Windows Store" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="https://aka.ms/wslstorepage" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
@@ -75,7 +76,7 @@
                                                     </MenuFlyoutItem>
                                                     <MenuFlyoutItem Text="Open shell" Command="{Binding ViewModel.OpenShellDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}" />
                                                     <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem Text="Export" Command="{Binding ViewModel.MoveDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
+                                                    <MenuFlyoutItem Text="Export" Command="{Binding ViewModel.ExportDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xEDE1;" />
                                                         </MenuFlyoutItem.Icon>

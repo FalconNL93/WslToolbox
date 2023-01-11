@@ -10,20 +10,17 @@ public static class ImportDistributionCommand
     public static event EventHandler DistributionImportStarted;
     public static event EventHandler DistributionImportFinished;
 
-    public static async void Execute(string name, string path, string file)
+    public static async Task Execute(string name, string installPath, string file)
     {
-        var fireImportEvent = FireImportEvent(name);
-        var importTask = ImportAsync(name, path, file);
-
-        await Task.WhenAll(fireImportEvent, importTask);
+        await Task.WhenAll(FireImportEvent(name), ImportAsync(name, installPath, file));
         ToolboxClass.OnRefreshRequired();
         DistributionImportFinished?.Invoke(name, EventArgs.Empty);
     }
 
-    private static async Task<CommandClass> ImportAsync(string name, string path, string file)
+    private static async Task<CommandClass> ImportAsync(string name, string installPath, string file)
     {
         var importTask = await Task.Run(() => CommandClass.ExecuteCommand(string.Format(
-            Command, name, path, file
+            Command, name, installPath, file
         ))).ConfigureAwait(true);
 
         return importTask;
