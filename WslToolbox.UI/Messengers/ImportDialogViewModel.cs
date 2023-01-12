@@ -9,27 +9,24 @@ namespace WslToolbox.UI.Messengers;
 
 public partial class ImportDialogViewModel : ObservableRecipient
 {
-    public string Name { get; set; }
-    public string Directory { get; set; }
+    [ObservableProperty]
+    private string _name;
+
+    [ObservableProperty]
+    private string _directory;
+
     public ContentDialogResult ContentDialogResult;
 
     [RelayCommand]
-    private void BrowseFolder()
+    private void BrowseFolder(string initialDirectory)
     {
-        try
+        var browseFolder = DialogHelper.ShowSelectFolderDialog(initialDirectory);
+        if (browseFolder.Result != DialogResult.OK)
         {
-            var browseFolder = DialogHelper.ShowSelectFolderDialog();
-            if (browseFolder.Result != DialogResult.OK)
-            {
-                return;
-            }
-
-            Directory = browseFolder.Dialog.SelectedPath;
+            return;
         }
-        catch (Exception e)
-        {
 
-        }
+        Directory = browseFolder.Dialog.SelectedPath;
     }
 }
 

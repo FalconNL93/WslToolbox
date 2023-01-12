@@ -8,9 +8,13 @@ public class DialogResult<T>
 
 public class DialogHelper
 {
-    public static DialogResult<FolderBrowserDialog> ShowSelectFolderDialog()
+    public static DialogResult<FolderBrowserDialog> ShowSelectFolderDialog(string initialDirectory)
     {
-        using var dialog = new FolderBrowserDialog();
+        using var dialog = new FolderBrowserDialog
+        {
+            InitialDirectory = initialDirectory
+        };
+        
         return new DialogResult<FolderBrowserDialog>
         {
             Result = dialog.ShowDialog(),

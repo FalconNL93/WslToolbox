@@ -270,7 +270,10 @@ public partial class DashboardViewModel : ObservableRecipient
         }
 
         var importSettings = await _messenger.ShowImportDialog(fileName, fileInfo.DirectoryName);
-
+        if (importSettings.ContentDialogResult != ContentDialogResult.Primary)
+        {
+            return;
+        }
 
         _logger.LogInformation("Trying to import {File} as {Name} ({Bytes})", fileInfo.FullName, importSettings.Name, fileInfo.Length);
         await _distributionService.ImportDistribution(new NewDistributionModel
