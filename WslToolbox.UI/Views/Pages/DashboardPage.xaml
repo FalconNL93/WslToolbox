@@ -22,7 +22,14 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Spacing="{StaticResource DefaultSpacing}">
-                    <Button Content="Add" MinWidth="{StaticResource ButtonMinWidth}" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
+                    <DropDownButton Content="Add" MinWidth="{StaticResource ButtonMinWidth}">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem Text="New" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
+                                <MenuFlyoutItem Icon="Import" Text="Import" Command="{x:Bind ViewModel.ImportDistributionCommand}" CommandParameter="{x:Bind}" />
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                     <Button Command="{x:Bind ViewModel.RefreshDistributionsCommand}" Content="Refresh" MinWidth="{StaticResource ButtonMinWidth}" />
                     <DropDownButton Content="Other" MinWidth="{StaticResource ButtonMinWidth}">
                         <DropDownButton.Flyout>
@@ -31,7 +38,6 @@
                                 <MenuFlyoutItem Icon="Stop" Text="Stop all" Command="{x:Bind ViewModel.StopAllDistributionCommand}" />
                                 <MenuFlyoutItem Icon="Refresh" Text="Restart all" Command="{x:Bind ViewModel.RestartAllDistributionCommand}" />
                                 <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Icon="Play" Text="Import" Command="{x:Bind ViewModel.ImportDistributionCommand}" />
                                 <MenuFlyoutItem Text="Open WSL app in Windows Store" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="https://aka.ms/wslstorepage" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>

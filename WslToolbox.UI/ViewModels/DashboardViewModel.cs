@@ -260,13 +260,25 @@ public partial class DashboardViewModel : ObservableRecipient
         {
             return;
         }
-        
-        var name =  Path.GetFileNameWithoutExtension(importPath.Dialog.FileName);
+
+        var importFile = Path.GetFullPath(importPath.Dialog.FileName);
+        var fileName = Path.GetFileNameWithoutExtension(importFile);
+        var fileInfo = new FileInfo(importFile);
+        if (fileInfo.DirectoryName == null)
+        {
+            return;
+        }
+
+        var importSettings = await _messenger.ShowImportDialog(fileName, fileInfo.DirectoryName);
+
+
+        _logger.LogInformation("Trying to import {File} as {Name} ({Bytes})", fileInfo.FullName, importSettings.Name, fileInfo.Length);
         await _distributionService.ImportDistribution(new NewDistributionModel
         {
-            Name = name,
-            InstallPath = Path.GetDirectoryName(importPath.Dialog.FileName),
-            File = Path.GetFullPath(importPath.Dialog.FileName)
+            Name = importSettings.Name,
+            InstallPath = fileInfo.DirectoryName,
+            File = importFile
         });
+        _logger.LogInformation("Imported {File} as {Name}", fileInfo.FullName, importSettings.Name);
     }
 }

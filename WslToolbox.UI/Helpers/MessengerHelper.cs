@@ -87,4 +87,15 @@ public static class MessengerHelper
             Message = message
         }));
     }
+    
+    public static async Task<ImportDialogViewModel> ShowImportDialog(this IMessenger messenger, string name, string directory)
+    {
+        var dialog = await messenger.Send(new ImportDialogMessage(new ImportDialogViewModel
+        {
+            Name = name,
+            Directory = directory
+        }));
+
+        return dialog;
+    }
 }
