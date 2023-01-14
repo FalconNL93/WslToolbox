@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Views.Pages;
@@ -12,6 +14,18 @@ public sealed partial class DashboardPage : Page
         InitializeComponent();
 
         ViewModel.RefreshDistributionsCommand.Execute(null);
+        WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(ViewModel, OnShowInfoBar);
+    }
+
+    private void OnShowInfoBar(object recipient, InfoBarChangedMessage message)
+    {
+        var infoBarModel = message.Value;
+        InfoBar.IsOpen = infoBarModel.IsOpen;
+        InfoBar.IsClosable = infoBarModel.IsClosable;
+        InfoBar.IsIconVisible = infoBarModel.IsIconVisible;
+        InfoBar.Severity = infoBarModel.Severity;
+        InfoBar.Title = infoBarModel.Title;
+        InfoBar.Message = infoBarModel.Message;
     }
 
     public DashboardViewModel ViewModel { get; }

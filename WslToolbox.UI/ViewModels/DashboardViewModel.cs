@@ -113,13 +113,19 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand]
     private async Task AddDistribution(Page page)
     {
+        _messenger.ShowInfoBar("Fetching available distributions...");
         var available = await _distributionService.ListInstallableDistributions();
+        _messenger.HideInfoBar();
         var distributions = available.Where(x => !x.IsInstalled).ToList();
+        if (!distributions.Any())
+        {
+            _messenger.ShowInfoBar("No distributions available for installation", InfoBarSeverity.Warning);
+            return;
+        }
+        
         try
         {
-            var installDistribution = await page.ShowModal<AddDistribution>(
-                distributions, "Add distribution", "Add");
-
+            var installDistribution = await page.ShowModal<AddDistribution>(distributions, "Add distribution", "Add");
             if (installDistribution.Modal == null || installDistribution.ContentDialogResult != ContentDialogResult.Primary)
             {
                 return;
@@ -129,6 +135,7 @@ public partial class DashboardViewModel : ObservableRecipient
         }
         catch (Exception e)
         {
+            _messenger.ShowInfoBar("No distributions available for installation", InfoBarSeverity.Error);
             _logger.LogError(e, "Could not start {Message}", e.Message);
         }
     }
@@ -215,6 +222,7 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanMoveDistribution))]
     private async Task MoveDistribution(Distribution? distribution)
     {
+        var moveSettings = await _messenger.ShowMoveDialog(distribution);
     }
     
     [RelayCommand]

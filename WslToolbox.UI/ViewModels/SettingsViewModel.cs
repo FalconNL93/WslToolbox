@@ -26,6 +26,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
     public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
+    public readonly AppCenterOptions AppCenterOptions;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -46,7 +47,9 @@ public partial class SettingsViewModel : ObservableRecipient
         AppNotificationService notificationService,
         UpdateService updateService,
         IMessenger messenger,
-        ILogger<SettingsViewModel> logger)
+        ILogger<SettingsViewModel> logger,
+        IOptions<AppCenterOptions> appCenterOptions
+    )
     {
         _themeSelectorService = themeSelectorService;
         _configurationService = configurationService;
@@ -54,6 +57,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _updateService = updateService;
         _messenger = messenger;
         _logger = logger;
+        AppCenterOptions = appCenterOptions.Value;
         _elementTheme = _themeSelectorService.Theme;
 
         NotificationOptions = notificationOptions.Value;

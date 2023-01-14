@@ -55,7 +55,8 @@ public partial class App : Application
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(Toolbox.LogFile, LogEventLevel.Debug)
             .CreateLogger();
-
+        
+        Log.Logger.Information("Initializing");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration(c =>
             {
@@ -110,9 +111,22 @@ public partial class App : Application
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
                 services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
+                services.Configure<AppCenterOptions>(c => c.IsEnabled = false);
             }).Build();
         
         _logger = GetService<ILogger<App>>();
+        try
+        {
+            var appCenterInit = InitializeAppCenter();
+            var appCenter = GetService<IOptions<AppCenterOptions>>();
+            appCenter.Value.IsEnabled = appCenterInit;
+            _logger.LogInformation("App Center Enabled: {AppCenter}", appCenterInit);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to initialize App Center");
+        }
+        
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -122,14 +136,14 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    private void ConfigureAppCenter()
+    private bool InitializeAppCenter()
     {
         try
         {
             var runConfiguration = GetService<IOptions<UserOptions>>().Value;
             if (!runConfiguration.Analytics )
             {
-                return;
+                return false;
             }
             
             var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
@@ -145,18 +159,20 @@ public partial class App : Application
             
             if (secret == null)
             {
-                return;
+                return false;
             }
             
             AppCenter.Start(secret,
                 typeof(Analytics),
                 typeof(Crashes)
             );
+
+            return true;
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Unable to initialize AppCenter");
-            throw;
+            return false;
         }
     }
 

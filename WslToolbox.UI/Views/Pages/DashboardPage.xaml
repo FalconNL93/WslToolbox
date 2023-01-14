@@ -5,13 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
-    xmlns:converters="using:WslToolbox.UI.Converters"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:c="using:WslToolbox.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     x:Name="DbPg"
     mc:Ignorable="d"
     Loaded="OnLoaded">
     <Page.Resources>
-        <converters:InverseBooleanConverter x:Key="InverseBoolean" />
+        <c:InverseBooleanConverter x:Key="InverseBoolean" />
+        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -19,13 +21,14 @@
             <Grid VerticalAlignment="Top" Margin="{StaticResource SmallBottomMargin}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Spacing="{StaticResource DefaultSpacing}">
                     <DropDownButton Content="Add" MinWidth="{StaticResource ButtonMinWidth}">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Text="New" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
+                                <MenuFlyoutItem Text="Install" Command="{x:Bind ViewModel.AddDistributionCommand}" CommandParameter="{x:Bind}" />
                                 <MenuFlyoutItem Icon="Import" Text="Import" Command="{x:Bind ViewModel.ImportDistributionCommand}" CommandParameter="{x:Bind}" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
@@ -43,8 +46,10 @@
                         </DropDownButton.Flyout>
                     </DropDownButton>
                 </StackPanel>
-
-                <Grid Row="1" Margin="{StaticResource SmallTopMargin}">
+                <Grid Grid.Row="1" Visibility="{x:Bind InfoBar.IsOpen, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+                    <InfoBar Name="InfoBar" Margin="{StaticResource SmallTopMargin}"  />
+                </Grid>
+                <ScrollViewer Grid.Row="2" Margin="{StaticResource SmallTopMargin}">
                     <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:Distribution">
@@ -111,7 +116,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </Grid>
+                </ScrollViewer>
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -9,6 +9,6 @@ public class SimpleDialogModel
     public string PrimaryButtonText { get; set; } = "Close";
     public string SecondaryButtonText { get; set; }
 
-    public IRelayCommand PrimaryButtonCommand { get; set; }
-    public IRelayCommand SecondaryButtonCommand { get; set; }
+    public IRelayCommand? PrimaryButtonCommand { get; set; }
+    public IRelayCommand? SecondaryButtonCommand { get; set; }
 }

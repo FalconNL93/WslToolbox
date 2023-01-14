@@ -32,6 +32,7 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<UpdateDialogMessage>(this, OnShowUpdateDialog);
         WeakReferenceMessenger.Default.Register<StartupDialogShowMessage>(this, OnShowStartupDialog);
         WeakReferenceMessenger.Default.Register<ImportDialogMessage>(this, OnShowImportDialog);
+        WeakReferenceMessenger.Default.Register<MoveDialogMessage>(this, OnShowMoveDialog);
     }
 
     public ShellViewModel ViewModel { get; }
@@ -51,6 +52,17 @@ public sealed partial class ShellPage : Page
     private void OnShowImportDialog(object recipient, ImportDialogMessage message)
     {
         var contentDialog = new ImportDistribution(message.ViewViewModel)
+        {
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            XamlRoot = XamlRoot
+        };
+        
+        message.Reply(contentDialog.ShowInput());
+    }
+    
+    private void OnShowMoveDialog(object recipient, MoveDialogMessage message)
+    {
+        var contentDialog = new MoveDialog(message.ViewViewModel)
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
@@ -92,7 +104,6 @@ public sealed partial class ShellPage : Page
 
         message.Reply(contentDialog.ShowAsync().AsTask());
     }
-
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {

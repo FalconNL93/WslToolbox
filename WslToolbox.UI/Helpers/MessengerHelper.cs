@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.Models;
 using WslToolbox.UI.ViewModels;
@@ -8,7 +9,7 @@ namespace WslToolbox.UI.Helpers;
 
 public static class MessengerHelper
 {
-    public static void ShowInfoBar(this IMessenger messenger, string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational)
+    public static void ShowInfoBar(this IMessenger messenger, string message, InfoBarSeverity severity = InfoBarSeverity.Informational, string title = "")
     {
         messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
@@ -19,6 +20,11 @@ public static class MessengerHelper
             Title = title,
             Message = message
         }));
+    }
+
+    public static void HideInfoBar(this IMessenger messenger)
+    {
+        messenger.Send(new InfoBarChangedMessage(new InfoBarModel {IsOpen = false}));
     }
 
     public static async Task<ContentDialogResult> ShowDialog(this IMessenger messenger, SimpleDialogModel viewModel)
@@ -50,7 +56,6 @@ public static class MessengerHelper
         string initialValue = "",
         string primaryButtonText = "OK",
         string secondaryButtonText = ""
-        
     )
     {
         var dialog = await messenger.Send(new InputDialogMessage(new InputDialogModel
@@ -87,13 +92,23 @@ public static class MessengerHelper
             Message = message
         }));
     }
-    
+
     public static async Task<ImportDialogViewModel> ShowImportDialog(this IMessenger messenger, string name, string directory)
     {
         var dialog = await messenger.Send(new ImportDialogMessage(new ImportDialogViewModel
         {
             Name = name,
             Directory = directory
+        }));
+
+        return dialog;
+    }
+
+    public static async Task<MoveDialogViewModel> ShowMoveDialog(this IMessenger messenger, Distribution distribution)
+    {
+        var dialog = await messenger.Send(new MoveDialogMessage(new MoveDialogViewModel
+        {
+            Distribution = distribution
         }));
 
         return dialog;
