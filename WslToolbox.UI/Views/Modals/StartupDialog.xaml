@@ -11,7 +11,7 @@
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
     </ContentDialog.Resources>
     <Grid>
-        <StackPanel Spacing="20" MinWidth="760">
+        <StackPanel Spacing="20">
             <StackPanel Spacing="4">
                 <TextBlock Text="Welcome to the WSL Toolbox Beta, lets setup some quick options." Margin="0,0,0,4"
                            TextWrapping="Wrap" />
