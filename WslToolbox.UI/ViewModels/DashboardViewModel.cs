@@ -32,7 +32,8 @@ public partial class DashboardViewModel : ObservableRecipient
         DistributionService distributionService,
         ILogger<DashboardViewModel> logger,
         IMessenger messenger,
-        IOptions<UserOptions> userOptions)
+        IOptions<UserOptions> userOptions
+    )
     {
         _distributionService = distributionService;
         _logger = logger;

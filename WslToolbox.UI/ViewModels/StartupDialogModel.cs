@@ -8,12 +8,15 @@ namespace WslToolbox.UI.ViewModels;
 public partial class StartupDialogViewModel
 {
     private readonly IConfigurationService _configurationService;
+    public readonly AppCenterOptions AppCenterOptions;
     public readonly UserOptions UserOptions;
 
     public StartupDialogViewModel(IConfigurationService configurationService,
-        IOptions<UserOptions> userOptions)
+        IOptions<UserOptions> userOptions,
+        IOptions<AppCenterOptions> appCenterOptions)
     {
         _configurationService = configurationService;
+        AppCenterOptions = appCenterOptions.Value;
         UserOptions = userOptions.Value;
     }
 

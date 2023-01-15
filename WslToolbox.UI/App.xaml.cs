@@ -111,7 +111,7 @@ public partial class App : Application
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
                 services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
-                services.Configure<AppCenterOptions>(c => c.IsEnabled = false);
+                services.Configure<AppCenterOptions>(c => c.IsAvailable = false);
             }).Build();
         
         _logger = GetService<ILogger<App>>();
@@ -119,7 +119,7 @@ public partial class App : Application
         {
             var appCenterInit = InitializeAppCenter();
             var appCenter = GetService<IOptions<AppCenterOptions>>();
-            appCenter.Value.IsEnabled = appCenterInit;
+            appCenter.Value.IsAvailable = appCenterInit;
             _logger.LogInformation("App Center Enabled: {AppCenter}", appCenterInit);
         }
         catch (Exception e)

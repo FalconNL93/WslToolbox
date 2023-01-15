@@ -44,7 +44,7 @@
                             </labs:SettingsCard.HeaderIcon>
                             <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}" SelectionChanged="OnThemeSelectionChanged" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Description="Enable application analytics" Header="Analytics" Visibility="{x:Bind ViewModel.AppCenterOptions.IsEnabled, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                        <labs:SettingsCard Description="Enable application analytics" Header="Analytics" Visibility="{x:Bind ViewModel.AppCenterOptions.IsAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
                         </labs:SettingsCard>
                         <labs:SettingsCard Description="Enable application notifications" Header="Notifications">
