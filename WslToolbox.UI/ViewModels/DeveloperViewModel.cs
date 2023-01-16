@@ -37,6 +37,11 @@ public partial class DeveloperViewModel : ObservableRecipient
         _downloadService = downloadService;
         _updateService = updateService;
 
+        DownloadService.ProgressChanged += (_, args) =>
+        {
+            _messenger.ProgressChanged(args);
+        };
+
 #if DEBUG
         IsDebug = true;
 #endif
@@ -54,9 +59,9 @@ public partial class DeveloperViewModel : ObservableRecipient
     [RelayCommand]
     private async Task DownloadUpdate()
     {
+        _messenger.ShowInfoBar();
         var updateManifest = await _updateService.GetUpdateDetails();
         var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
-
-        ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
+        
     }
 }

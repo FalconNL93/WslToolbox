@@ -1,5 +1,8 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Views.Pages;
@@ -10,6 +13,17 @@ public sealed partial class DeveloperPage : Page
     {
         ViewModel = App.GetService<DeveloperViewModel>();
         InitializeComponent();
+        
+        WeakReferenceMessenger.Default.Register<ProgressChangedMessage>(this, OnShowInfoBar);
+    }
+
+    private void OnShowInfoBar(object recipient, ProgressChangedMessage message)
+    {
+        App.MainWindow.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, () =>
+        {
+            PageBarText.Maximum = message.Value.TotalBytes;
+            PageBarText.Value = message.Value.Progress; 
+        });
     }
 
     public DeveloperViewModel ViewModel { get; }

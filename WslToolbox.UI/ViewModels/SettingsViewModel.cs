@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
@@ -23,6 +24,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly AppNotificationService _notificationService;
     private readonly IMessenger _messenger;
     private readonly ILogger<SettingsViewModel> _logger;
+    private readonly DownloadService _downloadService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
     public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
@@ -48,7 +50,8 @@ public partial class SettingsViewModel : ObservableRecipient
         UpdateService updateService,
         IMessenger messenger,
         ILogger<SettingsViewModel> logger,
-        IOptions<AppCenterOptions> appCenterOptions
+        IOptions<AppCenterOptions> appCenterOptions,
+        DownloadService downloadService
     )
     {
         _themeSelectorService = themeSelectorService;
@@ -57,6 +60,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _updateService = updateService;
         _messenger = messenger;
         _logger = logger;
+        _downloadService = downloadService;
         AppCenterOptions = appCenterOptions.Value;
         _elementTheme = _themeSelectorService.Theme;
 
@@ -73,10 +77,10 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 
-
     [RelayCommand]
     private async Task CheckForUpdates()
     {
+        Analytics.TrackEvent(nameof(CheckForUpdates));
         UpdaterResult = new UpdateResultModel {IsChecking = true};
 
         await Task.Delay(TimeSpan.FromSeconds(2));
@@ -84,11 +88,11 @@ public partial class SettingsViewModel : ObservableRecipient
 
         if (UpdaterResult.HasError)
         {
-            _messenger.ShowUpdateInfoBar("Error", "Could not retrieve update information", InfoBarSeverity.Error);
+            _messenger.ShowUpdateInfoBar("Could not retrieve update information", "Error", InfoBarSeverity.Error);
         }
         else if (UpdaterResult.UpdateAvailable)
         {
-            _messenger.ShowUpdateInfoBar("Update available", "A new update is available", InfoBarSeverity.Success);
+            _messenger.ShowUpdateInfoBar("A new update is available", "Update available", InfoBarSeverity.Success);
             _notificationService.Show(UpdateNotification.UpdatesAvailable(UpdaterResult));
             var result = await _messenger.ShowUpdateDialog(new UpdateViewModel
             {
@@ -99,12 +103,30 @@ public partial class SettingsViewModel : ObservableRecipient
 
             if (result == ContentDialogResult.Primary)
             {
+                if (Toolbox.GetAppType() == Toolbox.AppTypes.Setup)
+                {
+                    _messenger.ShowUpdateInfoBar("Downloading update file...");
+                    try
+                    {
+                        var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
+                        _messenger.ShowUpdateInfoBar("Starting updater...");
+                        ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
+                    }
+                    catch (Exception e)
+                    {
+                        _messenger.ShowUpdateInfoBar("Could not download update file", severity: InfoBarSeverity.Error);
+                        _logger.LogError(e, "Could not download update file");
+                    }
+                    
+                    return;
+                }
+
                 ShellHelper.OpenUrl(UpdaterResult.DownloadUri);
             }
         }
         else
         {
-            _messenger.ShowUpdateInfoBar("No new updates", "You are running the latest version", InfoBarSeverity.Success);
+            _messenger.ShowUpdateInfoBar("You are running the latest version", "No new updates", InfoBarSeverity.Success);
             _notificationService.Show(UpdateNotification.NoUpdatesNotification);
         }
     }

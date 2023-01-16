@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.Models;
 using WslToolbox.UI.ViewModels;
@@ -9,7 +10,7 @@ namespace WslToolbox.UI.Helpers;
 
 public static class MessengerHelper
 {
-    public static void ShowInfoBar(this IMessenger messenger, string message, InfoBarSeverity severity = InfoBarSeverity.Informational, string title = "")
+    public static void ShowInfoBar(this IMessenger messenger, string? message = null, InfoBarSeverity severity = InfoBarSeverity.Informational, string title = "")
     {
         messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
@@ -20,6 +21,11 @@ public static class MessengerHelper
             Title = title,
             Message = message
         }));
+    }
+
+    public static void ProgressChanged(this IMessenger messenger, UserProgressChangedEventArgs userProgress)
+    {
+        messenger.Send(new ProgressChangedMessage(userProgress));
     }
 
     public static void HideInfoBar(this IMessenger messenger)
@@ -80,7 +86,7 @@ public static class MessengerHelper
         return await messenger.Send(new UpdateDialogMessage(viewModel));
     }
 
-    public static void ShowUpdateInfoBar(this IMessenger messenger, string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational)
+    public static void ShowUpdateInfoBar(this IMessenger messenger, string message, string title = "", InfoBarSeverity severity = InfoBarSeverity.Informational)
     {
         messenger.Send(new UpdateInfoBarChangedMessage(new InfoBarModel
         {

@@ -124,7 +124,6 @@ public partial class App : Application
 
 
         _logger = GetService<ILogger<App>>();
-        _logger.LogError("test");
         try
         {
             var appCenterInit = InitializeAppCenter();
@@ -137,7 +136,7 @@ public partial class App : Application
         {
             _logger.LogDebug(e, "Failed to initialize App Center");
         }
-
+        
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;

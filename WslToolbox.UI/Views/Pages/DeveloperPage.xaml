@@ -27,7 +27,10 @@
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
                         </labs:SettingsCard.HeaderIcon>
-                        <Button Content="Download" Command="{x:Bind ViewModel.DownloadUpdateCommand}" />
+                        <StackPanel Orientation="Horizontal">
+                            <ProgressBar Name="PageBarText" />
+                            <Button Content="Download" Command="{x:Bind ViewModel.DownloadUpdateCommand}" />
+                        </StackPanel>
                         
                     </labs:SettingsCard>
                     <labs:SettingsCard Description="Show startup dialog" Header="Dialogs">
@@ -36,6 +39,7 @@
                         </labs:SettingsCard.HeaderIcon>
                         <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
                     </labs:SettingsCard>
+                    
                 </StackPanel>
             </Grid>
         </ScrollViewer>
