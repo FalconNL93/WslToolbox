@@ -2,6 +2,13 @@
 
 namespace WslToolbox.UI.Core.Models;
 
+public enum AppCenterStates
+{
+    IsUnavailable,
+    IsAvailable,
+    IsEnabled
+}
+
 public partial class AppCenterOptions : ObservableRecipient
 {
     [ObservableProperty]

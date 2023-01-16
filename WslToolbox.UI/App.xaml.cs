@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using Serilog;
-using Serilog.Events;
 using WslToolbox.UI.Activation;
 using WslToolbox.UI.Attributes;
 using WslToolbox.UI.Contracts.Services;
@@ -52,15 +51,24 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(Toolbox.UserConfiguration, optional: true, reloadOnChange: true)
+            .AddJsonFile(Toolbox.LogConfiguration, optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+        
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.File(Toolbox.LogFile, LogEventLevel.Debug)
+            .MinimumLevel.Error()
+            .ReadFrom.Configuration(configuration)
+            .WriteTo.File(Toolbox.LogFile)
             .CreateLogger();
         
-        Log.Logger.Information("Initializing");
+        Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(c =>
+            .ConfigureAppConfiguration(builder =>
             {
-                c.AddJsonFile(Toolbox.UserConfiguration, true);
+                builder.AddConfiguration(configuration);
             })
             .UseContentRoot(AppContext.BaseDirectory)
             .UseSerilog()
@@ -113,20 +121,23 @@ public partial class App : Application
                 services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
                 services.Configure<AppCenterOptions>(c => c.IsAvailable = false);
             }).Build();
-        
+
+
         _logger = GetService<ILogger<App>>();
+        _logger.LogError("test");
         try
         {
             var appCenterInit = InitializeAppCenter();
             var appCenter = GetService<IOptions<AppCenterOptions>>();
-            appCenter.Value.IsAvailable = appCenterInit;
-            _logger.LogInformation("App Center Enabled: {AppCenter}", appCenterInit);
+            appCenter.Value.IsAvailable = appCenterInit is AppCenterStates.IsAvailable or AppCenterStates.IsEnabled;
+            _logger.LogDebug("AppType: {AppType}", Toolbox.GetAppType());
+            _logger.LogDebug("AppCenterState: {AppCenter}", appCenterInit);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to initialize App Center");
+            _logger.LogDebug(e, "Failed to initialize App Center");
         }
-        
+
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -136,16 +147,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    private bool InitializeAppCenter()
+    private AppCenterStates InitializeAppCenter()
     {
         try
         {
-            var runConfiguration = GetService<IOptions<UserOptions>>().Value;
-            if (!runConfiguration.Analytics )
-            {
-                return false;
-            }
-            
             var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null && entryAssembly.GetCustomAttribute<AppCenterAttribute>() != null)
@@ -156,23 +161,29 @@ public partial class App : Application
                     secret = secretKey;
                 }
             }
-            
+
             if (secret == null)
             {
-                return false;
+                return AppCenterStates.IsUnavailable;
             }
-            
+
+            var runConfiguration = GetService<IOptions<UserOptions>>().Value;
+            if (!runConfiguration.Analytics)
+            {
+                return AppCenterStates.IsAvailable;
+            }
+
             AppCenter.Start(secret,
                 typeof(Analytics),
                 typeof(Crashes)
             );
 
-            return true;
+            return AppCenterStates.IsEnabled;
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Unable to initialize AppCenter");
-            return false;
+            return AppCenterStates.IsUnavailable;
         }
     }
 

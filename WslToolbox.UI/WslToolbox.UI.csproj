@@ -68,6 +68,7 @@
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
         <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.1-dev-00077" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
         <PackageReference Include="WinUIEx" Version="2.1.0" />
     </ItemGroup>
 
