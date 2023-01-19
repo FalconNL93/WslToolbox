@@ -1,6 +1,5 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using WslToolbox.UI.Core.Services;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using WslToolbox.UI.Core.Args;
 
 namespace WslToolbox.UI.Messengers;
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Core.Args;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Messengers;

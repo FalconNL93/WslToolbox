@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
@@ -13,6 +14,7 @@ using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Models;
 using WslToolbox.UI.Notifications;
 using WslToolbox.UI.Services;
 
@@ -41,6 +43,9 @@ public partial class SettingsViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool _updateServiceAvailable;
+
+    [ObservableProperty]
+    private DownloadUpdateModel _updateModel = new();
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IConfigurationService configurationService,
@@ -117,7 +122,7 @@ public partial class SettingsViewModel : ObservableRecipient
                         _messenger.ShowUpdateInfoBar("Could not download update file", severity: InfoBarSeverity.Error);
                         _logger.LogError(e, "Could not download update file");
                     }
-                    
+
                     return;
                 }
 

@@ -21,8 +21,10 @@ public sealed partial class DeveloperPage : Page
     {
         App.MainWindow.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, () =>
         {
-            PageBarText.Maximum = message.Value.TotalBytes;
-            PageBarText.Value = message.Value.Progress; 
+            DownloadProgressBar.Maximum = message.Value.TotalBytes;
+            DownloadProgressBar.Value = message.Value.TotalBytesDownloaded;
+
+            DownloadProgress.Text = $"{message.Value.TotalBytesDownloadedHuman} / {message.Value.TotalBytesHuman}";
         });
     }
 

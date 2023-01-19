@@ -38,12 +38,14 @@
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Appearance and behaviour" />
+                        
                         <labs:SettingsCard Description="Change the theme of the application" Header="Theme">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE790;" />
                             </labs:SettingsCard.HeaderIcon>
                             <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}" SelectionChanged="OnThemeSelectionChanged" />
                         </labs:SettingsCard>
+                        
                         <labs:SettingsCard Description="Enable application analytics" Header="Analytics" Visibility="{x:Bind ViewModel.AppCenterOptions.IsAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
                         </labs:SettingsCard>
@@ -53,6 +55,7 @@
                             </labs:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Notifications, Mode=TwoWay}" />
                         </labs:SettingsCard>
+                        
                         <labs:SettingsExpander Description="Enable or disable specific notifications" 
                                                Header="Notifications" IsEnabled="{x:Bind ViewModel.UserOptions.Notifications, Mode=OneWay}" Visibility="Collapsed">
                             <labs:SettingsExpander.HeaderIcon>
