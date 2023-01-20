@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WslToolbox.UI.Core.Args;
-using WslToolbox.UI.Core.Models;
-using System;
 using WslToolbox.UI.Core.Extensions;
+using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Core.Services;
 
@@ -25,10 +24,10 @@ public class DownloadService
         var cancellationToken = new CancellationToken();
         var tempFile = Path.GetTempFileName();
         _logger.LogDebug("Assigned file for download {TempFile}", tempFile);
-        
-        await using var fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true);
+
+        await using var fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
         _logger.LogDebug("Opened file for writing");
-        
+
         var downloadUri = $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Setup}";
         using var fileDownload = await _httpClient.GetAsync(downloadUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         if (!fileDownload.IsSuccessStatusCode)
@@ -43,7 +42,7 @@ public class DownloadService
         var buffer = new byte[4096];
         long totalBytesRead = 0;
         int bytesRead;
-        
+
         while ((bytesRead = await downloadStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) != 0)
         {
             await fs.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken).ConfigureAwait(false);
@@ -52,11 +51,10 @@ public class DownloadService
             OnProgressChanged(new UserProgressChangedEventArgs
             {
                 TotalBytesDownloaded = totalBytesRead,
-                TotalBytes = contentLength ??= 0,
-                
+                TotalBytes = contentLength ??= 0
             });
         }
-        
+
         _logger.LogInformation("Download file to {TempFile}", tempFile);
 
         return tempFile;

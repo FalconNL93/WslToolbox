@@ -5,12 +5,12 @@ namespace WslToolbox.UI.Messengers;
 
 public class InputDialogModel
 {
+    public ContentDialogResult ContentDialogResult;
     public string PrimaryButtonText { get; set; } = "OK";
     public string SecondaryButtonText { get; set; }
     public string Message { get; set; }
     public string Title { get; set; } = App.Name;
     public string Result { get; set; }
-    public ContentDialogResult ContentDialogResult;
 }
 
 public class InputDialogMessage : AsyncRequestMessage<InputDialogModel>

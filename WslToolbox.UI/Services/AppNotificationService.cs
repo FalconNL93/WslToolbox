@@ -17,8 +17,8 @@ public static class ToastActions
 
 public class AppNotificationService
 {
-    private readonly INavigationService _navigationService;
     private readonly ILogger<AppNotificationService> _logger;
+    private readonly INavigationService _navigationService;
     private readonly UserOptions _userOptions;
 
     public AppNotificationService(INavigationService navigationService, IOptions<UserOptions> userOptions, ILogger<AppNotificationService> logger)
@@ -35,7 +35,7 @@ public class AppNotificationService
             _logger.LogInformation("Notification system disabled");
             return;
         }
-        
+
         _logger.LogInformation("Notification system enabled");
         ToastNotificationManagerCompat.OnActivated += ToastOnActivated;
     }

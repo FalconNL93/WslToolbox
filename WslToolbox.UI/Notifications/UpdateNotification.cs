@@ -13,8 +13,9 @@ public static class UpdateNotification
             .AddText("You are running the latest version");
 
 
-    public static ToastContentBuilder UpdatesAvailable(UpdateResultModel updateResult) =>
-        new ToastContentBuilder()
+    public static ToastContentBuilder UpdatesAvailable(UpdateResultModel updateResult)
+    {
+        return new ToastContentBuilder()
             .AddHeader(MethodBase.GetCurrentMethod().Name, "Updates", new ToastArguments())
             .AddText($"New update {updateResult.LatestVersion} available")
             .AddButton(new ToastButton()
@@ -22,4 +23,5 @@ public static class UpdateNotification
                 .AddArgument(ToastActions.DownloadUpdate))
             .AddButton(new ToastButton()
                 .SetContent("Close"));
+    }
 }

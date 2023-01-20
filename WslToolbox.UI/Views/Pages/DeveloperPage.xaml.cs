@@ -13,9 +13,11 @@ public sealed partial class DeveloperPage : Page
     {
         ViewModel = App.GetService<DeveloperViewModel>();
         InitializeComponent();
-        
+
         WeakReferenceMessenger.Default.Register<ProgressChangedMessage>(this, OnShowInfoBar);
     }
+
+    public DeveloperViewModel ViewModel { get; }
 
     private void OnShowInfoBar(object recipient, ProgressChangedMessage message)
     {
@@ -28,8 +30,6 @@ public sealed partial class DeveloperPage : Page
         });
     }
 
-    public DeveloperViewModel ViewModel { get; }
-
     private void OnFakeUpdateSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var selectedItem = FakeUpdateResultsSelector.SelectedItem;
@@ -37,7 +37,7 @@ public sealed partial class DeveloperPage : Page
         {
             nameof(FakeUpdateResult.UpdateAvailable) => FakeUpdateResult.UpdateAvailable,
             nameof(FakeUpdateResult.NoUpdate) => FakeUpdateResult.NoUpdate,
-            _ => FakeUpdateResult.Off,
+            _ => FakeUpdateResult.Off
         };
     }
 }

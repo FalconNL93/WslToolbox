@@ -12,11 +12,11 @@ public sealed partial class MoveDialog : ContentDialog
         InitializeComponent();
     }
 
+    public MoveDialogViewModel ViewModel { get; set; }
+
     public async Task<MoveDialogViewModel> ShowInput()
     {
         ViewModel.ContentDialogResult = await ShowAsync();
         return ViewModel;
     }
-
-    public MoveDialogViewModel ViewModel { get; set; }
 }

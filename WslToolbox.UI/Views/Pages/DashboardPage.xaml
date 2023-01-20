@@ -47,7 +47,7 @@
                     </DropDownButton>
                 </StackPanel>
                 <Grid Grid.Row="1" Visibility="{x:Bind InfoBar.IsOpen, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
-                    <InfoBar Name="InfoBar" Margin="{StaticResource SmallTopMargin}"  />
+                    <InfoBar Name="InfoBar" Margin="{StaticResource SmallTopMargin}" />
                 </Grid>
                 <ScrollViewer Grid.Row="2" Margin="{StaticResource SmallTopMargin}">
                     <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Distributions}" IsEnabled="{x:Bind ViewModel.IsRefreshing, Mode=OneWay, Converter={StaticResource InverseBoolean}}">

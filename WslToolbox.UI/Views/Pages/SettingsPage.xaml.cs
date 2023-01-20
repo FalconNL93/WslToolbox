@@ -29,7 +29,7 @@ public sealed partial class SettingsPage : Page
         SettingsInfoBar.Title = infoBarModel.Title;
         SettingsInfoBar.Message = infoBarModel.Message;
     }
-    
+
     private void OnShowUpdateInfoBar(object recipient, UpdateInfoBarChangedMessage message)
     {
         var infoBarModel = message.Value;

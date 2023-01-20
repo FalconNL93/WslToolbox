@@ -12,11 +12,11 @@ public sealed partial class ImportDistribution : ContentDialog
         InitializeComponent();
     }
 
+    public ImportDialogViewModel ViewModel { get; set; }
+
     public async Task<ImportDialogViewModel> ShowInput()
     {
         ViewModel.ContentDialogResult = await ShowAsync();
         return ViewModel;
     }
-
-    public ImportDialogViewModel ViewModel { get; set; }
 }

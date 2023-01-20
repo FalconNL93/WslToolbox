@@ -45,10 +45,10 @@ public sealed partial class ShellPage : Page
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
         };
-        
+
         message.Reply(contentDialog.ShowInput());
     }
-    
+
     private void OnShowImportDialog(object recipient, ImportDialogMessage message)
     {
         var contentDialog = new ImportDistribution(message.ViewViewModel)
@@ -56,10 +56,10 @@ public sealed partial class ShellPage : Page
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
         };
-        
+
         message.Reply(contentDialog.ShowInput());
     }
-    
+
     private void OnShowMoveDialog(object recipient, MoveDialogMessage message)
     {
         var contentDialog = new MoveDialog(message.ViewViewModel)
@@ -67,7 +67,7 @@ public sealed partial class ShellPage : Page
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
         };
-        
+
         message.Reply(contentDialog.ShowInput());
     }
 

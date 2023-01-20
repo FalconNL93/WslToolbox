@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using WslToolbox.Core;
 using WslToolbox.Core.Commands.Distribution;
 using WslToolbox.Core.Commands.Service;
-using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Core.Services;
@@ -35,7 +34,7 @@ public class DistributionService
     {
         await ExportDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution), path);
     }
-    
+
     public async Task ImportDistribution(NewDistributionModel model)
     {
         await ImportDistributionCommand.Execute(model.Name, model.InstallPath, model.File);
@@ -85,7 +84,7 @@ public class DistributionService
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         await UnregisterDistributionCommand.Execute(distributionClass);
     }
-    
+
     public void OpenShellDistribution(Distribution distribution)
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);

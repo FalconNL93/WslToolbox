@@ -34,36 +34,24 @@ public partial class App : Application
 {
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
-    private ILogger<App> _logger;
-
-    public static bool IsPackage()
-    {
-        try
-        {
-            return Package.Current.Id != null;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
+    private readonly ILogger<App> _logger;
 
     public App()
     {
         InitializeComponent();
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(Toolbox.UserConfiguration, optional: true, reloadOnChange: true)
-            .AddJsonFile(Toolbox.LogConfiguration, optional: true, reloadOnChange: true)
+            .AddJsonFile(Toolbox.UserConfiguration, true, true)
+            .AddJsonFile(Toolbox.LogConfiguration, true, true)
             .AddEnvironmentVariables()
             .Build();
-        
+
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Error()
             .ReadFrom.Configuration(configuration)
             .WriteTo.File(Toolbox.LogFile)
             .CreateLogger();
-        
+
         Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration(builder =>
@@ -136,7 +124,7 @@ public partial class App : Application
         {
             _logger.LogDebug(e, "Failed to initialize App Center");
         }
-        
+
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -145,6 +133,18 @@ public partial class App : Application
     private IHost Host { get; }
 
     public static WindowEx MainWindow { get; } = new MainWindow();
+
+    public static bool IsPackage()
+    {
+        try
+        {
+            return Package.Current.Id != null;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
     private AppCenterStates InitializeAppCenter()
     {

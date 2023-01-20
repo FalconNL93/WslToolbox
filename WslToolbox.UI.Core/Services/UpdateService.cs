@@ -10,9 +10,9 @@ namespace WslToolbox.UI.Core.Services;
 public class UpdateService
 {
     private const string ManifestFile = "wsltoolbox/manifest.json";
+    private readonly IOptions<DevOptions> _devOptions;
     private readonly HttpClient _httpClient;
     private readonly ILogger<UpdateService> _logger;
-    private readonly IOptions<DevOptions> _devOptions;
 
     public UpdateService(HttpClient httpClient, ILogger<UpdateService> logger, IOptions<DevOptions> devOptions)
     {
@@ -29,7 +29,7 @@ public class UpdateService
             await httpClient.SendAsync(new HttpRequestMessage
             {
                 Method = HttpMethod.Head,
-                RequestUri = new Uri("https://www.github.com"),
+                RequestUri = new Uri("https://www.github.com")
             });
 
             return true;
@@ -83,7 +83,7 @@ public class UpdateService
             Toolbox.AppTypes.Setup => new Uri(Toolbox.GitHubDownloadUrl, $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Setup}"),
             _ => new Uri(Toolbox.GitHubDownloadUrl, $"{updateResultModel.LatestVersion}/{updateResultModel.Files.Portable}")
         };
-        
+
         _logger.LogInformation("Download URL for update {DownloadUrl}", updateResultModel.DownloadUri);
 
         if (enableFaker)

@@ -10,7 +10,7 @@
         <TextBlock Text="Name" />
         <TextBox Text="{x:Bind ViewModel.Distribution.BasePath, Mode=OneWay}" />
         <TextBlock Text="Directory" />
-        <TextBox Text="{x:Bind ViewModel.Directory, Mode=TwoWay}"/>
-        <Button Content="Browse..." Command="{x:Bind ViewModel.BrowseFolderCommand}" CommandParameter="{x:Bind ViewModel.Distribution.BasePath, Mode=TwoWay}"></Button>
+        <TextBox Text="{x:Bind ViewModel.Directory, Mode=TwoWay}" />
+        <Button Content="Browse..." Command="{x:Bind ViewModel.BrowseFolderCommand}" CommandParameter="{x:Bind ViewModel.Distribution.BasePath, Mode=TwoWay}" />
     </StackPanel>
 </ContentDialog>

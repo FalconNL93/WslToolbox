@@ -43,15 +43,27 @@ public partial class DashboardViewModel : ObservableRecipient
         EventHandlers();
     }
 
-    private static bool DistributionIsRunning(Distribution? distribution) => distribution is {State: "Running"};
-    private static bool DistributionIsStopped(Distribution? distribution) => distribution is {State: "Stopped"};
-    private static bool DistributionIsBusy(Distribution? distribution) => distribution is {State: "Busy"};
     public static bool CanRenameDistribution => true;
     public static bool CanMoveDistribution => false;
 
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
     public ObservableCollection<Distribution> Distributions { get; set; } = new();
+
+    private static bool DistributionIsRunning(Distribution? distribution)
+    {
+        return distribution is {State: "Running"};
+    }
+
+    private static bool DistributionIsStopped(Distribution? distribution)
+    {
+        return distribution is {State: "Stopped"};
+    }
+
+    private static bool DistributionIsBusy(Distribution? distribution)
+    {
+        return distribution is {State: "Busy"};
+    }
 
     [RelayCommand]
     private async Task ShowStartupDialog()
@@ -123,7 +135,7 @@ public partial class DashboardViewModel : ObservableRecipient
             _messenger.ShowInfoBar("No distributions available for installation", InfoBarSeverity.Warning);
             return;
         }
-        
+
         try
         {
             var installDistribution = await page.ShowModal<AddDistribution>(distributions, "Add distribution", "Add");
@@ -225,44 +237,44 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         var moveSettings = await _messenger.ShowMoveDialog(distribution);
     }
-    
+
     [RelayCommand]
     private async Task ExportDistribution(Distribution? distribution)
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            { "TAR GZ", FileExtensions.TarGz },
+            {"TAR GZ", FileExtensions.TarGz}
         });
-        
+
         var exportPath = DialogHelper.ShowSaveFileDialog(new SaveFileDialog
         {
             DefaultExt = FileExtensions.TarGz,
             FileName = distribution.Name,
             Filter = filter,
-            Title = $"Export {distribution.Name}",
+            Title = $"Export {distribution.Name}"
         });
 
         if (exportPath.Result != DialogResult.OK)
         {
             return;
         }
-        
+
         await _distributionService.ExportDistribution(distribution, exportPath.Dialog.FileName);
     }
-    
+
     [RelayCommand]
     private async Task ImportDistribution()
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            { "TAR GZ", FileExtensions.TarGz },
+            {"TAR GZ", FileExtensions.TarGz}
         });
-        
+
         var importPath = DialogHelper.ShowOpenFileDialog(new OpenFileDialog
         {
             DefaultExt = FileExtensions.TarGz,
             Filter = filter,
-            Title = "Import distribution",
+            Title = "Import distribution"
         });
 
         if (importPath.Result != DialogResult.OK)

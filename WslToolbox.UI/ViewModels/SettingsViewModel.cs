@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
@@ -24,16 +23,14 @@ namespace WslToolbox.UI.ViewModels;
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IConfigurationService _configurationService;
-    private readonly AppNotificationService _notificationService;
-    private readonly IMessenger _messenger;
-    private readonly ILogger<SettingsViewModel> _logger;
     private readonly DownloadService _downloadService;
+    private readonly ILogger<SettingsViewModel> _logger;
+    private readonly IMessenger _messenger;
+    private readonly AppNotificationService _notificationService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
-    public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
     public readonly AppCenterOptions AppCenterOptions;
-
-    public static event EventHandler DownloadUpdateEvent;
+    public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -42,13 +39,13 @@ public partial class SettingsViewModel : ObservableRecipient
     private bool _isPackage;
 
     [ObservableProperty]
+    private DownloadUpdateModel _updateModel = new();
+
+    [ObservableProperty]
     private UpdateResultModel _updaterResult = new();
 
     [ObservableProperty]
     private bool _updateServiceAvailable;
-
-    [ObservableProperty]
-    private DownloadUpdateModel _updateModel = new();
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService,
         IConfigurationService configurationService,
@@ -81,13 +78,8 @@ public partial class SettingsViewModel : ObservableRecipient
         DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
         DownloadUpdateEvent += (sender, args) =>
         {
-            DownloadUpdateCommand.Execute( this );
+            DownloadUpdateCommand.Execute(this);
         };
-    }
-
-    private void DownloadServiceOnProgressChanged(object? sender, UserProgressChangedEventArgs e)
-    {
-        _messenger.ShowUpdateInfoBar($"Downloading file {e.TotalBytesDownloadedHuman} of {e.TotalBytesHuman}...");
     }
 
     public UserOptions UserOptions { get; }
@@ -95,6 +87,13 @@ public partial class SettingsViewModel : ObservableRecipient
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
+
+    public static event EventHandler DownloadUpdateEvent;
+
+    private void DownloadServiceOnProgressChanged(object? sender, UserProgressChangedEventArgs e)
+    {
+        _messenger.ShowUpdateInfoBar($"Downloading file {e.TotalBytesDownloadedHuman} of {e.TotalBytesHuman}...");
+    }
 
     [RelayCommand]
     private async Task CheckForUpdates()

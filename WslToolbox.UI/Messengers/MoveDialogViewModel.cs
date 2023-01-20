@@ -11,11 +11,11 @@ namespace WslToolbox.UI.Messengers;
 public partial class MoveDialogViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private Distribution _distribution;
-    
-    [ObservableProperty]
     private string _directory;
-    
+
+    [ObservableProperty]
+    private Distribution _distribution;
+
     public ContentDialogResult ContentDialogResult;
 
     [RelayCommand]

@@ -10,10 +10,10 @@ namespace WslToolbox.UI.Messengers;
 public partial class ImportDialogViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private string _name;
+    private string _directory;
 
     [ObservableProperty]
-    private string _directory;
+    private string _name;
 
     public ContentDialogResult ContentDialogResult;
 

@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
@@ -14,11 +13,11 @@ namespace WslToolbox.UI.ViewModels;
 public partial class DeveloperViewModel : ObservableRecipient
 {
     private readonly DistributionService _distributionService;
+    private readonly DownloadService _downloadService;
     private readonly ILogger<DeveloperViewModel> _logger;
     private readonly IMessenger _messenger;
-    public readonly IOptions<DevOptions> DevOptions;
-    private readonly DownloadService _downloadService;
     private readonly UpdateService _updateService;
+    public readonly IOptions<DevOptions> DevOptions;
     public readonly bool IsDebug;
 
     public DeveloperViewModel(
@@ -62,6 +61,5 @@ public partial class DeveloperViewModel : ObservableRecipient
         _messenger.ShowInfoBar();
         var updateManifest = await _updateService.GetUpdateDetails();
         var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
-        
     }
 }

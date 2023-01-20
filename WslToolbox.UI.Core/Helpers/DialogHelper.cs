@@ -2,8 +2,8 @@
 
 public class DialogResult<T>
 {
-    public DialogResult Result;
     public T Dialog;
+    public DialogResult Result;
 }
 
 public class DialogHelper
@@ -14,7 +14,7 @@ public class DialogHelper
         {
             InitialDirectory = initialDirectory
         };
-        
+
         return new DialogResult<FolderBrowserDialog>
         {
             Result = dialog.ShowDialog(),
@@ -26,7 +26,7 @@ public class DialogHelper
     {
         return ShowSaveFileDialog(new SaveFileDialog());
     }
-    
+
     public static DialogResult<SaveFileDialog> ShowSaveFileDialog(SaveFileDialog dialog)
     {
         return new DialogResult<SaveFileDialog>
@@ -40,7 +40,7 @@ public class DialogHelper
     {
         return ShowOpenFileDialog(new OpenFileDialog());
     }
-    
+
     public static DialogResult<OpenFileDialog> ShowOpenFileDialog(OpenFileDialog dialog)
     {
         return new DialogResult<OpenFileDialog>

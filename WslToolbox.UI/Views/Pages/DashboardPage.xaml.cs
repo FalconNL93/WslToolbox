@@ -17,6 +17,8 @@ public sealed partial class DashboardPage : Page
         WeakReferenceMessenger.Default.Register<InfoBarChangedMessage>(ViewModel, OnShowInfoBar);
     }
 
+    public DashboardViewModel ViewModel { get; }
+
     private void OnShowInfoBar(object recipient, InfoBarChangedMessage message)
     {
         var infoBarModel = message.Value;
@@ -27,8 +29,6 @@ public sealed partial class DashboardPage : Page
         InfoBar.Title = infoBarModel.Title;
         InfoBar.Message = infoBarModel.Message;
     }
-
-    public DashboardViewModel ViewModel { get; }
 
     private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {

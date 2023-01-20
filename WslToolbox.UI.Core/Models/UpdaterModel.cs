@@ -12,6 +12,15 @@ public partial class UpdateResultModel : ObservableRecipient
     private Uri _downloadUri;
 
     [ObservableProperty]
+    private FilesModel _files;
+
+    [ObservableProperty]
+    private bool _hasError;
+
+    [ObservableProperty]
+    private bool _isChecking;
+
+    [ObservableProperty]
     private DateTime _lastChecked;
 
     [ObservableProperty]
@@ -19,15 +28,6 @@ public partial class UpdateResultModel : ObservableRecipient
 
     [ObservableProperty]
     private string _updateStatus;
-
-    [ObservableProperty]
-    private bool _isChecking;
-
-    [ObservableProperty]
-    private FilesModel _files;
-    
-    [ObservableProperty]
-    private bool _hasError;
 
     public bool UpdateAvailable => LatestVersion.CompareTo(CurrentVersion) > 0;
 }

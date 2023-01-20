@@ -6,7 +6,7 @@ public class FilesModel
 {
     public string Portable { get; set; }
     public string Setup { get; set; }
-    
+
     public string Packaged { get; set; }
 }
 
