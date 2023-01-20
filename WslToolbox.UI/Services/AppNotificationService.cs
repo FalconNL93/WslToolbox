@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.ViewModels;
 
 namespace WslToolbox.UI.Services;
 
@@ -11,6 +12,7 @@ public static class ToastActions
 {
     public const string OpenUrl = nameof(OpenUrl);
     public const string ShowWindow = nameof(ShowWindow);
+    public const string DownloadUpdate = nameof(DownloadUpdate);
 }
 
 public class AppNotificationService
@@ -63,6 +65,13 @@ public class AppNotificationService
             {
                 case ToastActions.OpenUrl:
                     ShellHelper.OpenUrl(new Uri(argument.Value));
+                    break;
+                case ToastActions.DownloadUpdate:
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        App.MainWindow.BringToFront();
+                    });
+                    SettingsViewModel.OnDownloadUpdateEvent();
                     break;
                 case ToastActions.ShowWindow:
                     App.MainWindow.DispatcherQueue.TryEnqueue(() =>

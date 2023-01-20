@@ -26,6 +26,7 @@
                         <ComboBox Name="FakeUpdateResultsSelector" ItemsSource="{x:Bind ViewModel.FakeUpdateResults}" SelectedValuePath="{x:Bind ViewModel.DevOptions.Value.FakeUpdateResult, Mode=OneWay}"
                                   SelectionChanged="OnFakeUpdateSelectionChanged" />
 
+
                     </labs:SettingsCard>
                     <labs:SettingsCard Description="Download latest update file" Header="Download update">
                         <labs:SettingsCard.HeaderIcon>

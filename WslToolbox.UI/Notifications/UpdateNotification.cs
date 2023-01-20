@@ -19,7 +19,7 @@ public static class UpdateNotification
             .AddText($"New update {updateResult.LatestVersion} available")
             .AddButton(new ToastButton()
                 .SetContent("Download")
-                .AddArgument(ToastActions.OpenUrl, updateResult.DownloadUri.ToString()))
+                .AddArgument(ToastActions.DownloadUpdate))
             .AddButton(new ToastButton()
                 .SetContent("Close"));
 }

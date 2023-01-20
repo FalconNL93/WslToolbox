@@ -80,7 +80,7 @@
                                 <FontIcon Glyph="&#xE946;" />
                             </labs:SettingsCard.HeaderIcon>
                             <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
-                                <Button Content="Download update" Command="{x:Bind ViewModel.OpenUrlCommand}" CommandParameter="{x:Bind ViewModel.UpdaterResult.DownloadUri, Mode=OneWay}"
+                                <Button Content="Download update" Command="{x:Bind ViewModel.DownloadUpdateCommand}"
                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                                 <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
                             </StackPanel>

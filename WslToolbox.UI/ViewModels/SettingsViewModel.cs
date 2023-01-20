@@ -9,6 +9,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Args;
 using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
@@ -31,6 +32,8 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly UpdateService _updateService;
     public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
     public readonly AppCenterOptions AppCenterOptions;
+
+    public static event EventHandler DownloadUpdateEvent;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -74,6 +77,17 @@ public partial class SettingsViewModel : ObservableRecipient
 
         _updateServiceAvailable = !App.IsPackage();
         _isPackage = App.IsPackage();
+
+        DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
+        DownloadUpdateEvent += (sender, args) =>
+        {
+            DownloadUpdateCommand.Execute( this );
+        };
+    }
+
+    private void DownloadServiceOnProgressChanged(object? sender, UserProgressChangedEventArgs e)
+    {
+        _messenger.ShowUpdateInfoBar($"Downloading file {e.TotalBytesDownloadedHuman} of {e.TotalBytesHuman}...");
     }
 
     public UserOptions UserOptions { get; }
@@ -108,25 +122,7 @@ public partial class SettingsViewModel : ObservableRecipient
 
             if (result == ContentDialogResult.Primary)
             {
-                if (Toolbox.GetAppType() == Toolbox.AppTypes.Setup)
-                {
-                    _messenger.ShowUpdateInfoBar("Downloading update file...");
-                    try
-                    {
-                        var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
-                        _messenger.ShowUpdateInfoBar("Starting updater...");
-                        ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
-                    }
-                    catch (Exception e)
-                    {
-                        _messenger.ShowUpdateInfoBar("Could not download update file", severity: InfoBarSeverity.Error);
-                        _logger.LogError(e, "Could not download update file");
-                    }
-
-                    return;
-                }
-
-                ShellHelper.OpenUrl(UpdaterResult.DownloadUri);
+                await DownloadUpdate();
             }
         }
         else
@@ -140,6 +136,30 @@ public partial class SettingsViewModel : ObservableRecipient
     private async Task OpenAppInStore()
     {
         ShellHelper.OpenFile(Toolbox.StoreUrl);
+    }
+
+    [RelayCommand]
+    private async Task DownloadUpdate()
+    {
+        if (Toolbox.GetAppType() == Toolbox.AppTypes.Setup || Toolbox.GetAppType() == Toolbox.AppTypes.Portable)
+        {
+            _messenger.ShowUpdateInfoBar("Downloading update file...");
+            try
+            {
+                var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
+                _messenger.ShowUpdateInfoBar("Starting updater...");
+                ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
+            }
+            catch (Exception e)
+            {
+                _messenger.ShowUpdateInfoBar("Could not download update file", severity: InfoBarSeverity.Error);
+                _logger.LogError(e, "Could not download update file");
+            }
+
+            return;
+        }
+
+        ShellHelper.OpenUrl(UpdaterResult.DownloadUri);
     }
 
     [RelayCommand]
@@ -214,5 +234,10 @@ public partial class SettingsViewModel : ObservableRecipient
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    public static void OnDownloadUpdateEvent()
+    {
+        DownloadUpdateEvent?.Invoke(null, EventArgs.Empty);
     }
 }

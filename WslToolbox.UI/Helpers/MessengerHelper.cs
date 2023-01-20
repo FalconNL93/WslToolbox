@@ -89,15 +89,18 @@ public static class MessengerHelper
 
     public static void ShowUpdateInfoBar(this IMessenger messenger, string message, string title = "", InfoBarSeverity severity = InfoBarSeverity.Informational)
     {
-        messenger.Send(new UpdateInfoBarChangedMessage(new InfoBarModel
+        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
-            IsOpen = true,
-            IsClosable = true,
-            IsIconVisible = true,
-            Severity = severity,
-            Title = title,
-            Message = message
-        }));
+            messenger.Send(new UpdateInfoBarChangedMessage(new InfoBarModel
+            {
+                IsOpen = true,
+                IsClosable = true,
+                IsIconVisible = true,
+                Severity = severity,
+                Title = title,
+                Message = message
+            }));
+        });
     }
 
     public static async Task<ImportDialogViewModel> ShowImportDialog(this IMessenger messenger, string name, string directory)
