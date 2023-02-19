@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Win32;
 
 namespace WslToolbox.Core.Helpers;
@@ -89,7 +90,12 @@ public class RegistryHelper
         }
 
         var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
-
+        if (wslRegistry == null)
+        {
+            return string.Empty;
+        }
+        
+        
         var subKey = wslRegistry.GetValue("DefaultDistribution");
         if ((string) subKey != null)
         {
@@ -108,6 +114,11 @@ public class RegistryHelper
 
         var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
 
-        return wslRegistry?.GetSubKeyNames();
+        return ParseValidDistributions(wslRegistry?.GetSubKeyNames());
+    }
+
+    private static IEnumerable<string> ParseValidDistributions(IEnumerable<string> distributions)
+    {
+        return (from distribution in distributions let isValid = Guid.TryParse(distribution, out _) where isValid select distribution).ToList();
     }
 }

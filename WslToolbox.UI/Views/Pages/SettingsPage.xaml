@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
-    xmlns:c="using:WslToolbox.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
     <Page.Resources>
@@ -39,7 +38,8 @@
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE790;" />
                             </labs:SettingsCard.HeaderIcon>
-                            <ComboBox x:Name="ThemeSelector" ItemsSource="{x:Bind ViewModel.Themes}" SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}" SelectionChanged="OnThemeSelectionChanged" />
+                            <ComboBox x:Name="ThemeSelector"
+                                      ItemsSource="{x:Bind ViewModel.Themes}" SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}" SelectionChanged="OnThemeSelectionChanged" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard Description="Enable application analytics" Header="Analytics" Visibility="{x:Bind ViewModel.AppCenterOptions.IsAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">

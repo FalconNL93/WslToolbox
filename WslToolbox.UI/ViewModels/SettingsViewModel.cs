@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Runtime.Versioning;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -76,10 +78,13 @@ public partial class SettingsViewModel : ObservableRecipient
         _isPackage = App.IsPackage();
 
         DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
-        DownloadUpdateEvent += (sender, args) =>
+        DownloadUpdateEvent += (_, _) =>
         {
             DownloadUpdateCommand.Execute(this);
         };
+        
+        var frameworkDescription = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkDisplayName;
+        AppDescription = $"{AppDescription}{Environment.NewLine}{frameworkDescription}";
     }
 
     public UserOptions UserOptions { get; }

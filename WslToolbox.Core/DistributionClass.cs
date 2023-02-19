@@ -71,12 +71,9 @@ public class DistributionClass
         try
         {
             using StringReader reader = new(output);
-            string line;
-
-            while ((line = reader.ReadLine()) != null)
+            while (reader.ReadLine() is { } line)
             {
                 var tabbed = line.Split("\t");
-
                 if (tabbed[1] != name)
                 {
                     continue;
@@ -91,12 +88,14 @@ public class DistributionClass
                     _stateCache.Add(name, tabbed[2]);
                 }
             }
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
 
-        return _stateCache[name];
+            return name == null
+                ? string.Empty
+                : _stateCache[name];
+        }
+        catch (Exception e)
+        {
+            return string.Empty;
+        }
     }
 }
