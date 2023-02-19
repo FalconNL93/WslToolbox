@@ -5,7 +5,7 @@
         <AssemblyVersion>0.6.0</AssemblyVersion>
         <FileVersion>0.6.0</FileVersion>
         <IsPackable>true</IsPackable>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <Platforms>x64;arm64</Platforms>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>WSL Toolbox Core</Title>
