@@ -40,6 +40,14 @@
         <PackageCertificateKeyFile>WslToolbox.UI_TemporaryKey.pfx</PackageCertificateKeyFile>
     </PropertyGroup>
 
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	</PropertyGroup>
+
     <Target Name="_RemoveFrameworkReferences" />
     <ItemGroup>
         <Manifest Include="$(ApplicationManifest)" />
@@ -74,10 +82,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\WslToolbox.UI.Core\WslToolbox.UI.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-        <ProjectCapability Include="Msix" />
     </ItemGroup>
 
     <ItemGroup>
@@ -191,10 +195,6 @@
         <Content Include="Images\Wide310x150Logo.scale-400.png" />
         <None Remove="WslToolbox.UI_TemporaryKey.pfx" />
     </ItemGroup>
-
-    <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-        <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-    </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
         <DebugType>none</DebugType>
