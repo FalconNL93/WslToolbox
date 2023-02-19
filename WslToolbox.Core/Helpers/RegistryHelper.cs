@@ -6,7 +6,7 @@ using Microsoft.Win32;
 
 namespace WslToolbox.Core.Helpers;
 
-public class RegistryHelper
+public static class RegistryHelper
 {
     public static void ChangeKey(DistributionClass distribution, string key, string value)
     {
@@ -19,8 +19,11 @@ public class RegistryHelper
 
         try
         {
-            var openSubKey =
-                Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            var openSubKey = Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            if (openSubKey == null)
+            {
+                return;
+            }
 
             openSubKey.SetValue(key, value);
         }
@@ -41,10 +44,8 @@ public class RegistryHelper
 
         try
         {
-            var openSubKey =
-                Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadSubTree);
-
-            return openSubKey.GetValue(key, defaultValue).ToString();
+            var openSubKey = Registry.CurrentUser.OpenSubKey(keyPath, RegistryKeyPermissionCheck.ReadSubTree);
+            return openSubKey?.GetValue(key, defaultValue).ToString();
         }
         catch (Exception e)
         {
@@ -52,34 +53,6 @@ public class RegistryHelper
         }
 
         return defaultValue;
-    }
-
-    public static string DistributionRegistryByName(string name)
-    {
-        if (!OperatingSystem.IsWindows())
-        {
-            return string.Empty;
-        }
-
-        var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
-
-        foreach (var wslKey in wslRegistry.GetSubKeyNames())
-        {
-            if (!wslKey.StartsWith("{") && !wslKey.EndsWith("}"))
-            {
-                continue;
-            }
-
-            var subKey = wslRegistry.OpenSubKey(wslKey)?.GetValue("DistributionName");
-            if ((string) subKey != name)
-            {
-                continue;
-            }
-
-            return wslKey;
-        }
-
-        return string.Empty;
     }
 
     public static string DefaultDistributionGuid()
@@ -90,13 +63,7 @@ public class RegistryHelper
         }
 
         var wslRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Lxss");
-        if (wslRegistry == null)
-        {
-            return string.Empty;
-        }
-        
-        
-        var subKey = wslRegistry.GetValue("DefaultDistribution");
+        var subKey = wslRegistry?.GetValue("DefaultDistribution");
         if ((string) subKey != null)
         {
             return (string) subKey;
