@@ -34,7 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
+        <ProjectReference Include="..\WslToolbox.Core.Legacy\WslToolbox.Core.Legacy.csproj" />
     </ItemGroup>
 
     <ItemGroup>

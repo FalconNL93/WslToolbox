@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml.Controls;
-using WslToolbox.Core.Commands.Distribution;
+using WslToolbox.Core.Legacy.Commands.Distribution;
 using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
@@ -79,16 +79,16 @@ public partial class DashboardViewModel : ObservableRecipient
 
     private void EventHandlers()
     {
-        WslToolbox.Core.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.RenameDistributionCommand.DistributionRenameFinished += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.RenameDistributionCommand.DistributionRenameFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
         
-        WslToolbox.Core.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted += OnReloadExecution;
-        WslToolbox.Core.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted += OnReloadExecution;
+        WslToolbox.Core.Legacy.Commands.Distribution.ExportDistributionCommand.DistributionExportFinished += OnReloadExecution;
     }
 
     private void OnReloadExecution(object? sender, EventArgs e)

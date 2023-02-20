@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Core", "WslToolbox.Core\WslToolbox.Core.csproj", "{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.Core.Legacy", "WslToolbox.Core.Legacy\WslToolbox.Core.Legacy.csproj", "{7126F14D-A095-4DD3-8FE5-D2646A0A2F87}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WslToolbox.UI", "WslToolbox.UI\WslToolbox.UI.csproj", "{7D7B2C47-7143-42DB-A777-943F7087746C}"
 EndProject

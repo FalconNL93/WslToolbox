@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WslToolbox.Core;
+using WslToolbox.Core.Legacy;
 using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Core.Configurations;

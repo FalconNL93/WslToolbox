@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WslToolbox.Core;
-using WslToolbox.Core.Commands.Distribution;
-using WslToolbox.Core.Commands.Service;
+using WslToolbox.Core.Legacy;
+using WslToolbox.Core.Legacy.Commands.Distribution;
+using WslToolbox.Core.Legacy.Commands.Service;
 using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Core.Services;
