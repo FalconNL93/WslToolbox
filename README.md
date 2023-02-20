@@ -32,16 +32,14 @@ Configuration for WSL Toolbox is saved to a JSON file.
 ## Screenshots
 
 ![Main window](/assets/images/scr1.png?raw=true "Main Window")
-![Add distribution](/assets/images/scr3.png?raw=true "Add distribution")
-![Settings window](/assets/images/scr2.png?raw=true "Settings Window")
+![Add distribution](/assets/images/scr2.png?raw=true "Add distribution")
+![Settings window](/assets/images/scr3.png?raw=true "Settings Window")
 
 ## Requirements
 
 * [Windows Subsystem for Linux](https://www.microsoft.com/store/productId/9P9TQF7MRM4R)
 * [.NET 6 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * Windows 11 (x64) **OR** Windows 10 (x64) version 1903 or higher.
-
-ARM64 is not tested.
 
 ## Special thanks
 
