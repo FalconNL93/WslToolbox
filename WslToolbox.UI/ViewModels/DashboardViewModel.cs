@@ -44,7 +44,7 @@ public partial class DashboardViewModel : ObservableRecipient
     }
 
     public static bool CanRenameDistribution => true;
-    public static bool CanMoveDistribution => false;
+    public static bool CanMoveDistribution => true;
 
     public OpenUrlCommand OpenUrlCommand { get; } = new();
 
@@ -82,9 +82,9 @@ public partial class DashboardViewModel : ObservableRecipient
         WslToolbox.Core.Legacy.Commands.Distribution.StartDistributionCommand.DistributionStartFinished += OnReloadExecution;
         WslToolbox.Core.Legacy.Commands.Distribution.OpenShellDistributionCommand.OpenShellInstallDistributionFinished += OnReloadExecution;
         WslToolbox.Core.Legacy.Commands.Distribution.RenameDistributionCommand.DistributionRenameFinished += OnReloadExecution;
-        WslToolbox.Core.Legacy.Commands.Distribution.TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
-        WslToolbox.Core.Legacy.Commands.Distribution.UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
-        
+        TerminateDistributionCommand.DistributionTerminateFinished += OnReloadExecution;
+        UnregisterDistributionCommand.DistributionUnregisterFinished += OnReloadExecution;
+
         WslToolbox.Core.Legacy.Commands.Distribution.ImportDistributionCommand.DistributionImportStarted += OnReloadExecution;
         WslToolbox.Core.Legacy.Commands.Distribution.ImportDistributionCommand.DistributionImportFinished += OnReloadExecution;
         WslToolbox.Core.Legacy.Commands.Distribution.ExportDistributionCommand.DistributionExportStarted += OnReloadExecution;
@@ -235,7 +235,37 @@ public partial class DashboardViewModel : ObservableRecipient
     [RelayCommand(CanExecute = nameof(CanMoveDistribution))]
     private async Task MoveDistribution(Distribution? distribution)
     {
+        if (distribution == null)
+        {
+            _logger.LogError("Invalid distribution");
+            return;
+        }
+        
         var moveSettings = await _messenger.ShowMoveDialog(distribution);
+        if (moveSettings.ContentDialogResult != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        IoService.CopyDirectoryStatusChanged += (_, args) =>
+        {
+            _messenger.ShowInfoBar($"Copying file {args.CurrentFile.Name}...", InfoBarSeverity.Informational, $"Moving {distribution.Name}", false);
+        };
+
+        IoService.CopyDirectoryFinished += (_, _) =>
+        {
+            _messenger.ShowInfoBar("Distribution moved", InfoBarSeverity.Success, $"Moving {distribution.Name}");
+        };
+
+        try
+        {
+            await _distributionService.MoveDistribution(distribution, moveSettings.Directory);
+        }
+        catch (Exception e)
+        {
+            _messenger.ShowInfoBar("Unable to move distribution", InfoBarSeverity.Error, $"Moving {distribution.Name}");
+            await _messenger.ShowDialog("Error", "Unable to move distribution", textBoxMessage: e.Message);
+        }
     }
 
     [RelayCommand]

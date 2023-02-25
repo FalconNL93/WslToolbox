@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WslToolbox.Core.Legacy;
@@ -13,15 +14,18 @@ public class DistributionService
     public const string StateRunning = "Running";
     public const string StateStopped = "Stopped";
     public const string StateAvailable = "Stopped";
+    public const string StateBusy = "Busy";
 
     private readonly ILogger<DistributionService> _logger;
     private readonly IMapper _mapper;
     private readonly UserOptions _userOptions;
+    private readonly IMessenger _messenger;
 
-    public DistributionService(ILogger<DistributionService> logger, IMapper mapper, IOptions<UserOptions> userOptions)
+    public DistributionService(ILogger<DistributionService> logger, IMapper mapper, IOptions<UserOptions> userOptions, IMessenger messenger)
     {
         _logger = logger;
         _mapper = mapper;
+        _messenger = messenger;
         _userOptions = userOptions.Value;
     }
 
@@ -38,6 +42,25 @@ public class DistributionService
     public async Task ImportDistribution(NewDistributionModel model)
     {
         await ImportDistributionCommand.Execute(model.Name, model.InstallPath, model.File);
+    }
+    
+    public async Task MoveDistribution(Distribution distribution, string path)
+    {
+        try
+        {
+            distribution.State = StateBusy;
+            await IoService.CopyDirectory(distribution.BasePath, path);
+            ChangeBasePathDistributionCommand.Execute(_mapper.Map<DistributionClass>(distribution), path);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Could not move distribution");
+            throw;
+        }
+        finally
+        {
+            distribution.State = StateAvailable;
+        }
     }
 
     public async Task<IEnumerable<Distribution>> ListDistributions()

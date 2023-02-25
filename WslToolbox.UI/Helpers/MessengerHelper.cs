@@ -10,12 +10,16 @@ namespace WslToolbox.UI.Helpers;
 
 public static class MessengerHelper
 {
-    public static void ShowInfoBar(this IMessenger messenger, string? message = null, InfoBarSeverity severity = InfoBarSeverity.Informational, string title = "")
+    public static void ShowInfoBar(this IMessenger messenger, 
+        string? message = null, 
+        InfoBarSeverity severity = InfoBarSeverity.Informational, 
+        string title = "",
+        bool isClosable = true)
     {
         messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
             IsOpen = true,
-            IsClosable = true,
+            IsClosable = isClosable,
             IsIconVisible = true,
             Severity = severity,
             Title = title,
@@ -42,7 +46,8 @@ public static class MessengerHelper
         string title,
         string message,
         string primaryButtonText = "OK",
-        string secondaryButtonText = ""
+        string secondaryButtonText = "",
+        string textBoxMessage = ""
     )
     {
         return await messenger.Send(new SimpleDialogShowMessage(new SimpleDialogModel
@@ -52,7 +57,8 @@ public static class MessengerHelper
             PrimaryButtonText = primaryButtonText,
             SecondaryButtonText = secondaryButtonText,
             PrimaryButtonCommand = null,
-            SecondaryButtonCommand = null
+            SecondaryButtonCommand = null,
+            TextBoxMessage = textBoxMessage
         }));
     }
 

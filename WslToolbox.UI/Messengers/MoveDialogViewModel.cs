@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml.Controls;
+using WslToolbox.UI.Core.Commands;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 
@@ -15,7 +16,8 @@ public partial class MoveDialogViewModel : ObservableRecipient
 
     [ObservableProperty]
     private Distribution _distribution;
-
+    public OpenUrlCommand OpenUrlCommand { get; } = new();
+    
     public ContentDialogResult ContentDialogResult;
 
     [RelayCommand]

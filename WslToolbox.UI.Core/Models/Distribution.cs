@@ -8,6 +8,7 @@ public class Distribution : ObservableRecipient
     public const string StateStopped = "Stopped";
     public const string StateAvailable = "Stopped";
     public const string StateBusy = "Busy";
+    private bool _isAvailable;
 
     private string _state;
 
@@ -15,10 +16,20 @@ public class Distribution : ObservableRecipient
     public bool IsInstalled { get; set; }
     public string Name { get; set; }
 
+    public bool IsAvailable
+    {
+        get => _isAvailable;
+        set => SetProperty(ref _isAvailable, value);
+    }
+
     public string State
     {
         get => _state;
-        set => SetProperty(ref _state, value);
+        set
+        {
+            IsAvailable = value != StateBusy;
+            SetProperty(ref _state, value);
+        }
     }
 
     public int Version { get; set; }
