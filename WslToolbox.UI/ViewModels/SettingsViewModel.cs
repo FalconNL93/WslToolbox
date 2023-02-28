@@ -121,7 +121,8 @@ public partial class SettingsViewModel : ObservableRecipient
             {
                 EnableInstallUpdate = true,
                 CurrentVersion = UpdaterResult.CurrentVersion,
-                LatestVersion = UpdaterResult.LatestVersion
+                LatestVersion = UpdaterResult.LatestVersion,
+                ReleaseNotes = string.Empty
             });
 
             if (result == ContentDialogResult.Primary)

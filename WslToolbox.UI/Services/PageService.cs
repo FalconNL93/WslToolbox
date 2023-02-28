@@ -15,6 +15,7 @@ public class PageService : IPageService
         Configure<DashboardViewModel, DashboardPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<DeveloperViewModel, DeveloperPage>();
+        Configure<LogViewModel, LogPage>();
     }
 
     public Type GetPageType(string key)

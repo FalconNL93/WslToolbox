@@ -84,6 +84,7 @@ public partial class App : Application
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
                 services.AddTransient<INavigationViewService, NavigationViewService>();
                 services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+                services.AddSingleton<LogService>();
 
                 services.AddSingleton<IActivationService, ActivationService>();
                 services.AddSingleton<IPageService, PageService>();
@@ -101,6 +102,7 @@ public partial class App : Application
                 services.AddPage<SettingsViewModel, SettingsPage>();
                 services.AddPage<NotificationViewModel, NotificationModal>();
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
+                services.AddPage<LogViewModel, LogPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
 
