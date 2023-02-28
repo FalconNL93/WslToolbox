@@ -55,6 +55,11 @@ public class DistributionClass
             distro.IsInstalled = true;
             distro.DefaultUid = int.Parse((string) RegistryHelper.GetKey(distro, "DefaultUid"));
 
+            if (!Directory.Exists(distro.BasePathLocal))
+            {
+                continue;
+            }
+
             var basePathDirectoryInfo = new DirectoryInfo(distro.BasePathLocal);
             var totalSize = basePathDirectoryInfo.EnumerateFiles().Sum(file => file.Length);
 
