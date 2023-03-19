@@ -14,8 +14,6 @@ public class LogService
 
     public static async Task ReadLog(CancellationTokenSource cancellationToken)
     {
-        await FetchLog(cancellationToken);
-        
         var watcher = new FileSystemWatcher
         {
             Path = Toolbox.AppData,
@@ -24,10 +22,10 @@ public class LogService
             EnableRaisingEvents = true,
         };
 
-        watcher.Changed += async (_, _) => await FetchLog(cancellationToken);
+        watcher.Changed += async (_, _) => await OnLogFileChanged(cancellationToken);
     }
 
-    private static async Task FetchLog(CancellationTokenSource cancellationToken)
+    private static async Task OnLogFileChanged(CancellationTokenSource cancellationToken)
     {
         await using var fileStream = File.Open("data\\blaat.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         using var reader = new StreamReader(fileStream);
