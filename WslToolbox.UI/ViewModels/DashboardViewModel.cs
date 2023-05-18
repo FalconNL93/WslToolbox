@@ -273,12 +273,12 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            {"TAR GZ", FileExtensions.TarGz}
+            {FileExtensions.Tar.Name, FileExtensions.Tar.Extension}
         });
 
         var exportPath = DialogHelper.ShowSaveFileDialog(new SaveFileDialog
         {
-            DefaultExt = FileExtensions.TarGz,
+            DefaultExt = FileExtensions.Tar.Extension,
             FileName = distribution.Name,
             Filter = filter,
             Title = $"Export {distribution.Name}"
@@ -297,12 +297,12 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            {"TAR GZ", FileExtensions.TarGz}
+            {FileExtensions.Tar.Name, FileExtensions.Tar.Extension}
         });
 
         var importPath = DialogHelper.ShowOpenFileDialog(new OpenFileDialog
         {
-            DefaultExt = FileExtensions.TarGz,
+            DefaultExt = FileExtensions.Tar.Name,
             Filter = filter,
             Title = "Import distribution"
         });
