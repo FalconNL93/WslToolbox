@@ -47,7 +47,7 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExecutable}"; Tasks: des
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExecutable}"; Tasks: startmenuicon
 
 [Run]
-Filename: "{app}\{#AppExecutable}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#AppExecutable}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall
 
 [Messages]
 SetupAppTitle = {#AppName}

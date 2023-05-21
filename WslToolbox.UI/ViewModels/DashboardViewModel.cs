@@ -297,12 +297,12 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            {FileExtensions.Tar.Name, FileExtensions.Tar.Extension}
+            {FileExtensions.TarGz.Name, FileExtensions.TarGz.Extension},
         });
 
         var importPath = DialogHelper.ShowOpenFileDialog(new OpenFileDialog
         {
-            DefaultExt = FileExtensions.Tar.Name,
+            DefaultExt = FileExtensions.TarGz.Extension,
             Filter = filter,
             Title = "Import distribution"
         });

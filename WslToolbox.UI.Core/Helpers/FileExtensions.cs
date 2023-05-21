@@ -13,4 +13,10 @@ public static class FileExtensions
         Name = "Tar",
         Extension = ".tar"
     };
+    
+    public static FileExtensionItem TarGz = new()
+    {
+        Name = "TarGz",
+        Extension = ".tar.gz"
+    };
 }
