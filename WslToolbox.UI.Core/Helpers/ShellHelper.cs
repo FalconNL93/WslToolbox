@@ -12,13 +12,14 @@ public static class ShellHelper
         process.Start();
     }
 
-    public static void OpenExecutable(string path, string arguments = null, bool exitApp = false)
+    public static void OpenExecutable(string path, List<string> arguments = null, bool exitApp = false)
     {
         using var process = new Process();
         process.StartInfo.FileName = path;
-        if (arguments != null)
+        
+        if (arguments != null && arguments.Any())
         {
-            process.StartInfo.Arguments = arguments;
+            process.StartInfo.Arguments = arguments.Aggregate("", (current, argument) => current + $"{argument} ");
         }
 
         process.StartInfo.UseShellExecute = false;

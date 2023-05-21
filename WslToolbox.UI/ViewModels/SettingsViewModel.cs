@@ -153,7 +153,10 @@ public partial class SettingsViewModel : ObservableRecipient
             {
                 var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
                 _messenger.ShowUpdateInfoBar("Starting updater...");
-                ShellHelper.OpenExecutable(downloadedFile, "/SILENT", true);
+                ShellHelper.OpenExecutable(downloadedFile, new List<string>
+                {
+                    "/SILENT"
+                }, true);
             }
             catch (Exception e)
             {
