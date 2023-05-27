@@ -4,7 +4,6 @@ using System.Runtime.Versioning;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.AppCenter.Analytics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
@@ -31,7 +30,6 @@ public partial class SettingsViewModel : ObservableRecipient
     private readonly AppNotificationService _notificationService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly UpdateService _updateService;
-    public readonly AppCenterOptions AppCenterOptions;
     public readonly string AppDescription = $"{App.Name} {Toolbox.Version} ({Toolbox.ProcessType})";
 
     [ObservableProperty]
@@ -57,7 +55,6 @@ public partial class SettingsViewModel : ObservableRecipient
         UpdateService updateService,
         IMessenger messenger,
         ILogger<SettingsViewModel> logger,
-        IOptions<AppCenterOptions> appCenterOptions,
         DownloadService downloadService
     )
     {
@@ -68,7 +65,6 @@ public partial class SettingsViewModel : ObservableRecipient
         _messenger = messenger;
         _logger = logger;
         _downloadService = downloadService;
-        AppCenterOptions = appCenterOptions.Value;
         _elementTheme = _themeSelectorService.Theme;
 
         NotificationOptions = notificationOptions.Value;
@@ -78,11 +74,8 @@ public partial class SettingsViewModel : ObservableRecipient
         _isPackage = App.IsPackage();
 
         DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
-        DownloadUpdateEvent += (_, _) =>
-        {
-            DownloadUpdateCommand.Execute(this);
-        };
-        
+        DownloadUpdateEvent += (_, _) => { DownloadUpdateCommand.Execute(this); };
+
         var frameworkDescription = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkDisplayName;
         AppDescription = $"{AppDescription}{Environment.NewLine}{frameworkDescription}";
     }
@@ -103,8 +96,7 @@ public partial class SettingsViewModel : ObservableRecipient
     [RelayCommand]
     private async Task CheckForUpdates()
     {
-        Analytics.TrackEvent(nameof(CheckForUpdates));
-        UpdaterResult = new UpdateResultModel {IsChecking = true};
+        UpdaterResult = new UpdateResultModel { IsChecking = true };
 
         await Task.Delay(TimeSpan.FromSeconds(2));
         UpdaterResult = await _updateService.GetUpdateDetails();
@@ -153,10 +145,12 @@ public partial class SettingsViewModel : ObservableRecipient
             {
                 var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
                 _messenger.ShowUpdateInfoBar("Starting updater...");
-                ShellHelper.OpenExecutable(downloadedFile, new List<string>
-                {
-                    "/SILENT"
-                }, true);
+                ShellHelper.OpenExecutable(downloadedFile,
+                    new List<string>
+                    {
+                        "/SILENT"
+                    },
+                    true);
             }
             catch (Exception e)
             {

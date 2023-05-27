@@ -6,6 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Grid>
-        <TextBox Name="LogBlock" IsReadOnly="True" />
+        <TextBox Name="LogBlock" IsReadOnly="True" Margin="{StaticResource SmallBottomMargin}" />
     </Grid>
 </Page>
