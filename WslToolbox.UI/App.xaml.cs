@@ -1,20 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Net.Http.Headers;
-using System.Reflection;
 using Windows.ApplicationModel;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml;
 using Serilog;
 using WslToolbox.UI.Activation;
-using WslToolbox.UI.Attributes;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Contracts.Services;
@@ -54,10 +48,7 @@ public partial class App : Application
 
         Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(builder =>
-            {
-                builder.AddConfiguration(configuration);
-            })
+            .ConfigureAppConfiguration(builder => { builder.AddConfiguration(configuration); })
             .UseContentRoot(AppContext.BaseDirectory)
             .UseSerilog()
             .ConfigureServices((context, services) =>
@@ -71,12 +62,12 @@ public partial class App : Application
                 services.AddHttpClient<DownloadService>(c =>
                 {
                     c.BaseAddress = Toolbox.GitHubDownloadUrl;
-                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
                 });
                 services.AddHttpClient<UpdateService>(c =>
                 {
                     c.BaseAddress = Toolbox.GitHubManifestFile;
-                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
                 });
 
                 // Services
@@ -114,19 +105,6 @@ public partial class App : Application
 
 
         _logger = GetService<ILogger<App>>();
-        try
-        {
-            var appCenterInit = InitializeAppCenter();
-            var appCenter = GetService<IOptions<AppCenterOptions>>();
-            appCenter.Value.IsAvailable = appCenterInit is AppCenterStates.IsAvailable or AppCenterStates.IsEnabled;
-            _logger.LogDebug("AppType: {AppType}", Toolbox.GetAppType());
-            _logger.LogDebug("AppCenterState: {AppCenter}", appCenterInit);
-        }
-        catch (Exception e)
-        {
-            _logger.LogDebug(e, "Failed to initialize App Center");
-        }
-
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
@@ -145,46 +123,6 @@ public partial class App : Application
         catch (Exception e)
         {
             return false;
-        }
-    }
-
-    private AppCenterStates InitializeAppCenter()
-    {
-        try
-        {
-            var secret = Environment.GetEnvironmentVariable("APPCENTER_KEY");
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly != null && entryAssembly.GetCustomAttribute<AppCenterAttribute>() != null)
-            {
-                var secretKey = entryAssembly.GetCustomAttribute<AppCenterAttribute>()?.AppCenterKey;
-                if (!string.IsNullOrEmpty(secretKey))
-                {
-                    secret = secretKey;
-                }
-            }
-
-            if (secret == null)
-            {
-                return AppCenterStates.IsUnavailable;
-            }
-
-            var runConfiguration = GetService<IOptions<UserOptions>>().Value;
-            if (!runConfiguration.Analytics)
-            {
-                return AppCenterStates.IsAvailable;
-            }
-
-            AppCenter.Start(secret,
-                typeof(Analytics),
-                typeof(Crashes)
-            );
-
-            return AppCenterStates.IsEnabled;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Unable to initialize AppCenter");
-            return AppCenterStates.IsUnavailable;
         }
     }
 
