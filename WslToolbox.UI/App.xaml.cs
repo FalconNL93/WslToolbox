@@ -94,6 +94,7 @@ public partial class App : Application
                 services.AddPage<NotificationViewModel, NotificationModal>();
                 services.AddPage<DeveloperViewModel, DeveloperPage>();
                 services.AddPage<LogViewModel, LogPage>();
+                services.AddPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
 

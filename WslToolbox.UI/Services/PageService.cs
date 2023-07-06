@@ -16,6 +16,7 @@ public class PageService : IPageService
         Configure<SettingsViewModel, SettingsPage>();
         Configure<DeveloperViewModel, DeveloperPage>();
         Configure<LogViewModel, LogPage>();
+        Configure<WslSettingsViewModel, WslSettingsPage>();
     }
 
     public Type GetPageType(string key)

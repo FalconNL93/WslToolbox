@@ -45,6 +45,11 @@
                         <SymbolIcon Symbol="Home" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.WslSettingsViewModel" Content="WSL Settings">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Manage" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.LogViewModel" Content="Logs">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Bullets" />
