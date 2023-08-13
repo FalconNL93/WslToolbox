@@ -86,6 +86,13 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public ObservableCollection<string> Themes { get; set; } = new(Enum.GetNames(typeof(ElementTheme)));
 
+    public Dictionary<int, string> ShellBehaviours { get; set; } = new()
+    {
+        { 0, "Default" },
+        { 1, "Home" },
+        { 2, "Current" }
+    };
+
     public static event EventHandler DownloadUpdateEvent;
 
     private void DownloadServiceOnProgressChanged(object? sender, UserProgressChangedEventArgs e)

@@ -112,6 +112,13 @@ public partial class App : Application
 
     private IHost Host { get; }
 
+    public static UserOptions GetUserOptions()
+    {
+        var optionsClass = GetService<IOptions<UserOptions>>();
+
+        return optionsClass.Value;
+    }
+
     public static WindowEx MainWindow { get; } = new MainWindow();
 
     public static bool IsPackage()

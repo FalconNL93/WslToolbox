@@ -94,7 +94,8 @@ public class CommandClass
         p.Start();
     }
 
-    public static async Task<Process> StartShellAsync(DistributionClass distribution)
+
+    public static async Task<Process> StartShellAsync(DistributionClass distribution, string distributionPath = "")
     {
         Process p = new();
 
@@ -103,8 +104,13 @@ public class CommandClass
             return p;
         }
 
-        var shellCommand = $"/c wsl -d {distribution.Name}";
-
+        var shellCommand = $"/c wsl ";
+        if (!string.IsNullOrEmpty(distributionPath))
+        {
+            shellCommand += " --cd ~ ";            
+        }
+        
+        shellCommand += $"-d {distribution.Name}";
         if (!distribution.IsInstalled)
         {
             shellCommand = $"/c wsl --install -d {distribution.Name}";
