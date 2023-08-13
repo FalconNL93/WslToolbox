@@ -11,9 +11,15 @@ public static class OpenShellDistributionCommand
     private const int RefreshRatePostInstall = 2000;
     public static event EventHandler OpenShellInstallDistributionFinished;
 
-    public static async void Execute(DistributionClass distribution)
+    public static async void Execute(DistributionClass distribution, int behaviour = 0)
     {
-        var openShell = await CommandClass.StartShellAsync(distribution);
+        var defaultPath = string.Empty;
+        if (behaviour == 1)
+        {
+            defaultPath = "~";
+        }
+
+        var openShell = await CommandClass.StartShellAsync(distribution, defaultPath);
 
         if (openShell.ExitCode != 0)
         {

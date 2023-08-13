@@ -111,7 +111,9 @@ public class DistributionService
     public void OpenShellDistribution(Distribution distribution)
     {
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
-        OpenShellDistributionCommand.Execute(distributionClass);
+
+        var shellBehaviour = _userOptions.ShellBehaviour;
+        OpenShellDistributionCommand.Execute(distributionClass, shellBehaviour);
     }
 
     public async Task<string> OptimizeDistribution(Distribution distribution)
@@ -169,4 +171,11 @@ public class DistributionService
         var distributionClass = _mapper.Map<DistributionClass>(distribution);
         return await ExecuteDistributionCommand.Run(distributionClass, command);
     }
+    
+    public Dictionary<int, string> ShellBehaviours { get; set; } = new()
+    {
+        { 0, "Default" },
+        { 1, "Home" },
+        { 2, "Current" }
+    };
 }

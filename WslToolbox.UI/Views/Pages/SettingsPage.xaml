@@ -24,7 +24,8 @@
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
-                        <labs:SettingsCard Description="Show distributions created by Docker" Header="Docker distributions">
+                        <labs:SettingsCard Description="Show distributions created by Docker"
+                                           Header="Docker distributions">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE799;" />
                             </labs:SettingsCard.HeaderIcon>
@@ -32,19 +33,19 @@
                         </labs:SettingsCard>
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
-                        <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Appearance and behaviour" />
+                        <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
+                                   Text="Appearance and behaviour" />
 
                         <labs:SettingsCard Description="Change the theme of the application" Header="Theme">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE790;" />
                             </labs:SettingsCard.HeaderIcon>
                             <ComboBox x:Name="ThemeSelector"
-                                      ItemsSource="{x:Bind ViewModel.Themes}" SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}" SelectionChanged="OnThemeSelectionChanged" />
+                                      ItemsSource="{x:Bind ViewModel.Themes}"
+                                      SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}"
+                                      SelectionChanged="OnThemeSelectionChanged" />
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Description="Enable application analytics" Header="Analytics" Visibility="{x:Bind ViewModel.AppCenterOptions.IsAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Analytics, Mode=TwoWay}" />
-                        </labs:SettingsCard>
                         <labs:SettingsCard Description="Enable application notifications" Header="Notifications">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xED0D;" />
@@ -53,29 +54,43 @@
                         </labs:SettingsCard>
 
                         <labs:SettingsExpander Description="Enable or disable specific notifications"
-                                               Header="Notifications" IsEnabled="{x:Bind ViewModel.UserOptions.Notifications, Mode=OneWay}" Visibility="Collapsed">
+                                               Header="Notifications"
+                                               IsEnabled="{x:Bind ViewModel.UserOptions.Notifications, Mode=OneWay}"
+                                               Visibility="Collapsed">
                             <labs:SettingsExpander.HeaderIcon>
                                 <FontIcon Glyph="&#xED0D;" />
                             </labs:SettingsExpander.HeaderIcon>
                             <labs:SettingsExpander.Items>
                                 <labs:SettingsCard ContentAlignment="Left">
-                                    <CheckBox Content="Updates available" IsChecked="{x:Bind ViewModel.NotificationOptions.UpdatesAvailable, Mode=TwoWay}" />
+                                    <CheckBox Content="Updates available"
+                                              IsChecked="{x:Bind ViewModel.NotificationOptions.UpdatesAvailable, Mode=TwoWay}" />
                                 </labs:SettingsCard>
                                 <labs:SettingsCard ContentAlignment="Left">
-                                    <CheckBox Content="No updates available" IsChecked="{x:Bind ViewModel.NotificationOptions.NoUpdatesAvailable, Mode=TwoWay}" />
+                                    <CheckBox Content="No updates available"
+                                              IsChecked="{x:Bind ViewModel.NotificationOptions.NoUpdatesAvailable, Mode=TwoWay}" />
                                 </labs:SettingsCard>
                             </labs:SettingsExpander.Items>
                         </labs:SettingsExpander>
+
+                        <labs:SettingsCard Description="Open shell behaviour" Header="Shell behaviour">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xED0D;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ComboBox ItemsSource="{x:Bind ViewModel.ShellBehaviours}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                      SelectedValue="{x:Bind ViewModel.UserOptions.ShellBehaviour, Mode=TwoWay}" />
+                        </labs:SettingsCard>
                     </StackPanel>
 
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
-                        <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="App information" />
+                        <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
+                                   Text="App information" />
                         <InfoBar Name="UpdateInfoBar" />
                         <labs:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
                             <labs:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE946;" />
                             </labs:SettingsCard.HeaderIcon>
-                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}" Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}"
+                                        Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                                 <Button Content="Download update" Command="{x:Bind ViewModel.DownloadUpdateCommand}"
                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                                 <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
@@ -92,13 +107,19 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
-                    <Button Command="{x:Bind ViewModel.OpenConfigurationCommand}" Content="Open JSON" MinWidth="{StaticResource ButtonMinWidth}" />
-                    <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log" MinWidth="{StaticResource ButtonMinWidth}" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="{StaticResource MediumTopBottomMargin}"
+                            Spacing="{StaticResource DefaultSpacing}">
+                    <Button Command="{x:Bind ViewModel.OpenConfigurationCommand}" Content="Open JSON"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.OpenLogFileCommand}" Content="Open log"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
-                    <Button Command="{x:Bind ViewModel.RestoreDefaultConfigurationCommand}" Content="Restore defaults" MinWidth="{StaticResource ButtonMinWidth}" />
-                    <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save" MinWidth="{StaticResource ButtonMinWidth}" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
+                            Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
+                    <Button Command="{x:Bind ViewModel.RestoreDefaultConfigurationCommand}" Content="Restore defaults"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
             </Grid>
         </Grid>
