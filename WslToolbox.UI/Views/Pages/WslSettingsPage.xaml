@@ -19,7 +19,12 @@
             <InfoBar Name="SettingsInfoBar" />
         </Grid>
         <ScrollViewer Grid.Row="1">
-            <Grid Margin="{StaticResource SmallBottomMargin}" />
+            <Grid Margin="{StaticResource SmallBottomMargin}">
+                <StackPanel>
+                    <TextBlock Text="SparseVhd" />
+                    <TextBlock Text="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=OneWay}" />
+                </StackPanel>
+            </Grid>
 
         </ScrollViewer>
         <Grid Row="2" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
