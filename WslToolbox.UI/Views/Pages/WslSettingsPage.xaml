@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
@@ -20,9 +21,16 @@
         </Grid>
         <ScrollViewer Grid.Row="1">
             <Grid Margin="{StaticResource SmallBottomMargin}">
-                <StackPanel>
-                    <TextBlock Text="SparseVhd" />
-                    <TextBlock Text="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=OneWay}" />
+                <StackPanel Spacing="20">
+                    <StackPanel Spacing="{StaticResource DefaultSpacing}">
+                        <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
+                        <labs:SettingsCard Description="When set to true, any newly created VHD will be set to sparse automatically." Header="SparseVhd">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE799;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
 

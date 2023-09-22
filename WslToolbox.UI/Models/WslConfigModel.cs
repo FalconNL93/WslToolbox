@@ -14,5 +14,5 @@ public class BootConfig
 public class ExperimentalConfig
 {
     public string? AutoMemoryReclaim { get; set; }
-    public bool? SparseVhd { get; set; }
+    public bool SparseVhd { get; set; } = false;
 }
