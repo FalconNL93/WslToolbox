@@ -23,16 +23,56 @@ public static class WslConfigHelper
         }));
         var data = parser.ReadFile(wslConfigFile);
 
+        var configInstance = Activator.CreateInstance(typeof(WslConfigModel));
+        foreach (var propertyInfo in configInstance.GetType().GetProperties())
+        {
+            Console.WriteLine(propertyInfo.Name);
+            if (propertyInfo.PropertyType.IsClass)
+            {
+                Console.WriteLine($"Searching for {propertyInfo.Name.ToLower()}");
+                var sectionKeys = data.Sections.GetSectionData(propertyInfo.Name.ToLower());
+                if (sectionKeys == null)
+                {
+                    Console.WriteLine($"Not present");
+                    continue;
+                }
+
+                var propertyInstance = Activator.CreateInstance(propertyInfo.PropertyType);
+                if (propertyInstance == null)
+                {
+                    continue;
+                }
+                
+                Console.WriteLine($"Created instance: {propertyInstance.GetType()}");
+                foreach (var subPropertyInfo in propertyInstance.GetType().GetProperties())
+                {
+                    object? keyVal = null;
+                    if (subPropertyInfo.PropertyType == typeof(bool))
+                    {
+                        keyVal = false;
+                    } else if (subPropertyInfo.PropertyType == typeof(string))
+                    {
+                        keyVal = "wtf";
+                    }
+                    
+                    subPropertyInfo.SetValue(propertyInstance, keyVal);
+                }
+                
+                Console.WriteLine($"Setting {propertyInfo.GetType()} with {instance.GetType()}");
+                propertyInfo.SetValue(configInstance, instance);
+            }
+        }
+
         var experimentalKeys = data.Sections.GetSectionData("experimental").Keys;
         TryParse(experimentalKeys.FirstOrDefault(x => x.KeyName == "sparseVhd")?.Value, out var sparseVhdBool);
 
         return new WslConfigModel
         {
-            Boot = new BootConfig
+            Boot = new BootSection
             {
                 Systemd = null
             },
-            Experimental = new ExperimentalConfig
+            Experimental = new ExperimentalSection
             {
                 SparseVhd = sparseVhdBool,
                 AutoMemoryReclaim = null

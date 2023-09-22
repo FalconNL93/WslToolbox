@@ -2,16 +2,16 @@
 
 public class WslConfigModel
 {
-    public BootConfig Boot { get; set; } = new();
-    public ExperimentalConfig Experimental { get; set; } = new();
+    public BootSection Boot { get; set; } = new();
+    public ExperimentalSection Experimental { get; set; } = new();
 }
 
-public class BootConfig
+public class BootSection
 {
     public bool? Systemd { get; set; }
 }
 
-public class ExperimentalConfig
+public class ExperimentalSection
 {
     public string? AutoMemoryReclaim { get; set; }
     public bool SparseVhd { get; set; } = false;

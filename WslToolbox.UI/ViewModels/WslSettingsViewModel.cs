@@ -12,7 +12,7 @@ public partial class WslSettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private WslConfigModel _wslConfigModel = new()
     {
-        Experimental = new ExperimentalConfig
+        Experimental = new ExperimentalSection
         {
             AutoMemoryReclaim = "initial"
         }
