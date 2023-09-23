@@ -6,9 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:converters1="using:WslToolbox.UI.Converters"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+        <converters1:NullableBoolToBoolConverter x:Key="NullableBool" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,13 +25,23 @@
             <Grid Margin="{StaticResource SmallBottomMargin}">
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
-                        <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
-                        <labs:SettingsCard Description="When set to true, any newly created VHD will be set to sparse automatically." Header="SparseVhd">
-                            <labs:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE799;" />
-                            </labs:SettingsCard.HeaderIcon>
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        <labs:SettingsExpander
+                            Description="Show configuration of experimental settings"
+                            Header="Experimental">
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard Description="When set to true, any newly created VHD will be set to sparse automatically." Header="SparseVhd">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
+                                </labs:SettingsCard>
+
+                                <labs:SettingsCard Description="Setting this to true allows the Windows Firewall rules, as well as rules specific to Hyper-V traffic, to filter WSL network traffic.." Header="Firewall">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.Firewall, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
+                                </labs:SettingsCard>
+
+                                <labs:SettingsCard Description="Changes how DNS requests are proxied from WSL to Windows" Header="DnsTunneling">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.DnsTunneling, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -41,6 +53,13 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
+                            Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
+                    <Button Content="Restore defaults"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                    <Button Content="Save"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
