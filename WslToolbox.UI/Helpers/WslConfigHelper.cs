@@ -24,8 +24,8 @@ public static class WslConfigHelper
         var data = parser.ReadFile(wslConfigFile);
 
 
-        var bootKeys = data.Sections.GetSectionData("boot").Keys.ToDictionary(x => x.KeyName, x => x.Value);
-        var experimentalKeys = data.Sections.GetSectionData("experimental").Keys.ToDictionary(x => x.KeyName, x => x.Value);
+        var bootKeys = data.Sections.GetSectionData("boot")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
+        var experimentalKeys = data.Sections.GetSectionData("experimental")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
         
         var interopKeys = data.Sections.GetSectionData("interop")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
         var networkKeys = data.Sections.GetSectionData("network")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
