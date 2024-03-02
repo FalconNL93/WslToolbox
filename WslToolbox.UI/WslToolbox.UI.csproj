@@ -64,13 +64,13 @@
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240227000" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
         <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.1-dev-00077" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.1" />
         <PackageReference Include="Serilog.Sinks.TextWriter" Version="2.1.0" />
-        <PackageReference Include="WinUIEx" Version="2.3.2" />
+        <PackageReference Include="WinUIEx" Version="2.3.4" />
     </ItemGroup>
 
     <ItemGroup>
