@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     Loaded="OnLoaded"
     mc:Ignorable="d"
     x:Class="WslToolbox.UI.Views.Pages.DashboardPage"
@@ -34,12 +34,12 @@
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.AddDistributionCommand}"
                                     CommandParameter="{x:Bind}"
-                                    Text="Install" />
+                                    Text="安裝系統 Install" />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.ImportDistributionCommand}"
                                     CommandParameter="{x:Bind}"
                                     Icon="Import"
-                                    Text="Import" />
+                                    Text="導入系統 Import" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>
@@ -53,20 +53,20 @@
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.StartAllDistributionCommand}"
                                     Icon="Play"
-                                    Text="Start all" />
+                                    Text="啟動所有的系統 Start all" />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.StopAllDistributionCommand}"
                                     Icon="Stop"
-                                    Text="Stop all" />
+                                    Text="停止所有的系統 Stop all" />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.RestartAllDistributionCommand}"
                                     Icon="Refresh"
-                                    Text="Restart all" />
+                                    Text="重新啟動所有的系統 Restart all" />
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.OpenUrlCommand}"
                                     CommandParameter="https://aka.ms/wslstorepage"
-                                    Text="Open WSL app in Windows Store" />
+                                    Text="打開視窗商店的WSL系統軟體" />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>
@@ -121,7 +121,7 @@
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.OpenUrlCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding BasePathLocal}"
-                                                        Text="Open folder">
+                                                        Text="打開目錄 Open folder">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xF12B;" />
                                                         </MenuFlyoutItem.Icon>
@@ -129,12 +129,12 @@
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.OpenShellDistributionCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding}"
-                                                        Text="Open shell" />
+                                                        Text="打開命令視窗 Open shell" />
                                                     <MenuFlyoutSeparator />
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.ExportDistributionCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding}"
-                                                        Text="Export">
+                                                        Text="匯出系統 Export">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xEDE1;" />
                                                         </MenuFlyoutItem.Icon>
@@ -142,7 +142,7 @@
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.MoveDistributionCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding}"
-                                                        Text="Move">
+                                                        Text="搬移系統 Move">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE8DE;" />
                                                         </MenuFlyoutItem.Icon>
@@ -150,7 +150,7 @@
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.RenameDistributionCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding}"
-                                                        Text="Rename">
+                                                        Text="更名系統 Rename">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE8AC;" />
                                                         </MenuFlyoutItem.Icon>
@@ -159,7 +159,7 @@
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}"
                                                         CommandParameter="{Binding}"
-                                                        Text="Delete">
+                                                        Text="刪除系統 Delete">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="&#xE74D;" />
                                                         </MenuFlyoutItem.Icon>
