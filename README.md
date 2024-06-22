@@ -38,12 +38,5 @@ Configuration for WSL Toolbox is saved to a JSON file.
 ## Requirements
 
 * [Windows Subsystem for Linux](https://www.microsoft.com/store/productId/9P9TQF7MRM4R)
-* [.NET 7 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-* Windows 11 (x64) **OR** Windows 10 (x64) version 1903 or higher.
-
-## Special thanks
-
-**Jetbrains:**
-
-I'm using [Jetbrains](https://www.jetbrains.com/) [Rider](https://www.jetbrains.com/rider/) to learn and develop C#,
-they provided me with an open source license.
+* [.NET Desktop Runtime 8.0.6](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+* Windows 11 (x64) **OR** Windows 10 x64 20H1 (19041) or newer.
