@@ -9,7 +9,7 @@ env:
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: '0.6.${{ github.run_number }}.0'
+  AppVersion: '0.7.${{ github.run_number }}.0'
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
 
@@ -45,7 +45,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: 8.0.x
 
       - name: Publish
         run: |
