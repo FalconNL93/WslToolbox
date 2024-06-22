@@ -25,7 +25,7 @@
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
         <PackageCertificateThumbprint>F7D7C9BAC232BB46B2625D401040CDA60CB22D0D</PackageCertificateThumbprint>
-        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
         <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
