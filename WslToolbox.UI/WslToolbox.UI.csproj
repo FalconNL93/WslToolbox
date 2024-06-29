@@ -24,8 +24,8 @@
         <AssemblyVersion>0.6.0</AssemblyVersion>
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
-        <PackageCertificateThumbprint>F7D7C9BAC232BB46B2625D401040CDA60CB22D0D</PackageCertificateThumbprint>
-        <AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
+        <PackageCertificateThumbprint>02C4DE958163EA45F3F24C39537D5EDE6B40DA3F</PackageCertificateThumbprint>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
         <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -37,7 +37,6 @@
         <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
         <AppxPackageDir>C:\Users\pvand\Dev\WslToolbox\app\msix</AppxPackageDir>
         <Configurations>Debug;Release</Configurations>
-        <PackageCertificateKeyFile>WslToolbox.UI_TemporaryKey.pfx</PackageCertificateKeyFile>
     </PropertyGroup>
 
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
@@ -186,7 +185,6 @@
         <Content Include="Images\Wide310x150Logo.scale-150.png" />
         <Content Include="Images\Wide310x150Logo.scale-200.png" />
         <Content Include="Images\Wide310x150Logo.scale-400.png" />
-        <None Remove="WslToolbox.UI_TemporaryKey.pfx" />
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">

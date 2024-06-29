@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:genTemplate="http://schemas.microsoft.com/appx/developer/templatestudio" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap rescap genTemplate">
-  <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FFA21981-581C-4EA2-BFF1-B728777C84B7" Version="0.6.17.0" />
+  <Identity Name="51084Zentiweb.WSLToolboxBeta" Publisher="CN=FalconNL" Version="0.6.17.0" />
   <mp:PhoneIdentity PhoneProductId="31ff8bde-a20a-4a43-82a2-a82dacf9db2d" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>WSL Toolbox Beta</DisplayName>
