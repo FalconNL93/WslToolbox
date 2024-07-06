@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Serilog;
 
 namespace WslToolbox.UI.Core.Helpers;
 
@@ -13,9 +14,10 @@ public static class Toolbox
     public static readonly string CpuInfo = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
     public static readonly string ProcessType = Environment.Is64BitProcess ? "x64" : "x86";
 
-    public static readonly string AppDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    public static readonly string AppInstallDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version;
-    public static readonly string AppData = Path.Combine(AppDirectory, "data");
+    public static readonly string AppDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "wsltoolbox");
+    public static readonly string AppData = Path.Combine(AppDirectory);
 
     public static readonly string UserConfiguration = Path.Combine(AppData, "config.json");
     public static readonly string LogConfiguration = Path.Combine(AppData, "log.json");
@@ -26,8 +28,26 @@ public static class Toolbox
 
     public static AppTypes GetAppType()
     {
-        return File.Exists(Path.Combine(AppDirectory, "unins001.exe"))
+        return File.Exists(Path.Combine(AppInstallDir, "unins001.exe"))
             ? AppTypes.Setup
             : AppTypes.Portable;
+    }
+
+    public static void CopyOldConfiguration()
+    {
+        var oldDirectory = Path.Combine(AppInstallDir, "data");
+        if (!Directory.Exists(oldDirectory))
+        {
+            return;
+        }
+
+        try
+        {
+            DirectoryHelper.CopyDirectory(oldDirectory, AppDirectory, true);
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Error(e, "Unable to copy configuration files to new directory");
+        }
     }
 }

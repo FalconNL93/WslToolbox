@@ -24,7 +24,7 @@
         <AssemblyVersion>0.6.0</AssemblyVersion>
         <FileVersion>0.6.0</FileVersion>
         <PackageId>toolbox</PackageId>
-        <PackageCertificateThumbprint>02C4DE958163EA45F3F24C39537D5EDE6B40DA3F</PackageCertificateThumbprint>
+        <PackageCertificateThumbprint>CCE2B16E0AF45F701AFD3E91F85C459FDE71FAAF</PackageCertificateThumbprint>
         <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
@@ -37,6 +37,7 @@
         <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
         <AppxPackageDir>C:\Users\pvand\Dev\WslToolbox\app\msix</AppxPackageDir>
         <Configurations>Debug;Release</Configurations>
+        <PackageCertificateKeyFile>WslToolbox.UI_TemporaryKey.pfx</PackageCertificateKeyFile>
     </PropertyGroup>
 
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

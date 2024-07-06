@@ -33,6 +33,17 @@ public partial class App : Application
 
     public App()
     {
+        try
+        {
+            Directory.CreateDirectory(Toolbox.AppDirectory);
+            Toolbox.CopyOldConfiguration();
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
+        
+
         InitializeComponent();
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -42,14 +53,17 @@ public partial class App : Application
             .Build();
 
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Error()
+            .MinimumLevel.Information()
             .ReadFrom.Configuration(configuration)
             .WriteTo.File(Toolbox.LogFile)
             .CreateLogger();
 
         Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(builder => { builder.AddConfiguration(configuration); })
+            .ConfigureAppConfiguration(builder =>
+            {
+                builder.AddConfiguration(configuration);
+            })
             .UseContentRoot(AppContext.BaseDirectory)
             .UseSerilog()
             .ConfigureServices((context, services) =>
@@ -63,12 +77,12 @@ public partial class App : Application
                 services.AddHttpClient<DownloadService>(c =>
                 {
                     c.BaseAddress = Toolbox.GitHubDownloadUrl;
-                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
                 services.AddHttpClient<UpdateService>(c =>
                 {
                     c.BaseAddress = Toolbox.GitHubManifestFile;
-                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+                    c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
 
                 // Services
@@ -106,6 +120,7 @@ public partial class App : Application
 
 
         _logger = GetService<ILogger<App>>();
+
         GetService<AppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;

@@ -5,7 +5,7 @@ namespace WslToolbox.UI.Helpers;
 
 public class RuntimeHelper
 {
-    public static bool IsMSIX
+    public static bool IsMsix
     {
         get
         {
