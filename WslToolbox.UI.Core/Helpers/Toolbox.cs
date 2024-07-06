@@ -36,10 +36,19 @@ public static class Toolbox
     public static void CopyOldConfiguration()
     {
         var oldDirectory = Path.Combine(AppInstallDir, "data");
+        var newDirectory = AppDirectory;
         if (!Directory.Exists(oldDirectory))
         {
             return;
         }
+
+        if (File.Exists(Toolbox.UserConfiguration))
+        {
+            Log.Logger.Information("User configuration already exist");
+
+            return;
+        }
+        
 
         try
         {
