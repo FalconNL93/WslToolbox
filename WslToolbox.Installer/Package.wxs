@@ -1,0 +1,22 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:vs="http://wixtoolset.org/schemas/v4/wxs/vs"
+	 >
+    <Package Name="WSL Toolbox" Manufacturer="FalconNL93" Version="1.0.0.0" UpgradeCode="f94c1fc6-bb6e-4867-a1c0-1a526f4552fb">
+        <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"/>
+        <vs:FindVisualStudio />
+        <PropertyRef Id="VS2017DEVENV" />
+        <PropertyRef Id="VS2019_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED" />
+        <PropertyRef Id="VS2022_ROOT_FOLDER" />
+		
+        <ui:WixUI
+                Id="WixUI_InstallDir"
+                InstallDirectory="INSTALLFOLDER"
+        />
+
+		
+        <Feature Id="Main">
+	        <ComponentGroupRef Id="Toolbox" />
+        </Feature>
+    </Package>
+</Wix>

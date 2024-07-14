@@ -1,0 +1,20 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.0">
+
+	<ItemGroup>
+		<HarvestDirectory Include="../WslToolbox.UI/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish">
+			<ComponentGroupName>Toolbox</ComponentGroupName>
+			<DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+			<SuppressRootDirectory>true</SuppressRootDirectory>
+		</HarvestDirectory>
+		<BindPath Include="../WslToolbox.UI/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WslToolbox.UI\WslToolbox.UI.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Heat" Version="5.0.0" />
+		<PackageReference Include="WixToolset.UI.wixext" Version="5.0.0" />
+		<PackageReference Include="WixToolset.VisualStudio.wixext" Version="5.0.0" />
+	</ItemGroup>
+</Project>
