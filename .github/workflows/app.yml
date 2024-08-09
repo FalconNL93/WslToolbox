@@ -108,7 +108,7 @@ jobs:
           -SetupOutputFile "wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup"
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v3
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup
           path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
