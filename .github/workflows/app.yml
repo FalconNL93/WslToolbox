@@ -11,7 +11,7 @@ env:
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: "0.7.${{ github.run_number }}.0"
+  AppVersion: "${{ github.ref_name }}"
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
 
@@ -27,6 +27,12 @@ jobs:
       APPCENTER_KEY: ${{ secrets.APPCENTER_KEY }}
 
     steps:
+      - name: GitHub Tag Test
+        run: |
+          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+          echo "AppVersion: ${{ env.AppVersion }}"
+          
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -115,23 +121,17 @@ jobs:
           retention-days: 1
 
   create-release:
-    id: create_release
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: ncipollo/release-action@v1
+        id: create_release
         with:
           artifacts: "*_setup.exe,*.msix"
           prerelease: true
           artifactErrorsFailBuild: true
-          
-
-  publish-winget:
-    runs-on: windows-latest
-    needs: create-release
-    steps:
       - name: WinGet Updater
         uses: michidk/winget-updater@latest
         with:
