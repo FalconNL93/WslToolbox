@@ -3,6 +3,8 @@ name: App Build
 on:
   push:
     branches: ["nightly"]
+    tags:        
+      - '*'
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
@@ -112,7 +114,7 @@ jobs:
           path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
           retention-days: 1
 
-  winget:
+  publish-winget:
     runs-on: windows-latest
     needs: setup
     steps:
@@ -122,7 +124,7 @@ jobs:
           komac-token: ${{ secrets.KOMAC_TOKEN }}
           identifier: ${{ env.AppUuid }}
           repo: ${{ env.AppUuid }}
-          URL: "https://github.com/FalconNL93/WslToolbox/releases/download/${{ env.AppVersion }}/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
+          url: "https://github.com/FalconNL93/WslToolbox/releases/download/${{ env.AppVersion }}/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
 
   purge:
     runs-on: ubuntu-latest
