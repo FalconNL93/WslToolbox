@@ -115,7 +115,7 @@ jobs:
           retention-days: 1
 
   create-release:
-    needs: setup
+    needs: [build,setup]
     runs-on: ubuntu-latest
     permissions:
       contents: write
