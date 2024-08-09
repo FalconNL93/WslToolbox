@@ -3,8 +3,8 @@ name: App Build
 on:
   push:
     branches: ["nightly"]
-    tags:        
-      - '*'
+    tags:
+      - "*"
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
@@ -114,9 +114,23 @@ jobs:
           path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
           retention-days: 1
 
+  create-release:
+    id: create_release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*_setup.exe,*.msix"
+          prerelease: true
+          artifactErrorsFailBuild: true
+          
+
   publish-winget:
     runs-on: windows-latest
-    needs: setup
+    needs: create-release
     steps:
       - name: WinGet Updater
         uses: michidk/winget-updater@latest
@@ -124,7 +138,7 @@ jobs:
           komac-token: ${{ secrets.KOMAC_TOKEN }}
           identifier: ${{ env.AppUuid }}
           repo: ${{ env.AppUuid }}
-          url: "https://github.com/FalconNL93/WslToolbox/releases/download/${{ env.AppVersion }}/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
+          url: "${{ steps.create_release.outputs.upload_url }}/wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe"
 
   purge:
     runs-on: ubuntu-latest
