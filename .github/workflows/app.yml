@@ -66,14 +66,14 @@ jobs:
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
 
       - name: Upload binary artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.6
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
           retention-days: 1
           path: ${{ github.workspace }}\app\release\${{ env.Platform }}
 
       - name: Upload MSIX artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.6
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_msix
           retention-days: 1
@@ -108,7 +108,7 @@ jobs:
           -SetupOutputFile "wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup"
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.6
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup
           path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
