@@ -124,7 +124,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         id: create_release
         with:
-          artifacts: "*_setup.exe,*.msix"
+          artifacts: "*_setup"
           prerelease: true
           artifactErrorsFailBuild: true
       - name: WinGet Updater
