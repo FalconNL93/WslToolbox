@@ -127,7 +127,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         id: create_release
         with:
-          artifacts: "*_setup*"
+          artifacts: "wsltoolbox_*_x64_setup/*.exe"
           prerelease: true
           artifactErrorsFailBuild: true
       - name: WinGet Updater
