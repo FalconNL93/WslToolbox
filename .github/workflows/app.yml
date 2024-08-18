@@ -115,6 +115,7 @@ jobs:
           retention-days: 1
 
   create-release:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: [build,setup]
     runs-on: ubuntu-latest
     permissions:
@@ -124,12 +125,10 @@ jobs:
       - uses: actions/download-artifact@v4
       - name: Display structure of downloaded files
         run: ls -R
-      - uses: ncipollo/release-action@v1
-        id: create_release
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          artifacts: "wsltoolbox_*_x64_setup/*.exe"
-          prerelease: false
-          artifactErrorsFailBuild: true
+          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe"
       - name: WinGet Updater
         uses: michidk/winget-updater@latest
         with:
