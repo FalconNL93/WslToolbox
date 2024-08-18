@@ -4,7 +4,7 @@ on:
   push:
     branches: ["nightly"]
     tags:
-      - "*"
+      - "0.*"
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
@@ -128,7 +128,7 @@ jobs:
         id: create_release
         with:
           artifacts: "wsltoolbox_*_x64_setup/*.exe"
-          prerelease: true
+          prerelease: false
           artifactErrorsFailBuild: true
       - name: WinGet Updater
         uses: michidk/winget-updater@latest
