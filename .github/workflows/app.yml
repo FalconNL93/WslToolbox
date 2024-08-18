@@ -121,10 +121,13 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4.1.7
+      - uses: actions/download-artifact@v4
+      - name: Display structure of downloaded files
+        run: ls -R
       - uses: ncipollo/release-action@v1
         id: create_release
         with:
-          artifacts: "*_setup"
+          artifacts: "*_setup*"
           prerelease: true
           artifactErrorsFailBuild: true
       - name: WinGet Updater
