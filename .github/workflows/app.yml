@@ -135,7 +135,7 @@ jobs:
         with:
           komac-token: ${{ secrets.KOMAC_TOKEN }}
           identifier: ${{ env.AppUuid }}
-          repo: ${{ env.AppUuid }}
+          repo: "FalconNL93/WslToolbox"
           url: "${{ steps.create_release.outputs.upload_url }}/wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe"
 
   purge:
