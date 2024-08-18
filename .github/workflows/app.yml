@@ -126,6 +126,7 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
       - name: Release
+        id: newrelease
         uses: softprops/action-gh-release@v2
         with:
           files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
@@ -135,7 +136,7 @@ jobs:
           komac-token: ${{ secrets.KOMAC_TOKEN }}
           identifier: ${{ env.AppUuid }}
           repo: "FalconNL93/WslToolbox"
-          url: "${{ fromJSON(steps.create-release.outputs.assets)[0].browser_download_url }}"
+          url: "${{ fromJSON(steps.newrelease.outputs.assets)[0].browser_download_url }}"
 
   purge:
     runs-on: ubuntu-latest
