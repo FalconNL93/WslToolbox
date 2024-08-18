@@ -128,14 +128,14 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe"
+          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
       - name: WinGet Updater
         uses: michidk/winget-updater@latest
         with:
           komac-token: ${{ secrets.KOMAC_TOKEN }}
           identifier: ${{ env.AppUuid }}
           repo: "FalconNL93/WslToolbox"
-          url: "${{ steps.create_release.outputs.upload_url }}/wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe"
+          url: "${{ fromJSON(steps.create-release.outputs.assets)[0].browser_download_url }}"
 
   purge:
     runs-on: ubuntu-latest
