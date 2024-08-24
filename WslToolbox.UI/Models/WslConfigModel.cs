@@ -2,6 +2,7 @@
 
 public class WslConfigModel
 {
+    public RootSection Root { get; set; } = new();
     public BootSection Boot { get; set; } = new();
     public ExperimentalSection Experimental { get; set; } = new();
     public NetworkSection Network { get; set; } = new();
@@ -12,6 +13,11 @@ public class BootSection
 {
     public bool? Systemd { get; set; }
     public string? Command { get; set; }
+}
+
+public class RootSection
+{
+    public string? NetworkingMode { get; set; }
 }
 
 public class NetworkSection

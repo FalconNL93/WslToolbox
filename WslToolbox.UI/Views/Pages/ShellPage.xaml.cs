@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using WslToolbox.UI.Contracts.Services;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
@@ -25,7 +26,7 @@ public sealed partial class ShellPage : Page
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
-        AppTitleBarText.Text = App.Name;
+        AppTitleBarText.Text = $"{App.Name} - {Toolbox.Version}";
 
         WeakReferenceMessenger.Default.Register<InputDialogMessage>(this, OnShowInputDialog);
         WeakReferenceMessenger.Default.Register<SimpleDialogShowMessage>(this, OnShowSimpleDialog);

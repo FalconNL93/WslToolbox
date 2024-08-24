@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using IniParser;
-using IniParser.Model.Configuration;
-using IniParser.Parser;
+using CommunityToolkit.Mvvm.Input;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Models;
 
@@ -18,6 +16,8 @@ public partial class WslSettingsViewModel : ObservableRecipient
         }
     };
 
+    public readonly Dictionary<string, string> NetworkingModes = WslConfigHelper.NetworkingModeList;
+
     public WslSettingsViewModel()
     {
         ReadWslSettings();
@@ -26,5 +26,11 @@ public partial class WslSettingsViewModel : ObservableRecipient
     private void ReadWslSettings()
     {
         WslConfigModel = WslConfigHelper.GetConfig();
+    }
+
+    [RelayCommand]
+    private void SaveConfiguration()
+    {
+        WslConfigHelper.WriteConfig("wsl2", "networkingMode", WslConfigModel.Root.NetworkingMode);
     }
 }

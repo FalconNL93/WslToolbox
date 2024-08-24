@@ -26,6 +26,18 @@
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <labs:SettingsExpander
+                            Description="Show configuration of WSL 2"
+                            Header="WSL 2">
+                            <labs:SettingsExpander.Items>
+                                <labs:SettingsCard Description="If the value is mirrored then this turns on mirrored networking mode. Default or unrecognized strings result in NAT networking." Header="Networking mode">
+                                    <ComboBox ItemsSource="{x:Bind ViewModel.NetworkingModes}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                              SelectedValue="{x:Bind ViewModel.WslConfigModel.Root.NetworkingMode, Mode=TwoWay}" />
+                                </labs:SettingsCard>
+                            </labs:SettingsExpander.Items>
+                        </labs:SettingsExpander>
+                    </StackPanel>
+                    <StackPanel Spacing="{StaticResource DefaultSpacing}">
+                        <labs:SettingsExpander
                             Description="Show configuration of experimental settings"
                             Header="Experimental">
                             <labs:SettingsExpander.Items>
@@ -57,7 +69,7 @@
                             Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
                     <Button Content="Restore defaults"
                             MinWidth="{StaticResource ButtonMinWidth}" />
-                    <Button Content="Save"
+                    <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save"
                             MinWidth="{StaticResource ButtonMinWidth}" />
                 </StackPanel>
             </Grid>
