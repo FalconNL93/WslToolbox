@@ -31,6 +31,15 @@
                             </labs:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
                         </labs:SettingsCard>
+
+                        <labs:SettingsCard Description="Enable remote"
+                                           Header="WebAPI">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE799;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.EnableApi, Mode=TwoWay}" Toggled="OnToggleEnableApi" />
+                        </labs:SettingsCard>
+
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"

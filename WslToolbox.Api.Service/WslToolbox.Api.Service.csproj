@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WslToolbox.Api.Service-933d657b-06be-4495-8f18-472dd1ff24f1</UserSecretsId>
+    <AssemblyName>apisvc</AssemblyName>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WslToolbox.Api\WslToolbox.Api.csproj" />
+  </ItemGroup>
+</Project>

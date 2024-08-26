@@ -74,6 +74,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\WslToolbox.Api.Service\WslToolbox.Api.Service.csproj" />
         <ProjectReference Include="..\WslToolbox.UI.Core\WslToolbox.UI.Core.csproj" />
     </ItemGroup>
 

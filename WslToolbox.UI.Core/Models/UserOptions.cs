@@ -13,6 +13,9 @@ public partial class UserOptions : ObservableRecipient
     [ObservableProperty]
     private int _shellBehaviour;
 
+    [ObservableProperty]
+    private bool _enableApi;
+
     public bool SeenWelcomePage { get; set; }
     public bool HideDocker { get; set; } = true;
 }

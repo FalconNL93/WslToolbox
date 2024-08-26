@@ -183,6 +183,12 @@ public partial class SettingsViewModel : ObservableRecipient
         await _themeSelectorService.SetThemeAsync(param);
     }
 
+    [RelayCommand]
+    private async Task ToggleApi(bool enable)
+    {
+        var d = enable;
+    }
+
     [RelayCommand(CanExecute = nameof(CanOpenLogFile))]
     private static void OpenLogFile()
     {

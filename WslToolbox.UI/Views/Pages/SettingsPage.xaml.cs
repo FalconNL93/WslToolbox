@@ -59,4 +59,14 @@ public sealed partial class SettingsPage : Page
 
         await ViewModel.ThemeChangeCommand.ExecuteAsync(selectedTheme);
     }
+
+    private async void OnToggleEnableApi(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ToggleSwitch toggleSwitch)
+        {
+            return;
+        }
+
+        await ViewModel.ToggleApiCommand.ExecuteAsync(toggleSwitch.IsOn);
+    }
 }
