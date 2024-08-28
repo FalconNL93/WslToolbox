@@ -2,13 +2,17 @@
 using IniParser.Model;
 using IniParser.Model.Configuration;
 using IniParser.Parser;
+using Microsoft.Extensions.Logging;
 using WslToolbox.Core.Legacy.Helpers;
+using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Models;
 
-namespace WslToolbox.UI.Helpers;
+namespace WslToolbox.UI.Services;
 
-public static class WslConfigHelper
+public class WslConfigurationService(ILogger<WslConfigurationService> logger)
 {
+    private readonly string _configPath = Toolbox.WslConfiguration;
+
     public static Dictionary<string, string> NetworkingModeList { get; set; } = new()
     {
         {"", "Default"},
@@ -16,11 +20,9 @@ public static class WslConfigHelper
         {"mirrored", "mirrored "}
     };
 
-    public static WslConfigModel GetConfig()
+    public WslConfigModel GetConfig()
     {
-        var wslConfigFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\.wslconfig";
-
-        if (!File.Exists(wslConfigFile))
+        if (!File.Exists(Toolbox.WslConfiguration))
         {
             return new WslConfigModel();
         }
@@ -29,8 +31,8 @@ public static class WslConfigHelper
         {
             CaseInsensitive = false,
         }));
-        var data = parser.ReadFile(wslConfigFile);
 
+        var data = parser.ReadFile(Toolbox.WslConfiguration);
 
         var bootKeys = data.Sections.GetSectionData("boot")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
         var experimentalKeys = data.Sections.GetSectionData("experimental")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
@@ -55,11 +57,36 @@ public static class WslConfigHelper
         };
     }
 
-    public static void WriteConfig(string sectionName, string key, string? value)
+    private void CreateConfig()
     {
-        var wslConfig = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
+        if (File.Exists(_configPath))
+        {
+            return;
+        }
+
+        logger.LogInformation("WSL Configuration {ConfigFile} does not exist, creating new one", _configPath);
+        File.WriteAllText(_configPath, "[wsl2]");
+    }
+
+    public void RestoreConfiguration()
+    {
+        if (!File.Exists(_configPath))
+        {
+            return;
+        }
+
+        File.Delete(_configPath);
+    }
+
+    public void WriteConfig(string sectionName, string key, string? value)
+    {
+        if (!File.Exists(_configPath))
+        {
+            CreateConfig();
+        }
+
         var parser = new FileIniDataParser();
-        var data = parser.ReadFile(wslConfig);
+        var data = parser.ReadFile(_configPath);
 
         if (!data.Sections.ContainsSection(sectionName))
         {
@@ -89,6 +116,6 @@ public static class WslConfigHelper
             }
         }
 
-        parser.WriteFile(wslConfig, data);
+        parser.WriteFile(_configPath, data);
     }
 }

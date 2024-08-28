@@ -65,9 +65,15 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="Open configuration"
+                            Command="{x:Bind ViewModel.OpenConfigurationCommand}"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
                             Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
                     <Button Content="Restore defaults"
+                            Command="{x:Bind ViewModel.SaveConfigurationCommand}"
                             MinWidth="{StaticResource ButtonMinWidth}" />
                     <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save"
                             MinWidth="{StaticResource ButtonMinWidth}" />

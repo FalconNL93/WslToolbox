@@ -85,6 +85,8 @@ public partial class App : Application
                     c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
 
+                services.AddSingleton<WslConfigurationService>();
+
                 // Services
                 services.AddSingleton<AppNotificationService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
