@@ -16,6 +16,7 @@ using WslToolbox.UI.Core.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Core.Sinks;
 using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
@@ -31,6 +32,8 @@ public partial class App : Application
     public static readonly bool IsDeveloper = Debugger.IsAttached;
     private readonly ILogger<App> _logger;
 
+    public readonly LoggerConfiguration LogConfiguration = new();
+
     public App()
     {
         try
@@ -42,7 +45,7 @@ public partial class App : Application
         {
             throw;
         }
-        
+
 
         InitializeComponent();
         var configuration = new ConfigurationBuilder()
@@ -52,11 +55,13 @@ public partial class App : Application
             .AddEnvironmentVariables()
             .Build();
 
-        Log.Logger = new LoggerConfiguration()
+        LogConfiguration = LogConfiguration
             .MinimumLevel.Information()
             .ReadFrom.Configuration(configuration)
-            .WriteTo.File(Toolbox.LogFile)
-            .CreateLogger();
+            .WriteTo.Sink<EventSink>()
+            .WriteTo.File(Toolbox.LogFile);
+
+        Log.Logger = LogConfiguration.CreateLogger();
 
         Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
@@ -105,13 +110,13 @@ public partial class App : Application
                 services.AddSingleton<DistributionService>();
 
                 // Views and ViewModels
-                services.AddPage<ShellViewModel, ShellPage>();
-                services.AddPage<DashboardViewModel, DashboardPage>();
-                services.AddPage<SettingsViewModel, SettingsPage>();
-                services.AddPage<NotificationViewModel, NotificationModal>();
-                services.AddPage<DeveloperViewModel, DeveloperPage>();
-                services.AddPage<LogViewModel, LogPage>();
-                services.AddPage<WslSettingsViewModel, WslSettingsPage>();
+                services.AddTransientPage<ShellViewModel, ShellPage>();
+                services.AddTransientPage<DashboardViewModel, DashboardPage>();
+                services.AddTransientPage<SettingsViewModel, SettingsPage>();
+                services.AddTransientPage<NotificationViewModel, NotificationModal>();
+                services.AddTransientPage<DeveloperViewModel, DeveloperPage>();
+                services.AddTransientPage<LogViewModel, LogPage>();
+                services.AddTransientPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
 

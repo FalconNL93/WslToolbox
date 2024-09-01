@@ -30,6 +30,17 @@ public class NavigationViewService : INavigationViewService
         _navigationView = navigationView;
         _navigationView.BackRequested += OnBackRequested;
         _navigationView.ItemInvoked += OnItemInvoked;
+
+        var menuItems = GetNavigationViewItems(_navigationView.MenuItems);
+        foreach (var item in menuItems)
+        {
+            if (item.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
+            {
+                _navigationService.NavigateTo(pageKey);
+            }
+        }
+
+        _navigationService.NavigateTo(typeof(DashboardViewModel).FullName!);
     }
 
     public void UnregisterEvents()
@@ -100,5 +111,18 @@ public class NavigationViewService : INavigationViewService
         }
 
         return false;
+    }
+
+    private static IEnumerable<NavigationViewItem> GetNavigationViewItems(IEnumerable<object> items)
+    {
+        foreach (var item in items.OfType<NavigationViewItem>())
+        {
+            yield return item;
+
+            foreach (var grandChild in GetNavigationViewItems(item.MenuItems.OfType<NavigationViewItem>()))
+            {
+                yield return grandChild;
+            }
+        }
     }
 }

@@ -94,6 +94,7 @@
                                 <Button Content="Download update" Command="{x:Bind ViewModel.DownloadUpdateCommand}"
                                         Visibility="{x:Bind ViewModel.UpdaterResult.UpdateAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
                                 <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
+                                <Button Content="Open data directory" Command="{x:Bind ViewModel.OpenDataDirectoryCommand}" />
                             </StackPanel>
                         </labs:SettingsCard>
                     </StackPanel>

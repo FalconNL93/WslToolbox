@@ -1,20 +1,19 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using WslToolbox.UI.Core.Services;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Documents;
+using WslToolbox.UI.Core.Helpers;
 
 namespace WslToolbox.UI.ViewModels;
 
-public partial class LogViewModel : ObservableRecipient
+public partial class LogViewModel(ILogger<LogViewModel> logger) : ObservableRecipient
 {
-    private readonly LogService _logService;
+    public List<Paragraph> Paragraphs { get; } = [];
 
-    public LogViewModel(LogService logService)
+    [RelayCommand]
+    private void OpenLogFile()
     {
-        _logService = logService;
-    }
-
-    public static async Task ReadLog(CancellationTokenSource cancellationToken)
-    {
-        await LogService.ReadLog(cancellationToken);
+        ShellHelper.OpenFile(Toolbox.LogFile);
     }
 }

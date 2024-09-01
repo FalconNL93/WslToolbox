@@ -77,7 +77,7 @@ public partial class SettingsViewModel : ObservableRecipient
         DownloadUpdateEvent += (_, _) => { DownloadUpdateCommand.Execute(this); };
 
         var frameworkDescription = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkDisplayName;
-        AppDescription = $"{AppDescription}{Environment.NewLine}{frameworkDescription}";
+        AppDescription = $"{AppDescription}{Environment.NewLine}{frameworkDescription}{Environment.NewLine}{Toolbox.AppData}";
     }
 
     public UserOptions UserOptions { get; }
@@ -140,6 +140,12 @@ public partial class SettingsViewModel : ObservableRecipient
     private async Task OpenAppInStore()
     {
         ShellHelper.OpenFile(Toolbox.StoreUrl);
+    }
+
+    [RelayCommand]
+    private async Task OpenDataDirectory()
+    {
+        ShellHelper.OpenFile(Toolbox.AppData);
     }
 
     [RelayCommand]
