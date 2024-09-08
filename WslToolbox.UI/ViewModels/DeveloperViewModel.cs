@@ -56,6 +56,13 @@ public partial class DeveloperViewModel : ObservableRecipient
     }
 
     [RelayCommand]
+    private async Task ShowWhatsNewDialog()
+    {
+        var vm = App.GetService<WhatsNewDialogViewModel>();
+        await _messenger.ShowWhatsNewDialogAsync(vm);
+    }
+
+    [RelayCommand]
     private async Task DownloadUpdate()
     {
         _messenger.ShowInfoBar();

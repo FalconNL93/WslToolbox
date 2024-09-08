@@ -87,6 +87,11 @@ public static class MessengerHelper
         await messenger.Send(new StartupDialogShowMessage(viewModel));
     }
 
+    public static async Task ShowWhatsNewDialogAsync(this IMessenger messenger, WhatsNewDialogViewModel viewModel)
+    {
+        await messenger.Send(new WhatsNewDialogShowMessage(viewModel));
+    }
+
     public static async Task<ContentDialogResult> ShowUpdateDialog(this IMessenger messenger, UpdateViewModel viewModel)
     {
         return await messenger.Send(new UpdateDialogMessage(viewModel));

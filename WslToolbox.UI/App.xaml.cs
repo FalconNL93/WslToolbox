@@ -119,6 +119,8 @@ public partial class App : Application
                 services.AddTransientPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
+                services.AddSingleton<WhatsNewDialogViewModel>();
+
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));

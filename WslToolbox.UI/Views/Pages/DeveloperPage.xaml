@@ -44,6 +44,13 @@
                         <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
                     </labs:SettingsCard>
 
+                    <labs:SettingsCard Description="Show Whats New Dialog" Header="Dialogs">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE896;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowWhatsNewDialogCommand}" />
+                    </labs:SettingsCard>
+
                 </StackPanel>
             </Grid>
         </ScrollViewer>

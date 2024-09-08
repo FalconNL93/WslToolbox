@@ -34,6 +34,8 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<StartupDialogShowMessage>(this, OnShowStartupDialog);
         WeakReferenceMessenger.Default.Register<ImportDialogMessage>(this, OnShowImportDialog);
         WeakReferenceMessenger.Default.Register<MoveDialogMessage>(this, OnShowMoveDialog);
+        WeakReferenceMessenger.Default.Register<WhatsNewDialogShowMessage>(this, OnShowStartupDialog);
+
     }
 
     public ShellViewModel ViewModel { get; }
@@ -98,6 +100,17 @@ public sealed partial class ShellPage : Page
     private void OnShowStartupDialog(object recipient, StartupDialogShowMessage message)
     {
         var contentDialog = new StartupDialog(message.ViewModel)
+        {
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            XamlRoot = XamlRoot
+        };
+
+        message.Reply(contentDialog.ShowAsync().AsTask());
+    }
+
+    private void OnShowStartupDialog(object recipient, WhatsNewDialogShowMessage message)
+    {
+        var contentDialog = new WhatsNewDialog(message.ViewModel)
         {
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
             XamlRoot = XamlRoot
