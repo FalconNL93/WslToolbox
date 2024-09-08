@@ -25,9 +25,8 @@ Configuration for WSL Toolbox is saved to a JSON file.
 ## Install
 
 * Download from [releases](https://github.com/FalconNL93/WslToolbox/releases)
-* [Windows Store](https://www.microsoft.com/store/productId/9NDGGX7M2H0V)
-* Chocolately (soon)
-* Winget (soon)
+* Winget:
+  ``` winget install FalconNL93.WslToolbox ```
 
 ## Screenshots
 
