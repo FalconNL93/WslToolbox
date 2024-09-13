@@ -7,7 +7,7 @@ namespace WslToolbox.Core.Legacy.Helpers;
 
 public static class InstanceHelper
 {
-    public static T Create<T>(IDictionary<string, string>? objects) where T : class
+    public static T Create<T>(IDictionary<string, object>? objects) where T : class
     {
         var newInstance = Activator.CreateInstance(typeof(T));
         if (newInstance == null)
@@ -32,11 +32,11 @@ public static class InstanceHelper
             }
 
             object propertyResult = null;
-            if ((propertyInfo.PropertyType == typeof(bool) || Nullable.GetUnderlyingType(propertyInfo.PropertyType) != null) && TryParse(propertyObject.Value, out var boolResult))
+            if ((propertyInfo.PropertyType == typeof(bool) || Nullable.GetUnderlyingType(propertyInfo.PropertyType) != null) && TryParse(propertyObject.Value.ToString(), out var boolResult))
             {
                 propertyResult = boolResult;
             }
-            else if (propertyInfo.PropertyType == typeof(string) && !string.IsNullOrWhiteSpace(propertyObject.Value))
+            else if (propertyInfo.PropertyType == typeof(string) && !string.IsNullOrWhiteSpace(propertyObject.Value.ToString()))
             {
                 propertyResult = propertyObject.Value;
             }

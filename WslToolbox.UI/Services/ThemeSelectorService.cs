@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
 using WslToolbox.UI.Contracts.Services;
-using WslToolbox.UI.Helpers;
 
 namespace WslToolbox.UI.Services;
 

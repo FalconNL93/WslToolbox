@@ -1,41 +1,52 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using WslToolbox.Core.Legacy.Commands.Service;
 using WslToolbox.UI.Core.Helpers;
-using WslToolbox.UI.Models;
+using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
 public partial class WslSettingsViewModel : ObservableRecipient
 {
+    private readonly ILogger<WslSettingsViewModel> _logger;
     private readonly WslConfigurationService _wslConfig;
 
-    public WslSettingsViewModel(WslConfigurationService wslConfig)
+    [ObservableProperty]
+    private ObservableCollection<WslSetting> _rootCollection = [];
+
+    public WslSettingsViewModel(WslConfigurationService wslConfig, ILogger<WslSettingsViewModel> logger)
     {
         _wslConfig = wslConfig;
+        _logger = logger;
         ReadWslSettings();
     }
 
-    [ObservableProperty]
-    private WslConfigModel _wslConfigModel = new()
-    {
-        Experimental = new ExperimentalSection
-        {
-            AutoMemoryReclaim = "initial"
-        }
-    };
-
-    public readonly Dictionary<string, string> NetworkingModes = WslConfigurationService.NetworkingModeList;
-
     private void ReadWslSettings()
     {
-        WslConfigModel = _wslConfig.GetConfig();
+        var wslConfig = _wslConfig.GetConfig();
+        var wsl2Section = wslConfig.Wsl2Section;
+
+        foreach (var wslSetting in wsl2Section.Settings)
+        {
+            RootCollection.Add(wslSetting);
+        }
+    }
+
+    [RelayCommand]
+    private async Task RestartWslService()
+    {
+        await StopServiceCommand.Execute();
+        await StartServiceCommand.Execute();
     }
 
     [RelayCommand]
     private void SaveConfiguration()
     {
-        _wslConfig.WriteConfig("wsl2", "networkingMode", WslConfigModel.Root.NetworkingMode);
+        _logger.LogInformation("Writing WSL Configuration {@Config}", RootCollection);
+        _wslConfig.WriteConfig(RootCollection);
     }
 
     [RelayCommand]
