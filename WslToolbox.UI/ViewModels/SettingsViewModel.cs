@@ -74,7 +74,10 @@ public partial class SettingsViewModel : ObservableRecipient
         _isPackage = App.IsPackage();
 
         DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
-        DownloadUpdateEvent += (_, _) => { DownloadUpdateCommand.Execute(this); };
+        DownloadUpdateEvent += (_, _) =>
+        {
+            DownloadUpdateCommand.Execute(this);
+        };
 
         var frameworkDescription = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkDisplayName;
         AppDescription = $"{AppDescription}{Environment.NewLine}{frameworkDescription}{Environment.NewLine}{Toolbox.AppData}";
@@ -88,9 +91,9 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public Dictionary<int, string> ShellBehaviours { get; set; } = new()
     {
-        { 0, "Default" },
-        { 1, "Home" },
-        { 2, "Current" }
+        {0, "Default"},
+        {1, "Home"},
+        {2, "Current"}
     };
 
     public static event EventHandler DownloadUpdateEvent;
@@ -103,7 +106,7 @@ public partial class SettingsViewModel : ObservableRecipient
     [RelayCommand]
     private async Task CheckForUpdates()
     {
-        UpdaterResult = new UpdateResultModel { IsChecking = true };
+        UpdaterResult = new UpdateResultModel {IsChecking = true};
 
         await Task.Delay(TimeSpan.FromSeconds(2));
         UpdaterResult = await _updateService.GetUpdateDetails();

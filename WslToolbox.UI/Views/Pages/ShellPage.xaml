@@ -70,6 +70,14 @@
                         <FontIcon Glyph="&#xe7c1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem
+                    helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.DeveloperViewModel"
+                    Content="Developer"
+                    Visibility="{x:Bind IsDeveloper, Converter={StaticResource VisibilityConverter}}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe72c;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>

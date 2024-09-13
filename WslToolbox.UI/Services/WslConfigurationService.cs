@@ -3,8 +3,9 @@ using IniParser.Model;
 using IniParser.Model.Configuration;
 using IniParser.Parser;
 using Microsoft.Extensions.Logging;
-using WslToolbox.Core.Legacy.Helpers;
+using WslToolbox.UI.Core.Configurations;
 using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Models;
 
 namespace WslToolbox.UI.Services;
@@ -12,13 +13,6 @@ namespace WslToolbox.UI.Services;
 public class WslConfigurationService(ILogger<WslConfigurationService> logger)
 {
     private readonly string _configPath = Toolbox.WslConfiguration;
-
-    public static Dictionary<string, string> NetworkingModeList { get; set; } = new()
-    {
-        {"", "Default"},
-        {"NAT", "NAT"},
-        {"mirrored", "mirrored "}
-    };
 
     public WslConfigModel GetConfig()
     {
@@ -29,31 +23,28 @@ public class WslConfigurationService(ILogger<WslConfigurationService> logger)
 
         var parser = new FileIniDataParser(new IniDataParser(new IniParserConfiguration
         {
-            CaseInsensitive = false,
+            CaseInsensitive = false
         }));
 
         var data = parser.ReadFile(Toolbox.WslConfiguration);
 
-        var bootKeys = data.Sections.GetSectionData("boot")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
-        var experimentalKeys = data.Sections.GetSectionData("experimental")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
+        var wsl2Section = new Wsl2ConfigSection();
+        var wsl2SectionConfig = data.Sections.GetSectionData("wsl2")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
 
-        var rootKeys = data.Sections.GetSectionData("wsl2")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
-        var interopKeys = data.Sections.GetSectionData("interop")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
-        var networkKeys = data.Sections.GetSectionData("network")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
+        foreach (var wsl2SectionItem in wsl2SectionConfig)
+        {
+            var configKey = wsl2Section.Settings.FirstOrDefault(x => string.Equals(x.Key, wsl2SectionItem.Key, StringComparison.CurrentCultureIgnoreCase));
+            if (configKey == null)
+            {
+                continue;
+            }
 
-        var rootSection = InstanceHelper.Create<RootSection>(rootKeys);
-        var bootSection = InstanceHelper.Create<BootSection>(bootKeys);
-        var experimentalSection = InstanceHelper.Create<ExperimentalSection>(experimentalKeys);
-        var interopSection = InstanceHelper.Create<InteropSection>(interopKeys);
-        var networkSection = InstanceHelper.Create<NetworkSection>(networkKeys);
+            configKey.Value = wsl2SectionItem.Value;
+        }
 
         return new WslConfigModel
         {
-            Root = rootSection,
-            Boot = bootSection,
-            Experimental = experimentalSection,
-            Interop = interopSection,
-            Network = networkSection
+            Wsl2Section = wsl2Section,
         };
     }
 
@@ -76,6 +67,30 @@ public class WslConfigurationService(ILogger<WslConfigurationService> logger)
         }
 
         File.Delete(_configPath);
+    }
+
+    public void WriteConfig(IEnumerable<WslSetting> wslSettings)
+    {
+        var entries = wslSettings.ToList();
+        var configEntries = new Dictionary<string, List<WslSetting>>();
+
+        foreach (var entry in entries)
+        {
+            var nullOrEmpty = string.IsNullOrEmpty(entry.Value?.ToString());
+            var sameAsDefault = string.Equals(entry.Value?.ToString(), entry.Default?.ToString(), StringComparison.CurrentCultureIgnoreCase);
+            entry.FlagForRemoval = nullOrEmpty || sameAsDefault;
+
+
+            if (configEntries.TryGetValue(entry.Section, out var sectionDictVal))
+            {
+                sectionDictVal.Add(entry);
+                continue;
+            }
+
+            configEntries.Add(entry.Section, [entry]);
+        }
+
+        WriteConfig("wsl2", configEntries);
     }
 
     public void WriteConfig(string sectionName, string key, string? value)
@@ -113,6 +128,48 @@ public class WslConfigurationService(ILogger<WslConfigurationService> logger)
             else
             {
                 section.Keys.AddKey(keyData);
+            }
+        }
+
+        parser.WriteFile(_configPath, data);
+    }
+
+    public void WriteConfig(string sectionName, Dictionary<string, List<WslSetting>> values)
+    {
+        if (!File.Exists(_configPath))
+        {
+            CreateConfig();
+        }
+
+        var parser = new FileIniDataParser();
+        var data = parser.ReadFile(_configPath);
+
+        var nodes = values.ToArray();
+        foreach (var node in nodes)
+        {
+            if (!data.Sections.ContainsSection(node.Key))
+            {
+                data.Sections.AddSection(node.Key);
+            }
+
+            var section = data.Sections.GetSectionData(node.Key);
+            var items = node.Value.ToArray();
+
+            foreach (var wslSetting in items.Where(x => x.FlagForRemoval))
+            {
+                if (section.Keys.ContainsKey(wslSetting.Key))
+                {
+                    section.Keys.RemoveKey(wslSetting.Key);
+                }
+            }
+
+            foreach (var item in items.Where(x => x is
+                     {
+                         FlagForRemoval: false,
+                         Value: not null
+                     }))
+            {
+                section.Keys[item.Key] = item.Value?.ToString();
             }
         }
 
