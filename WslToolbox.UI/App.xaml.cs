@@ -18,6 +18,7 @@ using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Core.Sinks;
 using WslToolbox.UI.Extensions;
+using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
@@ -130,7 +131,11 @@ public partial class App : Application
 
         GetService<AppNotificationService>().Initialize();
 
+#if DEBUG
+        UnhandledException += App_DebugUnhandledException;
+#else
         UnhandledException += App_UnhandledException;
+#endif
     }
 
     private IHost Host { get; }
@@ -172,20 +177,37 @@ public partial class App : Application
         try
         {
             _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+            ShowExceptionDialog(e);
         }
         catch (Exception)
         {
             throw new Exception($"Unexpected error {e.Message}");
         }
+    }
 
 #if DEBUG
-        throw new Exception($"Unexpected error {e.Message}");
-#endif
+    private void App_DebugUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+        ShowExceptionDialog(e);
     }
+#endif
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    private void ShowExceptionDialog(UnhandledExceptionEventArgs e)
+    {
+        _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+        var errorMessage = $"An unhandled exception has occurred and the application must close.{Environment.NewLine}{Environment.NewLine}Log file is written to:{Environment.NewLine}{Toolbox.LogFile}, open log file?";
+
+        var messageboxResult = MessageBoxHelper.ShowError(errorMessage);
+        if (messageboxResult == MessageBoxResult.Yes)
+        {
+            ShellHelper.OpenFile(Toolbox.LogFile);
+        }
     }
 }

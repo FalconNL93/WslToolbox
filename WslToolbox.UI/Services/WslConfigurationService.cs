@@ -31,20 +31,23 @@ public class WslConfigurationService(ILogger<WslConfigurationService> logger)
         var wsl2Section = new Wsl2ConfigSection();
         var wsl2SectionConfig = data.Sections.GetSectionData("wsl2")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
 
-        foreach (var wsl2SectionItem in wsl2SectionConfig)
+        if (wsl2SectionConfig != null)
         {
-            var configKey = wsl2Section.Settings.FirstOrDefault(x => string.Equals(x.Key, wsl2SectionItem.Key, StringComparison.CurrentCultureIgnoreCase));
-            if (configKey == null)
+            foreach (var wsl2SectionItem in wsl2SectionConfig)
             {
-                continue;
+                var configKey = wsl2Section.Settings.FirstOrDefault(x => string.Equals(x.Key, wsl2SectionItem.Key, StringComparison.CurrentCultureIgnoreCase));
+                if (configKey == null)
+                {
+                    continue;
+                }
+
+                configKey.Value = wsl2SectionItem.Value;
             }
-
-            configKey.Value = wsl2SectionItem.Value;
         }
-
+        
         return new WslConfigModel
         {
-            Wsl2Section = wsl2Section,
+            Wsl2Section = wsl2Section
         };
     }
 
