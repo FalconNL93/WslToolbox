@@ -15,8 +15,8 @@
             <Grid VerticalAlignment="Top">
                 <StackPanel Spacing="{StaticResource DefaultSpacing}">
                     <StackPanel>
-                        <TextBlock Name="DownloadProgress" />
-                        <ProgressBar Name="DownloadProgressBar" />
+                        <TextBlock Text="{x:Bind ViewModel.DownloadProgress, Mode=OneWay}" />
+                        <ProgressBar Value="{x:Bind ViewModel.DownloadProgress, Mode=OneWay}" />
                     </StackPanel>
                     <labs:SettingsCard Description="{x:Bind ViewModel.IsDebug, Converter={StaticResource BoolToObjectConverter}}" Header="App info" />
                     <labs:SettingsCard Description="Fake updater result" Header="Update result">
@@ -42,6 +42,12 @@
                             <FontIcon Glyph="&#xE896;" />
                         </labs:SettingsCard.HeaderIcon>
                         <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Description="Show updating dialog" Header="Dialogs">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE896;" />
+                        </labs:SettingsCard.HeaderIcon>
+                        <Button Content="Show updating dialog" Command="{x:Bind ViewModel.ShowUpdatingDialogCommand}" />
                     </labs:SettingsCard>
 
                 </StackPanel>

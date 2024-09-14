@@ -120,6 +120,7 @@ public partial class App : Application
                 services.AddTransientPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
+                services.AddSingleton<UpdatingDialogViewModel>();
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
@@ -189,7 +190,6 @@ public partial class App : Application
     private void App_DebugUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
-        ShowExceptionDialog(e);
     }
 #endif
 

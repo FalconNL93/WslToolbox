@@ -73,7 +73,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _updateServiceAvailable = !App.IsPackage();
         _isPackage = App.IsPackage();
 
-        DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
+        //DownloadService.ProgressChanged += DownloadServiceOnProgressChanged;
         DownloadUpdateEvent += (_, _) =>
         {
             DownloadUpdateCommand.Execute(this);
@@ -159,7 +159,7 @@ public partial class SettingsViewModel : ObservableRecipient
             _messenger.ShowUpdateInfoBar("Downloading update file...");
             try
             {
-                var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult);
+                var downloadedFile = await _downloadService.DownloadFileAsync(UpdaterResult, new Progress<double>());
                 _messenger.ShowUpdateInfoBar("Starting updater...");
                 ShellHelper.OpenExecutable(downloadedFile,
                     new List<string>

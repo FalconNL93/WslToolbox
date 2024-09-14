@@ -36,15 +36,13 @@ public partial class DeveloperViewModel : ObservableRecipient
         _downloadService = downloadService;
         _updateService = updateService;
 
-        DownloadService.ProgressChanged += (_, args) =>
-        {
-            _messenger.ProgressChanged(args);
-        };
-
 #if DEBUG
         IsDebug = true;
 #endif
     }
+
+    [ObservableProperty]
+    private double _downloadProgress;
 
     public ObservableCollection<string> FakeUpdateResults { get; set; } = new(Enum.GetNames(typeof(FakeUpdateResult)));
 
@@ -54,12 +52,24 @@ public partial class DeveloperViewModel : ObservableRecipient
         var vm = App.GetService<StartupDialogViewModel>();
         await _messenger.ShowStartupDialogAsync(vm);
     }
+    
+    [RelayCommand]
+    private async Task ShowUpdatingDialog()
+    {
+        var vm = App.GetService<UpdatingDialogViewModel>();
+        await _messenger.ShowUpdatingDialogAsync(vm);
+    }
 
     [RelayCommand]
     private async Task DownloadUpdate()
     {
-        _messenger.ShowInfoBar();
+        var progress = new Progress<double>();
+        progress.ProgressChanged += (_, args) =>
+        {
+            DownloadProgress = args;
+        };
         var updateManifest = await _updateService.GetUpdateDetails();
-        var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest);
+        var cancellationToken = new CancellationTokenSource();
+        var downloadedFile = await _downloadService.DownloadFileAsync(updateManifest, progress, cancellationToken.Token);
     }
 }

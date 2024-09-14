@@ -21,13 +21,13 @@ public sealed partial class DeveloperPage : Page
 
     private void OnShowInfoBar(object recipient, ProgressChangedMessage message)
     {
-        App.MainWindow.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, () =>
-        {
-            DownloadProgressBar.Maximum = message.Value.TotalBytes;
-            DownloadProgressBar.Value = message.Value.TotalBytesDownloaded;
-
-            DownloadProgress.Text = $"{message.Value.TotalBytesDownloadedHuman} / {message.Value.TotalBytesHuman}";
-        });
+        // App.MainWindow.DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Low, () =>
+        // {
+        //     DownloadProgressBar.Maximum = message.Value.TotalBytes;
+        //     DownloadProgressBar.Value = message.Value.TotalBytesDownloaded;
+        //
+        //     DownloadProgress.Text = $"{message.Value.TotalBytesDownloadedHuman} / {message.Value.TotalBytesHuman}";
+        // });
     }
 
     private void OnFakeUpdateSelectionChanged(object sender, SelectionChangedEventArgs e)

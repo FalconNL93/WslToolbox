@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WslToolbox.UI.Core.Args;
 using WslToolbox.UI.Core.Extensions;
@@ -17,11 +18,14 @@ public class DownloadService
         _logger = logger;
     }
 
-    public static event EventHandler<UserProgressChangedEventArgs> ProgressChanged;
+    public event EventHandler<UserProgressChangedEventArgs> ProgressChanged;
 
-    public async Task<string> DownloadFileAsync(UpdateResultModel updateResultModel)
+    public async Task<string> DownloadFileAsync(
+        UpdateResultModel updateResultModel,
+        IProgress<double> progress,
+        CancellationToken cancellationToken = default
+    )
     {
-        var cancellationToken = new CancellationToken();
         var tempFile = Path.GetTempFileName();
         _logger.LogDebug("Assigned file for download {TempFile}", tempFile);
 
@@ -48,11 +52,9 @@ public class DownloadService
             await fs.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken).ConfigureAwait(false);
             totalBytesRead += bytesRead;
 
-            OnProgressChanged(new UserProgressChangedEventArgs
-            {
-                TotalBytesDownloaded = totalBytesRead,
-                TotalBytes = contentLength ??= 0
-            });
+            var progressPercentage = (int) Math.Round((double) (totalBytesRead * 100) / contentLength ?? 0);
+            Debug.WriteLine($"{progressPercentage}%");
+            progress.Report(progressPercentage);
         }
 
         _logger.LogInformation("Download file to {TempFile}", tempFile);
