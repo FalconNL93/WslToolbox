@@ -15,6 +15,8 @@ public partial class UpdatingDialogViewModel : ObservableRecipient
         _updateService = updateService;
         _downloadService = downloadService;
         _cancellationTokenSource = new CancellationTokenSource();
+
+        ProgressText = "A new update is available for WSL Toolbox. Press update upgrade to the newest version.";
     }
 
     [ObservableProperty]

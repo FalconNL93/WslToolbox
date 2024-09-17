@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models;
 
 namespace WslToolbox.UI.Services;
 
@@ -14,6 +15,15 @@ public class ConfigurationService : IConfigurationService
         _logger = logger;
     }
 
+    public string GetConfigFile(Type type)
+    {
+        return type.Name switch
+        {
+            nameof(DevOptions) => Toolbox.DevConfiguration,
+            _ => Toolbox.UserConfiguration
+        };
+    }
+
     public void Save<T>(T config) where T : class
     {
         var configuration = new Dictionary<string, object>
@@ -23,7 +33,7 @@ public class ConfigurationService : IConfigurationService
 
         try
         {
-            File.WriteAllText(Toolbox.UserConfiguration, JsonConvert.SerializeObject(configuration));
+            File.WriteAllText(GetConfigFile(typeof(T)), JsonConvert.SerializeObject(configuration));
             _logger.LogInformation("Configuration saved");
         }
         catch (Exception e)

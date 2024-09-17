@@ -35,20 +35,34 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Content="Download" Command="{x:Bind ViewModel.DownloadUpdateCommand}" />
                         </StackPanel>
+                    </labs:SettingsCard>
 
+                    <labs:SettingsCard
+                        Header="Dialogs">
+                        <ToggleSwitch IsOn="{x:Bind ViewModel.UpdateAvailableOnBoot, Mode=TwoWay}" />
                     </labs:SettingsCard>
-                    <labs:SettingsCard Description="Show startup dialog" Header="Dialogs">
-                        <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE896;" />
-                        </labs:SettingsCard.HeaderIcon>
-                        <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
-                    </labs:SettingsCard>
-                    <labs:SettingsCard Description="Show updating dialog" Header="Dialogs">
-                        <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xE896;" />
-                        </labs:SettingsCard.HeaderIcon>
-                        <Button Content="Show updating dialog" Command="{x:Bind ViewModel.ShowUpdatingDialogCommand}" />
-                    </labs:SettingsCard>
+                    
+                    <Button Content="Save" Command="{x:Bind ViewModel.SaveConfigurationCommand}" />
+
+                    <labs:SettingsExpander
+                        IsExpanded="true"
+                        Header="Dialogs">
+                        <labs:SettingsExpander.Items>
+                            <labs:SettingsCard Header="Startup dialog">
+                                <labs:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xE896;" />
+                                </labs:SettingsCard.HeaderIcon>
+                                <Button Content="Open" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
+                            </labs:SettingsCard>
+                            <labs:SettingsCard Header="Updating dialog">
+                                <labs:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xE896;" />
+                                </labs:SettingsCard.HeaderIcon>
+                                <Button Content="Open" Command="{x:Bind ViewModel.ShowUpdatingDialogCommand}" />
+                            </labs:SettingsCard>
+                        </labs:SettingsExpander.Items>
+                    </labs:SettingsExpander>
+
 
                 </StackPanel>
             </Grid>

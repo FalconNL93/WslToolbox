@@ -1,5 +1,5 @@
 ﻿<ContentDialog
-    Title="Updater"
+    Title="Update available"
     x:Class="WslToolbox.UI.Views.Modals.UpdatingDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">

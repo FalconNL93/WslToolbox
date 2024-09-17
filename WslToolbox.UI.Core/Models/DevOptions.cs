@@ -10,4 +10,5 @@ public enum FakeUpdateResult
 public class DevOptions
 {
     public FakeUpdateResult FakeUpdateResult { get; set; } = FakeUpdateResult.Off;
+    public bool UpdateAvailableOnBoot { get; set; }
 }

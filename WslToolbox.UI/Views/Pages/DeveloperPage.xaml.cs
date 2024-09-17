@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Messengers;
@@ -39,5 +40,10 @@ public sealed partial class DeveloperPage : Page
             nameof(FakeUpdateResult.NoUpdate) => FakeUpdateResult.NoUpdate,
             _ => FakeUpdateResult.Off
         };
+    }
+
+    private async void ToggleSwitch_OnToggled(object sender, RoutedEventArgs e)
+    {
+        ViewModel.SaveConfigurationCommand.Execute(null);
     }
 }

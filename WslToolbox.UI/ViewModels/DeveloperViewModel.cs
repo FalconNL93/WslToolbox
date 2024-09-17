@@ -4,9 +4,11 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
@@ -17,6 +19,7 @@ public partial class DeveloperViewModel : ObservableRecipient
     private readonly ILogger<DeveloperViewModel> _logger;
     private readonly IMessenger _messenger;
     private readonly UpdateService _updateService;
+    private readonly IConfigurationService _configurationService;
     public readonly IOptions<DevOptions> DevOptions;
     public readonly bool IsDebug;
 
@@ -26,7 +29,8 @@ public partial class DeveloperViewModel : ObservableRecipient
         IMessenger messenger,
         IOptions<DevOptions> devOptions,
         DownloadService downloadService,
-        UpdateService updateService
+        UpdateService updateService,
+        IConfigurationService configurationService
     )
     {
         _logger = logger;
@@ -35,6 +39,7 @@ public partial class DeveloperViewModel : ObservableRecipient
         DevOptions = devOptions;
         _downloadService = downloadService;
         _updateService = updateService;
+        _configurationService = configurationService;
 
 #if DEBUG
         IsDebug = true;
@@ -44,6 +49,16 @@ public partial class DeveloperViewModel : ObservableRecipient
     [ObservableProperty]
     private double _downloadProgress;
 
+    [ObservableProperty]
+    private bool _updateAvailableOnBoot;
+
+    [RelayCommand]
+    private void SaveConfiguration()
+    {
+        DevOptions.Value.UpdateAvailableOnBoot = UpdateAvailableOnBoot;
+        _configurationService.Save(DevOptions.Value);
+    }
+
     public ObservableCollection<string> FakeUpdateResults { get; set; } = new(Enum.GetNames(typeof(FakeUpdateResult)));
 
     [RelayCommand]
@@ -52,7 +67,7 @@ public partial class DeveloperViewModel : ObservableRecipient
         var vm = App.GetService<StartupDialogViewModel>();
         await _messenger.ShowStartupDialogAsync(vm);
     }
-    
+
     [RelayCommand]
     private async Task ShowUpdatingDialog()
     {

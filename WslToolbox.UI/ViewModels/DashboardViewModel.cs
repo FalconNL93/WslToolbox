@@ -23,7 +23,9 @@ public partial class DashboardViewModel : ObservableRecipient
     private readonly DistributionService _distributionService;
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly IMessenger _messenger;
+    private readonly UpdateService _updateService;
     private readonly UserOptions _userOptions;
+    private readonly DevOptions _devOptions;
 
     [ObservableProperty]
     private bool _isRefreshing = true;
@@ -32,12 +34,16 @@ public partial class DashboardViewModel : ObservableRecipient
         DistributionService distributionService,
         ILogger<DashboardViewModel> logger,
         IMessenger messenger,
-        IOptions<UserOptions> userOptions
+        IOptions<UserOptions> userOptions,
+        IOptions<DevOptions> devOptions,
+        UpdateService updateService
     )
     {
         _distributionService = distributionService;
         _logger = logger;
         _messenger = messenger;
+        _updateService = updateService;
+        _devOptions = devOptions.Value;
         _userOptions = userOptions.Value;
 
         EventHandlers();
@@ -75,6 +81,25 @@ public partial class DashboardViewModel : ObservableRecipient
 
         var vm = App.GetService<StartupDialogViewModel>();
         await _messenger.ShowStartupDialogAsync(vm);
+    }
+
+    [RelayCommand]
+    private async Task CheckForUpdates()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(10));
+        var updateDetails = await _updateService.GetUpdateDetails();
+        if (updateDetails == null)
+        {
+            return;
+        }
+        
+        if (!updateDetails.UpdateAvailable && !_devOptions.UpdateAvailableOnBoot)
+        {
+            return;
+        }
+
+        var vm = App.GetService<UpdatingDialogViewModel>();
+        await _messenger.ShowUpdatingDialogAsync(vm);
     }
 
     private void EventHandlers()

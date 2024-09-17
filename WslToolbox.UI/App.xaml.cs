@@ -53,6 +53,7 @@ public partial class App : Application
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(Toolbox.UserConfiguration, true, true)
             .AddJsonFile(Toolbox.LogConfiguration, true, true)
+            .AddJsonFile(Toolbox.DevConfiguration, true, true)
             .AddEnvironmentVariables()
             .Build();
 
@@ -125,6 +126,7 @@ public partial class App : Application
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));
                 services.Configure<NotificationOptions>(context.Configuration.GetSection(nameof(NotificationOptions)));
+                services.Configure<DevOptions>(context.Configuration.GetSection(nameof(DevOptions)));
             }).Build();
 
 

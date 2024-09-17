@@ -20,6 +20,7 @@ public static class Toolbox
     public static readonly string AppData = Path.Combine(AppDirectory);
 
     public static readonly string UserConfiguration = Path.Combine(AppData, "config.json");
+    public static readonly string DevConfiguration = Path.Combine(AppData, "dev.json");
     public static readonly string LogConfiguration = Path.Combine(AppData, "log.json");
     public static readonly string LogFile = Path.Combine(AppData, "log.txt");
     public static readonly Uri GitHubDownloadUrl = new("https://github.com/FalconNL93/WslToolbox/releases/download/");

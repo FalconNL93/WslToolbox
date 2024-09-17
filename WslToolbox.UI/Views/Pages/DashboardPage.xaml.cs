@@ -33,5 +33,6 @@ public sealed partial class DashboardPage : Page
     private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
     {
         ViewModel.ShowStartupDialogCommand.Execute(null);
+        ViewModel.CheckForUpdatesCommand.Execute(null);
     }
 }
