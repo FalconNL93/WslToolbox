@@ -10,11 +10,12 @@ namespace WslToolbox.UI.Helpers;
 
 public static class MessengerHelper
 {
-    public static void ShowInfoBar(this IMessenger messenger, 
-        string? message = null, 
-        InfoBarSeverity severity = InfoBarSeverity.Informational, 
+    public static void ShowInfoBar(this IMessenger messenger,
+        string? message = null,
+        InfoBarSeverity severity = InfoBarSeverity.Informational,
         string title = "",
-        bool isClosable = true)
+        bool isClosable = true
+    )
     {
         messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
@@ -127,5 +128,10 @@ public static class MessengerHelper
         }));
 
         return dialog;
+    }
+
+    public static void UserOptionsChanged(this IMessenger messenger, UserOptions stateValue)
+    {
+        messenger.Send(new UserOptionsChanged(stateValue));
     }
 }

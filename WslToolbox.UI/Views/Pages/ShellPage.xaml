@@ -6,6 +6,8 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:helpers="using:WslToolbox.UI.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:h="using:H.NotifyIcon.Core"
+    xmlns:views="using:WslToolbox.UI.Views"
     Loaded="OnLoaded">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
@@ -78,6 +80,15 @@
                         <FontIcon Glyph="&#xe72c;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <ContentControl Content="{x:Bind TrayIcon, Mode=TwoWay}">
+                    <ContentControl.Resources>
+                        <DataTemplate x:DataType="h:TrayIcon" x:Name="TrayIconTemplate">
+                            <views:TrayIconView x:Name="TrayIconView" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>

@@ -1,12 +1,12 @@
 ﻿using Windows.System;
 using CommunityToolkit.Mvvm.Messaging;
+using H.NotifyIcon.Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
-using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
@@ -15,6 +15,8 @@ namespace WslToolbox.UI.Views.Pages;
 
 public sealed partial class ShellPage : Page
 {
+    public TrayIcon? TrayIcon { get; set; }
+
     public ShellPage(ShellViewModel viewModel)
     {
         ViewModel = viewModel;
@@ -34,6 +36,44 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<StartupDialogShowMessage>(this, OnShowStartupDialog);
         WeakReferenceMessenger.Default.Register<ImportDialogMessage>(this, OnShowImportDialog);
         WeakReferenceMessenger.Default.Register<MoveDialogMessage>(this, OnShowMoveDialog);
+        WeakReferenceMessenger.Default.Register<UserOptionsChanged>(this, OnUserOptionsChanged);
+    }
+
+    private void OnUserOptionsChanged(object recipient, UserOptionsChanged options)
+    {
+        if (options.UserOptions.UseSystemTray)
+        {
+            InitializeTrayIcon();
+        }
+        else
+        {
+            DestroyTrayIcon();
+        }
+    }
+
+    private void InitializeTrayIcon()
+    {
+        var trayIcon = new TrayIcon();
+        TrayIcon = trayIcon;
+    }
+
+    private void DestroyTrayIcon()
+    {
+        if (TrayIcon == null)
+        {
+            return;
+        }
+
+        try
+        {
+            // TrayIcon.Dispose();
+            // TrayIcon.Dispose();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public ShellViewModel ViewModel { get; }

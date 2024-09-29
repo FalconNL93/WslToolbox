@@ -21,6 +21,7 @@ using WslToolbox.UI.Extensions;
 using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
+using WslToolbox.UI.Views;
 using WslToolbox.UI.Views.Modals;
 using WslToolbox.UI.Views.Pages;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
@@ -32,6 +33,7 @@ public partial class App : Application
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
     private readonly ILogger<App> _logger;
+    public static bool HandleClosedEvents { get; set; } = true;
 
     public readonly LoggerConfiguration LogConfiguration = new();
 
@@ -196,7 +198,24 @@ public partial class App : Application
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
+
+        if (MainWindow is MainWindow mainWindow)
+        {
+            mainWindow.Closed += OnMainWindowClosed;
+        }
+
         await GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    private void OnMainWindowClosed(object sender, WindowEventArgs args)
+    {
+        if (HandleClosedEvents)
+        {
+            args.Handled = true;
+            MainWindow.Hide();
+        }
+
+        _logger?.LogInformation("Application exited");
     }
 
     private void ShowExceptionDialog(UnhandledExceptionEventArgs e)
