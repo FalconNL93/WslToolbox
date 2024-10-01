@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml.Navigation;
@@ -13,7 +14,6 @@ public partial class ShellViewModel : ObservableRecipient
 {
     private readonly IOptionsMonitor<UserOptions> _userOptions;
     private readonly IMessenger _messenger;
-
 
     [ObservableProperty]
     private bool _isBackEnabled;
@@ -34,12 +34,23 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
 
+        ApplyUserConfiguration(userOptions.CurrentValue);
         userOptions.OnChange(OnUserConfigurationChanged);
     }
 
     private void OnUserConfigurationChanged(UserOptions userOptions)
     {
         _messenger.UserOptionsChanged(userOptions);
+    }
+
+    private void ApplyUserConfiguration(UserOptions userOptions)
+    {
+    }
+
+    [RelayCommand]
+    public async Task ShowApplication()
+    {
+        return;
     }
 
     public INavigationService NavigationService { get; }

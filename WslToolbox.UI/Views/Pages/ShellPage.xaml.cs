@@ -1,12 +1,13 @@
 ﻿using Windows.System;
 using CommunityToolkit.Mvvm.Messaging;
-using H.NotifyIcon.Core;
+using H.NotifyIcon;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
@@ -15,7 +16,7 @@ namespace WslToolbox.UI.Views.Pages;
 
 public sealed partial class ShellPage : Page
 {
-    public TrayIcon? TrayIcon { get; set; }
+    public TaskbarIcon? TaskbarIcon { get; set; }
 
     public ShellPage(ShellViewModel viewModel)
     {
@@ -37,43 +38,50 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<ImportDialogMessage>(this, OnShowImportDialog);
         WeakReferenceMessenger.Default.Register<MoveDialogMessage>(this, OnShowMoveDialog);
         WeakReferenceMessenger.Default.Register<UserOptionsChanged>(this, OnUserOptionsChanged);
+        WeakReferenceMessenger.Default.Register<ShowTrayIcon>(this, OnShowTrayIcon);
+        WeakReferenceMessenger.Default.Register<HideTrayIcon>(this, OnHideTrayIcon);
+
+        InitializeTrayIcon();
     }
 
-    private void OnUserOptionsChanged(object recipient, UserOptionsChanged options)
+    private void OnHideTrayIcon(object recipient, HideTrayIcon message)
     {
-        if (options.UserOptions.UseSystemTray)
-        {
-            InitializeTrayIcon();
-        }
-        else
-        {
-            DestroyTrayIcon();
-        }
+        DestroyTrayIcon();
     }
 
     private void InitializeTrayIcon()
     {
-        var trayIcon = new TrayIcon();
-        TrayIcon = trayIcon;
-    }
-
-    private void DestroyTrayIcon()
-    {
-        if (TrayIcon == null)
+        if (TaskbarIcon != null)
         {
             return;
         }
 
-        try
+        TaskbarIcon = (TaskbarIcon) Application.Current.Resources["TrayIcon"];
+        var showHideWindowCommand = (XamlUICommand) Application.Current.Resources["ShowHideWindowCommand"];
+        showHideWindowCommand.Command = ViewModel.ShowApplicationCommand;
+        TaskbarIcon.ForceCreate();
+    }
+
+    private void DestroyTrayIcon()
+    {
+        TaskbarIcon?.Dispose();
+    }
+
+    private void OnShowTrayIcon(object recipient, ShowTrayIcon trayIcon)
+    {
+        InitializeTrayIcon();
+    }
+
+    private void ApplyUserConfiguration(UserOptions userOptions)
+    {
+        if (userOptions.UseSystemTray)
         {
-            // TrayIcon.Dispose();
-            // TrayIcon.Dispose();
+            InitializeTrayIcon();
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+    }
+
+    private void OnUserOptionsChanged(object recipient, UserOptionsChanged options)
+    {
     }
 
     public ShellViewModel ViewModel { get; }

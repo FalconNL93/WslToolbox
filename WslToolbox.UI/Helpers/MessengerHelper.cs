@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using H.NotifyIcon.Core;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Args;
 using WslToolbox.UI.Core.Models;
@@ -133,5 +134,10 @@ public static class MessengerHelper
     public static void UserOptionsChanged(this IMessenger messenger, UserOptions stateValue)
     {
         messenger.Send(new UserOptionsChanged(stateValue));
+    }
+
+    public static void ShowTrayIcon(this IMessenger messenger, TrayIcon taskbarIcon)
+    {
+        messenger.Send(new ShowTrayIcon(taskbarIcon));
     }
 }

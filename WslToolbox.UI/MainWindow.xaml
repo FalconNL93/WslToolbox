@@ -17,11 +17,4 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-
-    <tb:TaskbarIcon
-        x:Name="TrayIcon"
-        ToolTipText="Test-ToolTip"
-        NoLeftClickDelay="True"
-        IconSource="Assets/app.ico">
-    </tb:TaskbarIcon>
 </windowex:WindowEx>

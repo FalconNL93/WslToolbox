@@ -188,11 +188,8 @@
         <Content Include="Images\Wide310x150Logo.scale-150.png" />
         <Content Include="Images\Wide310x150Logo.scale-200.png" />
         <Content Include="Images\Wide310x150Logo.scale-400.png" />
-        <Content Update="Assets\app.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Assets\app.ico">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Content Update="Assets\*.*">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
