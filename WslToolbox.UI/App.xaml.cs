@@ -16,7 +16,9 @@ using WslToolbox.UI.Core.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Core.Services;
+using WslToolbox.UI.Core.Sinks;
 using WslToolbox.UI.Extensions;
+using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
@@ -30,6 +32,9 @@ public partial class App : Application
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
     private readonly ILogger<App> _logger;
+    public static bool HandleClosedEvents { get; set; }
+
+    public readonly LoggerConfiguration LogConfiguration = new();
 
     public App()
     {
@@ -42,7 +47,7 @@ public partial class App : Application
         {
             throw;
         }
-        
+
 
         InitializeComponent();
         var configuration = new ConfigurationBuilder()
@@ -52,11 +57,13 @@ public partial class App : Application
             .AddEnvironmentVariables()
             .Build();
 
-        Log.Logger = new LoggerConfiguration()
+        LogConfiguration = LogConfiguration
             .MinimumLevel.Information()
             .ReadFrom.Configuration(configuration)
-            .WriteTo.File(Toolbox.LogFile)
-            .CreateLogger();
+            .WriteTo.Sink<EventSink>()
+            .WriteTo.File(Toolbox.LogFile);
+
+        Log.Logger = LogConfiguration.CreateLogger();
 
         Log.Logger.Debug("Logger initialized");
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
@@ -85,6 +92,8 @@ public partial class App : Application
                     c.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 });
 
+                services.AddSingleton<WslConfigurationService>();
+
                 // Services
                 services.AddSingleton<AppNotificationService>();
                 services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
@@ -103,13 +112,13 @@ public partial class App : Application
                 services.AddSingleton<DistributionService>();
 
                 // Views and ViewModels
-                services.AddPage<ShellViewModel, ShellPage>();
-                services.AddPage<DashboardViewModel, DashboardPage>();
-                services.AddPage<SettingsViewModel, SettingsPage>();
-                services.AddPage<NotificationViewModel, NotificationModal>();
-                services.AddPage<DeveloperViewModel, DeveloperPage>();
-                services.AddPage<LogViewModel, LogPage>();
-                services.AddPage<WslSettingsViewModel, WslSettingsPage>();
+                services.AddTransientPage<ShellViewModel, ShellPage>();
+                services.AddTransientPage<DashboardViewModel, DashboardPage>();
+                services.AddTransientPage<SettingsViewModel, SettingsPage>();
+                services.AddTransientPage<NotificationViewModel, NotificationModal>();
+                services.AddTransientPage<DeveloperViewModel, DeveloperPage>();
+                services.AddTransientPage<LogViewModel, LogPage>();
+                services.AddTransientPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
 
@@ -123,7 +132,11 @@ public partial class App : Application
 
         GetService<AppNotificationService>().Initialize();
 
+#if DEBUG
+        UnhandledException += App_DebugUnhandledException;
+#else
         UnhandledException += App_UnhandledException;
+#endif
     }
 
     private IHost Host { get; }
@@ -165,20 +178,64 @@ public partial class App : Application
         try
         {
             _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+            ShowExceptionDialog(e);
         }
         catch (Exception)
         {
             throw new Exception($"Unexpected error {e.Message}");
         }
+    }
 
 #if DEBUG
-        throw new Exception($"Unexpected error {e.Message}");
-#endif
+    private void App_DebugUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+        ShowExceptionDialog(e);
     }
+#endif
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
+
+        var userConfiguration = GetUserOptions();
+
+        if (MainWindow is MainWindow mainWindow)
+        {
+            var useSystemTray = userConfiguration.UseSystemTray;
+            mainWindow.MinimizeToTray = useSystemTray && userConfiguration.MinimizeToTray;
+            mainWindow.AlwaysHideIcon = useSystemTray && userConfiguration.AlwaysHideIcon;
+
+            mainWindow.Closed += OnMainWindowClosed;
+            mainWindow.ApplyUserConfiguration();
+        }
+
         await GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    private void OnMainWindowClosed(object sender, WindowEventArgs args)
+    {
+        if (!HandleClosedEvents)
+        {
+            _logger.LogInformation("Application exited");
+            Environment.Exit(0);
+        }
+
+        args.Handled = true;
+        MainWindow.Hide();
+
+        _logger.LogInformation("Application minimized");
+    }
+
+    private void ShowExceptionDialog(UnhandledExceptionEventArgs e)
+    {
+        _logger.LogError(e.Exception, "An UI exception has occurred: {Message}", e.Message);
+        var errorMessage = $"An unhandled exception has occurred and the application must close.{Environment.NewLine}{Environment.NewLine}Log file is written to:{Environment.NewLine}{Toolbox.LogFile}, open log file?";
+
+        var messageboxResult = MessageBoxHelper.ShowError(errorMessage);
+        if (messageboxResult == MessageBoxResult.Yes)
+        {
+            ShellHelper.OpenFile(Toolbox.LogFile);
+        }
     }
 }

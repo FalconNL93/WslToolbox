@@ -16,7 +16,6 @@ env:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/master'
     strategy:
       matrix:
         configuration: [Release]
@@ -80,7 +79,6 @@ jobs:
           path: ${{ github.workspace }}\app\release\${{ env.Platform }}-msix\WslToolbox.UI_${{ env.AppVersion }}_${{ env.Platform }}_Test
 
   setup:
-    if: github.ref == 'refs/heads/master'
     env:
       Platform: "x64"
     runs-on: windows-2022
@@ -116,7 +114,6 @@ jobs:
           retention-days: 1
 
   create-release:
-    if: github.ref == 'refs/heads/master'
     needs: [build,setup]
     runs-on: ubuntu-latest
     permissions:
@@ -140,7 +137,6 @@ jobs:
           url: "${{ fromJSON(steps.newrelease.outputs.assets)[0].browser_download_url }}"
 
   purge:
-    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: setup
     steps:

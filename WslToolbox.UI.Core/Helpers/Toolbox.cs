@@ -26,6 +26,8 @@ public static class Toolbox
     public static readonly Uri GitHubManifestFile = new("https://raw.githubusercontent.com/FalconNL93/manifests/main/");
     public static readonly string StoreUrl = "ms-windows-store://pdp/?productid=9NDGGX7M2H0V";
 
+    public static readonly string WslConfiguration = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\.wslconfig";
+
     public static AppTypes GetAppType()
     {
         return File.Exists(Path.Combine(AppInstallDir, "unins001.exe"))

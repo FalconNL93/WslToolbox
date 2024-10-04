@@ -240,7 +240,7 @@ public partial class DashboardViewModel : ObservableRecipient
             _logger.LogError("Invalid distribution");
             return;
         }
-        
+
         var moveSettings = await _messenger.ShowMoveDialog(distribution);
         if (moveSettings.ContentDialogResult != ContentDialogResult.Primary)
         {
@@ -297,7 +297,7 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         var filter = DialogHelper.ExtensionFilter(new Dictionary<string, string>
         {
-            {FileExtensions.TarGz.Name, FileExtensions.TarGz.Extension},
+            {FileExtensions.TarGz.Name, FileExtensions.TarGz.Extension}
         });
 
         var importPath = DialogHelper.ShowOpenFileDialog(new OpenFileDialog

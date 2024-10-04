@@ -28,12 +28,19 @@
                     Grid.Row="0"
                     Orientation="Horizontal"
                     Spacing="{StaticResource DefaultSpacing}">
-                    <DropDownButton Content="Add" MinWidth="{StaticResource ButtonMinWidth}">
+                    <DropDownButton MinWidth="{StaticResource ButtonMinWidth}">
+                        <DropDownButton.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="16" Glyph="&#xe710;" />
+                                <TextBlock Text="Add" />
+                            </StackPanel>
+                        </DropDownButton.Content>
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.AddDistributionCommand}"
                                     CommandParameter="{x:Bind}"
+                                    Icon="Add"
                                     Text="Install" />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.ImportDistributionCommand}"
@@ -43,11 +50,21 @@
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>
-                    <Button
-                        Command="{x:Bind ViewModel.RefreshDistributionsCommand}"
-                        Content="Refresh"
-                        MinWidth="{StaticResource ButtonMinWidth}" />
-                    <DropDownButton Content="Other" MinWidth="{StaticResource ButtonMinWidth}">
+                    <Button Command="{x:Bind ViewModel.RefreshDistributionsCommand}" MinWidth="{StaticResource ButtonMinWidth}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="16" Glyph="&#xe72c;" />
+                                <TextBlock Text="Refresh" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <DropDownButton MinWidth="{StaticResource ButtonMinWidth}">
+                        <DropDownButton.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon FontSize="16" Glyph="&#xE712;" />
+                                <TextBlock Text="More" />
+                            </StackPanel>
+                        </DropDownButton.Content>
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem

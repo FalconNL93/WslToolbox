@@ -1,0 +1,24 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tb="using:H.NotifyIcon">
+    <XamlUICommand x:Key="ShowWindowCommand" Label="Show application" Description="Open WSL Toolbox" />
+    <XamlUICommand x:Key="ExitApplicationCommand" Label="Exit application" Description="Exit WSL Toolbox" />
+    <XamlUICommand x:Key="RestartWslServiceCommand" Label="Restart WSL Service" Description="Restarts the WSL Service" />
+
+    <tb:TaskbarIcon
+        x:Key="TrayIcon"
+        Visibility="Visible"
+        ContextMenuMode="SecondWindow"
+        LeftClickCommand="{StaticResource ShowWindowCommand}"
+        NoLeftClickDelay="True">
+        <tb:TaskbarIcon.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Command="{StaticResource ShowWindowCommand}" />
+                <MenuFlyoutItem Command="{StaticResource RestartWslServiceCommand}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Command="{StaticResource ExitApplicationCommand}" />
+            </MenuFlyout>
+        </tb:TaskbarIcon.ContextFlyout>
+    </tb:TaskbarIcon>
+</ResourceDictionary>

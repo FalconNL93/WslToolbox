@@ -7,10 +7,31 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:converters1="using:WslToolbox.UI.Converters"
+    xmlns:models="using:WslToolbox.UI.Core.Models"
+    xmlns:dataTemplates="using:WslToolbox.UI.DataTemplates"
+
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
         <converters1:NullableBoolToBoolConverter x:Key="NullableBool" />
+
+        <dataTemplates:ConfigValueTemplate x:Key="SettingTemplateSelector"
+                                           StringTemplate="{StaticResource StringSetting}"
+                                           BoolTemplate="{StaticResource BooleanSetting}"
+                                           OptionsTemplate="{StaticResource OptionsSetting}" />
+
+        <DataTemplate x:Key="BooleanSetting" x:DataType="models:WslSetting">
+            <ToggleSwitch IsOn="{Binding Path=Value, Mode=TwoWay}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="StringSetting" x:DataType="models:WslSetting">
+            <TextBox Text="{Binding Path=Value, Mode=TwoWay}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="OptionsSetting" x:DataType="models:WslSetting">
+            <ComboBox ItemsSource="{Binding Path= Options}" SelectedValue="{Binding Path= Value, Mode=TwoWay}" />
+        </DataTemplate>
+
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -19,40 +40,44 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="{StaticResource SmallBottomMargin}">
-            <InfoBar Name="SettingsInfoBar" />
+            <Button Command="{x:Bind ViewModel.RestartWslServiceCommand}" MinWidth="{StaticResource ButtonMinWidth}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon FontSize="16" Glyph="&#xe72c;" />
+                        <TextBlock Text="Restart WSL" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
         </Grid>
         <ScrollViewer Grid.Row="1">
             <Grid Margin="{StaticResource SmallBottomMargin}">
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <labs:SettingsExpander
+                            IsExpanded="true"
                             Description="Show configuration of WSL 2"
-                            Header="WSL 2">
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard Description="If the value is mirrored then this turns on mirrored networking mode. Default or unrecognized strings result in NAT networking." Header="Networking mode">
-                                    <ComboBox ItemsSource="{x:Bind ViewModel.NetworkingModes}" DisplayMemberPath="Value" SelectedValuePath="Key"
-                                              SelectedValue="{x:Bind ViewModel.WslConfigModel.Root.NetworkingMode, Mode=TwoWay}" />
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
-                    </StackPanel>
-                    <StackPanel Spacing="{StaticResource DefaultSpacing}">
-                        <labs:SettingsExpander
-                            Description="Show configuration of experimental settings"
-                            Header="Experimental">
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard Description="When set to true, any newly created VHD will be set to sparse automatically." Header="SparseVhd">
-                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.SparseVhd, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
-                                </labs:SettingsCard>
+                            Header="WSL 2"
+                            ItemsSource="{x:Bind ViewModel.RootCollection, Mode=TwoWay}">
 
-                                <labs:SettingsCard Description="Setting this to true allows the Windows Firewall rules, as well as rules specific to Hyper-V traffic, to filter WSL network traffic.." Header="Firewall">
-                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.Firewall, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
-                                </labs:SettingsCard>
+                            <labs:SettingsExpander.ItemTemplate>
 
-                                <labs:SettingsCard Description="Changes how DNS requests are proxied from WSL to Windows" Header="DnsTunneling">
-                                    <ToggleSwitch IsOn="{x:Bind ViewModel.WslConfigModel.Experimental.DnsTunneling, Mode=TwoWay, Converter={StaticResource NullableBool}}" />
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
+                                <DataTemplate x:DataType="models:WslSetting">
+
+                                    <labs:SettingsCard
+                                        x:Name="SettingsCard"
+                                        Header="{x:Bind Key}"
+                                        Description="{x:Bind Description}">
+
+                                        <ContentControl
+                                            DataContext="{x:Bind}"
+                                            Content="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ContentTemplateSelector="{StaticResource SettingTemplateSelector}" />
+                                    </labs:SettingsCard>
+
+
+                                </DataTemplate>
+
+                            </labs:SettingsExpander.ItemTemplate>
                         </labs:SettingsExpander>
                     </StackPanel>
                 </StackPanel>
@@ -65,9 +90,15 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="Open configuration"
+                            Command="{x:Bind ViewModel.OpenConfigurationCommand}"
+                            MinWidth="{StaticResource ButtonMinWidth}" />
+                </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
                             Margin="{StaticResource MediumTopBottomMargin}" Spacing="{StaticResource DefaultSpacing}">
                     <Button Content="Restore defaults"
+                            Command="{x:Bind ViewModel.SaveConfigurationCommand}"
                             MinWidth="{StaticResource ButtonMinWidth}" />
                     <Button Command="{x:Bind ViewModel.SaveConfigurationCommand}" Content="Save"
                             MinWidth="{StaticResource ButtonMinWidth}" />

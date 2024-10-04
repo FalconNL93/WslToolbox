@@ -12,7 +12,7 @@ public partial class UpdateViewModel : ObservableRecipient
 
     [ObservableProperty]
     private Version _latestVersion;
-    
+
     [ObservableProperty]
     private string _releaseNotes;
 }

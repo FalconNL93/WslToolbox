@@ -17,6 +17,13 @@
             VerticalAlignment="Top"
             Canvas.ZIndex="1"
             IsHitTestVisible="True">
+            <Grid.ContextFlyout>
+                <CommandBarFlyout ShowMode="Auto" x:Name="DistributionContextMenu">
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarButton Icon="Folder" Label="Open folder" />
+                    </CommandBarFlyout.SecondaryCommands>
+                </CommandBarFlyout>
+            </Grid.ContextFlyout>
             <Image
                 Width="16"
                 Height="16"
@@ -42,17 +49,17 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.DashboardViewModel" Content="Dashboard">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Home" />
+                        <FontIcon Glyph="&#xe80f;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.WslSettingsViewModel" Content="WSL Settings">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Manage" />
+                        <FontIcon Glyph="&#xe912;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.LogViewModel" Content="Logs">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Bullets" />
+                        <FontIcon Glyph="&#xe8fd;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
@@ -60,9 +67,18 @@
                     Content="Developer"
                     Visibility="{x:Bind IsDeveloper, Converter={StaticResource VisibilityConverter}}">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Flag" />
+                        <FontIcon Glyph="&#xe7c1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem
+                    helpers:NavigationHelper.NavigateTo="WslToolbox.UI.ViewModels.DeveloperViewModel"
+                    Content="Developer"
+                    Visibility="{x:Bind IsDeveloper, Converter={StaticResource VisibilityConverter}}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xe72c;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>

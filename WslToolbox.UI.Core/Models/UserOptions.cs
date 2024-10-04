@@ -9,7 +9,7 @@ public partial class UserOptions : ObservableRecipient
 
     [ObservableProperty]
     private string _theme = "Default";
-    
+
     [ObservableProperty]
     private int _shellBehaviour;
 
@@ -18,4 +18,13 @@ public partial class UserOptions : ObservableRecipient
 
     public bool SeenWelcomePage { get; set; }
     public bool HideDocker { get; set; } = true;
+
+    [ObservableProperty]
+    private bool _useSystemTray;
+
+    [ObservableProperty]
+    private bool _minimizeToTray;
+
+    [ObservableProperty]
+    private bool _alwaysHideIcon;
 }

@@ -5,14 +5,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:windowex="using:WinUIEx"
+    xmlns:tb="using:H.NotifyIcon"
     MinWidth="500"
     MinHeight="500"
     Height="695"
     Width="915"
+    WindowStateChanged="OnWindowStateChanged"
     PersistenceId="MainWindow"
 
     mc:Ignorable="d">
-    <windowex:WindowEx.Backdrop>
-        <windowex:MicaSystemBackdrop />
-    </windowex:WindowEx.Backdrop>
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
 </windowex:WindowEx>

@@ -1,36 +1,72 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WslToolbox.UI.Helpers;
-using WslToolbox.UI.Models;
+using Microsoft.Extensions.Logging;
+using WslToolbox.Core.Legacy.Commands.Service;
+using WslToolbox.UI.Core.Helpers;
+using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.Services;
 
 namespace WslToolbox.UI.ViewModels;
 
 public partial class WslSettingsViewModel : ObservableRecipient
 {
+    private readonly ILogger<WslSettingsViewModel> _logger;
+    private readonly WslConfigurationService _wslConfig;
+
     [ObservableProperty]
-    private WslConfigModel _wslConfigModel = new()
-    {
-        Experimental = new ExperimentalSection
-        {
-            AutoMemoryReclaim = "initial"
-        }
-    };
+    private ObservableCollection<WslSetting> _rootCollection = [];
 
-    public readonly Dictionary<string, string> NetworkingModes = WslConfigHelper.NetworkingModeList;
-
-    public WslSettingsViewModel()
+    public WslSettingsViewModel(WslConfigurationService wslConfig, ILogger<WslSettingsViewModel> logger)
     {
+        _wslConfig = wslConfig;
+        _logger = logger;
         ReadWslSettings();
     }
 
     private void ReadWslSettings()
     {
-        WslConfigModel = WslConfigHelper.GetConfig();
+        var wslConfig = _wslConfig.GetConfig();
+        var wsl2Section = wslConfig.Wsl2Section;
+
+        foreach (var wslSetting in wsl2Section.Settings)
+        {
+            RootCollection.Add(wslSetting);
+        }
+    }
+
+    [RelayCommand]
+    private async Task RestartWslService()
+    {
+        await StopServiceCommand.Execute();
+        await StartServiceCommand.Execute();
     }
 
     [RelayCommand]
     private void SaveConfiguration()
     {
-        WslConfigHelper.WriteConfig("wsl2", "networkingMode", WslConfigModel.Root.NetworkingMode);
+        _logger.LogInformation("Writing WSL Configuration {@Config}", RootCollection);
+        _wslConfig.WriteConfig(RootCollection);
+    }
+
+    [RelayCommand]
+    private void RestoreConfiguration()
+    {
+        _wslConfig.RestoreConfiguration();
+        ReadWslSettings();
+    }
+
+    [RelayCommand]
+    private void OpenConfiguration()
+    {
+        try
+        {
+            ShellHelper.OpenFile(Toolbox.WslConfiguration);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
