@@ -120,4 +120,7 @@
   &lt;/actions&gt;
 &lt;/toast&gt;</value>
   </data>
+  <data name="Shell_TrayIconView.Content" xml:space="preserve">
+    <value>TrayIconView</value>
+  </data>
 </root>

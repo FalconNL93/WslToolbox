@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using H.NotifyIcon.Core;
 using Microsoft.UI.Xaml.Controls;
 using WslToolbox.UI.Core.Args;
 using WslToolbox.UI.Core.Models;
@@ -10,11 +11,12 @@ namespace WslToolbox.UI.Helpers;
 
 public static class MessengerHelper
 {
-    public static void ShowInfoBar(this IMessenger messenger, 
-        string? message = null, 
-        InfoBarSeverity severity = InfoBarSeverity.Informational, 
+    public static void ShowInfoBar(this IMessenger messenger,
+        string? message = null,
+        InfoBarSeverity severity = InfoBarSeverity.Informational,
         string title = "",
-        bool isClosable = true)
+        bool isClosable = true
+    )
     {
         messenger.Send(new InfoBarChangedMessage(new InfoBarModel
         {
@@ -132,5 +134,25 @@ public static class MessengerHelper
         }));
 
         return dialog;
+    }
+
+    public static void UserOptionsChanged(this IMessenger messenger, UserOptions stateValue)
+    {
+        messenger.Send(new UserOptionsChanged(stateValue));
+    }
+
+    public static RequestUserOptions RequestUserOptions(this IMessenger messenger)
+    {
+        return messenger.Send<RequestUserOptions>();
+    }
+
+    public static void ShowTrayIcon(this IMessenger messenger)
+    {
+        messenger.Send(new ShowTrayIcon(new TrayIcon()));
+    }
+
+    public static void HideTrayIcon(this IMessenger messenger)
+    {
+        messenger.Send(new HideTrayIcon(new TrayIcon()));
     }
 }
