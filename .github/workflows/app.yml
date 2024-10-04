@@ -10,7 +10,7 @@ env:
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: "${{  github.ref_name || '1.0.0.0' }}"
+  AppVersion: "1.0.0.0"
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
   AppVersionCommit: "${{ github.head_ref }}.${{ github.sha }}"
