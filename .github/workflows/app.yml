@@ -1,9 +1,9 @@
 name: App Build
 
 on:
-  create:
-    tags:
-      - '*'
+  push:
+    tags:        
+      - '*' 
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
