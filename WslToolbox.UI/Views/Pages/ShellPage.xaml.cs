@@ -55,8 +55,10 @@ public sealed partial class ShellPage : Page
         App.MainWindow.DispatcherQueue.TryEnqueue(DestroyTrayIcon);
     }
 
-    private void InitializeTrayIcon()
+    private void InitializeTrayIcon(bool minimizeToTray = false)
     {
+        App.HandleClosedEvents = minimizeToTray;
+
         if (TaskbarIcon != null)
         {
             return;
@@ -67,7 +69,6 @@ public sealed partial class ShellPage : Page
         TaskbarIcon.ToolTipText = $"{App.Name}";
 
         TaskbarIcon.ForceCreate();
-        App.HandleClosedEvents = true;
     }
 
     private void RegisterTrayCommands()
@@ -108,7 +109,10 @@ public sealed partial class ShellPage : Page
     {
         if (userOptions.UseSystemTray)
         {
-            App.MainWindow.DispatcherQueue.TryEnqueue(InitializeTrayIcon);
+            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+            {
+                InitializeTrayIcon(userOptions.MinimizeToTray);
+            });
         }
         else
         {

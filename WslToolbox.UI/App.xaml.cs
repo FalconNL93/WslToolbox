@@ -198,9 +198,16 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
+        var userConfiguration = GetUserOptions();
+
         if (MainWindow is MainWindow mainWindow)
         {
+            var useSystemTray = userConfiguration.UseSystemTray;
+            mainWindow.MinimizeToTray = useSystemTray && userConfiguration.MinimizeToTray;
+            mainWindow.AlwaysHideIcon = useSystemTray && userConfiguration.AlwaysHideIcon;
+
             mainWindow.Closed += OnMainWindowClosed;
+            mainWindow.ApplyUserConfiguration();
         }
 
         await GetService<IActivationService>().ActivateAsync(args);

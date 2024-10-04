@@ -21,4 +21,7 @@ public partial class UserOptions : ObservableRecipient
 
     [ObservableProperty]
     private bool _minimizeToTray;
+
+    [ObservableProperty]
+    private bool _alwaysHideIcon;
 }

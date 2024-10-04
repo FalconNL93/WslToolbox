@@ -10,6 +10,7 @@
     MinHeight="500"
     Height="695"
     Width="915"
+    WindowStateChanged="OnWindowStateChanged"
     PersistenceId="MainWindow"
 
     mc:Ignorable="d">
