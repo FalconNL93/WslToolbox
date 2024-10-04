@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.Cli", "WslToolbo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WslToolbox.Core", "WslToolbox.Core\WslToolbox.Core.csproj", "{9B53B4D8-1607-442C-804D-33AD38BD5909}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{AA87F062-0374-4CC2-BE93-0AC8AE164DFE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\app.yml = .github\workflows\app.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

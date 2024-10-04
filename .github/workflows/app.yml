@@ -10,9 +10,10 @@ env:
   AppName: "WSL Toolbox"
   AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
   AppExecutable: "toolbox.exe"
-  AppVersion: "${{  github.ref_name }}"
+  AppVersion: "${{  github.ref_name || '1.0.0.0' }}"
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
   AppOwner: "FalconNL93"
+  AppVersionCommit: "${{ github.head_ref }}.${{ github.sha }}"
 
 jobs:
   build:
@@ -31,17 +32,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Modify AppX version
-        shell: pwsh
-        run: |
-          [xml]$manifest= get-content "WslToolbox.UI\Package.appxmanifest";
-          $manifest.Package.Identity.Version = "${{ env.AppVersion }}";
-          $manifest.save("WslToolbox.UI\Package.appxmanifest");
-
-      - name: Add certificate
-        run: |
-          $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
-          [IO.File]::WriteAllBytes("${{ github.workspace }}\cert.pfx", $pfxEncoded)
+#      - name: Modify AppX version
+#        shell: pwsh
+#        run: |
+#          [xml]$manifest= get-content "WslToolbox.UI\Package.appxmanifest";
+#          $manifest.Package.Identity.Version = "${{ env.AppVersion }}";
+#          $manifest.save("WslToolbox.UI\Package.appxmanifest");
+#
+#      - name: Add certificate
+#        run: |
+#          $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
+#          [IO.File]::WriteAllBytes("${{ github.workspace }}\cert.pfx", $pfxEncoded)
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
@@ -90,7 +91,7 @@ jobs:
       - name: Download build data
         uses: actions/download-artifact@v4.1.8
         with:
-          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
+          name: wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}
           path: ${{ github.workspace }}\app
 
       - name: InnoSetup
@@ -104,37 +105,37 @@ jobs:
           -AppVersion "${{ env.AppVersion }}" `
           -AppUrl "${{ env.AppUrl }}" `
           -AppOwner "${{ env.AppOwner }}" `
-          -SetupOutputFile "wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup"
+          -SetupOutputFile "wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup"
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.3.6
         with:
-          name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup
-          path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_setup.exe
+          name: wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup
+          path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup.exe
           retention-days: 1
 
-  create-release:
-    needs: [build,setup]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4.1.7
-      - uses: actions/download-artifact@v4
-      - name: Display structure of downloaded files
-        run: ls -R
-      - name: Release
-        id: newrelease
-        uses: softprops/action-gh-release@v2
-        with:
-          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
-      - name: WinGet Updater
-        uses: michidk/winget-updater@latest
-        with:
-          komac-token: ${{ secrets.KOMAC_TOKEN }}
-          identifier: ${{ env.AppUuid }}
-          repo: "FalconNL93/WslToolbox"
-          url: "${{ fromJSON(steps.newrelease.outputs.assets)[0].browser_download_url }}"
+#  create-release:
+#    needs: [build,setup]
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - uses: actions/checkout@v4.1.7
+#      - uses: actions/download-artifact@v4
+#      - name: Display structure of downloaded files
+#        run: ls -R
+#      - name: Release
+#        id: newrelease
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
+#      - name: WinGet Updater
+#        uses: michidk/winget-updater@latest
+#        with:
+#          komac-token: ${{ secrets.KOMAC_TOKEN }}
+#          identifier: ${{ env.AppUuid }}
+#          repo: "FalconNL93/WslToolbox"
+#          url: "${{ fromJSON(steps.newrelease.outputs.assets)[0].browser_download_url }}"
 
   purge:
     runs-on: ubuntu-latest
