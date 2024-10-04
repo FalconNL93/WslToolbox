@@ -78,6 +78,7 @@
                         <FontIcon Glyph="&#xe72c;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>

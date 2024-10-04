@@ -31,6 +31,31 @@
                             </labs:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
                         </labs:SettingsCard>
+                        <labs:SettingsCard Description="Use system tray icon"
+                                           Header="System tray">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE799;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard
+                            IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
+                            Description="Minimize WSL Toolbox when closing the application"
+                            Header="Minimize to tray">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE799;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.MinimizeToTray, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+                        <labs:SettingsCard
+                            IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
+                            Description="Always hide WSL Toolbox from the taskbar"
+                            Header="Always hide taskbar icon">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xE799;" />
+                            </labs:SettingsCard.HeaderIcon>
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.AlwaysHideIcon, Mode=TwoWay}" />
+                        </labs:SettingsCard>
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
