@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+
 using Microsoft.UI.Xaml.Controls;
+
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Pages;

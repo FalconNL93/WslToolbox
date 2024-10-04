@@ -32,6 +32,7 @@ public partial class App : Application
     public const string Name = "WSL Toolbox";
     public static readonly bool IsDeveloper = Debugger.IsAttached;
     private readonly ILogger<App> _logger;
+    public static bool HandleClosedEvents { get; set; }
 
     public readonly LoggerConfiguration LogConfiguration = new();
 
@@ -196,7 +197,34 @@ public partial class App : Application
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
+
+        var userConfiguration = GetUserOptions();
+
+        if (MainWindow is MainWindow mainWindow)
+        {
+            var useSystemTray = userConfiguration.UseSystemTray;
+            mainWindow.MinimizeToTray = useSystemTray && userConfiguration.MinimizeToTray;
+            mainWindow.AlwaysHideIcon = useSystemTray && userConfiguration.AlwaysHideIcon;
+
+            mainWindow.Closed += OnMainWindowClosed;
+            mainWindow.ApplyUserConfiguration();
+        }
+
         await GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    private void OnMainWindowClosed(object sender, WindowEventArgs args)
+    {
+        if (!HandleClosedEvents)
+        {
+            _logger.LogInformation("Application exited");
+            Environment.Exit(0);
+        }
+
+        args.Handled = true;
+        MainWindow.Hide();
+
+        _logger.LogInformation("Application minimized");
     }
 
     private void ShowExceptionDialog(UnhandledExceptionEventArgs e)
