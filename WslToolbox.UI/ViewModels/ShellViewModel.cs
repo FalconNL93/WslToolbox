@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Options;
 using Microsoft.UI.Xaml.Navigation;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Models;
 using WslToolbox.UI.Helpers;
+using WslToolbox.UI.Messengers;
 using WslToolbox.UI.Views.Pages;
 
 namespace WslToolbox.UI.ViewModels;
@@ -36,6 +36,11 @@ public partial class ShellViewModel : ObservableRecipient
 
         ApplyUserConfiguration(userOptions.CurrentValue);
         userOptions.OnChange(OnUserConfigurationChanged);
+
+        WeakReferenceMessenger.Default.Register<RequestUserOptions>(this, (_, message) =>
+        {
+            message.Reply(userOptions.CurrentValue);
+        });
     }
 
     private void OnUserConfigurationChanged(UserOptions userOptions)
@@ -45,12 +50,14 @@ public partial class ShellViewModel : ObservableRecipient
 
     private void ApplyUserConfiguration(UserOptions userOptions)
     {
-    }
-
-    [RelayCommand]
-    public async Task ShowApplication()
-    {
-        return;
+        if (userOptions.UseSystemTray)
+        {
+            _messenger.ShowTrayIcon();
+        }
+        else
+        {
+            _messenger.HideTrayIcon();
+        }
     }
 
     public INavigationService NavigationService { get; }

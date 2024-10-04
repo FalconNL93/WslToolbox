@@ -9,11 +9,16 @@ public class UserOptionsChanged(UserOptions value) : RequestMessage<UserOptions>
     public UserOptions UserOptions { get; set; } = value;
 }
 
+public class RequestUserOptions : RequestMessage<UserOptions>
+{
+}
+
 public class ShowTrayIcon(TrayIcon value) : RequestMessage<TrayIcon>
 {
     public TrayIcon TrayIcon { get; set; } = value;
 }
 
-public class HideTrayIcon : RequestMessage<bool>
+public class HideTrayIcon(TrayIcon value) : RequestMessage<TrayIcon>
 {
+    public TrayIcon TrayIcon { get; set; } = value;
 }

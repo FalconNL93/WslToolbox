@@ -5,9 +5,12 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using WslToolbox.Core.Legacy.Commands.Service;
 using WslToolbox.UI.Contracts.Services;
 using WslToolbox.UI.Core.Helpers;
 using WslToolbox.UI.Core.Models;
+using WslToolbox.UI.Helpers;
 using WslToolbox.UI.Messengers;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
@@ -16,10 +19,13 @@ namespace WslToolbox.UI.Views.Pages;
 
 public sealed partial class ShellPage : Page
 {
+    private readonly IMessenger _messenger;
     public TaskbarIcon? TaskbarIcon { get; set; }
 
-    public ShellPage(ShellViewModel viewModel)
+
+    public ShellPage(ShellViewModel viewModel, IMessenger messenger)
     {
+        _messenger = messenger;
         ViewModel = viewModel;
         InitializeComponent();
 
@@ -38,15 +44,15 @@ public sealed partial class ShellPage : Page
         WeakReferenceMessenger.Default.Register<ImportDialogMessage>(this, OnShowImportDialog);
         WeakReferenceMessenger.Default.Register<MoveDialogMessage>(this, OnShowMoveDialog);
         WeakReferenceMessenger.Default.Register<UserOptionsChanged>(this, OnUserOptionsChanged);
-        WeakReferenceMessenger.Default.Register<ShowTrayIcon>(this, OnShowTrayIcon);
         WeakReferenceMessenger.Default.Register<HideTrayIcon>(this, OnHideTrayIcon);
 
-        InitializeTrayIcon();
+        RegisterTrayCommands();
     }
 
     private void OnHideTrayIcon(object recipient, HideTrayIcon message)
     {
-        DestroyTrayIcon();
+        App.HandleClosedEvents = false;
+        App.MainWindow.DispatcherQueue.TryEnqueue(DestroyTrayIcon);
     }
 
     private void InitializeTrayIcon()
@@ -57,31 +63,62 @@ public sealed partial class ShellPage : Page
         }
 
         TaskbarIcon = (TaskbarIcon) Application.Current.Resources["TrayIcon"];
-        var showHideWindowCommand = (XamlUICommand) Application.Current.Resources["ShowHideWindowCommand"];
-        showHideWindowCommand.Command = ViewModel.ShowApplicationCommand;
+        TaskbarIcon.IconSource = new BitmapImage(new Uri(Path.Combine(AppContext.BaseDirectory, "Assets/app.ico")));
+        TaskbarIcon.ToolTipText = $"{App.Name}";
+
         TaskbarIcon.ForceCreate();
+        App.HandleClosedEvents = true;
+    }
+
+    private void RegisterTrayCommands()
+    {
+        var showWindowCommand = (XamlUICommand) Application.Current.Resources["ShowWindowCommand"];
+        var exitApplicationCommand = (XamlUICommand) Application.Current.Resources["ExitApplicationCommand"];
+        var restartWslServiceCommand = (XamlUICommand) Application.Current.Resources["RestartWslServiceCommand"];
+
+        showWindowCommand.ExecuteRequested += ShowHideWindowCommandOnExecuteRequested;
+        exitApplicationCommand.ExecuteRequested += ExitApplicationCommandOnExecuteRequested;
+        restartWslServiceCommand.ExecuteRequested += RestartWslServiceCommandOnExecuteRequested;
+    }
+
+    private async void RestartWslServiceCommandOnExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
+    {
+        await StopServiceCommand.Execute();
+        await StartServiceCommand.Execute();
+    }
+
+    private static void ExitApplicationCommandOnExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
+    {
+        App.HandleClosedEvents = false;
+        Application.Current.Exit();
+    }
+
+    private static void ShowHideWindowCommandOnExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
+    {
+        App.MainWindow.Activate();
     }
 
     private void DestroyTrayIcon()
     {
+        App.HandleClosedEvents = false;
         TaskbarIcon?.Dispose();
-    }
-
-    private void OnShowTrayIcon(object recipient, ShowTrayIcon trayIcon)
-    {
-        InitializeTrayIcon();
     }
 
     private void ApplyUserConfiguration(UserOptions userOptions)
     {
         if (userOptions.UseSystemTray)
         {
-            InitializeTrayIcon();
+            App.MainWindow.DispatcherQueue.TryEnqueue(InitializeTrayIcon);
+        }
+        else
+        {
+            App.MainWindow.DispatcherQueue.TryEnqueue(DestroyTrayIcon);
         }
     }
 
     private void OnUserOptionsChanged(object recipient, UserOptionsChanged options)
     {
+        ApplyUserConfiguration(options.UserOptions);
     }
 
     public ShellViewModel ViewModel { get; }
@@ -158,6 +195,9 @@ public sealed partial class ShellPage : Page
     {
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
+
+        var options = _messenger.RequestUserOptions();
+        ApplyUserConfiguration(options.Response);
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)

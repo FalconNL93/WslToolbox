@@ -136,8 +136,18 @@ public static class MessengerHelper
         messenger.Send(new UserOptionsChanged(stateValue));
     }
 
-    public static void ShowTrayIcon(this IMessenger messenger, TrayIcon taskbarIcon)
+    public static RequestUserOptions RequestUserOptions(this IMessenger messenger)
     {
-        messenger.Send(new ShowTrayIcon(taskbarIcon));
+        return messenger.Send<RequestUserOptions>();
+    }
+
+    public static void ShowTrayIcon(this IMessenger messenger)
+    {
+        messenger.Send(new ShowTrayIcon(new TrayIcon()));
+    }
+
+    public static void HideTrayIcon(this IMessenger messenger)
+    {
+        messenger.Send(new HideTrayIcon(new TrayIcon()));
     }
 }
