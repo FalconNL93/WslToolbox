@@ -9,6 +9,7 @@
     xmlns:converters1="using:WslToolbox.UI.Converters"
     xmlns:models="using:WslToolbox.UI.Core.Models"
     xmlns:dataTemplates="using:WslToolbox.UI.DataTemplates"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
 
     mc:Ignorable="d">
     <Page.Resources>
@@ -53,17 +54,17 @@
             <Grid Margin="{StaticResource SmallBottomMargin}">
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
-                        <labs:SettingsExpander
+                        <controls:SettingsExpander
                             IsExpanded="true"
                             Description="Show configuration of WSL 2"
                             Header="WSL 2"
                             ItemsSource="{x:Bind ViewModel.RootCollection, Mode=TwoWay}">
 
-                            <labs:SettingsExpander.ItemTemplate>
+                            <controls:SettingsExpander.ItemTemplate>
 
                                 <DataTemplate x:DataType="models:WslSetting">
 
-                                    <labs:SettingsCard
+                                    <controls:SettingsCard
                                         x:Name="SettingsCard"
                                         Header="{x:Bind Key}"
                                         Description="{x:Bind Description}">
@@ -72,13 +73,13 @@
                                             DataContext="{x:Bind}"
                                             Content="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             ContentTemplateSelector="{StaticResource SettingTemplateSelector}" />
-                                    </labs:SettingsCard>
+                                    </controls:SettingsCard>
 
 
                                 </DataTemplate>
 
-                            </labs:SettingsExpander.ItemTemplate>
-                        </labs:SettingsExpander>
+                            </controls:SettingsExpander.ItemTemplate>
+                        </controls:SettingsExpander>
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -56,8 +56,8 @@
     
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
+        <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-        <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
         <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
         <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
         <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
@@ -133,7 +133,6 @@
         <None Remove="Images\Wide310x150Logo.scale-200.png" />
         <None Remove="Images\Wide310x150Logo.scale-400.png" />
         <None Remove="Package.appxmanifest" />
-        <None Remove="Views\Windows\GenericWindow.xaml" />
         <AppxManifest Include="Package.appxmanifest">
             <SubType>Designer</SubType>
         </AppxManifest>
@@ -194,9 +193,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="Views\Windows\GenericWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
+      <Folder Include="Views\NewFolder\" />
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">

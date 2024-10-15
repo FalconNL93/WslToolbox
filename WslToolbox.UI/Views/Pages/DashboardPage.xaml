@@ -10,7 +10,8 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:WslToolbox.UI.Core.Models"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls">
     <Page.Resources>
         <c:InverseBooleanConverter x:Key="InverseBoolean" />
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
@@ -98,11 +99,11 @@
                         ItemsSource="{x:Bind ViewModel.Distributions}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:Distribution">
-                                <labs:SettingsCard
+                                <controls:SettingsCard
                                     Description="{x:Bind State, Mode=OneWay}"
                                     Header="{x:Bind Name, Mode=OneWay}"
                                     IsEnabled="{x:Bind IsAvailable, Mode=OneWay}">
-                                    <labs:SettingsCard.ContextFlyout>
+                                    <controls:SettingsCard.ContextFlyout>
                                         <CommandBarFlyout ShowMode="Auto" x:Name="DistributionContextMenu">
                                             <CommandBarFlyout.SecondaryCommands>
                                                 <AppBarButton
@@ -117,7 +118,7 @@
                                             </CommandBarFlyout.SecondaryCommands>
 
                                         </CommandBarFlyout>
-                                    </labs:SettingsCard.ContextFlyout>
+                                    </controls:SettingsCard.ContextFlyout>
                                     <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}">
                                         <Button Command="{Binding ViewModel.StartDistributionCommand, ElementName=DbPg}" CommandParameter="{Binding}">
                                             <FontIcon Glyph="&#xE768;" />
@@ -172,6 +173,14 @@
                                                             <FontIcon Glyph="&#xE8AC;" />
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
+                                                    <MenuFlyoutItem
+                                                        Command="{Binding ViewModel.DuplicateDistributionCommand, ElementName=DbPg}"
+                                                        CommandParameter="{Binding}"
+                                                        Text="Duplicate">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE8C8;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
                                                     <MenuFlyoutSeparator />
                                                     <MenuFlyoutItem
                                                         Command="{Binding ViewModel.DeleteDistributionCommand, ElementName=DbPg}"
@@ -185,7 +194,7 @@
                                             </DropDownButton.Flyout>
                                         </DropDownButton>
                                     </StackPanel>
-                                </labs:SettingsCard>
+                                </controls:SettingsCard>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

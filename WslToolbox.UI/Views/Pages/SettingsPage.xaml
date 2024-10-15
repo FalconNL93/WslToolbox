@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="VisibilityConverter" />
@@ -24,96 +26,96 @@
                 <StackPanel Spacing="20">
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="General" />
-                        <labs:SettingsCard Description="Show distributions created by Docker"
+                        <controls:SettingsCard Description="Show distributions created by Docker"
                                            Header="Docker distributions">
-                            <labs:SettingsCard.HeaderIcon>
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE799;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard Description="Use system tray icon"
-                                           Header="System tray">
-                            <labs:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE799;" />
-                            </labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsExpander
+                            IsExpanded="{x:Bind ViewModel.UserOptions.UseSystemTray}"
+                            Description="Use system tray icon"
+                            
+                            HeaderIcon="{ui:SymbolIcon Symbol=Pin}"
+                            Header="System Tray">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard
-                            IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
-                            Description="Minimize WSL Toolbox when closing the application"
-                            Header="Minimize to tray">
-                            <labs:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE799;" />
-                            </labs:SettingsCard.HeaderIcon>
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.MinimizeToTray, Mode=TwoWay}" />
-                        </labs:SettingsCard>
-                        <labs:SettingsCard
-                            IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
-                            Description="Always hide WSL Toolbox from the taskbar"
-                            Header="Always hide taskbar icon">
-                            <labs:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE799;" />
-                            </labs:SettingsCard.HeaderIcon>
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.AlwaysHideIcon, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard
+                                    IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
+                                    Description="Minimize WSL Toolbox when closing the application"
+                                    Header="Minimize to tray">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.MinimizeToTray, Mode=TwoWay}" />
+                                </controls:SettingsCard>
+                                <controls:SettingsCard
+                                    IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
+                                    Description="Always hide WSL Toolbox from the taskbar"
+                                    Header="Always hide taskbar icon">
+                                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.AlwaysHideIcon, Mode=TwoWay}" />
+                                </controls:SettingsCard>
+
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
+
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
                                    Text="Appearance and behaviour" />
 
-                        <labs:SettingsCard Description="Change the theme of the application" Header="Theme">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="Change the theme of the application" Header="Theme">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE790;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ComboBox x:Name="ThemeSelector"
                                       ItemsSource="{x:Bind ViewModel.Themes}"
                                       SelectedValue="{x:Bind ViewModel.UserOptions.Theme, Mode=OneWay}"
                                       SelectionChanged="OnThemeSelectionChanged" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsCard Description="Enable application notifications" Header="Notifications">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="Enable application notifications" Header="Notifications">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xED0D;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Notifications, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
 
-                        <labs:SettingsExpander Description="Enable or disable specific notifications"
+                        <controls:SettingsExpander Description="Enable or disable specific notifications"
                                                Header="Notifications"
                                                IsEnabled="{x:Bind ViewModel.UserOptions.Notifications, Mode=OneWay}"
                                                Visibility="Collapsed">
-                            <labs:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.HeaderIcon>
                                 <FontIcon Glyph="&#xED0D;" />
-                            </labs:SettingsExpander.HeaderIcon>
-                            <labs:SettingsExpander.Items>
-                                <labs:SettingsCard ContentAlignment="Left">
+                            </controls:SettingsExpander.HeaderIcon>
+                            <controls:SettingsExpander.Items>
+                                <controls:SettingsCard ContentAlignment="Left">
                                     <CheckBox Content="Updates available"
                                               IsChecked="{x:Bind ViewModel.NotificationOptions.UpdatesAvailable, Mode=TwoWay}" />
-                                </labs:SettingsCard>
-                                <labs:SettingsCard ContentAlignment="Left">
+                                </controls:SettingsCard>
+                                <controls:SettingsCard ContentAlignment="Left">
                                     <CheckBox Content="No updates available"
                                               IsChecked="{x:Bind ViewModel.NotificationOptions.NoUpdatesAvailable, Mode=TwoWay}" />
-                                </labs:SettingsCard>
-                            </labs:SettingsExpander.Items>
-                        </labs:SettingsExpander>
+                                </controls:SettingsCard>
+                            </controls:SettingsExpander.Items>
+                        </controls:SettingsExpander>
 
-                        <labs:SettingsCard Description="Open shell behaviour" Header="Shell behaviour">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="Open shell behaviour" Header="Shell behaviour">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xED0D;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <ComboBox ItemsSource="{x:Bind ViewModel.ShellBehaviours}" DisplayMemberPath="Value" SelectedValuePath="Key"
                                       SelectedValue="{x:Bind ViewModel.UserOptions.ShellBehaviour, Mode=TwoWay}" />
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
                     </StackPanel>
 
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,0,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
                                    Text="App information" />
                         <InfoBar Name="UpdateInfoBar" />
-                        <labs:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
-                            <labs:SettingsCard.HeaderIcon>
+                        <controls:SettingsCard Description="{x:Bind ViewModel.AppDescription}" Header="Version">
+                            <controls:SettingsCard.HeaderIcon>
                                 <FontIcon Glyph="&#xE946;" />
-                            </labs:SettingsCard.HeaderIcon>
+                            </controls:SettingsCard.HeaderIcon>
                             <StackPanel Orientation="Horizontal" Spacing="{StaticResource DefaultSpacing}"
                                         Visibility="{x:Bind ViewModel.UpdateServiceAvailable, Converter={StaticResource VisibilityConverter}, Mode=OneWay}">
                                 <Button Content="Download update" Command="{x:Bind ViewModel.DownloadUpdateCommand}"
@@ -121,7 +123,7 @@
                                 <Button Content="Check for updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
                                 <Button Content="Open data directory" Command="{x:Bind ViewModel.OpenDataDirectoryCommand}" />
                             </StackPanel>
-                        </labs:SettingsCard>
+                        </controls:SettingsCard>
                     </StackPanel>
                 </StackPanel>
             </Grid>

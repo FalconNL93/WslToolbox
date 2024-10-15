@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     Title="{x:Bind ViewModel.Title}"
     PrimaryButtonText="Save"
     PrimaryButtonCommand="{x:Bind ViewModel.SaveConfigurationCommand}">
@@ -17,12 +18,12 @@
                            TextWrapping="Wrap" />
 
                 <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Initial setup" />
-                <labs:SettingsCard Description="Enable application notifications" Header="Notifications">
-                    <labs:SettingsCard.HeaderIcon>
+                <controls:SettingsCard Description="Enable application notifications" Header="Notifications">
+                    <controls:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xED0D;" />
-                    </labs:SettingsCard.HeaderIcon>
+                    </controls:SettingsCard.HeaderIcon>
                     <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.Notifications, Mode=TwoWay}" />
-                </labs:SettingsCard>
+                </controls:SettingsCard>
             </StackPanel>
             <StackPanel>
                 <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Note" />

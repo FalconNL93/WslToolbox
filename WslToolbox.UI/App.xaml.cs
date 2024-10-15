@@ -23,6 +23,7 @@ using WslToolbox.UI.Services;
 using WslToolbox.UI.ViewModels;
 using WslToolbox.UI.Views.Modals;
 using WslToolbox.UI.Views.Pages;
+using WslToolbox.UI.Views.Windows;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace WslToolbox.UI;
@@ -121,6 +122,8 @@ public partial class App : Application
                 services.AddTransientPage<WslSettingsViewModel, WslSettingsPage>();
 
                 services.AddSingleton<StartupDialogViewModel>();
+                services.AddSingleton<GenericWindow>();
+
 
                 // Configuration
                 services.Configure<UserOptions>(context.Configuration.GetSection(nameof(UserOptions)));

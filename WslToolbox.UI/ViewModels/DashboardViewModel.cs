@@ -291,6 +291,19 @@ public partial class DashboardViewModel : ObservableRecipient
 
         await _distributionService.ExportDistribution(distribution, exportPath.Dialog.FileName);
     }
+    
+    [RelayCommand]
+    private async Task DuplicateDistribution(Distribution? distribution)
+    {
+        var inputRequest = await _messenger.ShowInputDialog("Distribution name", "Enter a new name for your distribution", distribution.Name, "Rename", "Cancel");
+        if (inputRequest.ContentDialogResult != ContentDialogResult.Primary || inputRequest.Result == distribution.Name)
+        {
+            return;
+        }
+        
+        Debug.WriteLine($"Exporting C:\\Users\\pvand\\Downloads\\test\\{inputRequest}.tar");
+        await _distributionService.ExportDistribution(distribution, $"C:\\Users\\pvand\\Downloads\\test\\{inputRequest}.tar");
+    }
 
     [RelayCommand]
     private async Task ImportDistribution()
