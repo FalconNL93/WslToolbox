@@ -23,13 +23,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\WslToolbox.Core.Legacy\WslToolbox.Core.Legacy.csproj" />
-        <ProjectReference Include="..\WslToolbox.Core\WslToolbox.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>

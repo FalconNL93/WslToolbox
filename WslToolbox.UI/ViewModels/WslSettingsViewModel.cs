@@ -28,6 +28,10 @@ public partial class WslSettingsViewModel : ObservableRecipient
     {
         var wslConfig = _wslConfig.GetConfig();
         var wsl2Section = wslConfig.Wsl2Section;
+        if (wsl2Section == null)
+        {
+            return;
+        }
 
         foreach (var wslSetting in wsl2Section.Settings)
         {

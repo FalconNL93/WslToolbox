@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToObjectConverter x:Key="BoolToObjectConverter" TrueValue="Debug mode" FalseValue="Release mode" />
@@ -18,31 +19,31 @@
                         <TextBlock Name="DownloadProgress" />
                         <ProgressBar Name="DownloadProgressBar" />
                     </StackPanel>
-                    <labs:SettingsCard Description="{x:Bind ViewModel.IsDebug, Converter={StaticResource BoolToObjectConverter}}" Header="App info" />
-                    <labs:SettingsCard Description="Fake updater result" Header="Update result">
-                        <labs:SettingsCard.HeaderIcon>
+                    <controls:SettingsCard Description="{x:Bind ViewModel.IsDebug, Converter={StaticResource BoolToObjectConverter}}" Header="App info" />
+                    <controls:SettingsCard Description="Fake updater result" Header="Update result">
+                        <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
-                        </labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard.HeaderIcon>
                         <ComboBox Name="FakeUpdateResultsSelector" ItemsSource="{x:Bind ViewModel.FakeUpdateResults}" SelectedValuePath="{x:Bind ViewModel.DevOptions.Value.FakeUpdateResult, Mode=OneWay}"
                                   SelectionChanged="OnFakeUpdateSelectionChanged" />
 
 
-                    </labs:SettingsCard>
-                    <labs:SettingsCard Description="Download latest update file" Header="Download update">
-                        <labs:SettingsCard.HeaderIcon>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard Description="Download latest update file" Header="Download update">
+                        <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
-                        </labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard.HeaderIcon>
                         <StackPanel Orientation="Horizontal">
                             <Button Content="Download" Command="{x:Bind ViewModel.DownloadUpdateCommand}" />
                         </StackPanel>
 
-                    </labs:SettingsCard>
-                    <labs:SettingsCard Description="Show startup dialog" Header="Dialogs">
-                        <labs:SettingsCard.HeaderIcon>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard Description="Show startup dialog" Header="Dialogs">
+                        <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE896;" />
-                        </labs:SettingsCard.HeaderIcon>
+                        </controls:SettingsCard.HeaderIcon>
                         <Button Content="Show startup dialog" Command="{x:Bind ViewModel.ShowStartupDialogCommand}" />
-                    </labs:SettingsCard>
+                    </controls:SettingsCard>
 
                 </StackPanel>
             </Grid>
