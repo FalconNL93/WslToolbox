@@ -30,6 +30,10 @@ public class WslConfigurationService(ILogger<WslConfigurationService> logger)
 
         var wsl2Section = new Wsl2ConfigSection();
         var wsl2SectionConfig = data.Sections.GetSectionData("wsl2")?.Keys.ToDictionary(x => x.KeyName, x => x.Value);
+        if (wsl2SectionConfig == null)
+        {
+            return new WslConfigModel();
+        }
 
         if (wsl2SectionConfig != null)
         {

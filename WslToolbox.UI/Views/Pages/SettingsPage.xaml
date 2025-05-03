@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
@@ -33,31 +32,6 @@
                             </controls:SettingsCard.HeaderIcon>
                             <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.HideDocker, Mode=TwoWay}" />
                         </controls:SettingsCard>
-
-                        <controls:SettingsExpander
-                            IsExpanded="{x:Bind ViewModel.UserOptions.UseSystemTray}"
-                            Description="Use system tray icon"
-                            
-                            HeaderIcon="{ui:SymbolIcon Symbol=Pin}"
-                            Header="System Tray">
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}" />
-                            <controls:SettingsExpander.Items>
-                                <controls:SettingsCard
-                                    IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
-                                    Description="Minimize WSL Toolbox when closing the application"
-                                    Header="Minimize to tray">
-                                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.MinimizeToTray, Mode=TwoWay}" />
-                                </controls:SettingsCard>
-                                <controls:SettingsCard
-                                    IsEnabled="{x:Bind ViewModel.UserOptions.UseSystemTray, Mode=TwoWay}"
-                                    Description="Always hide WSL Toolbox from the taskbar"
-                                    Header="Always hide taskbar icon">
-                                    <ToggleSwitch IsOn="{x:Bind ViewModel.UserOptions.AlwaysHideIcon, Mode=TwoWay}" />
-                                </controls:SettingsCard>
-
-                            </controls:SettingsExpander.Items>
-                        </controls:SettingsExpander>
-
                     </StackPanel>
                     <StackPanel Spacing="{StaticResource DefaultSpacing}">
                         <TextBlock Margin="1,8,0,4" Style="{StaticResource BodyStrongTextBlockStyle}"
