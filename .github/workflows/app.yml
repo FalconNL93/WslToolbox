@@ -3,7 +3,7 @@ name: App Build
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
