@@ -2,13 +2,13 @@ name: App Build
 
 on:
   push:
-#    tags:        
-#      - '*' 
+    branches:
+      - main
 
 env:
   AppUuid: "FalconNL93.WSLToolbox"
   AppName: "WSL Toolbox"
-  AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy to use interface."
+  AppDescription: "WSL Toolbox allows you to manage your WSL Distributions through an easy-to-use interface."
   AppExecutable: "toolbox.exe"
   AppVersion: "1.0.0.0"
   AppUrl: "https://github.com/FalconNL93/wsltoolbox"
@@ -17,39 +17,27 @@ env:
 
 jobs:
   build:
+    runs-on: windows-latest
     strategy:
       matrix:
         configuration: [Release]
         platform: [x64]
-    runs-on: windows-latest
     env:
       Platform: ${{ matrix.platform }}
       APPCENTER_KEY: ${{ secrets.APPCENTER_KEY }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-#      - name: Modify AppX version
-#        shell: pwsh
-#        run: |
-#          [xml]$manifest= get-content "WslToolbox.UI\Package.appxmanifest";
-#          $manifest.Package.Identity.Version = "${{ env.AppVersion }}";
-#          $manifest.save("WslToolbox.UI\Package.appxmanifest");
-#
-#      - name: Add certificate
-#        run: |
-#          $pfxEncoded = [System.Convert]::FromBase64String("${{ secrets.APPX_CERTIFICATE }}")
-#          [IO.File]::WriteAllBytes("${{ github.workspace }}\cert.pfx", $pfxEncoded)
-
-      - name: Setup .NET Core SDK
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
-      - name: Publish
+      - name: Publish Application
         run: |
           dotnet publish "WslToolbox.UI\WslToolbox.UI.csproj" `
           --nologo `
@@ -65,36 +53,36 @@ jobs:
           -r win-${{ env.Platform }} `
           -o "${{ github.workspace }}\app\release\${{ env.Platform }}"
 
-      - name: Upload binary artifacts
-        uses: actions/upload-artifact@v4.3.6
+      - name: Upload Binary Artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}
           retention-days: 1
           path: ${{ github.workspace }}\app\release\${{ env.Platform }}
 
-      - name: Upload MSIX artifacts
-        uses: actions/upload-artifact@v4.3.6
+      - name: Upload MSIX Artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: wsltoolbox_${{ env.AppVersion }}_${{ env.Platform }}_msix
           retention-days: 1
           path: ${{ github.workspace }}\app\release\${{ env.Platform }}-msix\WslToolbox.UI_${{ env.AppVersion }}_${{ env.Platform }}_Test
 
   setup:
-    env:
-      Platform: "x64"
     runs-on: windows-2022
     needs: build
+    env:
+      Platform: "x64"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Download build data
-        uses: actions/download-artifact@v4.1.8
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
         with:
           name: wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}
           path: ${{ github.workspace }}\app
 
-      - name: InnoSetup
+      - name: Run InnoSetup
         run: |
           .\WslToolbox.Setup\build.ps1 `
           -AppDirectory "${{ github.workspace }}\app" `
@@ -107,41 +95,18 @@ jobs:
           -AppOwner "${{ env.AppOwner }}" `
           -SetupOutputFile "wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup"
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4.3.6
+      - name: Upload Setup Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup
           path: WslToolbox.Setup\bin\wsltoolbox_${{ env.AppVersionCommit }}_${{ env.Platform }}_setup.exe
           retention-days: 1
 
-#  create-release:
-#    needs: [build,setup]
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: write
-#    steps:
-#      - uses: actions/checkout@v4.1.7
-#      - uses: actions/download-artifact@v4
-#      - name: Display structure of downloaded files
-#        run: ls -R
-#      - name: Release
-#        id: newrelease
-#        uses: softprops/action-gh-release@v2
-#        with:
-#          files: "wsltoolbox_${{ env.AppVersion }}_x64_setup/wsltoolbox_${{ env.AppVersion }}_x64_setup.exe"
-#      - name: WinGet Updater
-#        uses: michidk/winget-updater@latest
-#        with:
-#          komac-token: ${{ secrets.KOMAC_TOKEN }}
-#          identifier: ${{ env.AppUuid }}
-#          repo: "FalconNL93/WslToolbox"
-#          url: "${{ fromJSON(steps.newrelease.outputs.assets)[0].browser_download_url }}"
-
   purge:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - name: Delete workflow runs
+      - name: Delete Workflow Runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ github.token }}
